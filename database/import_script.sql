@@ -1,0 +1,136 @@
+show databases;
+use jaktsite;
+
+INSERT INTO `jaktsite`.`users`(
+    `active`,
+    `role`,
+    `occupation`,
+    `username`,
+    `password`,
+    `firstname`,
+    `lastname`,
+    `address`,
+    `email`,
+    `postnumber`,
+    `phonenumber`,
+    `mobilenumber`,
+    `city`,
+    `last_logged_in`,
+    `notes`,
+    `created_at`,
+    `member_since`,
+    `updated_at`
+)
+SELECT
+    `active`,
+    `role`,
+    `occupation`,
+    `username`,
+    `pass`,
+    `firstname`,
+    `surname`,
+    `address`,
+    `email`,
+    `postnumber`,
+    `phone`,
+    `mobile`,
+    `city`,
+    `inlogged`,
+    `notes`,
+    `created`,
+    `membersince`,
+    `updated`
+FROM
+    `smaris`.`sraccounts`;
+
+INSERT INTO `jaktsite`.`killreports`(
+    `id`,
+    `actor`,
+    `from_account`,
+    `for_account`,
+    `kindofhunt`,
+    `animal_id`,
+    `image`,
+    `killdate`,
+    `season`,
+    `area_id`,
+    `place`,
+    `longitud`,
+    `latitud`,
+    `report_status`,
+    `locked`,
+    `created_at`,
+    `updated_at`,
+    `deleted_at`
+)
+SELECT
+    `id`,
+    `actor`,
+    `from_account`,
+    `for_account`,
+    `kindofhunt`,
+    `animal`,
+    `image`,
+    `killdate`,
+    `season`,
+    `area`,
+    `place`,
+    `longitud`,
+    `latitud`,
+    `report_status`,
+    `locked`,
+    `created`,
+    `updated`,
+    `deleted`
+FROM
+    `smaris`.`srkillreport`;
+
+INSERT INTO `jaktsite`.`animals`(
+    `id`,
+    `user_id`,
+    `species`,
+    `speciestype`,
+    `engspecies`,
+    `sex`,
+    `age`,
+    `live_weight`,
+    `aprox_live_weight`,
+    `passad_weight`,
+    `aprox_passad_weight`,
+    `carcass_weight`,
+    `aprox_carcass_weight`,
+    `cut_weight`,
+    `heart_weight`,
+    `waste`,
+    `wastenotes`,
+    `antlers`,
+    `points`,
+    `created_at`,
+    `updated_at`,
+    `deleted_at`
+)
+SELECT
+    `id`,
+    `actor`,
+    `species`,
+    `speciestype`,
+    `engspecies`,
+    `sex`,
+    `age`,
+    `live_weight`,
+    `aprox_live_weight`,
+    `passad_weight`,
+    `aprox_passad_weight`,
+    `carcass_weight`,
+    `aprox_carcass_weight`,
+    `cut_weight`,
+    `heart_weight`,
+    `waste`,
+    `wastenotes`,
+    `antlers`,
+    `points`,
+    `created`,
+    `updated`,
+    `deleted`
+FROM
+    `smaris`.`sranimal`;

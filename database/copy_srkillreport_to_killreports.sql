@@ -1,0 +1,41 @@
+INSERT INTO `jaktsite`.`killreports`(
+    `id`,
+    `actor`,
+    `from_account`,
+    `for_account`,
+    `kindofhunt`,
+    `animal_id`,
+    `image`,
+    `killdate`,
+    `season`,
+    `area_id`,
+    `place`,
+    `longitud`,
+    `latitud`,
+    `report_status`,
+    `locked`,
+    `created_at`,
+    `updated_at`,
+    `deleted_at`
+)
+SELECT
+    `id`,
+    `actor`,
+    `from_account`,
+    `for_account`,
+    `kindofhunt`,
+    `animal`,
+    `image`,
+    `killdate`,
+    `season`,
+    `area`,
+    `place`,
+    `longitud`,
+    `latitud`,
+    `report_status`,
+    `locked`,
+    `created`,
+    `updated`,
+    `deleted`
+FROM
+    `smaris`.`srkillreport`
