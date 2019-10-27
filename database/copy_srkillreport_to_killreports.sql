@@ -1,8 +1,7 @@
 INSERT INTO `jaktsite`.`killreports`(
     `id`,
-    `actor`,
-    `from_account`,
-    `for_account`,
+    `reporter_id`,
+    `shooter_id`,
     `kindofhunt`,
     `animal_id`,
     `image`,
@@ -21,7 +20,6 @@ INSERT INTO `jaktsite`.`killreports`(
 SELECT
     `id`,
     `actor`,
-    `from_account`,
     `for_account`,
     `kindofhunt`,
     `animal`,

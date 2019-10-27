@@ -15,9 +15,8 @@ class CreateKillreportsTable extends Migration
     {
         Schema::create('killreports', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('actor');
-            $table->unsignedBigInteger('from_account');
-            $table->unsignedBigInteger('for_account');
+            $table->unsignedBigInteger('reporter_id');
+            $table->unsignedBigInteger('shooter_id');
             $table->string('kindofhunt');
             $table->unsignedBigInteger('animal_id');
             $table->string('image');
@@ -29,7 +28,7 @@ class CreateKillreportsTable extends Migration
             $table->float('latitud');
             $table->string('report_status');
             $table->string('locked');
-            $table->dateTime('deleted_at');
+            $table->dateTime('deleted_at')->nullable();
             $table->timestamps();
         });
     }

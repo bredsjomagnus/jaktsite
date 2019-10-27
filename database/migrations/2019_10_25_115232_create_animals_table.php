@@ -15,7 +15,7 @@ class CreateAnimalsTable extends Migration
     {
         Schema::create('animals', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('shooter_id');
             $table->string('species');
             $table->string('speciestype');
             $table->string('engspecies');
@@ -30,10 +30,10 @@ class CreateAnimalsTable extends Migration
             $table->float('cut_weight');
             $table->float('heart_weight');
             $table->float('waste');
-            $table->string('wastenotes');
+            $table->string('waste_notes');
             $table->string('antlers');
             $table->integer('points');
-            $table->dateTime('deleted_at');
+            $table->dateTime('deleted_at')->nullable();
             $table->timestamps();
         });
     }
