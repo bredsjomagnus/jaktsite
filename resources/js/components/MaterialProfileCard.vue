@@ -15,7 +15,7 @@
       <!-- <mdb-card-title>Profildata</mdb-card-title> -->
 	  	<form @submit.prevent="submitForm">
 			<mdb-input label="Användarnamn" v-model="fields.username" disabled />
-			<mdb-input label="Användarnamn" v-model="fields.email" disabled />
+			<mdb-input label="Email" v-model="fields.email" disabled />
 			<mdb-input label="Förnamn" v-model="fields.firstname" />
 			<mdb-input label="Efternamn" v-model="fields.lastname" />
 			<mdb-input label="Adress" v-model="fields.address"  />

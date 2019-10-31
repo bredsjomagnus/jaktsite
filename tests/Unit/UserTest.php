@@ -84,10 +84,11 @@ class UserTest extends TestCase
     public function a_user_can_have_many_animals()
     {
         $this->withoutExceptionHandling();
-        $user = factory(User::class)->create();
-        $animal = factory(Animal::class)->create(['shooter_id' => $user->id]);
-        $killreport = factory(Killreport::class)->create(['shooter_id' => $animal->shooter_id, 'reporter_id' => $user->id, 'animal_id' => $animal->id]);
+        $user = $this->signIn();
 
-        $this->assertCount(1, $user->animals);
+        // report_kill(shooter = null, reporter = null, animal = null, area = null)
+        $data = $this->report_kill($user, $user); // data['shooter', 'reporter', 'animal', 'area', 'killreport']
+
+        $this->assertCount(1, $data['shooter']->animals);
     }
 }
