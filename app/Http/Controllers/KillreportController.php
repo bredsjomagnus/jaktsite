@@ -24,7 +24,7 @@ class KillreportController extends Controller
      */
     public function create()
     {
-        //
+        return view('killreports.create');
     }
 
     /**

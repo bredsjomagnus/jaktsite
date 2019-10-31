@@ -27,6 +27,7 @@ Vue.component('material-profile-card', require('./components/MaterialProfileCard
 Vue.component('material-login-form', require('./components/MaterialLoginForm.vue').default);
 Vue.component('material-register-form', require('./components/MaterialRegisterForm.vue').default);
 Vue.component('material-navbar', require('./components/MaterialNavbar.vue').default);
+Vue.component('killreport-create', require('./components/KillreportCreate.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

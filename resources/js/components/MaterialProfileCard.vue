@@ -10,7 +10,7 @@
       		<p style="color:white">{{fields.firstname}} {{fields.lastname}}</p>
 		</div>
 	</div>
-	<mdb-btn color="mdb-color"><mdb-icon icon="paw" class="ml-1"/> - Rapportera djur</mdb-btn>
+	<mdb-btn color="mdb-color" tag='a' :href="url.killreport"><mdb-icon icon="paw" class="ml-1"/> - Rapportera djur</mdb-btn>
     <mdb-card-body class="infopart">
       <!-- <mdb-card-title>Profildata</mdb-card-title> -->
 	  	<form @submit.prevent="submitForm">
@@ -49,7 +49,8 @@
 		},
 		props: [
 			'authUser',
-			'gravatarSrc'
+			'gravatarSrc',
+			'killreporturl'
 			],
 		data() {
 			return {
@@ -68,7 +69,8 @@
 					phonenumber: this.authUser.phonenumber
 				},
 				url: {
-					update: window.location.pathname + "/update"
+					update: window.location.pathname + "/update",
+					killreport: this.killreporturl
 				}
 			}
 		},
@@ -76,6 +78,7 @@
 			console.log(this.authUser);
 			console.log(this.gravatarSrc);
 			console.log(this.url.update);
+			console.log(this.url.killreport);
 		},
 		methods: {
 			submitForm(event) {

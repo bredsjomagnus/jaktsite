@@ -19,7 +19,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/user/create', 'UserController@create')->middleware('access:admin');
+Route::get('/user/create', 'UserController@create')->middleware('access:admin'); //access($request, Closure $next, $key='user', $object='none') $key='admin', 'user' or 'both'
 Route::post('/user/store', 'UserController@store')->middleware('access:admin');
 Route::get('/user/{user}', 'UserController@show')->middleware('access:both,user');
 Route::patch('/user/{user}/update', 'UserController@update')->middleware('access:both,user');
+
+Route::get('/killreport/create', 'KillreportController@create')->middleware('access:both,none');
