@@ -91,4 +91,24 @@ class UserTest extends TestCase
 
         $this->assertCount(1, $data['shooter']->animals);
     }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function a_user_can_be_a_hunter()
+    {
+        $this->withoutExceptionHandling();
+        $user1 = factory(User::class)->create(['occupation' => 'hunter']);
+        $user2 = factory(User::class)->create(['occupation' => 'dancer']);
+        $user3 = factory(User::class)->create(['occupation' => 'hunter']);
+        $user4 = factory(User::class)->create(['occupation' => 'bartender']);
+        $user5 = factory(User::class)->create(['occupation' => 'hunter']);
+
+        $this->assertCount(3, User::where('occupation', 'hunter')->get());
+    }
+
+    
+
 }

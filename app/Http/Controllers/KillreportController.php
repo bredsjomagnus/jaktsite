@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\KillReport;
 use Illuminate\Http\Request;
 
+use App\User;
+use App\Area;
+
 class KillreportController extends Controller
 {
     /**
@@ -24,7 +27,11 @@ class KillreportController extends Controller
      */
     public function create()
     {
-        return view('killreports.create');
+        $data = [
+            'hunters'   => User::where('occupation', 'hunter')->get(),
+            'areas'     => Area::all()
+        ];
+        return view('killreports.create', $data);
     }
 
     /**
@@ -35,7 +42,10 @@ class KillreportController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $killreport = new Killreport();
+        $killreport->create(request()->all());
+        
+        return redirect(auth()->user()->path());
     }
 
     /**

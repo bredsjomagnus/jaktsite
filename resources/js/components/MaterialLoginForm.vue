@@ -24,6 +24,9 @@
       mdbBtn,
       mdbIcon
     },
+    props:[
+      'postUrl'
+    ],
     data() {
         return {
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -36,16 +39,21 @@
             }
         }
     },
+    mounted() {
+      console.log(this.postUrl);
+    },
     methods: {
       submitForm(event) {
         console.log(window.location.pathname);
         // console.log(event)
+        // "http://localhost:8080/www/jaktsite/public/login"
           axios
-            .post("http://localhost:8080/www/jaktsite/public/login", this.fields)
+            .post(this.postUrl, this.fields)
             .then(response => {
               this.fields = {};
-              console.log(response.request.responseURL)
+              // console.log(response.request.responseURL)
               window.location = response.request.responseURL;
+              // window.location = accountPage;
             })
             .catch(error => {
               console.log(error);
