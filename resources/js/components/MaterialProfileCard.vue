@@ -3,7 +3,8 @@
     <!-- <mdb-card-image src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20%286%29.jpg" alt="Card image cap"></mdb-card-image> -->
 	<div class="d-flex justify-content-center" style="padding-bottom:16px; padding-top:10px; background-color: rgb(122, 160, 189);">
 		 <!-- <img :src="gravatarSrc" class="img-fluid z-depth-1 rounded-circle" :alt="authUser.username">		 -->
-      <mdb-card-image class="img-fluid z-depth-2 rounded-circle" :alt="authUser.username" :src="gravatarSrc"></mdb-card-image>
+
+      <a href="https://en.gravatar.com/"><mdb-card-image class="img-fluid z-depth-2 rounded-circle" :alt="authUser.username" :src="gravatarSrc"></mdb-card-image></a>
     </div>
     <div class="d-flex justify-content-center" style="display:block; background-color: rgb(20, 40, 55); height: 40px;">
 		<div class="align-middle pt-2">

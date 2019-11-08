@@ -26,5 +26,6 @@ Route::patch('/user/{user}/update', 'UserController@update')->middleware('access
 
 Route::get('/killreports/create', 'KillreportController@create')->middleware('access:both,none');
 Route::post('/killreports/store', 'KillreportController@store')->middleware('access:both,none');
+Route::get('/killreports', 'KillreportController@index')->middleware('access:both,none');
 
 Route::post('/animals/store', 'AnimalController@store')->middleware('access:both,none');

@@ -81,8 +81,32 @@ class KillreportTest extends TestCase
             'area_id'       => $area->id
         ]);
 
-        $this->post('/killreports/store', $killreport->toArray())->assertRedirect($reporter->path());
+        $this->post('/killreports/store', $killreport->toArray())->assertRedirect('/killreports');
         $this->assertDatabaseHas('killreports', $killreport->getAttributes());
+
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function a_user_sees_all_killreports_when_visiting_killreport_index_page()
+    {
+        $this->withoutExceptionHandling();
+        
+        $this->signIn();
+
+        $killreport_one = factory(Killreport::class)->create(['killdate' => '2015-01-01']);
+        $killreport_two = factory(Killreport::class)->create(['killdate' => '2016-01-01']);
+        $killreport_three = factory(Killreport::class)->create(['killdate' => '2017-01-01']);
+        $killreport_four = factory(Killreport::class)->create(['killdate' => '2018-01-01']);
+
+
+        $this->get('/killreports')->assertSee('2015-01-01');
+        $this->get('/killreports')->assertSee('2016-01-01');
+        $this->get('/killreports')->assertSee('2017-01-01');
+        $this->get('/killreports')->assertSee('2018-01-01');
 
     }
 

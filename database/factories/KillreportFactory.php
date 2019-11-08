@@ -17,12 +17,12 @@ $factory->define(Killreport::class, function (Faker $faker) {
                             },
         'animal_id'     =>  function() { return factory(Animal::class)->create()->id; },
         'image'         =>  $faker->word,
-        'killdate'      =>  now(),
+        'killdate'      =>  $faker->word,
         'season'        =>  '19/20',
         'area_id'       =>  $faker->randomDigitNotNull, // TODO: function() { return factory(Area::class)->create()->id; }
-        'place'         =>  $faker->sentence,
-        'longitud'      =>  $faker->randomFloat,
-        'latitud'       =>  $faker->randomFloat,
+        'place'         =>  null,
+        'longitud'      =>  null,
+        'latitud'       =>  null,
         'report_status' =>  function() {
                                 $report_status = ['red', 'yellow', 'green'];
                                 return $report_status[array_rand($report_status)];

@@ -36,7 +36,9 @@ class AnimalController extends Controller
     public function store(Request $request)
     {
         $animal = new Animal;
-        $animal->create(request()->all());
+        $animal = $animal->create(request()->all());
+    
+        return response()->json(['animal' => $animal]);
     }
 
     /**

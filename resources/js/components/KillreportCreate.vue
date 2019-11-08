@@ -21,6 +21,8 @@
             <!-- </mdb-btn-toolbar> -->
         </div>
 
+
+        <!-- MODAL FÖR RENSA DATA -->
         <mdb-modal size="sm" :show="confirmModal" @close="confirmModal = false">
             <mdb-modal-header>
                 <mdb-modal-title>Rensa data?</mdb-modal-title>
@@ -34,6 +36,7 @@
             </mdb-modal-footer>
         </mdb-modal>
 
+        <!-- MODAL FÖR ATT GÅ TILL 'MIN SIDA' -->
         <mdb-modal size="sm" :show="backToUserModal" @close="backToUserModal = false">
             <mdb-modal-header>
                 <mdb-modal-title>Återgå till 'Min sida'?</mdb-modal-title>
@@ -57,9 +60,10 @@
                     <div
                     v-for="hunter in hunters"
                     :key="hunter.id"
-                    >
-                        <div class="p-0">   
-                            <mdb-btn :color="killreportfields.shooter_id == hunter.id ? 'indigo' : 'grey'" @click="setShooter(hunter)" class='w-100 m-0 mb-1'>{{hunter.firstname}} {{hunter.lastname}}</mdb-btn>
+                    >   
+                        <div class="d-flex justify-content-center" >
+                            <img class="img-fluid z-depth-1 rounded-circle" style="width: 50px; height: 50px; margin-top:5px" :alt="authUser.username" :src="gravatarSrc(hunter.email)">
+                            <mdb-btn class="mb-0" style="width: 300px" :color="killreportfields.shooter_id == hunter.id ? 'indigo' : 'grey'" @click="setShooter(hunter)" >{{hunter.firstname}} {{hunter.lastname}}</mdb-btn>
                         </div>    
                     </div>
                 </div>
@@ -97,7 +101,7 @@
                 <mdb-btn
                 v-if="killreportfields.area_id != null"
                 color="blue-grey" 
-                @click.native="setArea({'id': killreportfields.area_id, 'area_name': killreportfields.area_name})"
+                @click.native="setArea({'id': killreportfields.area_id, 'area_name': area_name})"
                 size="sm">
                 <mdb-icon icon="chevron-right"/>
                 </mdb-btn>
@@ -157,13 +161,14 @@
             >
             <!-- <mdb-btn-group> -->
                 <div
-                v-if="fields.species == 'Älg'"
+                v-if="animalfields.species == 'Älg'"
                 >
                     <div class="d-flex flex-column">
                         <div class="p-0"><mdb-btn :color="animalfields.speciestype == 'Tjur' ? 'indigo' : 'grey'" @click="setSpeciesType('Tjur')" class='w-100 m-0 mb-1'>Tjur</mdb-btn></div>
                         <div class="p-0"><mdb-btn :color="animalfields.speciestype == 'Obestämt vuxet hondjur' ? 'indigo' : 'grey'" @click="setSpeciesType('Obestämt vuxet hondjur')" class='w-100 m-0 mb-1'>Obestämt vuxet hondjur</mdb-btn></div>
                         <div class="p-0"><mdb-btn :color="animalfields.speciestype == 'Ko' ? 'indigo' : 'grey'" @click="setSpeciesType('Ko')" class='w-100 m-0 mb-1'>Ko</mdb-btn></div>
                         <div class="p-0"><mdb-btn :color="animalfields.speciestype == 'Kviga' ? 'indigo' : 'grey'" @click="setSpeciesType('Kviga')" class='w-100 m-0 mb-1'>Kviga</mdb-btn></div>
+                        <div class="p-0"><mdb-btn :color="animalfields.speciestype == 'Tjurkalv' ? 'indigo' : 'grey'" @click="setSpeciesType('Tjurkalv')" class='w-100 m-0 mb-1'>Tjurkalv</mdb-btn></div>
                         <div class="p-0"><mdb-btn :color="animalfields.speciestype == 'Kvigkalv' ? 'indigo' : 'grey'" @click="setSpeciesType('Kvigkalv')" class='w-100 m-0 mb-1'>Kvigkalv</mdb-btn></div>
                         <div class="p-0"><mdb-btn :color="animalfields.speciestype == 'Obestämd kalv' ? 'indigo' : 'grey'" @click="setSpeciesType('Obestämd kalv')" class='w-100 m-0 mb-1'>Obestämd kalv</mdb-btn></div>
                     </div>
@@ -186,6 +191,7 @@
                         <div class="p-0"><mdb-btn :color="animalfields.speciestype == 'Smalhind' ? 'indigo' : 'grey'" @click="setSpeciesType('Smalhind')" class='w-100 m-0 mb-1'>Smalhind</mdb-btn></div>
                         <div class="p-0"><mdb-btn :color="animalfields.speciestype == 'Hjortkalv' ? 'indigo' : 'grey'" @click="setSpeciesType('Hjortkalv')" class='w-100 m-0 mb-1'>Hjortkalv</mdb-btn></div>
                         <div class="p-0"><mdb-btn :color="animalfields.speciestype == 'Hindkalv' ? 'indigo' : 'grey'" @click="setSpeciesType('Hindkalv')" class='w-100 m-0 mb-1'>Hindkalv</mdb-btn></div>
+                        <div class="p-0"><mdb-btn :color="animalfields.speciestype == 'Obestämd kalv' ? 'indigo' : 'grey'" @click="setSpeciesType('Obestämd kalv')" class='w-100 m-0 mb-1'>Obestämd kalv</mdb-btn></div>
                     </div>
                     <mdb-btn color="blue-grey" @click.native="stepBackFromSpeciesType()" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
                     <mdb-btn
@@ -279,11 +285,11 @@
         >
             <mdb-card-body >
                 <form @submit.prevent="submitForm">
-                    <mdb-input label="Rapportör" v-model="killreportfields.reporter_name" disabled />
-                    <mdb-input label="Skytt" v-model="killreportfields.shooter_name" disabled />
+                    <mdb-input label="Rapportör" v-model="reporter_name" disabled />
+                    <mdb-input label="Skytt" v-model="shooter_name" disabled />
                     <mdb-input label="Sorts jakt" v-model="killreportfields.kindofhunt" disabled />
-                    <mdb-input  label="Område" v-model="killreportfields.area_name" disabled />
-                    <mdb-input v-if="killreportfields.place != null" type="textarea" label="Plats" v-model="killreportfields.place" disabled />
+                    <mdb-input  label="Område" v-model="area_name" disabled />
+                    <mdb-input v-if="killreportfields.place != null" type="textarea" label="Plats" v-model="killreportfields.place" />
                     <mdb-input class="mt-5" type="date" label="Datum" v-model="killreportfields.killdate" disabled />
                     <mdb-input label="Djur" v-model="animalfields.species" disabled />
                     <mdb-input label="Djurklassificering" v-model="animalfields.speciestype" disabled />
@@ -300,7 +306,7 @@
     </div>
 </template>
 <script>
-  import { mdbBtn, mdbBtnGroup, mdbDropdown, mdbDropdownItem, mdbDropdownMenu, mdbDropdownToggle, mdbCard, mdbCardBody, mdbCardTitle, mdbCardText, mdbRow, mdbCol, mdbBadge, mdbInput, mdbBtnToolbar, mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbIcon } from 'mdbvue';
+  import { mdbBtn, mdbBtnGroup, mdbDropdown, mdbDropdownItem, mdbDropdownMenu, mdbDropdownToggle, mdbCard, mdbCardBody, mdbCardTitle, mdbCardText, mdbRow, mdbCol, mdbBadge, mdbInput, mdbBtnToolbar, mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbIcon, mdbCardImage } from 'mdbvue';
   export default {
     name: 'killreport',
     components: {
@@ -324,20 +330,22 @@
       mdbModalTitle,
       mdbModalBody,
       mdbModalFooter,
-      mdbIcon
+      mdbIcon,
+      mdbCardImage
     },
     props: [
             'authUser',
             'hunters',
             'accountPage',
-            'areas'
+            'areas',
+            'animalUrl',
+            'killreportUrl'
         ],
     data() {
         return {
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             animalfields: {
                 shooter_id: null,
-                animal_id: null,
                 species: null,
                 speciestype: null,
                 engspecies: null,
@@ -347,15 +355,16 @@
                 points: null,
             },
             killreportfields: {
-                reporter_name: this.authUser.firstname + " " + this.authUser.lastname,
+                
                 reporter_id: this.authUser.id,
                 shooter_id: null,
-                shooter_name: null,
+                
                 kindofhunt: null,
                 killdate: null,
                 season: null,
+                animal_id: null,
                 area_id: null,
-                area_name: null,
+                image: 'default.png',
                 place: null,
                 report_status: 'green',
                 locked: 'no',
@@ -370,6 +379,10 @@
             backToUserModal: false,
             wrongkilldate: false,
             killdateset: false,
+            reporter_name: this.authUser.firstname + " " + this.authUser.lastname,
+            shooter_name: null,
+            area_name: null,
+            thekilldate: null
         }
 
     },
@@ -377,8 +390,25 @@
         console.log(this.hunters);
         console.log(this.accountPage);
         console.log(this.areas);
+        console.log(this.animalUrl);
+        console.log(this.killreportUrl);
+        var md5 = require('md5');
+ 
+        console.log(md5('message'));
     },
     methods: {
+        gravatarSrc(email) {
+            // 404: do not load any image if none is associated with the email hash, instead return an HTTP 404 (File Not Found) response
+            // mp: (mystery-person) a simple, cartoon-style silhouetted outline of a person (does not vary by email hash)
+            // identicon: a geometric pattern based on an email hash
+            // monsterid: a generated 'monster' with different colors, faces, etc
+            // wavatar: generated faces with differing features and backgrounds
+            // retro: awesome generated, 8-bit arcade-style pixelated faces
+            // robohash: a generated robot with different colors, faces, etc
+            // blank: a transparent PNG image (border added to HTML below for demonstration purposes)
+            let md5 = require('md5');
+            return "https://www.gravatar.com/avatar/" + md5(email)+"?d=monsterid&s=60";
+        },
         krondov(s) {
             let isKronvilt, isDovvilt;
             isKronvilt = (s === "Kronvilt");
@@ -392,7 +422,8 @@
         },
         setShooter(hunter) {
             this.killreportfields.shooter_id = hunter.id;
-            this.killreportfields.shooter_name = hunter.firstname + " " + hunter.lastname;
+            this.animalfields.shooter_id = hunter.id;
+            this.shooter_name = hunter.firstname + " " + hunter.lastname;
             this.step = 'kindofhunt';
             this.steptitle = 'SORTS JAKT';
         },
@@ -408,13 +439,13 @@
         },
         setArea(area) {
             this.killreportfields.area_id = area.id;
-            this.killreportfields.area_name = area.area_name;
+            this.area_name = area.area_name;
             this.step = "place";
             this.steptitle = "PLATS";
         },
         stepBackFromAreas() {
             this.killreportfields.area_id = null;
-            this.killreportfields.area_name = null;
+            this.area_name = null;
             this.step = 'kindofhunt';
             this.steptitle = "SORTS JAKT";
         },
@@ -426,6 +457,7 @@
             }
             this.step = "killdate";
             this.steptitle = "DATUM";
+            
         },
         stepBackFromPlace() {
             this.killreportfields.place = null;
@@ -433,25 +465,32 @@
             this.steptitle = "OMRÅDE";
         },
         checkKilldate() {
+            // console.log("killdateset: " + killdateset);
+            // this.killdateset = false;
             let thenow = Date.now();
-            let thekilldate = new Date(this.killreportfields.killdate);
-            if(thekilldate >= thenow) {
+            this.thekilldate = new Date(this.killreportfields.killdate);
+            if(this.thekilldate >= thenow) {
                 this.wrongkilldate = true;
                 this.killdateset = false;
             } else {
                 this.wrongkilldate = false;
                 this.killdateset = true;
             }
-            console.log(this.killreportfields.killdate);
-            if(this.killreportfields.killdate == "") {
+            if(this.killreportfields.killdate == "" || this.killreportfields.killdate == null) {
                 this.wrongkilldate = false;
                 this.killdateset = false;
             }
             
         },
         setKilldate() {
-            this.step = 'species';
-            this.steptitle = "DJUR"
+            console.log("this.killreportfields.killdate: " + this.killreportfields.killdate);
+            console.log("this.killdateset: " + this.killdateset);
+            if(this.killreportfields.killdate != null) {
+                this.step = 'species';
+                this.steptitle = "DJUR";
+                this.killreportfields.season = this.setSeason(this.killreportfields.killdate);
+            }
+                
         },
         stepBackFromKilldate() {
             this.killreportfields.killdate = null;
@@ -460,8 +499,39 @@
             this.wrongkilldate = false;
             this.killdateset = false;
         },
+        setSeason(date) {
+            let firstyear, lastyear, season;
+            let year = parseInt(date.substring(2, 4));
+            let month = parseInt(date.substring(5, 7));
+            console.log("year: " + year);
+            console.log("month: " + month);
+            season = "";
+            if (month < 7) {
+                firstyear = (year - 1).toString();
+                lastyear = year.toString();
+            } else {
+                firstyear = year.toString();
+                lastyear = (year + 1).toString();
+            }
+            season = firstyear+"/"+lastyear;
+            return season;
+        },
         setSpecies(value) {
             this.animalfields.species = value;
+            this.animalfields.engspecies = null;
+
+            if (value == 'Älg') {
+                this.animalfields.engspecies = 'moose';
+            } else if (value == 'Kronvilt') {
+                this.animalfields.engspecies = 'reddeer';
+            } else if (value == 'Dovvilt') {
+                this.animalfields.engspecies = 'fallowdeer';
+            } else if (value == 'Rådjur') {
+                this.animalfields.engspecies = 'roedeer';
+            } else if (value == 'Vildsvin') {
+                this.animalfields.engspecies = 'boar';
+            }
+
             this.step = 'speciestype';
             this.steptitle = 'DJURKLASSIFICERING';
         },
@@ -472,6 +542,44 @@
         },
         setSpeciesType(value) {
             this.animalfields.speciestype = value;
+            this.animalfields.age = null;
+            this.animalfields.sex = null;
+
+            if (value == 'Tjur' || value == 'Ko' || value == 'Kviga') {
+                this.animalfields.age = 'adult';
+            } else if (value == 'Hjort' || value == 'Hind' || value == 'Smalhind'){
+                this.animalfields.age = 'adult';
+            } else if (value == 'Bock' || value == 'Get' || value == 'Smaldjur'){
+                this.animalfields.age = 'adult';
+            } else if (value == 'Galt' || value == 'Sugga' || value == 'Gylta'){
+                this.animalfields.age = 'adult';
+            } else if (value == 'Obestämt vuxet hondjur') {
+                this.animalfields.age = 'adult';
+            } else {
+                this.animalfields.age = 'calf';
+            }
+
+
+            if (value == 'Tjur' || value == 'Tjurkalv') {
+                this.animalfields.sex = 'male';
+            } else if (value == 'Ko' || value == 'Kviga' || value == 'Kvigkalv') {
+                this.animalfields.sex = 'female';
+            } else if (value == 'Hjort' || value == 'Hjortkalv') {
+                this.animalfields.sex = 'male';
+            } else if (value == 'Hind' || value == 'Smalhind' || value == 'Hindkalv') {
+                this.animalfields.sex = 'female';
+            } else if (value == 'Bock' || value == 'Bockkilling') {
+                this.animalfields.sex = 'male';
+            } else if (value == 'Get' || value == 'Smaldjur' || value == 'Getkilling') {
+                this.animalfields.sex = 'female';
+            } else if (value == 'Galt' || value == 'Galtkulting') {
+                this.animalfields.sex = 'male';
+            } else if (value == 'Sugga' || value == 'Gylta' || value == 'Suggkulting') {
+                this.animalfields.sex = 'female';
+            } else if (value == 'Obestämt vuxet hondjur') {
+                this.animalfields.sex = 'female';
+            }
+
             
             if (this.points()) {
                 this.step = 'points';
@@ -481,7 +589,6 @@
                 this.steptitle = "HORN";
             } else {
                 this.toggleActiveStateR();
-
             }
         },
         stepBackFromSpeciesType() {
@@ -576,16 +683,17 @@
             // Reseting fields data
             this.killreportfields.shooter_id = null;
             this.animalfields.shooter_id = null;
-            this.killreportfields.shooter_name = null;
+            this.shooter_name = null;
             this.killreportfields.kindofhunt = null;
             this.animalfields.animal_id = null;
             this.killreportfields.killdate = null;
-            this.killreportfields.season = null;
+            this.killreportfields.season = '20/21';
             this.killreportfields.area_id = null;
-            this.killreportfields.area_name = null;
+            this.area_name = null;
             this.killreportfields.place = null;
             this.killreportfields.report_status = 'green';
             this.killreportfields.locked = 'no';
+            this.killreportfields.image = 'default.png',
             this.animalfields.species = null;
             this.animalfields.speciestype = null;
             this.animalfields.engspecies = null;
@@ -598,16 +706,61 @@
             window.location = this.accountPage;
         },
         submitForm() {
-            axios.post(this.url.update, this.fields)
-				 .then(response => {
-					this.fields = {};
-					// console.log(response.request.responseURL)
-					window.location = response.request.responseURL;	// redirect to whatever the response from controller method says.
-				})
-				.catch(error => {
-					console.log(error);
-				});
-        }
+            console.log(this.animalfields);
+            
+
+            // console.log(this.killreportfields.killdate);
+            axios.post(this.animalUrl, this.animalfields)
+				    .then(response => {
+                        // this.animalfields = {};
+                        console.log("ANIMAL RESPONSE");
+                        // console.log(response);
+                        console.log("animal_id: " + response.data.animal.id);
+                        // this.killreportfields.animal_id = response.data.animal.id;
+                        this.killreportfields.animal_id = response.data.animal.id;
+                        // window.location = "http://localhost:8080/www/jaktsite/public/killreports/create";
+                         axios.post(this.killreportUrl, this.killreportfields)
+                            .then(response => {
+                                
+                                this.killreportfields = {};
+                                console.log("KILLREPORT RESPONSE:");
+                                console.log(response);
+                            })
+                            .catch(error => {
+                                console.log("KILLREPORT STORE ERROR:");
+                                console.log("animal_id: " + this.killreportfields.animal_id);
+                                console.log(error);
+                            });
+                        
+                        windows.location = "http://localhost:8080/www/jaktsite/public/killreports";
+                        
+                    })
+                    .catch(error => {
+                        console.log("ANIMAL STORE ERROR:")
+                        console.log(error);
+                    });
+            
+
+            // this.submitKillreport();
+            
+            
+        },
+        // submitKillreport() {
+        //     console.log("this.killreportfields");
+        //     console.log(this.killreportfields);
+        //     axios.post(this.killreportUrl, this.killreportfields)
+        //             .then(response => {
+                        
+        //                 this.killreportfields = {};
+        //                 console.log("KILLREPORT RESPONSE:");
+        //                 console.log(response);
+        //             })
+        //             .catch(error => {
+        //                 console.log("KILLREPORT STORE ERROR:");
+        //                 console.log("animal_id: " + this.killreportfields.animal_id);
+        //                 console.log(error);
+        //             });
+        // }
 
     }
   }

@@ -24,6 +24,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "md5": "^2.2.1",
         "mdbootstrap": "^4.8.10",
         "mdbvue": "^5.8.3"
     }

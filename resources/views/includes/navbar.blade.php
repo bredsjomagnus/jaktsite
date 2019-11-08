@@ -21,7 +21,10 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Rapportera</a>
+        <a class="nav-link" href="{{ url('killreports/create') }}">Rapportera</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url('killreports') }}">Rapportarkivet</a>
       </li>
 
     </ul>

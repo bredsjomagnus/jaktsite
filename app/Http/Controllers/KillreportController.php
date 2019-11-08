@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\User;
 use App\Area;
+use App\Animal;
 
 class KillreportController extends Controller
 {
@@ -17,7 +18,15 @@ class KillreportController extends Controller
      */
     public function index()
     {
-        //
+        $killreports = Killreport::orderBy('killdate', 'desc')->get();
+        // $animals = Animal::all();
+
+        // $data = [
+        //     'killreports'   => $killreports,
+        //     'animals'       => $animals
+        // ];
+
+        return view('killreports.index', compact('killreports'));
     }
 
     /**
@@ -43,9 +52,9 @@ class KillreportController extends Controller
     public function store(Request $request)
     {
         $killreport = new Killreport();
-        $killreport->create(request()->all());
+        $killreport = $killreport->create(request()->all());
         
-        return redirect(auth()->user()->path());
+        return redirect('killreports');
     }
 
     /**

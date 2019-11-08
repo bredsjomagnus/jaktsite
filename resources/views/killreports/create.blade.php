@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-  <killreport-create :account-page='{!! json_encode(url(Auth::user()->path())) !!}' :auth-user="{{ Auth::user() }}" :hunters="{{ $hunters }}" :areas="{{ $areas }}" ></killreport-create>
+  <killreport-create :account-page='{!! json_encode(url(Auth::user()->path())) !!}' :auth-user="{{ Auth::user() }}" :hunters="{{ $hunters }}" :areas="{{ $areas }}" :animal-url='{!! json_encode(url("animals/store")) !!}' :killreport-url='{!! json_encode(url("killreports/store")) !!}' ></killreport-create>
 </div>
 
 @endsection
