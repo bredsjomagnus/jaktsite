@@ -18,7 +18,7 @@ class KillreportController extends Controller
      */
     public function index()
     {
-        $killreports = Killreport::orderBy('killdate', 'desc')->get();
+        $killreports = Killreport::where('deleted_at', null)->orderBy('killdate', 'desc')->get();
         // $animals = Animal::all();
 
         // $data = [
@@ -53,8 +53,10 @@ class KillreportController extends Controller
     {
         $killreport = new Killreport();
         $killreport = $killreport->create(request()->all());
+
+        // $killreports = Killreport::where('deleted_at', null)->orderBy('killdate', 'desc')->get();
         
-        return redirect('killreports');
+        // return view('killreports.index', compact('killreports'));
     }
 
     /**
@@ -74,9 +76,9 @@ class KillreportController extends Controller
      * @param  \App\KillReport  $killReport
      * @return \Illuminate\Http\Response
      */
-    public function edit(KillReport $killReport)
+    public function edit(Killreport $killreport)
     {
-        //
+        return view('killreports.edit', compact('killreport'));
     }
 
     /**

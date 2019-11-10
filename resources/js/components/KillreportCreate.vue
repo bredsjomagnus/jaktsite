@@ -339,7 +339,8 @@
             'accountPage',
             'areas',
             'animalUrl',
-            'killreportUrl'
+            'killreportUrl',
+            'killreportIndexUrl'
         ],
     data() {
         return {
@@ -392,9 +393,7 @@
         console.log(this.areas);
         console.log(this.animalUrl);
         console.log(this.killreportUrl);
-        var md5 = require('md5');
- 
-        console.log(md5('message'));
+        console.log("this.killreportIndexUrl: " + this.killreportIndexUrl);
     },
     methods: {
         gravatarSrc(email) {
@@ -732,7 +731,7 @@
                                 console.log(error);
                             });
                         
-                        windows.location = "http://localhost:8080/www/jaktsite/public/killreports";
+                        window.location = this.killreportIndexUrl;
                         
                     })
                     .catch(error => {
