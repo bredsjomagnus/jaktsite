@@ -36,6 +36,10 @@
       mdbCard,
       mdbCardBody
     },
+    props: [
+      'storeUrl',
+      'createUrl'
+    ],
     data() {
         return {
           csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -48,23 +52,24 @@
             role: "user",
             active: "yes",
             occupation: "hunter"
-          },
-          url: {
-            store: window.location.origin + "/www/jaktsite/public/user/store"
           }
         }
     },
     mounted(){
-      console.log(this.url.store);
+      console.log(this.storeUrl);
+      console.log(this.createUrl);
     },
     methods: {
       submitForm(event) {
-        console.log(this.fields);
+        console.log("storeUrl:");
+        console.log(this.storeUrl);
           axios
-            .post("http://localhost:8080/www/jaktsite/public/user/store", this.fields)
+            .post('http://localhost/pwww/jaktsite/public/user/store', this.fields)
             .then(response => {
               this.fields = {};
-              window.location = response.request.responseURL;
+              // window.location = response.request.responseURL;
+              console.log("KOMMER HIT")
+              // window.location = 'http://localhost/pwww/jaktsite/public/user/create';
             })
             .catch(error => {
               console.log(error);

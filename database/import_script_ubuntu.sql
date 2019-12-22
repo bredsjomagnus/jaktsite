@@ -1,0 +1,152 @@
+show databases;
+use jaktsite;
+
+INSERT INTO `jaktsite`.`users`(
+    `active`,
+    `role`,
+    `occupation`,
+    `username`,
+    `password`,
+    `firstname`,
+    `lastname`,
+    `address`,
+    `email`,
+    `postnumber`,
+    `phonenumber`,
+    `mobilenumber`,
+    `city`,
+    `last_logged_in`,
+    `notes`,
+    `created_at`,
+    `member_since`,
+    `updated_at`
+)
+SELECT
+    `active`,
+    `role`,
+    `occupation`,
+    `username`,
+    `pass`,
+    `firstname`,
+    `surname`,
+    `address`,
+    `email`,
+    `postnumber`,
+    `phone`,
+    `mobile`,
+    `city`,
+    `inlogged`,
+    `notes`,
+    `created`,
+    `membersince`,
+    `updated`
+FROM
+    `smaris`.`SRAccounts`;
+
+INSERT INTO `jaktsite`.`killreports`(
+    `id`,
+    `reporter_id`,
+    `shooter_id`,
+    `kindofhunt`,
+    `animal_id`,
+    `image`,
+    `killdate`,
+    `season`,
+    `area_id`,
+    `place`,
+    `longitud`,
+    `latitud`,
+    `report_status`,
+    `locked`,
+    `created_at`,
+    `updated_at`,
+    `deleted_at`
+)
+SELECT
+    `id`,
+    `actor`,
+    `for_account`,
+    `kindofhunt`,
+    `animal`,
+    `image`,
+    `killdate`,
+    `season`,
+    `area`,
+    `place`,
+    `longitud`,
+    `latitud`,
+    `report_status`,
+    `locked`,
+    `created`,
+    `updated`,
+    `deleted`
+FROM
+    `smaris`.`SRKillreport`;
+
+INSERT INTO `jaktsite`.`animals`(
+    `id`,
+    `shooter_id`,
+    `species`,
+    `speciestype`,
+    `engspecies`,
+    `sex`,
+    `age`,
+    `live_weight`,
+    `aprox_live_weight`,
+    `passad_weight`,
+    `aprox_passad_weight`,
+    `carcass_weight`,
+    `aprox_carcass_weight`,
+    `cut_weight`,
+    `heart_weight`,
+    `waste`,
+    `waste_notes`,
+    `antlers`,
+    `points`,
+    `created_at`,
+    `updated_at`,
+    `deleted_at`
+)
+SELECT
+    `id`,
+    `actor`,
+    `species`,
+    `speciestype`,
+    `engspecies`,
+    `sex`,
+    `age`,
+    `live_weight`,
+    `aprox_live_weight`,
+    `passad_weight`,
+    `aprox_passad_weight`,
+    `carcass_weight`,
+    `aprox_carcass_weight`,
+    `cut_weight`,
+    `heart_weight`,
+    `waste`,
+    `wastenotes`,
+    `antlers`,
+    `points`,
+    `created`,
+    `updated`,
+    `deleted`
+FROM
+    `smaris`.`SRAnimal`;
+
+INSERT INTO `jaktsite`.`areas`(
+    `id`,
+    `area_name`,
+    `notes`,
+    `created_at`,
+    `updated_at`,
+    `deleted_at`
+)
+SELECT
+    `id`,
+    `areaname`,
+    `notes`,
+    `created`,
+    `updated`,
+    `deleted`
+FROM
+    `smaris`.`SRArea`;

@@ -44,6 +44,10 @@
     },
     methods: {
       submitForm(event) {
+        console.log("POST URL")
+        console.log(this.postUrl)
+
+
         console.log(window.location.pathname);
         // console.log(event)
         // "http://localhost:8080/www/jaktsite/public/login"

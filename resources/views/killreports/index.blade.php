@@ -30,7 +30,12 @@
                     
                     <h6 class="card-title">{{substr($killreport->killdate, 0, 10)}}</h6>
                     <!--Text-->
-                    <p class="card-text">{{$killreport->shooter['firstname']}}; {{$killreport->animal()['species']}}, {{$killreport->area()['area_name']}}</p>
+                    <p class="card-text">
+                        <strong>{{$killreport->animal()['species']}}</strong> - {{$killreport->animal()['speciestype']}}<?= $killreport->animal()['antlers'] ? "; " . $killreport->animal()['antlers'] : "" ?>
+                    </p>
+                    
+                    
+                    <p class="card-text">{{$killreport->shooter['firstname']}} <i>{{$killreport->area()['area_name']}}</i></p>
                     <!-- <p class="card-text">Skytt: </p> -->
                     <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
                     <!-- <button type="button" class="btn btn-light-blue btn-md">Read more</button> -->

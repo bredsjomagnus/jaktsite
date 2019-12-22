@@ -62,7 +62,7 @@
                     :key="hunter.id"
                     >   
                         <div class="d-flex justify-content-center" >
-                            <img class="img-fluid z-depth-1 rounded-circle" style="width: 50px; height: 50px; margin-top:5px" :alt="authUser.username" :src="gravatarSrc(hunter.email)">
+                            <!-- <img class="img-fluid z-depth-1 rounded-circle" style="width: 50px; height: 50px; margin-top:5px" :alt="authUser.username" :src="gravatarSrc(hunter.email)"> -->
                             <mdb-btn class="mb-0" style="width: 300px" :color="killreportfields.shooter_id == hunter.id ? 'indigo' : 'grey'" @click="setShooter(hunter)" >{{hunter.firstname}} {{hunter.lastname}}</mdb-btn>
                         </div>    
                     </div>
@@ -406,7 +406,11 @@
             // robohash: a generated robot with different colors, faces, etc
             // blank: a transparent PNG image (border added to HTML below for demonstration purposes)
             let md5 = require('md5');
-            return "https://www.gravatar.com/avatar/" + md5(email)+"?d=monsterid&s=60";
+            let g_email;
+            g_email = "https://www.gravatar.com/avatar/" + md5(email)+"?d=monsterid&s=60";
+            console.log(g_email);
+            return g_email;
+            // return "https://www.gravatar.com/avatar/" + md5(email)+"?d=monsterid&s=60";
         },
         krondov(s) {
             let isKronvilt, isDovvilt;

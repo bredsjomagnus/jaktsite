@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\KillReport;
+use App\Killreport;
 use Illuminate\Http\Request;
 
 use App\User;
@@ -19,12 +19,6 @@ class KillreportController extends Controller
     public function index()
     {
         $killreports = Killreport::where('deleted_at', null)->orderBy('killdate', 'desc')->get();
-        // $animals = Animal::all();
-
-        // $data = [
-        //     'killreports'   => $killreports,
-        //     'animals'       => $animals
-        // ];
 
         return view('killreports.index', compact('killreports'));
     }

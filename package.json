@@ -25,7 +25,7 @@
     },
     "dependencies": {
         "md5": "^2.2.1",
-        "mdbootstrap": "^4.8.10",
+        "mdbootstrap": "^4.10.1",
         "mdbvue": "^5.8.3"
     }
 }
