@@ -64,7 +64,7 @@
         console.log("storeUrl:");
         console.log(this.storeUrl);
           axios
-            .post('http://localhost/pwww/jaktsite/public/user/store', this.fields)
+            .post(this.storeUrl, this.fields)
             .then(response => {
               this.fields = {};
               // window.location = response.request.responseURL;

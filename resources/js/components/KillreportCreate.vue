@@ -277,6 +277,33 @@
             <mdb-btn color="blue-grey" @click.native="stepBackFromAntlers()" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
             <mdb-btn color="blue-grey" @click.native="setAntlers()" size="sm"><mdb-icon icon="chevron-right"/></mdb-btn>
           </mdb-card-body>
+            <!-- WEIGHT -->
+           <mdb-card-body 
+            v-else-if="step === 'weight'"
+            >
+                <div class="d-flex flex-column">
+                    <div class="p-3 mb-2" style="border-left: 8px solid #9aa5bd; border-bottom: 1px solid #d0d0d0;">
+                        <mdb-input type="number" step=0.1 label="Levandevikt" v-model="animalfields.live_weight"/>
+                        <mdb-input type="number" step=0.1 label="Uppskattad levandevikt" v-model="animalfields.aprox_live_weight"/>
+                    </div>
+                    <div class="p-3 mb-2" style="border-left: 8px solid #9aa5bd; border-bottom: 1px solid #d0d0d0;">
+                        <mdb-input type="number" step=0.1 label="Passad vikt" v-model="animalfields.passad_weight"/>
+                        <mdb-input type="number" step=0.1 label="Uppskattad passad vikt" v-model="animalfields.aprox_passad_weight"/>
+                    </div>
+                    <div class="p-3 mb-2" style="border-left: 8px solid #9aa5bd; border-bottom: 1px solid #d0d0d0;">
+                        <mdb-input type="number" step=0.1 label="Slaktvikt" v-model="animalfields.carcass_weight"/>
+                        <mdb-input type="number" step=0.1 label="Uppskattad slaktvikt" v-model="animalfields.aprox_carcass_weight"/>
+                    </div>
+                    <div class="p-3 mb-2" style="border-left: 8px solid #9aa5bd; border-bottom: 1px solid #d0d0d0;">
+                        <mdb-input type="number" step=0.1 label="Styckdetaljer" v-model="animalfields.cut_weight"/>
+                    </div>
+                    <div class="p-3 mb-2" style="border-left: 8px solid #9aa5bd; border-bottom: 1px solid #d0d0d0;">
+                        <mdb-input type="number" step=0.1 label="Hjärtvikt" v-model="animalfields.heart_weight"/>
+                    </div>
+                </div>
+            <mdb-btn color="blue-grey" @click.native="stepBackFromWeight()" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
+            <mdb-btn color="blue-grey" @click.native="setWeight()" size="sm"><mdb-icon icon="chevron-right"/></mdb-btn>
+          </mdb-card-body>
 
 
         </mdb-card>
@@ -295,6 +322,58 @@
                     <mdb-input label="Djurklassificering" v-model="animalfields.speciestype" disabled />
                     <mdb-input v-if="animalfields.points != null" label="Taggar" v-model="animalfields.points" disabled />
                     <mdb-input v-if="animalfields.antlers != null" label="Horn" v-model="animalfields.antlers" disabled />
+                    <!-- <mdb-row v-if="(animalfields.live_weight != null) || animalfields.aprox_live_weight != null"> -->
+
+                    <mdb-row v-if="weights()">
+                        <div class="w-100">
+                            <h6 class="d-flex justify-content-center">VIKTER</h6>
+                        </div>
+                    </mdb-row>
+                    
+                    <mdb-row v-if="(animalfields.live_weight != null) || animalfields.aprox_live_weight != null">
+                        <div class="w-100 ml-4 mr-4 mb-2 weightreport">
+                            <mdb-col>
+                                <mdb-input label="Levandevikt" v-model="animalfields.live_weight" disabled/>
+                            </mdb-col>
+                            <mdb-col>
+                                <mdb-input label="Uppskattad levandevikt" v-model="animalfields.aprox_live_weight" disabled/>
+                            </mdb-col>
+                        </div>   
+                    </mdb-row>
+
+                    <mdb-row v-if="(animalfields.passad_weight != null) || animalfields.aprox_passad_weight != null">
+                        <div class="w-100 ml-4 mr-4 mb-2 weightreport">
+                            <mdb-col>
+                                <mdb-input label="Passad vikt" v-model="animalfields.passad_weight" disabled/>
+                            </mdb-col>
+                            <mdb-col>
+                                <mdb-input label="Uppskattad passad vikt" v-model="animalfields.aprox_passad_weight" disabled/>
+                            </mdb-col>
+                        </div>   
+                    </mdb-row>
+
+                    <mdb-row v-if="(animalfields.carcass_weight != null) || animalfields.aprox_carcass_weight != null">
+                        <div class="w-100 ml-4 mr-4 mb-2 weightreport">
+                            <mdb-col>
+                                <mdb-input label="Slaktvikt" v-model="animalfields.carcass_weight" disabled/>
+                            </mdb-col>
+                            <mdb-col>
+                                <mdb-input label="Uppskattad slaktvikt" v-model="animalfields.aprox_carcass_weight" disabled/>
+                            </mdb-col>
+                        </div>   
+                    </mdb-row>
+
+                    <mdb-row v-if="(animalfields.cut_weight != null) || animalfields.heart_weight != null">
+                        <div class="w-100 ml-4 mr-4 mb-2 weightreport">
+                            <mdb-col>
+                                <mdb-input label="Styckdetaljer" v-model="animalfields.cut_weight" disabled/>
+                            </mdb-col>
+                            <mdb-col>
+                                <mdb-input label="Hjärtvikt" v-model="animalfields.heart_weight" disabled/>
+                            </mdb-col>
+                        </div>   
+                    </mdb-row>
+
                     <input type="hidden" name="_token" :value="csrf">
                     <div class="text-center">
                         <mdb-btn :disabled="!checkFinished()" color="mdb-color" type="submit"><mdb-icon icon="file-signature" class="ml-1"/> - Skapa</mdb-btn>
@@ -354,6 +433,14 @@
                 sex: null,
                 antlers: null,
                 points: null,
+                live_weight: null,
+                aprox_live_weight: null,
+                passad_weight: null,
+                aprox_passad_weight: null,
+                carcass_weight: null,
+                aprox_carcass_weight: null,
+                cut_weight: null,
+                heart_weight: null,
             },
             killreportfields: {
                 
@@ -591,7 +678,9 @@
                 this.step = 'antlers';
                 this.steptitle = "HORN";
             } else {
-                this.toggleActiveStateR();
+                this.step = 'weight';
+                this.steptitle = 'VIKTER';
+                // this.toggleActiveStateR();
             }
         },
         stepBackFromSpeciesType() {
@@ -645,6 +734,58 @@
             this.step = "speciestype";
             this.steptitle = "DJURKVALIFICERING";
 
+        },
+        checkNull(list) {
+            list.forEach(element => {
+                if(element != null) {
+                    if(element == "") {
+                        element = null;
+                    }
+                }
+            })
+        },
+        setWeight() {
+            this.animalfields.live_weight = ((this.animalfields.live_weight == 0 || this.animalfields.live_weight == "") ? null : this.animalfields.live_weight);
+            this.animalfields.aprox_live_weight = ((this.animalfields.aprox_live_weight == 0 || this.animalfields.aprox_live_weight == "") ? null : this.animalfields.aprox_live_weight);
+            this.animalfields.passad_weight = ((this.animalfields.passad_weight == 0 || this.animalfields.passad_weight == "") ? null : this.animalfields.passad_weight);
+            this.animalfields.aprox_passad_weight = ((this.animalfields.aprox_passad_weight == 0 || this.animalfields.aprox_passad_weight == "") ? null : this.animalfields.aprox_passad_weight);
+            this.animalfields.carcass_weight = ((this.animalfields.carcass_weight == 0 || this.animalfields.carcass_weight == "") ? null : this.animalfields.carcass_weight);
+            this.animalfields.aprox_carcass_weight = ((this.animalfields.aprox_carcass_weight == 0 || this.animalfields.aprox_carcass_weight == "") ? null : this.animalfields.aprox_carcass_weight);
+            this.animalfields.cut_weight = ((this.animalfields.cut_weight == 0 || this.animalfields.cut_weight == "") ? null : this.animalfields.cut_weight);
+            this.animalfields.heart_weight = ((this.animalfields.heart_weight == 0 || this.animalfields.heart_weight == "") ? null : this.animalfields.heart_weight);
+            
+            
+            this.toggleActiveStateR();
+        },
+        stepBackFromWeight() {
+            this.animalfields.live_weight = null;
+            this.animalfields.aprox_live_weight = null;
+            this.animalfields.passad_weight = null;
+            this.animalfields.aprox_passad_weight = null;
+            this.animalfields.carcass_weight = null;
+            this.animalfields.aprox_carcass_weight = null;
+            this.animalfields.cut_weight = null;
+            this.animalfields.heart_weight = null;
+            
+            this.step = 'speciestype';
+            this.steptitle = "DJURKVALIFICERING";
+        },
+        weights() {
+            let isLiveWeight = this.animalfields.live_weight != null;
+            let isAproxLiveWeight = this.animalfields.aprox_live_weight != null;
+
+            let isPassadWeight = this.animalfields.passad_weight != null;
+            let isAproxPassadWeight = this.animalfields.aprox_passad_weight != null;
+
+            let isCarcassWeight = this.animalfields.carcass_weight != null;
+            let isAproxCarcassWeight = this.animalfields.aprox_carcass_weight != null;
+
+            let isCutWeight = this.animalfields.cut_weight != null;
+            let isHeartWeight = this.animalfields.heart_weight != null;
+
+            let weights = (isLiveWeight || isAproxLiveWeight || isPassadWeight || isAproxPassadWeight || isCarcassWeight || isAproxCarcassWeight || isCutWeight || isHeartWeight);
+
+            return weights;
         },
         setCard(card) {
             this.card = card;
@@ -768,3 +909,10 @@
     }
   }
 </script>
+<style>
+.weightreport {
+    border-left: 8px solid #9aa5bd; 
+    border-top: 1px solid lightgray;
+}
+    
+</style>
