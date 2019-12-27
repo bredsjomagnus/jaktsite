@@ -31,8 +31,9 @@ class KillreportController extends Controller
     public function create()
     {
         $data = [
-            'hunters'   => User::where('occupation', 'hunter')->get(),
-            'areas'     => Area::all()
+            'hunters'       => User::where('occupation', 'hunter')->get(),
+            'anonhunter'    => User::where('occupation', 'anonhunter')->limit(1)->get(),
+            'areas'         => Area::all()
         ];
         return view('killreports.create', $data);
     }

@@ -57,15 +57,24 @@
             v-if="step === 'shooter'"
             >
                 <div class="d-flex flex-column">
+                    <div class="d-flex justify-content-center">
+                        <mdb-btn
+                        color="blue-grey" 
+                        @click.native="setAnonShooter()"
+                        size="sm">
+                        Vänta med att sätta skytt <mdb-icon icon="chevron-right"/>
+                        </mdb-btn>
+                    </div>
                     <div
                     v-for="hunter in hunters"
                     :key="hunter.id"
                     >   
-                        <div class="d-flex justify-content-center" >
+                        <div class="d-flex justify-content-center">
                             <!-- <img class="img-fluid z-depth-1 rounded-circle" style="width: 50px; height: 50px; margin-top:5px" :alt="authUser.username" :src="gravatarSrc(hunter.email)"> -->
                             <mdb-btn class="mb-0" style="width: 300px" :color="killreportfields.shooter_id == hunter.id ? 'indigo' : 'grey'" @click="setShooter(hunter)" >{{hunter.firstname}} {{hunter.lastname}}</mdb-btn>
                         </div>    
                     </div>
+                    
                 </div>
             </mdb-card-body>
 
@@ -415,6 +424,7 @@
     props: [
             'authUser',
             'hunters',
+            'anonhunter',
             'accountPage',
             'areas',
             'animalUrl',
@@ -476,6 +486,8 @@
     },
     mounted() {
         console.log(this.hunters);
+        console.log("Anonhunter.id:")
+        console.log(this.anonhunter[0].id);
         console.log(this.accountPage);
         console.log(this.areas);
         console.log(this.animalUrl);
@@ -514,6 +526,13 @@
             this.killreportfields.shooter_id = hunter.id;
             this.animalfields.shooter_id = hunter.id;
             this.shooter_name = hunter.firstname + " " + hunter.lastname;
+            this.step = 'kindofhunt';
+            this.steptitle = 'SORTS JAKT';
+        },
+        setAnonShooter() {
+            this.killreportfields.shooter_id = this.anonhunter[0].id;
+            this.animalfields.shooter_id = this.anonhunter[0].id;
+            this.shooter_name = "Skytt ej satt";
             this.step = 'kindofhunt';
             this.steptitle = 'SORTS JAKT';
         },
