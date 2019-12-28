@@ -31,4 +31,9 @@ class Killreport extends Model
     {
         return Area::find($this->area_id);
     }
+
+    public function path()
+    {
+        return "killreports/".$this->id;
+    }
 }

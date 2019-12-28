@@ -101,4 +101,17 @@ class KillreportTest extends TestCase
 
         $this->assertInstanceOf(Area::class, $killreport->area());
     }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function a_killreport_has_a_path()
+    {
+        $this->withoutExceptionHandling();
+        $killreport = factory(Killreport::class)->create();
+
+        $this->assertEquals($killreport->path(), "killreports/1");
+    }
 }

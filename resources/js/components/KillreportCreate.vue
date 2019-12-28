@@ -262,13 +262,6 @@
                 <mdb-input type="number" label="Antal taggar" v-model="animalfields.points" />
                 <mdb-btn color="blue-grey" @click.native="stepBackFromPoints()" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
                 <mdb-btn color="blue-grey" @click.native="setPoints()" size="sm"><mdb-icon icon="chevron-right"/></mdb-btn>
-                <!-- <mdb-btn
-                v-if="isValidPoints()"
-                color="blue-grey" 
-                @click.native="setPoints()"
-                size="sm">
-                    <mdb-icon icon="chevron-right"/>
-                </mdb-btn>    -->
           </mdb-card-body>
 
             <!-- ANTLERS -->
@@ -276,38 +269,40 @@
             v-else-if="step === 'antlers'"
             >
                 <div class="d-flex flex-column">
-                    <div class="p-0"><mdb-btn color="grey" @click="setAntlers('Spets')" class='w-100 m-0 mb-1'>Spets</mdb-btn></div>
-                    <div class="p-0"><mdb-btn color="grey" @click="setAntlers('Stång')" class='w-100 m-0 mb-1'>Stång</mdb-btn></div>
-                    <div class="p-0"><mdb-btn color="grey" @click="setAntlers('Stång/Halvskovel')" class='w-100 m-0 mb-1'>Stång/Halvskovel</mdb-btn></div>
-                    <div class="p-0"><mdb-btn color="grey" @click="setAntlers('Halvskovel')" class='w-100 m-0 mb-1'>Halvskovel</mdb-btn></div>
-                    <div class="p-0"><mdb-btn color="grey" @click="setAntlers('Halvskovel/Helskovel')" class='w-100 m-0 mb-1'>Halvskovel/Helskovel</mdb-btn></div>
-                    <div class="p-0"><mdb-btn color="grey" @click="setAntlers('Helskovel')" class='w-100 m-0 mb-1'>Helskovel</mdb-btn></div>
+                    <div class="p-0"><mdb-btn :color="animalfields.antlers == 'Spets' ? 'indigo' : 'grey'" @click="setAntlers('Spets')" class='w-100 m-0 mb-1'>Spets</mdb-btn></div>
+                    <div class="p-0"><mdb-btn :color="animalfields.antlers == 'Stång' ? 'indigo' : 'grey'" @click="setAntlers('Stång')" class='w-100 m-0 mb-1'>Stång</mdb-btn></div>
+                    <div class="p-0"><mdb-btn :color="animalfields.antlers == 'Stång/Halvskovel' ? 'indigo' : 'grey'" @click="setAntlers('Stång/Halvskovel')" class='w-100 m-0 mb-1'>Stång/Halvskovel</mdb-btn></div>
+                    <div class="p-0"><mdb-btn :color="animalfields.antlers == 'Halvskovel' ? 'indigo' : 'grey'" @click="setAntlers('Halvskovel')" class='w-100 m-0 mb-1'>Halvskovel</mdb-btn></div>
+                    <div class="p-0"><mdb-btn :color="animalfields.antlers == 'Halvskovel/Helskovel' ? 'indigo' : 'grey'" @click="setAntlers('Halvskovel/Helskovel')" class='w-100 m-0 mb-1'>Halvskovel/Helskovel</mdb-btn></div>
+                    <div class="p-0"><mdb-btn :color="animalfields.antlers == 'Helskovel' ? 'indigo' : 'grey'" @click="setAntlers('Helskovel')" class='w-100 m-0 mb-1'>Helskovel</mdb-btn></div>
                 </div>
+
             <mdb-btn color="blue-grey" @click.native="stepBackFromAntlers()" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
             <mdb-btn color="blue-grey" @click.native="setAntlers()" size="sm"><mdb-icon icon="chevron-right"/></mdb-btn>
           </mdb-card-body>
+
             <!-- WEIGHT -->
            <mdb-card-body 
             v-else-if="step === 'weight'"
             >
                 <div class="d-flex flex-column">
                     <div class="p-3 mb-2" style="border-left: 8px solid #9aa5bd; border-bottom: 1px solid #d0d0d0;">
-                        <mdb-input type="number" step=0.1 label="Levandevikt" v-model="animalfields.live_weight"/>
-                        <mdb-input type="number" step=0.1 label="Uppskattad levandevikt" v-model="animalfields.aprox_live_weight"/>
+                        <mdb-input type="number" step="0.1" label="Levandevikt" v-model="animalfields.live_weight"/>
+                        <mdb-input type="number" step="0.1" label="Uppskattad levandevikt" v-model="animalfields.aprox_live_weight"/>
                     </div>
                     <div class="p-3 mb-2" style="border-left: 8px solid #9aa5bd; border-bottom: 1px solid #d0d0d0;">
-                        <mdb-input type="number" step=0.1 label="Passad vikt" v-model="animalfields.passad_weight"/>
-                        <mdb-input type="number" step=0.1 label="Uppskattad passad vikt" v-model="animalfields.aprox_passad_weight"/>
+                        <mdb-input type="number" step="0.1" label="Passad vikt" v-model="animalfields.passad_weight"/>
+                        <mdb-input type="number" step="0.1" label="Uppskattad passad vikt" v-model="animalfields.aprox_passad_weight"/>
                     </div>
                     <div class="p-3 mb-2" style="border-left: 8px solid #9aa5bd; border-bottom: 1px solid #d0d0d0;">
-                        <mdb-input type="number" step=0.1 label="Slaktvikt" v-model="animalfields.carcass_weight"/>
-                        <mdb-input type="number" step=0.1 label="Uppskattad slaktvikt" v-model="animalfields.aprox_carcass_weight"/>
+                        <mdb-input type="number" step="0.1" label="Slaktvikt" v-model="animalfields.carcass_weight"/>
+                        <mdb-input type="number" step="0.1" label="Uppskattad slaktvikt" v-model="animalfields.aprox_carcass_weight"/>
                     </div>
                     <div class="p-3 mb-2" style="border-left: 8px solid #9aa5bd; border-bottom: 1px solid #d0d0d0;">
-                        <mdb-input type="number" step=0.1 label="Styckdetaljer" v-model="animalfields.cut_weight"/>
+                        <mdb-input type="number" step="0.1" label="Styckdetaljer" v-model="animalfields.cut_weight"/>
                     </div>
                     <div class="p-3 mb-2" style="border-left: 8px solid #9aa5bd; border-bottom: 1px solid #d0d0d0;">
-                        <mdb-input type="number" step=0.1 label="Hjärtvikt" v-model="animalfields.heart_weight"/>
+                        <mdb-input type="number" step="0.001" label="Hjärtvikt" v-model="animalfields.heart_weight"/>
                     </div>
                 </div>
             <mdb-btn color="blue-grey" @click.native="stepBackFromWeight()" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
@@ -574,8 +569,7 @@
             this.steptitle = "OMRÅDE";
         },
         checkKilldate() {
-            // console.log("killdateset: " + killdateset);
-            // this.killdateset = false;
+            
             let thenow = Date.now();
             this.thekilldate = new Date(this.killreportfields.killdate);
             if(this.thekilldate >= thenow) {
@@ -708,7 +702,9 @@
             this.animalfields.speciestype = null;
         },
         setPoints() {
-            this.toggleActiveStateR();
+            this.step = 'weight';
+            this.steptitle = 'VIKTER';
+            // this.toggleActiveStateR();
         },
         isValidPoints() {
             let isValid = false;
@@ -730,10 +726,11 @@
             return (isTjur || isKronviltHjort);
         },
         stepBackFromPoints() {
+            this.animalfields.points = null;
             this.step = 'speciestype';
             this.steptitle = "DJURKVALIFICERING";
-            this.animalfields.points = null;
             this.notfinished = true;
+            console.log("points: ", this.animalfields.points);
         },
         antlers() {
             let isDovvilt = this.animalfields.species == "Dovvilt";
@@ -745,24 +742,26 @@
         },
         setAntlers(value){
             this.animalfields.antlers = value;
-            this.toggleActiveStateR();
+            this.step = 'weight';
+            this.steptitle = 'VIKTER';
+            // this.toggleActiveStateR();
 
         },
         stepBackFromAntlers() {
             this.animalfields.antlers = null;
             this.step = "speciestype";
             this.steptitle = "DJURKVALIFICERING";
-
+            console.log("antlers: ", this.animalfields.antlers);
         },
-        checkNull(list) {
-            list.forEach(element => {
-                if(element != null) {
-                    if(element == "") {
-                        element = null;
-                    }
-                }
-            })
-        },
+        // checkNull(list) {
+        //     list.forEach(element => {
+        //         if(element != null) {
+        //             if(element == "") {
+        //                 element = null;
+        //             }
+        //         }
+        //     })
+        // },
         setWeight() {
             this.animalfields.live_weight = ((this.animalfields.live_weight == 0 || this.animalfields.live_weight == "") ? null : this.animalfields.live_weight);
             this.animalfields.aprox_live_weight = ((this.animalfields.aprox_live_weight == 0 || this.animalfields.aprox_live_weight == "") ? null : this.animalfields.aprox_live_weight);
@@ -785,9 +784,17 @@
             this.animalfields.aprox_carcass_weight = null;
             this.animalfields.cut_weight = null;
             this.animalfields.heart_weight = null;
+            if(this.points()){
+                this.step = 'points';
+                this.steptitle = "TAGGAR";
+            }else if(this.antlers()){
+                this.step = 'antlers';
+                this.steptitle = "HORN";
+            }else{
+                this.step = 'speciestype';
+                this.steptitle = "DJURKVALIFICERING";
+            }
             
-            this.step = 'speciestype';
-            this.steptitle = "DJURKVALIFICERING";
         },
         weights() {
             let isLiveWeight = this.animalfields.live_weight != null;
@@ -928,7 +935,7 @@
     }
   }
 </script>
-<style>
+<style scope>
 .weightreport {
     border-left: 8px solid #9aa5bd; 
     border-top: 1px solid lightgray;

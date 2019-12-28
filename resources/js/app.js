@@ -29,6 +29,7 @@ Vue.component('material-register-form', require('./components/MaterialRegisterFo
 Vue.component('material-navbar', require('./components/MaterialNavbar.vue').default);
 Vue.component('killreport-create', require('./components/KillreportCreate.vue').default);
 Vue.component('killreport-index', require('./components/KillreportIndex.vue').default);
+Vue.component('killreport-show', require('./components/KillreportShow.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

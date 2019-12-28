@@ -15,7 +15,7 @@
 					<mdb-card-body>
 						<mdb-card-title></mdb-card-title>
 						<mdb-card-text></mdb-card-text>
-						<mdb-btn color="primary">Read more</mdb-btn>
+						<mdb-btn @click="report(killreport.id)" color="primary">Read more</mdb-btn>
 					</mdb-card-body>
                 </mdb-card>
 			</mdb-card-group>
@@ -58,6 +58,11 @@
             console.log(this.killreports);
             console.log(this.animals);
 
-        }
+        },
+		methods: {
+			report(id) {
+				console.log(id);
+			}
+		}
 	}
 </script>

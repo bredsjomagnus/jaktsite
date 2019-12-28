@@ -60,9 +60,15 @@ class KillreportController extends Controller
      * @param  \App\KillReport  $killReport
      * @return \Illuminate\Http\Response
      */
-    public function show(KillReport $killReport)
+    public function show(Killreport $killreport)
     {
-        //
+        // dd($killreport->shooter['username']);
+        $data = [
+            'killreport'    => $killreport,
+            'hunters'       => User::where('occupation', 'hunter')->get(),
+            'areas'         => Area::all()
+        ];
+        return view('killreports.show', $data);
     }
 
     /**

@@ -127,5 +127,67 @@ class KillreportTest extends TestCase
 
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function a_guest_cannot_visit_killreport_indexpage()
+    {
+        $this->withoutExceptionHandling();
+  
+        $this->get('/killreports')->assertRedirect('/home');
+
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function a_user_can_show_a_killreport()
+    {
+        $this->withoutExceptionHandling();
+        
+        $this->signIn();
+
+        $killreport = factory(Killreport::class)->create();
+
+        $this->get('/killreports/'.$killreport->id)->assertOk();
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function a_guest_cannot_show_a_killreport()
+    {
+        $this->withoutExceptionHandling();
+        
+        // $this->signIn();
+
+        $killreport = factory(Killreport::class)->create();
+
+        $this->get('/killreports/'.$killreport->id)->assertRedirect('/home');
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function a_user_cannot_edit_reporter_in_killreport_show()
+    {
+        $this->withoutExceptionHandling();
+        
+        $this->signIn();
+
+        $killreport = factory(Killreport::class)->create();
+
+        $response = $this->get($killreport->path());
+        dd($response);
+    }
+
 
 }
