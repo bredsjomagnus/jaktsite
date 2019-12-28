@@ -85,11 +85,12 @@
                 <mdb-modal-title>Ändra sorts jakt</mdb-modal-title>
             </mdb-modal-header>
             <mdb-modal-body>
-                <div class="d-flex justify-content-center">
-                    <mdb-btn class="mb-0" style="width: 300px" :color="kindofhuntSelected == 'Ensamjakt' ? 'indigo' : 'grey'" @click="setKindofhunt('Ensamjakt')">Ensamjakt</mdb-btn>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <mdb-btn class="mb-0" style="width: 300px" :color="kindofhuntSelected == 'Gemensam jakt' ? 'indigo' : 'grey'" @click="setKindofhunt('Gemensam jakt')">Gemensam jakt</mdb-btn>    
+               <div class="d-flex flex-column">
+                    <div class="p-0"><mdb-btn class='w-100 m-0 mb-1' :color="speciesSelected == 'Älg' ? 'indigo' : 'grey'" @click="setSpecies('Älg')">Älg</mdb-btn></div>
+                    <div class="p-0"><mdb-btn class='w-100 m-0 mb-1' :color="speciesSelected == 'Kronvilt' ? 'indigo' : 'grey'" @click="setSpecies('Kronvilt')">Kronvilt</mdb-btn></div>
+                    <div class="p-0"><mdb-btn class='w-100 m-0 mb-1' :color="speciesSelected == 'Dovvilt' ? 'indigo' : 'grey'" @click="setSpecies('Dovvilt')">Dovvilt</mdb-btn></div>
+                    <div class="p-0"><mdb-btn class='w-100 m-0 mb-1' :color="speciesSelected == 'Rådjur' ? 'indigo' : 'grey'" @click="setSpecies('Rådjur')">Rådjur</mdb-btn></div>
+                    <div class="p-0"><mdb-btn class='w-100 m-0 mb-1' :color="speciesSelected == 'Vildsvin' ? 'indigo' : 'grey'" @click="setSpecies('Vildsvin')">Vildsvin</mdb-btn></div>
                 </div>
             </mdb-modal-body>
             <mdb-modal-footer>
@@ -99,7 +100,7 @@
 
 
        <mdb-card>
-           <mdb-card-body>
+           <mdb-card-body class="cardborder">
                <mdb-card-title class="d-flex justify-content-center titlecolor p-1">SKYTT & RAPPORTÖR</mdb-card-title>
                
                 <!-- rapportör -->
@@ -140,7 +141,7 @@
 
         <!-- tid och plats -->
         <mdb-card class="mt-2">
-           <mdb-card-body>
+           <mdb-card-body :class="wrongkilldate ? 'cardbordererror' : 'cardborder'">
                <mdb-card-title class="d-flex justify-content-center titlecolor p-1">TID & PLATS</mdb-card-title>
                <mdb-input style="color: red;" :class="wrongkilldate ? 'error' : ''" type="date" v-model="killreport.killdate" @change="checkKilldate"/>
                <p class="errormsg" v-if="wrongkilldate">Ogiltigt datum</p>
@@ -161,11 +162,11 @@
 
         <!-- djur -->
         <mdb-card class="mt-2">
-           <mdb-card-body>
+           <mdb-card-body class="cardborder">
                <mdb-card-title class="d-flex justify-content-center titlecolor p-1">DJUR</mdb-card-title>
                 <mdb-row>
                     <mdb-col col="9">
-                        <mdb-input type="text" class="w-100" label="Rapportör" v-model="animal.species" />
+                        <mdb-input type="text" class="w-100" label="Djurslag" v-model="speciesSelected" />
                         <p class="inputmsg" v-if="authUser.role == 'admin'">Urspr. djurslag: {{this.originSpecies}}</p>
                     </mdb-col>
                     <mdb-col col="2">
@@ -222,6 +223,7 @@
             reporterSelected: this.reporter,
             areaSelected: this.area,
             kindofhuntSelected: this.killreport.kindofhunt,
+            speciesSelected: this.animal.species,
             shooterModal: false,
             reporterModal: false,
             kindofhuntModal: false,
@@ -294,6 +296,10 @@
             this.areaSelected = area;
             this.areaModal = false;
         },
+        setSpecies(species) {
+            this.speciesSelected = species;
+            this.speciesModal = false;
+        },
         checkKilldate() {
             let thenow = Date.now();
             this.thekilldate = new Date(this.killreport.killdate);
@@ -333,6 +339,12 @@
     margin-top: -20px;
     font-size: 12px;
     font-style: italic;
+}
+.cardborder {
+    border-left: 10px solid #59698d;
+}
+.cardbordererror{
+    border-left: 10px solid red;
 }
     
 </style>
