@@ -12,7 +12,7 @@
             <!-- <mdb-btn-toolbar> -->
             <div class="d-flex flex-row justify-content-around">
                 <mdb-btn-group size="sm">
-                    <mdb-btn color="mdb-color" @click.native="saveChanges" :disabled="untouched" size="sm"><mdb-icon icon="save"/></mdb-btn>
+                    <mdb-btn :color="untouched ? 'mdb-color' : 'purple'" @click.native="saveChanges" :disabled="untouched" size="sm"><mdb-icon icon="save"/></mdb-btn>
                     <mdb-btn color="mdb-color" @click.native="divideMeat" :disabled="missingweights" size="sm"><mdb-icon icon="balance-scale"/></mdb-btn>
                 </mdb-btn-group>
             </div>
@@ -275,9 +275,9 @@
 
             <!-- tid och plats -->
             <mdb-card class="mt-2">
-                <mdb-card-body :class="wrongkilldate ? 'cardbordererror' : 'cardborder'">
+                <mdb-card-body :class="cardbodycolor()">
                     <mdb-card-title class="d-flex justify-content-center titlecolor p-1">TID & PLATS</mdb-card-title>
-                    <mdb-input style="color: red;" :class="wrongkilldate ? 'error' : ''" type="date" v-model="killdateSelected" @change="checkKilldate"/>
+                    <mdb-input style="color: red;" :class="dateinputcolor()" type="date" v-model="killdateSelected" @change="checkKilldate"/>
                     <p class="errormsg" v-if="wrongkilldate">Ogiltigt datum</p>
                     <p class="inputmsg" v-else>Urspr. datum: {{this.originkilldate}}</p>
                     <mdb-row>
@@ -664,6 +664,28 @@
         backToKillreportIndex() {
             window.location = this.indexUrl;
         },
+        cardbodycolor() {
+            let cardborderclass = 'cardborder';
+            if(this.killdateSelected != this.originkilldate || this.areaSelected.id !== this.originarea.id) {
+                cardborderclass = 'cardborderchanged';
+            }
+            if(this.wrongkilldate) {
+                cardborderclass = 'cardbordererror';
+            }
+
+            return cardborderclass;
+        },
+        dateinputcolor() {
+            let inputclass = '';
+            if(this.killdateSelected != this.originkilldate) {
+                inputclass = 'changedinput';
+            }
+            if(this.wrongkilldate) {
+                inputclass = 'error';
+            }
+
+            return inputclass;
+        },
         checkChanges() {
             
             if(this.shooterSelected.id !== this.originshooter.id) {
@@ -768,10 +790,11 @@
     border-left: 10px solid red;
 }
 .cardborderchanged {
-    border-left: 10px solid #187eb9;
+    /* border-left: 10px solid #187eb9; */
+    border-left: 10px solid #8e24aa
 }
 .changedinput > input {
-    color:#ab7e10;
+    color:#b340b3
 }
     
 </style>
