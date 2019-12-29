@@ -172,22 +172,5 @@ class KillreportTest extends TestCase
         $this->get('/killreports/'.$killreport->id)->assertRedirect('/home');
     }
 
-    /**
-     * @test
-     *
-     * @return void
-     */
-    public function a_user_cannot_edit_reporter_in_killreport_show()
-    {
-        $this->withoutExceptionHandling();
-        
-        $this->signIn();
-
-        $killreport = factory(Killreport::class)->create();
-
-        $response = $this->get($killreport->path());
-        dd($response);
-    }
-
 
 }

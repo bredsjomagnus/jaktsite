@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <killreport-show :hunters="{{ $hunters }}" :auth-user="{{ Auth::user() }}" :shooter="{{ $killreport->shooter }}" :reporter="{{ $killreport->reporter }}" :area="{{ $killreport->area() }}" :areas="{{ $areas }}" :animal="{{ $killreport->animal() }}" :killreport="{{  $killreport }}"></killreport-show>
+    <killreport-show :hunters="{{ $hunters }}" :auth-user="{{ Auth::user() }}" :shooter="{{ $killreport->shooter }}" :reporter="{{ $killreport->reporter }}" :area="{{ $killreport->area() }}" :areas="{{ $areas }}" :animal="{{ $killreport->animal() }}" :killreport="{{  $killreport }}" :index-url='{!! json_encode(url("killreports/")) !!}'></killreport-show>
 </div>
 
 @endsection
