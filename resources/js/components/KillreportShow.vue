@@ -8,6 +8,15 @@
                     <mdb-card-text class="d-flex justify-content-center">Rapportkort</mdb-card-text>
                 </mdb-card>
             </div>
+
+            <!-- <mdb-btn-toolbar> -->
+            <div class="d-flex flex-row justify-content-around">
+                <mdb-btn-group size="sm">
+                    <mdb-btn color="mdb-color" @click.native="saveChanges" :disabled="untouched" size="sm"><mdb-icon icon="save"/></mdb-btn>
+                    <mdb-btn color="mdb-color" @click.native="divideMeat" :disabled="missingweights" size="sm"><mdb-icon icon="balance-scale"/></mdb-btn>
+                </mdb-btn-group>
+            </div>
+            <!-- </mdb-btn-toolbar> -->
                        
             <!-- <mdb-btn-toolbar> -->
             <div class="d-flex flex-row justify-content-around">
@@ -19,6 +28,7 @@
                 <mdb-btn color="mdb-color" @click.native="undoModal = true" size="sm"><mdb-icon icon="undo"/></mdb-btn>
             </div>
             <!-- </mdb-btn-toolbar> -->
+            
 
         </div>
 
@@ -224,13 +234,13 @@
 
         <div v-if="activeH">
             <mdb-card>
-                <mdb-card-body class="cardborder">
+                <mdb-card-body :class="shooterSelected.id !== originshooter.id || reporterSelected.id !== originreporter.id || kindofhuntSelected != originkindofhunt ? 'cardborderchanged' : 'cardborder'">
                     <mdb-card-title class="d-flex justify-content-center titlecolor p-1">SKYTT & RAPPORTÖR</mdb-card-title>
                     
                         <!-- rapportör -->
                         <mdb-row>
                             <mdb-col col="9">
-                                <mdb-input type="text" class="w-100" label="Rapportör" v-model="this.reporterName" />
+                                <mdb-input :class="reporterSelected.id !== originreporter.id ? 'changedinput' : ''" type="text" class="w-100" label="Rapportör" v-model="this.reporterName" />
                                 <p class="inputmsg" v-if="authUser.role == 'admin'">Urspr. rapportör: {{this.originreporterName}}</p>
                             </mdb-col>
                             <mdb-col col="2">
@@ -241,7 +251,7 @@
                         <!-- skytt -->
                         <mdb-row>
                             <mdb-col col="9">
-                                <mdb-input type="text" class="w-100" label="Skytt" v-model="this.shooterName" />
+                                <mdb-input :class="shooterSelected.id !== originshooter.id ? 'changedinput' : ''" type="text" class="w-100" label="Skytt" v-model="this.shooterName" />
                                 <p class="inputmsg">Urspr. skytt: {{this.originshooterName}}</p>
                             </mdb-col>
                             <mdb-col col="2">
@@ -252,7 +262,7 @@
                         <!-- typ av jakt -->
                         <mdb-row>
                             <mdb-col col="9">
-                                <mdb-input type="text" class="w-100" label="Sorts jakt" v-model="this.kindofhuntSelected" />
+                                <mdb-input :class="kindofhuntSelected != originkindofhunt ? 'changedinput': ''" type="text" class="w-100" label="Sorts jakt" v-model="this.kindofhuntSelected" />
                                 <p class="inputmsg">Urspr. sort: {{this.originkindofhunt}}</p>
                             </mdb-col>
                             <mdb-col col="2">
@@ -267,9 +277,9 @@
             <mdb-card class="mt-2">
                 <mdb-card-body :class="wrongkilldate ? 'cardbordererror' : 'cardborder'">
                     <mdb-card-title class="d-flex justify-content-center titlecolor p-1">TID & PLATS</mdb-card-title>
-                    <mdb-input style="color: red;" :class="wrongkilldate ? 'error' : ''" type="date" v-model="killreport.killdate" @change="checkKilldate"/>
+                    <mdb-input style="color: red;" :class="wrongkilldate ? 'error' : ''" type="date" v-model="killdateSelected" @change="checkKilldate"/>
                     <p class="errormsg" v-if="wrongkilldate">Ogiltigt datum</p>
-                    <p class="inputmsg" v-else>Urspr. datum: {{this.origindate}}</p>
+                    <p class="inputmsg" v-else>Urspr. datum: {{this.originkilldate}}</p>
                     <mdb-row>
                         <mdb-col col="9">
                             <mdb-input type="text" v-model="areaSelected.area_name"/>
@@ -312,7 +322,7 @@
 
                         <mdb-row v-if="points()">
                             <mdb-col col="12">
-                                <mdb-input type="number" label="Taggar" v-model="pointsSelected" />
+                                <mdb-input type="number" label="Taggar" v-model="pointsSelected" @change="pointsChanged" />
                                 <p class="inputmsg" >Urspr. taggar.: {{this.originPoints}}</p>
                             </mdb-col>
                             
@@ -333,7 +343,48 @@
        </div>
 
        <div v-else>
+           <mdb-card>
+                <mdb-card-body class="cardborder">
+                    <div class="p-3 mb-2">
+                        <mdb-input type="number" step="0.1" label="Levandevikt" v-model="live_weightSelected"/>
+                        <mdb-input type="number" step="0.1" label="Uppskattad levandevikt" v-model="aprox_live_weightSelected"/>
+                    </div>
+                </mdb-card-body>
+            </mdb-card>
 
+            <mdb-card class="mt-2">
+                <mdb-card-body class="cardborder">
+                    <div class="p-3 mb-2">
+                        <mdb-input type="number" step="0.1" label="Passad vikt" v-model="passad_weightSelected"/>
+                        <mdb-input type="number" step="0.1" label="Uppskattad passad vikt" v-model="aprox_passad_weightSelected"/>
+                    </div>
+                </mdb-card-body>
+            </mdb-card>
+
+            <mdb-card class="mt-2">
+                <mdb-card-body class="cardborder">
+                    <div class="p-3 mb-2">
+                        <mdb-input type="number" step="0.1" label="Slaktvikt" v-model="carcass_weightSelected"/>
+                        <mdb-input type="number" step="0.1" label="Uppskattad slaktvikt" v-model="aprox_carcass_weightSelected"/>
+                    </div>
+                </mdb-card-body>
+            </mdb-card>
+
+            <mdb-card class="mt-2">
+                <mdb-card-body class="cardborder">
+                    <div class="p-3 mb-2">
+                        <mdb-input type="number" step="0.1" label="Styckdetaljer" v-model="cut_weightSelected"/>
+                    </div>
+                </mdb-card-body>
+           </mdb-card>
+
+           <mdb-card class="mt-2">
+                <mdb-card-body class="cardborder">
+                    <div class="p-3 mb-2">
+                        <mdb-input type="number" step="0.001" label="Hjärtvikt" v-model="heart_weightSelected"/>
+                    </div>
+                </mdb-card-body>
+          </mdb-card>
        </div>
 
    </div>
@@ -382,14 +433,25 @@
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             activeH: true,
             activeW: false,
+            untouched: true,
+            missingweights: true,
             shooterSelected: this.shooter,
             reporterSelected: this.reporter,
+            killdateSelected: this.killreport.killdate.substring(0,10),
             areaSelected: this.area,
             kindofhuntSelected: this.killreport.kindofhunt,
             speciesSelected: this.animal.species,
             speciestypeSelected: this.animal.speciestype,
             pointsSelected: this.animal.points,
             antlersSelected: this.animal.antlers,
+            live_weightSelected: this.animal.live_weight,
+            aprox_live_weightSelected: this.animal.aprox_live_weight,
+            passad_weightSelected: this.animal.passad_weight,
+            aprox_passad_weightSelected: this.animal.aprox_passad_weight,
+            carcass_weightSelected: this.animal.carcass_weight,
+            aprox_carcass_weightSelected: this.animal.aprox_carcass_weight,
+            cut_weightSelected: this.animal.cut_weight,
+            heart_weightSelected: this.animal.heart_weight,
             shooterModal: false,
             reporterModal: false,
             kindofhuntModal: false,
@@ -401,7 +463,7 @@
             killdateset: true,
             wrongkilldate: false,
             wrongspeciestype: false,
-            origindate: this.killreport.killdate,
+            originkilldate: this.killreport.killdate.substring(0,10),
             originarea: this.area,
             originareaName: this.area.area_name,
             originshooter: this.shooter,
@@ -470,18 +532,34 @@
         setShooter(shooter) {
             this.shooterSelected = shooter;
             this.shooterModal = false;
+            this.checkChanges();
         },
         setReporter(reporter) {
             this.reporterSelected = reporter;
             this.reporterModal = false;
+            this.checkChanges();
         },
         setKindofhunt(kindofhunt) {
             this.kindofhuntSelected = kindofhunt;
             this.kindofhuntModal = false;
+            this.checkChanges();
+        },
+        shooterreportercheck() {
+            console.log("kommer hit")
+            let unchanged = true;
+            if(this.shooterSelected.id !== this.originshooter.id) {
+                this.unchanged = false;
+            } else if(this.reporterSelected.id !== this.originreporter.id) {
+                this.unchanged = false;
+            } else if(this.kindofhuntSelected != this.originkindofhunt) {
+                this.unchanged = false;
+            }
+            return unchanged;
         },
         setArea(area) {
             this.areaSelected = area;
             this.areaModal = false;
+            this.checkChanges();
         },
         setSpecies(species) {
             this.speciesSelected = species;
@@ -493,6 +571,7 @@
             if(!this.antlers()) {
                 this.antlersSelected = null;
             }
+            this.checkChanges();
         },
         setSpeciesType(speciestype) {
             this.speciestypeSelected = speciestype;
@@ -504,10 +583,11 @@
             if(!this.antlers()) {
                 this.antlersSelected = null;
             }
+            this.checkChanges();
         },
         checkKilldate() {
             let thenow = Date.now();
-            this.thekilldate = new Date(this.killreport.killdate);
+            this.thekilldate = new Date(this.killdateSelected);
             if(this.thekilldate >= thenow) {
                 this.wrongkilldate = true;
                 this.killdateset = false;
@@ -515,13 +595,11 @@
                 this.wrongkilldate = false;
                 this.killdateset = true;
             }
-            if(this.killreport.killdate == "" || this.killreport.killdate == null) {
-                
+            if(this.killdateSelected == "" || this.killdateSelected == null) {            
                 this.wrongkilldate = true;
                 this.killdateset = false;
-                console.log("this.wrongkilldate:");
-                console.log(this.wrongkilldate);
             }
+            this.checkChanges();
         },
         checkSpeciestype() {
             if(this.speciesSelected == 'Älg') {
@@ -565,6 +643,12 @@
 
             return (isTjur || isKronviltHjort);
         },
+        pointsChanged() {
+            if(this.pointsSelected == "") {
+                this.pointsSelected = null;
+            }
+            this.checkChanges()
+        },
         antlers() {
             let isDovvilt = this.speciesSelected == "Dovvilt";
             let isHjort = this.speciestypeSelected == "Hjort";
@@ -575,14 +659,70 @@
         setAntlers(antler) {
             this.antlersSelected = antler;
             this.antlersModal = false;
+            this.checkChanges();
         },
         backToKillreportIndex() {
             window.location = this.indexUrl;
+        },
+        checkChanges() {
+            
+            if(this.shooterSelected.id !== this.originshooter.id) {
+                this.untouched = false;
+            } else if(this.reporterSelected.id !== this.originreporter.id) {
+                this.untouched = false;
+            } else if(this.areaSelected.id !== this.originarea.id) {
+                this.untouched = false;
+            } else if(this.kindofhuntSelected != this.originkindofhunt) {
+                this.untouched = false;
+            } else if(this.killdateSelected != this.originkilldate) {
+                this.untouched = false;
+            } else if(this.speciesSelected != this.originSpecies) {
+                this.untouched = false;
+            } else if(this.speciestypeSelected != this.originSpeciestype) {
+                this.untouched = false;
+            } else if(this.pointsSelected != this.originPoints) {
+                this.untouched = false;
+            } else if(this.antlersSelected != this.originAntlers) {
+                this.untouched = false;
+            } else {
+                this.untouched = true;
+            }
+
+            // this.untouched = true;
+            // if(this.shooterSelected.id !== this.originshooter.id) {
+            //     this.untouched = false;
+            // } 
+            // if(this.reporterSelected.id !== this.originreporter.id) {
+            //     this.untouched = false;
+            // } 
+            // if(this.areaSelected.id !== this.originarea.id) {
+            //     this.untouched = false;
+            // } 
+            // if(this.kindofhuntSelected != this.originkindofhunt) {
+            //     this.untouched = false;
+            // } 
+            // if(this.killdateSelected != this.originkilldate) {
+            //     this.untouched = false;
+            // } 
+            // if(this.speciesSelected != this.originSpecies) {
+            //     this.untouched = false;
+            // } 
+            // if(this.speciestypeSelected != this.originSpeciestype) {
+            //     this.untouched = false;
+            // } 
+            // if(this.pointsSelected != this.originPoints) {
+            //     console.log("KOMMER TILL POINTS");
+            //     this.untouched = false;
+            // } 
+            // if(this.antlersSelected != this.originAntlers) {
+            //     this.untouched = false;
+            // } 
         },
         undoChanges() {
             this.shooterSelected = this.originshooter;
             this.reporterSelected = this.originreporter;
             this.areaSelected = this.originarea;
+            this.killdateSelected = this.originkilldate;
             this.kindofhuntSelected = this.originkindofhunt;
             this.speciesSelected = this.originSpecies;
             this.speciestypeSelected = this.originSpeciestype;
@@ -591,6 +731,8 @@
 
             this.wrongkilldate = false;
             this.wrongspeciestype = false;
+
+            this.untouched = true;
 
             this.undoModal = false;
         }
@@ -624,6 +766,12 @@
 }
 .cardbordererror{
     border-left: 10px solid red;
+}
+.cardborderchanged {
+    border-left: 10px solid #187eb9;
+}
+.changedinput > input {
+    color:#ab7e10;
 }
     
 </style>
