@@ -275,14 +275,14 @@
 
             <!-- tid och plats -->
             <mdb-card class="mt-2">
-                <mdb-card-body :class="cardbodycolor()">
+                <mdb-card-body :class="cardbodycolorTimeandPlace()">
                     <mdb-card-title class="d-flex justify-content-center titlecolor p-1">TID & PLATS</mdb-card-title>
                     <mdb-input style="color: red;" :class="dateinputcolor()" type="date" v-model="killdateSelected" @change="checkKilldate"/>
                     <p class="errormsg" v-if="wrongkilldate">Ogiltigt datum</p>
                     <p class="inputmsg" v-else>Urspr. datum: {{this.originkilldate}}</p>
                     <mdb-row>
                         <mdb-col col="9">
-                            <mdb-input type="text" v-model="areaSelected.area_name"/>
+                            <mdb-input :class="areaSelected.id !== originarea.id ? 'changedinput': ''" type="text" v-model="areaSelected.area_name"/>
                             <p class="inputmsg">Urspr. område: {{this.originareaName}}</p>
                         </mdb-col>
                     
@@ -290,13 +290,14 @@
                                     <mdb-btn class="mt-4 pb-2 pt-2 pl-3 pr-3" color="mdb-color" @click.native="areaModal = true" size="sm"><mdb-icon icon="edit"/></mdb-btn>
                             </mdb-col>
                         </mdb-row>
-                    <mdb-input v-if="killreport.place != null" type="textarea" label="Beskrivning av plats" v-model="killreport.place" :rows="5"/>
+                    <mdb-input type="textarea" :class="placechanged ? 'changedinput' : ''" label="Beskrivning av plats" v-model="placeSelected" @change="checkPlaceChanges" :rows="5"/>
+
                 </mdb-card-body>
             </mdb-card>
 
             <!-- djur -->
             <mdb-card class="mt-2">
-                <mdb-card-body :class="wrongspeciestype ? 'cardbordererror' : 'cardborder'">
+                <mdb-card-body :class="cardbodycolorAnimal()">
                     <mdb-card-title class="d-flex justify-content-center titlecolor p-1">DJUR & HORN/TAGGAR</mdb-card-title>
 
                         <mdb-row>
@@ -439,6 +440,7 @@
             reporterSelected: this.reporter,
             killdateSelected: this.killreport.killdate.substring(0,10),
             areaSelected: this.area,
+            placeSelected: this.killreport.place,
             kindofhuntSelected: this.killreport.kindofhunt,
             speciesSelected: this.animal.species,
             speciestypeSelected: this.animal.speciestype,
@@ -461,11 +463,13 @@
             antlersModal: false,
             undoModal: false,
             killdateset: true,
+            placechanged: false,
             wrongkilldate: false,
             wrongspeciestype: false,
             originkilldate: this.killreport.killdate.substring(0,10),
             originarea: this.area,
             originareaName: this.area.area_name,
+            originplace: this.killreport.place,
             originshooter: this.shooter,
             originreporter: this.reporter,
             originshooterName: this.shooter.firstname + " " + this.shooter.lastname,
@@ -545,7 +549,6 @@
             this.checkChanges();
         },
         shooterreportercheck() {
-            console.log("kommer hit")
             let unchanged = true;
             if(this.shooterSelected.id !== this.originshooter.id) {
                 this.unchanged = false;
@@ -598,6 +601,19 @@
             if(this.killdateSelected == "" || this.killdateSelected == null) {            
                 this.wrongkilldate = true;
                 this.killdateset = false;
+            }
+            this.checkChanges();
+        },
+        checkPlaceChanges() {
+            if(this.placeSelected == "") {
+                this.placeSelected = null;
+            }
+
+            if(this.placeSelected !== this.originplace) {
+                this.placechanged = true;
+                console.log("KOMMER HIT");
+            } else {
+                this.placechanged = false;
             }
             this.checkChanges();
         },
@@ -664,12 +680,23 @@
         backToKillreportIndex() {
             window.location = this.indexUrl;
         },
-        cardbodycolor() {
+        cardbodycolorTimeandPlace() {
             let cardborderclass = 'cardborder';
-            if(this.killdateSelected != this.originkilldate || this.areaSelected.id !== this.originarea.id) {
+            if(this.killdateSelected != this.originkilldate || this.areaSelected.id !== this.originarea.id || this.placeSelected !== this.originplace) {
                 cardborderclass = 'cardborderchanged';
             }
             if(this.wrongkilldate) {
+                cardborderclass = 'cardbordererror';
+            }
+
+            return cardborderclass;
+        },
+        cardbodycolorAnimal() {
+            let cardborderclass = 'cardborder';
+            if(this.speciesSelected != this.originSpecies|| this.speciestypeSelected != this.originSpeciestype || this.pointsSelected !== this.originPoints || this.antlersSelected != this.originAntlers) {
+                cardborderclass = 'cardborderchanged';
+            }
+            if(this.wrongspeciestype) {
                 cardborderclass = 'cardbordererror';
             }
 
@@ -693,6 +720,13 @@
             } else if(this.reporterSelected.id !== this.originreporter.id) {
                 this.untouched = false;
             } else if(this.areaSelected.id !== this.originarea.id) {
+                this.untouched = false;
+            } else if(this.placeSelected !== this.originplace) {
+                // console.log("PLACE");
+                // console.log("this.placeSelected:");
+                // console.log(this.placeSelected);
+                // console.log("this.originplace:");
+                // console.log(this.originplace);
                 this.untouched = false;
             } else if(this.kindofhuntSelected != this.originkindofhunt) {
                 this.untouched = false;
@@ -744,6 +778,7 @@
             this.shooterSelected = this.originshooter;
             this.reporterSelected = this.originreporter;
             this.areaSelected = this.originarea;
+            this.placeSelected = this.originplace;
             this.killdateSelected = this.originkilldate;
             this.kindofhuntSelected = this.originkindofhunt;
             this.speciesSelected = this.originSpecies;
@@ -753,6 +788,8 @@
 
             this.wrongkilldate = false;
             this.wrongspeciestype = false;
+
+            this.placechanged = false;
 
             this.untouched = true;
 
@@ -794,7 +831,10 @@
     border-left: 10px solid #8e24aa
 }
 .changedinput > input {
-    color:#b340b3
+    color:#b340b3;
+}
+.changedinput > textarea {
+    color: #b340b3;
 }
     
 </style>
