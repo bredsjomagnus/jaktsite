@@ -240,7 +240,7 @@
                         <!-- rapportör -->
                         <mdb-row>
                             <mdb-col col="9">
-                                <mdb-input :class="reporterSelected.id !== originreporter.id ? 'changedinput' : ''" type="text" class="w-100" label="Rapportör" v-model="this.reporterName" />
+                                <mdb-input disabled :class="reporterSelected.id !== originreporter.id ? 'changedinput' : ''" type="text" class="w-100" label="Rapportör" v-model="this.reporterName" />
                                 <p class="inputmsg" v-if="authUser.role == 'admin'">Urspr. rapportör: {{this.originreporterName}}</p>
                             </mdb-col>
                             <mdb-col col="2">
@@ -251,7 +251,7 @@
                         <!-- skytt -->
                         <mdb-row>
                             <mdb-col col="9">
-                                <mdb-input :class="shooterSelected.id !== originshooter.id ? 'changedinput' : ''" type="text" class="w-100" label="Skytt" v-model="this.shooterName" />
+                                <mdb-input disabled :class="shooterSelected.id !== originshooter.id ? 'changedinput' : ''" type="text" class="w-100" label="Skytt" v-model="this.shooterName" />
                                 <p class="inputmsg">Urspr. skytt: {{this.originshooterName}}</p>
                             </mdb-col>
                             <mdb-col col="2">
@@ -262,7 +262,7 @@
                         <!-- typ av jakt -->
                         <mdb-row>
                             <mdb-col col="9">
-                                <mdb-input :class="kindofhuntSelected != originkindofhunt ? 'changedinput': ''" type="text" class="w-100" label="Sorts jakt" v-model="this.kindofhuntSelected" />
+                                <mdb-input disabled :class="kindofhuntSelected != originkindofhunt ? 'changedinput': ''" type="text" class="w-100" label="Sorts jakt" v-model="this.kindofhuntSelected" />
                                 <p class="inputmsg">Urspr. sort: {{this.originkindofhunt}}</p>
                             </mdb-col>
                             <mdb-col col="2">
@@ -277,19 +277,21 @@
             <mdb-card class="mt-2">
                 <mdb-card-body :class="cardbodycolorTimeandPlace()">
                     <mdb-card-title class="d-flex justify-content-center titlecolor p-1">TID & PLATS</mdb-card-title>
+
                     <mdb-input style="color: red;" :class="dateinputcolor()" type="date" v-model="killdateSelected" @change="checkKilldate"/>
                     <p class="errormsg" v-if="wrongkilldate">Ogiltigt datum</p>
                     <p class="inputmsg" v-else>Urspr. datum: {{this.originkilldate}}</p>
+
                     <mdb-row>
                         <mdb-col col="9">
-                            <mdb-input :class="areaSelected.id !== originarea.id ? 'changedinput': ''" type="text" v-model="areaSelected.area_name"/>
+                            <mdb-input disabled :class="areaSelected.id !== originarea.id ? 'changedinput': ''" type="text" v-model="areaSelected.area_name"/>
                             <p class="inputmsg">Urspr. område: {{this.originareaName}}</p>
                         </mdb-col>
-                    
                             <mdb-col col="2">
                                     <mdb-btn class="mt-4 pb-2 pt-2 pl-3 pr-3" color="mdb-color" @click.native="areaModal = true" size="sm"><mdb-icon icon="edit"/></mdb-btn>
                             </mdb-col>
                         </mdb-row>
+
                     <mdb-input type="textarea" :class="placechanged ? 'changedinput' : ''" label="Beskrivning av plats" v-model="placeSelected" @change="checkPlaceChanges" :rows="5"/>
 
                 </mdb-card-body>
@@ -302,7 +304,7 @@
 
                         <mdb-row>
                             <mdb-col col="9">
-                                <mdb-input type="text" class="w-100" label="Djur" v-model="speciesSelected" />
+                                <mdb-input disabled type="text" class="w-100" label="Djur" v-model="speciesSelected" />
                                 <p class="inputmsg">Urspr. djur: {{this.originSpecies}}</p>
                             </mdb-col>
                             <mdb-col col="2">
@@ -312,7 +314,7 @@
 
                         <mdb-row>
                             <mdb-col col="9">
-                                <mdb-input style="color: red;" :class="wrongspeciestype ? 'error' : ''" type="text" class="w-100" label="Djurkvalificering" v-model="speciestypeSelected" />
+                                <mdb-input disabled style="color: red;" :class="wrongspeciestype ? 'error' : ''" type="text" class="w-100" label="Djurkvalificering" v-model="speciestypeSelected" />
                                 <p class="errormsg" v-if="wrongspeciestype">Ogiltig djurkvalificering</p>
                                 <p class="inputmsg" v-else>Urspr. djurkvalif.: {{this.originSpeciestype}}</p>
                             </mdb-col>
@@ -323,7 +325,7 @@
 
                         <mdb-row v-if="points()">
                             <mdb-col col="12">
-                                <mdb-input type="number" label="Taggar" v-model="pointsSelected" @change="pointsChanged" />
+                                <mdb-input type="number" min="0" step="1" label="Taggar" v-model="pointsSelected" @change="pointsChanged" />
                                 <p class="inputmsg" >Urspr. taggar.: {{this.originPoints}}</p>
                             </mdb-col>
                             
@@ -331,7 +333,7 @@
 
                         <mdb-row v-if="antlers()">
                             <mdb-col col="9">
-                                <mdb-input label="Horn" v-model="antlersSelected" />
+                                <mdb-input disabled label="Horn" v-model="antlersSelected" />
                                 <p class="inputmsg" >Urspr. horn.: {{this.originAntlers}}</p>
                             </mdb-col>
                             <mdb-col col="2">
@@ -598,7 +600,7 @@
                 this.wrongkilldate = false;
                 this.killdateset = true;
             }
-            if(this.killdateSelected == "" || this.killdateSelected == null) {            
+            if(this.killdateSelected == "" || this.killdateSelected == null) {              
                 this.wrongkilldate = true;
                 this.killdateset = false;
             }
