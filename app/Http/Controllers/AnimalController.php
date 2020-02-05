@@ -71,8 +71,14 @@ class AnimalController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Animal $animal)
-    {
-        //
+    {   
+        // dd(request()->all());
+        $animal->update(request()->all());
+        // $animal->update($animal->getAttributes());
+        // dd($animal);
+        // return redirect('home');
+
+        return ['animalresponse' => 'update ok'];
     }
 
     /**

@@ -172,5 +172,47 @@ class KillreportTest extends TestCase
         $this->get('/killreports/'.$killreport->id)->assertRedirect('/home');
     }
 
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function a_can_update_a_killreport()
+    {
+        $this->withoutExceptionHandling();
+        
+        $this->signIn();
+
+        $report = $this->report_kill();
+
+        $killreport = $report['killreport'];
+
+        $animal_id = $killreport->animal_id;
+        $animal = Animal::find($animal_id);
+
+        $killreportupdate = [
+            'shooter_id'    => 5,
+            'area_id'       => 3
+        ];
+        // $killreport->shooter_id = 5;
+        // $killreport->area_id = 3;
+        // $killreport->save();
+
+        $animalupdate = [
+            'live_weight'   => 90000000
+        ];
+        // $animal->live_weight = 900000000;
+        // $animal->save();
+        
+
+        $this->post('/killreports/'.$killreport->id.'/update', $killreportupdate);
+        $this->assertDatabaseHas('killreports', $killreportupdate);
+
+        $this->post('/animals/'.$animal->id.'/update', $animalupdate);
+        $this->assertDatabaseHas('animals', $animalupdate);
+
+
+    }
+
 
 }

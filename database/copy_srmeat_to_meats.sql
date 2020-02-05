@@ -1,0 +1,25 @@
+INSERT
+INTO
+    `jaktsite`.`meats`(
+    `id`,
+    `killreport_id`,
+    `user_id`,
+    `share_kilogram`,
+    `share_lot`,
+    `notes`,
+    `deleted_at`,
+    `created_at`,
+    `updated_at`
+    )
+SELECT
+    `id`,
+    `killreport`,
+    `hunter`,
+    `share_kilogram`,
+    `share_lot`,
+    `outsidenotes`,
+    `deleted`,
+    `created`,
+    `updated`
+FROM
+    `smaris`.`SRMeat`

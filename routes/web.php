@@ -30,7 +30,9 @@ Route::patch('/user/{user}/update', 'UserController@update')->middleware('access
 Route::get('/killreports/create', 'KillreportController@create')->middleware('access:both,none');
 Route::post('/killreports/store', 'KillreportController@store')->middleware('access:both,none');
 Route::get('/killreports/{killreport}/edit', 'KillreportController@edit')->middleware('access:both,none');
+Route::post('/killreports/{killreport}/update', 'KillreportController@update')->middleware('access:both,none');
 Route::get('killreports/{killreport}', 'KillreportController@show')->middleware('access:both,killreport');
 Route::get('/killreports', 'KillreportController@index')->middleware('access:both,none');
 
 Route::post('/animals/store', 'AnimalController@store')->middleware('access:both,none');
+Route::post('/animals/{animal}/update', 'AnimalController@update')->middleware('access:both,none');

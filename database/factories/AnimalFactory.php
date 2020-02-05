@@ -21,7 +21,7 @@ $factory->define(Animal::class, function (Faker $faker) {
         'engspecies'            =>  $faker->word,
         'sex'                   =>  $faker->word,
         'age'                   =>  $faker->word,
-        'live_weight'           =>  $faker->randomFloat,
+        'live_weight'           =>  10,
         'aprox_live_weight'     =>  $faker->randomFloat,
         'passad_weight'         =>  $faker->randomFloat,
         'aprox_passad_weight'   =>  $faker->randomFloat,

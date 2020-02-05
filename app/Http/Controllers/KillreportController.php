@@ -89,9 +89,13 @@ class KillreportController extends Controller
      * @param  \App\KillReport  $killReport
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, KillReport $killReport)
+    public function update(Request $request, Killreport $killreport)
     {
-        //
+        $killreport->update(request()->all());
+
+        // $killreports = Killreport::where('deleted_at', null)->orderBy('killdate', 'desc')->get();
+
+        return ['redirect' => url('killreports')];
     }
 
     /**

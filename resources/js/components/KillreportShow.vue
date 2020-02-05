@@ -12,8 +12,9 @@
             <!-- <mdb-btn-toolbar> -->
             <div class="d-flex flex-row justify-content-around">
                 <mdb-btn-group size="sm">
-                    <mdb-btn :color="untouched ? 'mdb-color' : 'purple'" @click.native="saveChanges" :disabled="untouched" size="sm"><mdb-icon icon="save"/></mdb-btn>
+                    <mdb-btn :color="untouched ? 'mdb-color' : 'purple'" @click.native="saveChanges" :disabled="savable" size="sm"><mdb-icon icon="save"/></mdb-btn>
                     <mdb-btn color="mdb-color" @click.native="divideMeat" :disabled="missingweights" size="sm"><mdb-icon icon="balance-scale"/></mdb-btn>
+                    <mdb-btn color="mdb-color" @click.native="images" size="sm"><mdb-icon icon="images"/></mdb-btn>
                 </mdb-btn-group>
             </div>
             <!-- </mdb-btn-toolbar> -->
@@ -436,7 +437,9 @@
             'areas',
             'killreport',
             'animal',
-            'indexUrl'
+            'indexUrl',
+            'animalUrl',
+            'killreportUrl'
         ],
     data() {
         return {
@@ -523,6 +526,10 @@
         reporterId() {
             return this.areaSelected.id;
         },
+        savable(){
+            let notallowed = this.wrongkilldate || this.wrongspeciestype
+            return this.untouched || notallowed;
+        }
     },
     mounted() {
         console.log("hunters: ");
@@ -577,6 +584,7 @@
             return unchanged;
         },
         setArea(area) {
+            // area är objektet
             this.areaSelected = area;
             this.areaModal = false;
             this.checkChanges();
@@ -906,6 +914,15 @@
             this.pointsSelected = this.originPoints;
             this.antlersSelected = this.originAntlers;
 
+            this.live_weightSelected = this.originlive_weight;
+            this.aprox_live_weightSelected = this.originaprox_live_weight;
+            this.passad_weightSelected = this.originpassad_weight;
+            this.aprox_passad_weightSelected = this.originaprox_passad_weight;
+            this.carcass_weightSelected = this.origincarcass_weight;
+            this.aprox_carcass_weightSelected = this.originaprox_carcass_weight;
+            this.cut_weightSelected = this.origincut_weight;
+            this.heart_weightSelected = this.originheart_weight;
+
             this.wrongkilldate = false;
             this.wrongspeciestype = false;
 
@@ -914,6 +931,139 @@
             this.untouched = true;
 
             this.undoModal = false;
+        },
+        engspecies() {
+            let value = null;
+            if (this.speciesSelected == 'Älg') {
+                value = 'moose';
+            } else if (this.speciesSelected == 'Kronvilt') {
+                value = 'reddeer';
+            } else if (this.speciesSelected == 'Dovvilt') {
+                value = 'fallowdeer';
+            } else if (this.speciesSelected == 'Rådjur') {
+                value = 'roedeer';
+            } else if (this.speciesSelected == 'Vildsvin') {
+                value = 'boar';
+            }
+
+            return value;
+        },
+        age(){
+            let value = null;
+            if (this.speciestypeSelected == 'Tjur' || this.speciestypeSelected == 'Ko' || this.speciestypeSelected == 'Kviga') {
+                value = 'adult';
+            } else if (this.speciestypeSelected == 'Hjort' || this.speciestypeSelected == 'Hind' || this.speciestypeSelected == 'Smalhind'){
+                value = 'adult';
+            } else if (this.speciestypeSelected == 'Bock' || this.speciestypeSelected == 'Get' || this.speciestypeSelected == 'Smaldjur'){
+                value = 'adult';
+            } else if (this.speciestypeSelected == 'Galt' || this.speciestypeSelected == 'Sugga' || this.speciestypeSelected == 'Gylta'){
+                value = 'adult';
+            } else if (this.speciestypeSelected == 'Obestämt vuxet hondjur') {
+                value = 'adult';
+            } else {
+                value = 'calf';
+            }
+
+            return value;
+        },
+        sex() {
+            let value = null;
+            if (this.speciestypeSelected == 'Tjur' || this.speciestypeSelected == 'Tjurkalv') {
+                value = 'male';
+            } else if (this.speciestypeSelected == 'Ko' || this.speciestypeSelected == 'Kviga' || this.speciestypeSelected == 'Kvigkalv') {
+                value = 'female';
+            } else if (this.speciestypeSelected == 'Hjort' || this.speciestypeSelected == 'Hjortkalv') {
+                value = 'male';
+            } else if (this.speciestypeSelected == 'Hind' || this.speciestypeSelected == 'Smalhind' || this.speciestypeSelected == 'Hindkalv') {
+                value = 'female';
+            } else if (this.speciestypeSelected == 'Bock' || this.speciestypeSelected == 'Bockkilling') {
+                value = 'male';
+            } else if (this.speciestypeSelected == 'Get' || this.speciestypeSelected == 'Smaldjur' || this.speciestypeSelected == 'Getkilling') {
+                value = 'female';
+            } else if (this.speciestypeSelected == 'Galt' || this.speciestypeSelected == 'Galtkulting') {
+                value = 'male';
+            } else if (this.speciestypeSelected == 'Sugga' || this.speciestypeSelected == 'Gylta' || this.speciestypeSelected == 'Suggkulting') {
+                value = 'female';
+            } else if (this.speciestypeSelected == 'Obestämt vuxet hondjur') {
+                value = 'female';
+            }
+
+            return value;
+        },
+        saveChanges() {
+            let animalfields, killreportfields, areaidselected;
+            areaidselected = this.areaSelected.id;
+            // console.log(areaidselected);
+            animalfields = {
+                'id': this.animal.id,
+                'shooter_id': this.shooterSelected.id,
+                'species': this.speciesSelected,
+                'speciestype': this.speciestypeSelected,
+                'engspecies': this.engspecies(),
+                'sex': this.sex(),
+                'age': this.age(),
+                'live_weight': this.live_weightSelected == null ? null : parseFloat(this.live_weightSelected),
+                'aprox_live_weight': this.aprox_live_weightSelected == null ? null : parseFloat(this.aprox_live_weightSelected),
+                'passad_weight': this.passad_weightSelected == null ? null : parseFloat(this.passad_weightSelected),
+                'aprox_passad_weight': this.aprox_passad_weightSelected == null ? null : parseFloat(this.aprox_passad_weightSelected),
+                'carcass_weight': this.carcass_weightSelected == null ? null : parseFloat(this.carcass_weightSelected),
+                'aprox_carcass_weight': this.aprox_carcass_weightSelected == null ? null : parseFloat(this.aprox_carcass_weightSelected),
+                'cut_weight': this.cut_weightSelected == null ? null : parseFloat(this.cut_weightSelected),
+                'heart_weight': this.heart_weightSelected == null ? null : parseInt(this.heart_weightSelected),
+                'waste': null,
+                'waste_notes': null,
+                'antlers': this.antlersSelected == null ? null : this.antlersSelected,
+                'points': this.pointsSelected == null ? null : parseInt(this.pointsSelected)
+            };
+            // console.log("ANIMALFIELDS:")
+            // console.log(animalfields);
+            killreportfields = {
+                'reporter_id': this.reporterSelected.id,
+                'shooter_id': this.shooterSelected.id,
+                'kindofhunt': this.kindofhuntSelected,
+                'killdate': this.killdateSelected,
+                'season': '20/21',
+                'area_id': this.areaSelected.id,
+                'place': this.placeSelected == null ? null : this.placeSelected,
+                'longitud': null,
+                'latitud': null,
+                'report_status': 'red',
+                'locked': 'no'
+            };
+            // console.log(killreportfields);
+            console.log("KILLREPORTFIELDS:")
+            console.log(killreportfields);
+
+            // console.log('http://localhost/pwww/jaktsite/public/animals/83/update');
+            axios.post(this.animalUrl, animalfields)
+                .then(response => {
+                    // console.log("ANIMALURL:");
+                    // console.log(this.animalUrl);
+                    // console.log();
+                    // console.log("ANIMALFIELDS");
+                    // console.log(animalfields);
+                    // console.log();
+                    // console.log("ANIMAL UPDATE SUCCESS:");
+                    // console.log(response);
+                    // console.log("this.killreportUrl");
+                    // console.log(this.killreportUrl);
+                    // console.log("response ", response);
+                  
+                })
+                .catch(error => {
+                    console.log("ANIMAL UPDATE ERROR:");
+                    console.log(error);
+                });
+            axios.post(this.killreportUrl, killreportfields)
+                .then(response => {
+                    // console.log("KILLREPORT UPDATE SUCCESS:");
+                    window.location = response.data.redirect;
+                    // console.log("response ", response);
+                })
+                .catch(error => {
+                    console.log("KILLREPORT UPDATE ERROR:");
+                    console.log(error);
+                });
         }
     }
   }
