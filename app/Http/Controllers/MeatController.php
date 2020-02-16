@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Meat;
+use App\Killreport;
 use Illuminate\Http\Request;
 
 class MeatController extends Controller
@@ -52,12 +53,12 @@ class MeatController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Meat  $meat
+     * @param  \App\Killreport  $killreport
      * @return \Illuminate\Http\Response
      */
-    public function edit(Meat $meat)
+    public function edit(Killreport $killreport)
     {
-        //
+        
     }
 
     /**

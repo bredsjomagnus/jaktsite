@@ -16,8 +16,8 @@ class CreateMeatsTable extends Migration
         Schema::create('meats', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('killreport_id');
-            $table->unsignedBigInteger('user_id');
-            $table->float('share_kilogram');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->float('share_kilogram')->nullable();
             $table->float('share_lot')->nullable();
             $table->string('notes')->nullable();
             $table->dateTime('deleted_at')->nullable();

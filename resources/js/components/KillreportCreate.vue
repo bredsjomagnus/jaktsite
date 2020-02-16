@@ -309,8 +309,20 @@
             <mdb-btn color="blue-grey" @click.native="setWeight()" size="sm"><mdb-icon icon="chevron-right"/></mdb-btn>
           </mdb-card-body>
 
+            <!-- meat -->
+            <mdb-card-body
+            v-else-if="step === 'meat'"
+            >
+
+                <mdb-btn color="blue-grey" @click.native="stepBackFromMeat()" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
+                <mdb-btn color="blue-grey" @click.native="setMeat()" size="sm"><mdb-icon icon="chevron-right"/></mdb-btn>
+            </mdb-card-body>
+            <!-- /meat -->
+
 
         </mdb-card>
+        <!-- /questions -->
+
         <mdb-card
         v-if="card === 'report'"
         >
@@ -422,6 +434,12 @@
             'anonhunter',
             'accountPage',
             'areas',
+            'meats',
+            'meatMoose',
+            'meatReddeer',
+            'meatFallowdeer',
+            'meatRoedeer',
+            'meatBoar',
             'animalUrl',
             'killreportUrl',
             'killreportIndexUrl'
@@ -453,7 +471,7 @@
                 shooter_id: null,
                 
                 kindofhunt: null,
-                killdate: null,
+                killdate: this.todaysdate(),
                 season: null,
                 animal_id: null,
                 area_id: null,
@@ -488,8 +506,35 @@
         console.log(this.animalUrl);
         console.log(this.killreportUrl);
         console.log("this.killreportIndexUrl: " + this.killreportIndexUrl);
+        console.log();
+        console.log('meats:');
+        console.log(this.meats);
+        console.log('meatMoose:');
+        console.log(this.meatMoose);
+        console.log('meatReddeer:');
+        console.log(this.meatReddeer);
+        console.log('meatFallowdeer:');
+        console.log(this.meatFallowdeer);
+        console.log('meatRoedeer:');
+        console.log(this.meatRoedeer);
+        console.log('meatBoar:');
+        console.log(this.meatBoar);
     },
     methods: {
+        todaysdate(){
+            var d = new Date(),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+            if (month.length < 2) 
+                month = '0' + month;
+            if (day.length < 2) 
+                day = '0' + day;
+
+            return [year, month, day].join('-');
+
+        },
         gravatarSrc(email) {
             // 404: do not load any image if none is associated with the email hash, instead return an HTTP 404 (File Not Found) response
             // mp: (mystery-person) a simple, cartoon-style silhouetted outline of a person (does not vary by email hash)
@@ -771,8 +816,8 @@
             this.animalfields.cut_weight = ((this.animalfields.cut_weight == 0 || this.animalfields.cut_weight == "") ? null : this.animalfields.cut_weight);
             this.animalfields.heart_weight = ((this.animalfields.heart_weight == 0 || this.animalfields.heart_weight == "") ? null : this.animalfields.heart_weight);
             
-            
-            this.toggleActiveStateR();
+            this.step = "meat";
+            this.steptitle = "TILLDELNING AV KÖTT";
         },
         stepBackFromWeight() {
             this.animalfields.live_weight = null;
@@ -794,6 +839,15 @@
                 this.steptitle = "DJURKVALIFICERING";
             }
             
+        },
+        stepBackFromMeat() {
+            // TODO nollställ meat här
+            this.step = 'weight';
+            this.steptitle = 'VIKTER';
+
+        },
+        setMeat() {
+            this.toggleActiveStateR();
         },
         weights() {
             let isLiveWeight = this.animalfields.live_weight != null;

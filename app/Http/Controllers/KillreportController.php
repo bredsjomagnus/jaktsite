@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Area;
 use App\Animal;
+use App\Meat;
 
 class KillreportController extends Controller
 {
@@ -30,10 +31,47 @@ class KillreportController extends Controller
      */
     public function create()
     {
+        $meats              = Meat::all();
+        $meat_moose         = $this->getSpeciesMeat('Älg');
+        $meat_reddeer       = $this->getSpeciesMeat('Kronvilt');
+        $meat_fallowdeer    = $this->getSpeciesMeat('Dovvilt');
+        $meat_roedeer       = $this->getSpeciesMeat('Rådjur');
+        $meat_boar          = $this->getSpeciesMeat('Vildsvin');
+
+        // Skapar grupper 
+        // killreport_id => [user_id, user_id]
+        // killreport_id => [user_id, user_id]
+        $user_group = $meat_reddeer->mapToGroups(function ($item, $key) {
+            return [$item['user_id'] => $item['share_kilogram']];
+        });
+
+        // dd($user_group);
+
+        $user_meat = [];
+        foreach($user_group as $id => $arr) {
+            $user = User::find($id);
+            if($user) {
+                $sum = 0;
+                foreach($arr as $element) {
+                    $sum = $sum + $element;
+                }
+                $user_meat[$id] = [$sum];
+            }   
+        }
+        $sorted = asort($user_meat);
+        dd($user_meat);
+        
+        // dd(gettype($meats)." ".gettype((object)$meat_moose)." ".gettype($meat_reddeer)." ".gettype($meat_fallowdeer)." ".gettype($meat_roedeer)." ".gettype($meat_boar));
         $data = [
-            'hunters'       => User::where('occupation', 'hunter')->get(),
-            'anonhunter'    => User::where('occupation', 'anonhunter')->limit(1)->get(),
-            'areas'         => Area::all()
+            'hunters'           => User::where('occupation', 'hunter')->get(),
+            'anonhunter'        => User::where('occupation', 'anonhunter')->limit(1)->get(),
+            'areas'             => Area::all(),
+            'meats'             => $meats,
+            'meat_moose'        => $meat_moose,
+            'meat_reddeer'      => $meat_reddeer,
+            'meat_fallowdeer'   => $meat_fallowdeer,
+            'meat_roedeer'      => $meat_roedeer,
+            'meat_boar'         => $meat_boar,
         ];
         return view('killreports.create', $data);
     }
@@ -108,4 +146,28 @@ class KillreportController extends Controller
     {
         //
     }
+
+    /**
+     * Filters out rows from meats depending on species of animal
+     * 
+     * @param String $species; 'Älg', 'Kronvilt',...
+     * @return Object $result; rows from meats of selected species
+     */
+    public function getSpeciesMeat($specie)
+    {
+        // dd($specie);
+        $meats = Meat::all();
+        $result = $meats->filter(function ($row) use ($specie)  {
+            return $row->isSpecies($specie);
+        });
+
+        return $result;
+    }
+
+    // Skapar grupper 
+    // killreport_id => [user_id, user_id]
+    // killreport_id => [user_id, user_id]
+    // $moose = $meats->mapToGroups(function ($item, $key) {
+    //     return [$item['killreport_id'] => $item['user_id']];
+    // });
 }

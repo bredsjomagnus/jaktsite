@@ -20,4 +20,19 @@ class Meat extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function animal()
+    {
+        return $this->killreport->animal();
+    }
+
+    public function path()
+    {
+        return 'meat/'.$this->killreport_id;
+    }
+
+    public function isSpecies($value)
+    {
+        return $this->animal()->getAttributes()['species'] == $value;
+    }
 }
