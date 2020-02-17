@@ -31,47 +31,25 @@ class KillreportController extends Controller
      */
     public function create()
     {
-        $meats              = Meat::all();
-        $meat_moose         = $this->getSpeciesMeat('Älg');
-        $meat_reddeer       = $this->getSpeciesMeat('Kronvilt');
-        $meat_fallowdeer    = $this->getSpeciesMeat('Dovvilt');
-        $meat_roedeer       = $this->getSpeciesMeat('Rådjur');
-        $meat_boar          = $this->getSpeciesMeat('Vildsvin');
+        $meats                  = Meat::all();
 
-        // Skapar grupper 
-        // killreport_id => [user_id, user_id]
-        // killreport_id => [user_id, user_id]
-        $user_group = $meat_reddeer->mapToGroups(function ($item, $key) {
-            return [$item['user_id'] => $item['share_kilogram']];
-        });
-
-        // dd($user_group);
-
-        $user_meat = [];
-        foreach($user_group as $id => $arr) {
-            $user = User::find($id);
-            if($user) {
-                $sum = 0;
-                foreach($arr as $element) {
-                    $sum = $sum + $element;
-                }
-                $user_meat[$id] = [$sum];
-            }   
-        }
-        $sorted = asort($user_meat);
-        dd($user_meat);
+        // Summed and sorted list of users shared_kilograms; ['user_id'] => sum (float)
+        $user_moose             = $this->sumMeatWrapper('Älg');
+        $user_reddeer           = $this->sumMeatWrapper('Kronvilt');
+        $user_fallowdeer        = $this->sumMeatWrapper('Dovvilt');
+        $user_roedeer           = $this->sumMeatWrapper('Rådjur');
+        $user_boar              = $this->sumMeatWrapper('Vildsvin');
         
-        // dd(gettype($meats)." ".gettype((object)$meat_moose)." ".gettype($meat_reddeer)." ".gettype($meat_fallowdeer)." ".gettype($meat_roedeer)." ".gettype($meat_boar));
         $data = [
             'hunters'           => User::where('occupation', 'hunter')->get(),
             'anonhunter'        => User::where('occupation', 'anonhunter')->limit(1)->get(),
             'areas'             => Area::all(),
             'meats'             => $meats,
-            'meat_moose'        => $meat_moose,
-            'meat_reddeer'      => $meat_reddeer,
-            'meat_fallowdeer'   => $meat_fallowdeer,
-            'meat_roedeer'      => $meat_roedeer,
-            'meat_boar'         => $meat_boar,
+            'meat_moose'        => $user_moose,
+            'meat_reddeer'      => $user_reddeer,
+            'meat_fallowdeer'   => $user_fallowdeer,
+            'meat_roedeer'      => $user_roedeer,
+            'meat_boar'         => $user_boar,
         ];
         return view('killreports.create', $data);
     }
@@ -155,7 +133,6 @@ class KillreportController extends Controller
      */
     public function getSpeciesMeat($specie)
     {
-        // dd($specie);
         $meats = Meat::all();
         $result = $meats->filter(function ($row) use ($specie)  {
             return $row->isSpecies($specie);
@@ -163,6 +140,84 @@ class KillreportController extends Controller
 
         return $result;
     }
+
+    /**
+     * Group rows in object table with user_id as key and share_kilogam as value
+     * 
+     * @param Object $table; a table frm filtered out rows from meats depending on species
+     * @return Collection $result; 'user_id' (int) => (Array) [share_kilogram (float), share_kilogram (float),...]
+     */
+    public function groupUserToMeat($table)
+    {
+        // Skapar grupper 
+        // user_id => [share_kilogram, share_kilogram,...]
+        $result = $table->mapToGroups(function ($item, $key) {
+            return [$item['user_id'] => $item['share_kilogram']];
+        });
+
+        return $result;
+    }
+
+    /**
+     * Filles up group object with hunters that are missing and 
+     * therefore have 0 shared_kilogram for this species.
+     * 
+     * @param Collection $result; 'user_id' (int) => (Array) [share_kilogram (float), share_kilogram (float),...]
+     * @return Collection $obj; 'user_id' (int) => (Array) [share_kilogram (float), share_kilogram (float),...]
+     */
+    public function fillOutGroups($obj) 
+    {
+        $hunters = User::where('occupation', 'hunter')->get();
+        foreach($hunters as $key => $hunter) {
+            if (!$obj->has($hunter->id)){
+                $obj[$hunter->id] = [0];
+            }
+        }
+        // dd($obj);
+        return $obj;
+    }
+
+    /**
+     * Creates Object with user data combined with total summed up shared kilogram
+     * for certain species.
+     * 
+     * @param Collection $user_group; user_id (int) => (Array) [shared_kilogram (float), shared_kilogram (float),...]
+     * @return Object $uer_meat; key (int) => 'id': user_id (int), 'username' (String), 'firstname', (String), 'lastname' (String), kg (float)
+     */
+
+    public function sumUserMeat($user_group)
+    {
+        $user_meat = [];
+        $index = 0;
+        foreach($user_group as $id => $arr) {
+            $user = User::find($id);
+            if($user) {
+                $sum = 0;
+                foreach($arr as $element) {
+                    $sum = $sum + $element;
+                }
+                $user_meat[$index] = [
+                    'id'            => $id, 
+                    'username'      => $user->username,
+                    'firstname'     => $user->firstname,
+                    'lastname'      => $user->lastname,
+                    'kg'            => $sum
+                ];
+                $index += 1;
+            }   
+        }
+        $sorted = asort($user_meat);
+        return $user_meat;
+    }
+
+    public function sumMeatWrapper($value)
+    {
+        $sm_res     = $this->getSpeciesMeat($value);
+        $utm_res    = $this->groupUserToMeat($sm_res);
+        $filled_res = $this->fillOutGroups($utm_res);
+        return $this->sumUserMeat($utm_res);
+    }
+    
 
     // Skapar grupper 
     // killreport_id => [user_id, user_id]

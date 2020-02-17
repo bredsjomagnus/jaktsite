@@ -313,6 +313,81 @@
             <mdb-card-body
             v-else-if="step === 'meat'"
             >
+                <div v-if="this.animalfields.species == 'Älg'">
+                    <p>Du valde visst älg</p>
+                    <div class="d-flex flex-column">
+                        <div
+                        v-for="hunter in meatMoose"
+                        :key="hunter.id"
+                        >   
+                            <div class="d-flex justify-content-center">
+                                <!-- <img class="img-fluid z-depth-1 rounded-circle" style="width: 50px; height: 50px; margin-top:5px" :alt="authUser.username" :src="gravatarSrc(hunter.email)"> -->
+                                <mdb-btn class="mb-0" style="width: 300px" color="grey" >{{hunter.firstname}} {{hunter.lastname}} - {{hunter.kg}}</mdb-btn>
+                            </div>    
+                        </div>
+                        
+                    </div>
+                </div>
+                <div v-if="this.animalfields.species == 'Kronvilt'">
+                    <p>Du valde visst kronvilt</p>
+                    <div class="d-flex flex-column">
+                        <div
+                        v-for="hunter in meatReddeer"
+                        :key="hunter.id"
+                        >   
+                            <div class="d-flex justify-content-center">
+                                <!-- <img class="img-fluid z-depth-1 rounded-circle" style="width: 50px; height: 50px; margin-top:5px" :alt="authUser.username" :src="gravatarSrc(hunter.email)"> -->
+                                <mdb-btn class="mb-0" style="width: 300px" color="grey" >{{hunter.firstname}} {{hunter.lastname}} - {{hunter.kg}}</mdb-btn>
+                            </div>    
+                        </div>
+                        
+                    </div>
+                </div>
+                <div v-if="this.animalfields.species == 'Dovvilt'">
+                    <p>Du valde visst dovvilt</p>
+                    <div class="d-flex flex-column">
+                        <div
+                        v-for="hunter in meatFallowdeer"
+                        :key="hunter.id"
+                        >   
+                            <div class="d-flex justify-content-center">
+                                <!-- <img class="img-fluid z-depth-1 rounded-circle" style="width: 50px; height: 50px; margin-top:5px" :alt="authUser.username" :src="gravatarSrc(hunter.email)"> -->
+                                <mdb-btn class="mb-0" style="width: 300px" color="grey" >{{hunter.firstname}} {{hunter.lastname}} - {{hunter.kg}}</mdb-btn>
+                            </div>    
+                        </div>
+                        
+                    </div>
+                </div>
+                <div v-if="this.animalfields.species == 'Rådjur'">
+                    <p>Du valde visst rådjur</p>
+                    <div class="d-flex flex-column">
+                        <div
+                        v-for="hunter in meatRoedeer"
+                        :key="hunter.id"
+                        >   
+                            <div class="d-flex justify-content-center">
+                                <!-- <img class="img-fluid z-depth-1 rounded-circle" style="width: 50px; height: 50px; margin-top:5px" :alt="authUser.username" :src="gravatarSrc(hunter.email)"> -->
+                                <mdb-btn class="mb-0" style="width: 300px" color="grey" >{{hunter.firstname}} {{hunter.lastname}} - {{hunter.kg}}</mdb-btn>
+                            </div>    
+                        </div>
+                        
+                    </div>
+                </div>
+                <div v-if="this.animalfields.species == 'Vildsvin'">
+                    <p>Du valde visst vildsvin</p>
+                    <div class="d-flex flex-column">
+                        <div
+                        v-for="hunter in meatBoar"
+                        :key="hunter.id"
+                        >   
+                            <div class="d-flex justify-content-center">
+                                <!-- <img class="img-fluid z-depth-1 rounded-circle" style="width: 50px; height: 50px; margin-top:5px" :alt="authUser.username" :src="gravatarSrc(hunter.email)"> -->
+                                <mdb-btn class="mb-0" style="width: 300px" color="grey" >{{hunter.firstname}} {{hunter.lastname}} - {{hunter.kg}}</mdb-btn>
+                            </div>    
+                        </div>
+                        
+                    </div>
+                </div>
 
                 <mdb-btn color="blue-grey" @click.native="stepBackFromMeat()" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
                 <mdb-btn color="blue-grey" @click.native="setMeat()" size="sm"><mdb-icon icon="chevron-right"/></mdb-btn>
@@ -509,6 +584,14 @@
         console.log();
         console.log('meats:');
         console.log(this.meats);
+
+        let sortedMoose = this.bubble(this.meatMoose);
+        let sortedReddeer = this.bubble(this.meatReddeer);
+        let sortedFallowdeer = this.bubble(this.meatFallowdeer);
+        let sortedRoedeer = this.bubble(this.meatRoedeer);
+        let sortedBoar = this.bubble(this.meatBoar);
+
+
         console.log('meatMoose:');
         console.log(this.meatMoose);
         console.log('meatReddeer:');
@@ -519,8 +602,48 @@
         console.log(this.meatRoedeer);
         console.log('meatBoar:');
         console.log(this.meatBoar);
+
+
     },
     methods: {
+        bubble(obj_unsorted) {
+            let bubbling = true;
+            let notswapped = true;
+            // let objarr = [];
+            let obj = obj_unsorted;
+            let n = Object.keys(obj).length - 1;
+            // console.log('n');
+            // console.log(n);
+            // let c = 0;
+            // console.log('obj');
+            // console.log(obj);
+            while (bubbling) {
+                notswapped = true;
+                for (var k=0; k < n; k++) {
+                    // console.log("KOMMER HIT")
+                    // console.log('obj[k].kg');
+                    // console.log(obj[k].kg);
+                    // console.log('obj[k+1].kg');
+                    // console.log(obj[k+1].kg);
+                    if (obj[k].kg > obj[k+1].kg) {
+                        var temp = obj[k];
+                        // console.log(temp);
+                        // console.log('temp');
+                        obj[k] = obj[k+1];
+                        obj[k+1] = temp;
+                        notswapped = false;
+                    }
+                }
+                if (notswapped) {
+                    bubbling = false;
+                }
+                // c += 1;
+                // if (c > 1000000) {
+                //     bubbling = false;
+                // }
+            }
+            return obj;
+        },
         todaysdate(){
             var d = new Date(),
             month = '' + (d.getMonth() + 1),
