@@ -410,17 +410,26 @@
         >
             <mdb-card-body >
                 <form @submit.prevent="submitForm">
-                    <mdb-input label="Rapportör" v-model="reporter_name" disabled />
-                    <mdb-input label="Skytt" v-model="shooter_name" disabled />
-                    <mdb-input label="Sorts jakt" v-model="killreportfields.kindofhunt" disabled />
-                    <mdb-input  label="Område" v-model="area_name" disabled />
-                    <mdb-input v-if="killreportfields.place != null" type="textarea" label="Plats" v-model="killreportfields.place" />
-                    <mdb-input class="mt-5" type="date" label="Datum" v-model="killreportfields.killdate" disabled />
-                    <mdb-input label="Djur" v-model="animalfields.species" disabled />
-                    <mdb-input label="Djurklassificering" v-model="animalfields.speciestype" disabled />
-                    <mdb-input v-if="animalfields.points != null" label="Taggar" v-model="animalfields.points" disabled />
-                    <mdb-input v-if="animalfields.antlers != null" label="Horn" v-model="animalfields.antlers" disabled />
-                    <!-- <mdb-row v-if="(animalfields.live_weight != null) || animalfields.aprox_live_weight != null"> -->
+                    <div class="w-100">
+                        <h6 class="d-flex justify-content-center">VEM/VAR/NÄR/VAD</h6>
+                    </div>
+                    <mdb-row>
+                        <div class="w-100 pl-3 ml-2 topinforeport">
+                            <mdb-input label="Rapportör" v-model="reporter_name" disabled />
+                            <mdb-input label="Skytt" v-model="shooter_name" disabled />
+                            <mdb-input label="Sorts jakt" v-model="killreportfields.kindofhunt" disabled />
+                            <mdb-input  label="Område" v-model="area_name" disabled />
+                            <mdb-input v-if="killreportfields.place != null" type="textarea" label="Plats" v-model="killreportfields.place" />
+                            <mdb-input class="mt-5" type="date" label="Datum" v-model="killreportfields.killdate" disabled />
+                            <mdb-input label="Djur" v-model="animalfields.species" disabled />
+                            <mdb-input label="Djurklassificering" v-model="animalfields.speciestype" disabled />
+                            <mdb-input v-if="animalfields.points != null" label="Taggar" v-model="animalfields.points" disabled />
+                            <mdb-input v-if="animalfields.antlers != null" label="Horn" v-model="animalfields.antlers" disabled />
+                            <!-- <mdb-row v-if="(animalfields.live_weight != null) || animalfields.aprox_live_weight != null"> -->
+                        </div>
+                    </mdb-row>
+                    
+                    
 
                     <mdb-row v-if="weights()">
                         <div class="w-100">
@@ -1158,12 +1167,16 @@
   }
 </script>
 <style scope>
+.topinforeport {
+    border-left: 8px solid #5d73a2; 
+    border-top: 1px solid lightgray;
+}
 .weightreport {
-    border-left: 8px solid #9aa5bd; 
+    border-left: 8px solid #5d73a2; 
     border-top: 1px solid lightgray;
 }
 .meatreport {
-    border-left: 8px solid #8b4298; 
+    border-left: 8px solid #5d73a2; 
     border-top: 1px solid lightgray;
 }
     

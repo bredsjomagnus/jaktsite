@@ -1,6 +1,7 @@
 use jaktsite;
 
 INSERT INTO `jaktsite`.`users`(
+    `id`,
     `active`,
     `role`,
     `occupation`,
@@ -21,6 +22,7 @@ INSERT INTO `jaktsite`.`users`(
     `updated_at`
 )
 SELECT
+    `id`,
     `active`,
     `role`,
     `occupation`,
