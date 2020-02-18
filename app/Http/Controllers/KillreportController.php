@@ -167,7 +167,7 @@ class KillreportController extends Controller
      */
     public function fillOutGroups($obj) 
     {
-        $hunters = User::where('occupation', 'hunter')->get();
+        $hunters = User::where('occupation', 'hunter')->where('role','!=', 'guest')->get();
         foreach($hunters as $key => $hunter) {
             if (!$obj->has($hunter->id)){
                 $obj[$hunter->id] = [0];
@@ -193,7 +193,7 @@ class KillreportController extends Controller
             $user = User::find($id);
             
             if($user) {
-                if($user->occupation == 'hunter') {
+                if($user->occupation == 'hunter' && $user->role != 'guest') {
                     $sum = 0;
                     foreach($arr as $element) {
                         $sum = $sum + $element;
