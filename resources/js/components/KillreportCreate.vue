@@ -285,6 +285,10 @@
            <mdb-card-body 
             v-else-if="step === 'weight'"
             >
+                <div class="d-flex flex-row justify-content-around">
+                    <mdb-btn color="blue-grey" @click.native="stepBackFromWeight()" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
+                    <mdb-btn color="blue-grey" @click.native="setWeight()" size="sm"><mdb-icon icon="chevron-right"/></mdb-btn>
+                </div>
                 <div class="d-flex flex-column">
                     <div class="p-3 mb-2" style="border-left: 8px solid #9aa5bd; border-bottom: 1px solid #d0d0d0;">
                         <mdb-input type="number" step="0.1" label="Levandevikt" v-model="animalfields.live_weight"/>
@@ -305,16 +309,21 @@
                         <mdb-input type="number" step="0.001" label="Hjärtvikt" v-model="animalfields.heart_weight"/>
                     </div>
                 </div>
-            <mdb-btn color="blue-grey" @click.native="stepBackFromWeight()" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
-            <mdb-btn color="blue-grey" @click.native="setWeight()" size="sm"><mdb-icon icon="chevron-right"/></mdb-btn>
+                <div class="d-flex flex-row justify-content-around">
+                    <mdb-btn color="blue-grey" @click.native="stepBackFromWeight()" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
+                    <mdb-btn color="blue-grey" @click.native="setWeight()" size="sm"><mdb-icon icon="chevron-right"/></mdb-btn>
+                </div>
           </mdb-card-body>
 
             <!-- meat -->
             <mdb-card-body
             v-else-if="step === 'meat'"
             >
+            <div class="d-flex flex-row justify-content-around">
+                <mdb-btn color="blue-grey" @click.native="stepBackFromMeat()" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
+                <mdb-btn color="blue-grey" @click.native="setMeat()" size="sm"><mdb-icon icon="chevron-right"/></mdb-btn>
+            </div>
                 <div v-if="this.animalfields.species == 'Älg'">
-                    <p>Du valde visst älg</p>
                     <div class="d-flex flex-column">
                         <div
                         v-for="hunter in meatMoose"
@@ -322,29 +331,27 @@
                         >   
                             <div class="d-flex justify-content-center">
                                 <!-- <img class="img-fluid z-depth-1 rounded-circle" style="width: 50px; height: 50px; margin-top:5px" :alt="authUser.username" :src="gravatarSrc(hunter.email)"> -->
-                                <mdb-btn class="mb-0" style="width: 300px" color="grey" >{{hunter.firstname}} {{hunter.lastname}} - {{hunter.kg}}</mdb-btn>
+                                <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click="togglemeat(hunter.id)" >{{hunter.firstname}} {{hunter.lastname}}<br>-- {{hunter.kg}} kg --</mdb-btn>
                             </div>    
                         </div>
                         
                     </div>
                 </div>
                 <div v-if="this.animalfields.species == 'Kronvilt'">
-                    <p>Du valde visst kronvilt</p>
                     <div class="d-flex flex-column">
                         <div
                         v-for="hunter in meatReddeer"
                         :key="hunter.id"
                         >   
-                            <div class="d-flex justify-content-center">
+                            <div class="d-flex flex-row justify-content-center">
                                 <!-- <img class="img-fluid z-depth-1 rounded-circle" style="width: 50px; height: 50px; margin-top:5px" :alt="authUser.username" :src="gravatarSrc(hunter.email)"> -->
-                                <mdb-btn class="mb-0" style="width: 300px" color="grey" >{{hunter.firstname}} {{hunter.lastname}} - {{hunter.kg}}</mdb-btn>
-                            </div>    
+                                <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click="togglemeat(hunter.id)" >{{hunter.firstname}} {{hunter.lastname}}<br>-- {{hunter.kg}} kg --</mdb-btn>
+                            </div>
                         </div>
                         
                     </div>
                 </div>
                 <div v-if="this.animalfields.species == 'Dovvilt'">
-                    <p>Du valde visst dovvilt</p>
                     <div class="d-flex flex-column">
                         <div
                         v-for="hunter in meatFallowdeer"
@@ -352,14 +359,13 @@
                         >   
                             <div class="d-flex justify-content-center">
                                 <!-- <img class="img-fluid z-depth-1 rounded-circle" style="width: 50px; height: 50px; margin-top:5px" :alt="authUser.username" :src="gravatarSrc(hunter.email)"> -->
-                                <mdb-btn class="mb-0" style="width: 300px" color="grey" >{{hunter.firstname}} {{hunter.lastname}} - {{hunter.kg}}</mdb-btn>
+                                <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click="togglemeat(hunter.id)" >{{hunter.firstname}} {{hunter.lastname}}<br>-- {{hunter.kg}} kg --</mdb-btn>
                             </div>    
                         </div>
                         
                     </div>
                 </div>
                 <div v-if="this.animalfields.species == 'Rådjur'">
-                    <p>Du valde visst rådjur</p>
                     <div class="d-flex flex-column">
                         <div
                         v-for="hunter in meatRoedeer"
@@ -367,14 +373,13 @@
                         >   
                             <div class="d-flex justify-content-center">
                                 <!-- <img class="img-fluid z-depth-1 rounded-circle" style="width: 50px; height: 50px; margin-top:5px" :alt="authUser.username" :src="gravatarSrc(hunter.email)"> -->
-                                <mdb-btn class="mb-0" style="width: 300px" color="grey" >{{hunter.firstname}} {{hunter.lastname}} - {{hunter.kg}}</mdb-btn>
+                                <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click="togglemeat(hunter.id)" >{{hunter.firstname}} {{hunter.lastname}}<br>-- {{hunter.kg}} kg --</mdb-btn>
                             </div>    
                         </div>
                         
                     </div>
                 </div>
                 <div v-if="this.animalfields.species == 'Vildsvin'">
-                    <p>Du valde visst vildsvin</p>
                     <div class="d-flex flex-column">
                         <div
                         v-for="hunter in meatBoar"
@@ -382,15 +387,17 @@
                         >   
                             <div class="d-flex justify-content-center">
                                 <!-- <img class="img-fluid z-depth-1 rounded-circle" style="width: 50px; height: 50px; margin-top:5px" :alt="authUser.username" :src="gravatarSrc(hunter.email)"> -->
-                                <mdb-btn class="mb-0" style="width: 300px" color="grey" >{{hunter.firstname}} {{hunter.lastname}} - {{hunter.kg}}</mdb-btn>
+                                <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click="togglemeat(hunter.id)" >{{hunter.firstname}} {{hunter.lastname}}<br>-- {{hunter.kg}} kg --</mdb-btn>
                             </div>    
                         </div>
                         
                     </div>
                 </div>
 
-                <mdb-btn color="blue-grey" @click.native="stepBackFromMeat()" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
-                <mdb-btn color="blue-grey" @click.native="setMeat()" size="sm"><mdb-icon icon="chevron-right"/></mdb-btn>
+                <div class="d-flex flex-row justify-content-around">
+                    <mdb-btn color="blue-grey" @click.native="stepBackFromMeat()" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
+                    <mdb-btn color="blue-grey" @click.native="setMeat()" size="sm"><mdb-icon icon="chevron-right"/></mdb-btn>
+                </div>
             </mdb-card-body>
             <!-- /meat -->
 
@@ -422,7 +429,7 @@
                     </mdb-row>
                     
                     <mdb-row v-if="(animalfields.live_weight != null) || animalfields.aprox_live_weight != null">
-                        <div class="w-100 ml-4 mr-4 mb-2 weightreport">
+                        <div class="w-100 ml-2 mr-4 mb-2 weightreport">
                             <mdb-col>
                                 <mdb-input label="Levandevikt" v-model="animalfields.live_weight" disabled/>
                             </mdb-col>
@@ -433,7 +440,7 @@
                     </mdb-row>
 
                     <mdb-row v-if="(animalfields.passad_weight != null) || animalfields.aprox_passad_weight != null">
-                        <div class="w-100 ml-4 mr-4 mb-2 weightreport">
+                        <div class="w-100 ml-2 mr-4 mb-2 weightreport">
                             <mdb-col>
                                 <mdb-input label="Passad vikt" v-model="animalfields.passad_weight" disabled/>
                             </mdb-col>
@@ -444,7 +451,7 @@
                     </mdb-row>
 
                     <mdb-row v-if="(animalfields.carcass_weight != null) || animalfields.aprox_carcass_weight != null">
-                        <div class="w-100 ml-4 mr-4 mb-2 weightreport">
+                        <div class="w-100 ml-2 mr-4 mb-2 weightreport">
                             <mdb-col>
                                 <mdb-input label="Slaktvikt" v-model="animalfields.carcass_weight" disabled/>
                             </mdb-col>
@@ -455,7 +462,7 @@
                     </mdb-row>
 
                     <mdb-row v-if="(animalfields.cut_weight != null) || animalfields.heart_weight != null">
-                        <div class="w-100 ml-4 mr-4 mb-2 weightreport">
+                        <div class="w-100 ml-2 mr-4 mb-2 weightreport">
                             <mdb-col>
                                 <mdb-input label="Styckdetaljer" v-model="animalfields.cut_weight" disabled/>
                             </mdb-col>
@@ -463,6 +470,17 @@
                                 <mdb-input label="Hjärtvikt" v-model="animalfields.heart_weight" disabled/>
                             </mdb-col>
                         </div>   
+                    </mdb-row>
+
+                    <mdb-row v-if="toggledformeat.length > 0">
+                        <div class="w-100">
+                            <h6 class="d-flex justify-content-center">KÖTT TILLDELAS</h6>
+                        </div>
+                        <div class="w-100 ml-2 mr-4 mb-2 meatreport">
+                            <div v-for="id in toggledformeat" :key="id">
+                                <div class="ml-2 mt-2 mb-2">{{ huntername(id) }}</div>    
+                            </div>
+                        </div>
                     </mdb-row>
 
                     <input type="hidden" name="_token" :value="csrf">
@@ -568,7 +586,8 @@
             reporter_name: this.authUser.firstname + " " + this.authUser.lastname,
             shooter_name: null,
             area_name: null,
-            thekilldate: null
+            thekilldate: null,
+            toggledformeat: []
         }
 
     },
@@ -606,6 +625,30 @@
 
     },
     methods: {
+        huntername(_id) {
+            // console.log(_id);
+            var result = this.hunters.filter(obj => {
+                return obj.id === _id;
+            });
+            // console.log(result);
+            return result[0].firstname +" "+ result[0].lastname;
+        },
+        togglemeat(id) {
+            console.log("Togglar id " + id);
+            if (this.toggledformeat.includes(id)) {
+                let index = this.toggledformeat.indexOf(id);
+                this.toggledformeat.splice(index, 1);
+            } else {
+                this.toggledformeat.push(id);
+            }
+        },
+        isToggledForMeat(id) {
+            let result = false;
+            if (this.toggledformeat.includes(id)) {
+                result = true;
+            } 
+            return result;
+        },
         bubble(obj_unsorted) {
             let bubbling = true;
             let notswapped = true;
@@ -940,7 +983,7 @@
             this.animalfields.heart_weight = ((this.animalfields.heart_weight == 0 || this.animalfields.heart_weight == "") ? null : this.animalfields.heart_weight);
             
             this.step = "meat";
-            this.steptitle = "TILLDELNING AV KÖTT";
+            this.steptitle = "TILLDELNING AV KÖTT - " + this.animalfields.species.toUpperCase();;
         },
         stepBackFromWeight() {
             this.animalfields.live_weight = null;
@@ -967,6 +1010,7 @@
             // TODO nollställ meat här
             this.step = 'weight';
             this.steptitle = 'VIKTER';
+            this.toggledformeat = [];
 
         },
         setMeat() {
@@ -1032,7 +1076,7 @@
             this.shooter_name = null;
             this.killreportfields.kindofhunt = null;
             this.animalfields.animal_id = null;
-            this.killreportfields.killdate = null;
+            this.killreportfields.killdate = this.todaysdate();
             this.killreportfields.season = '20/21';
             this.killreportfields.area_id = null;
             this.area_name = null;
@@ -1047,6 +1091,8 @@
             this.animalfields.sex = null;
             this.animalfields.antlers = null;
             this.animalfields.points = null;
+
+            this.toggledformeat = [];
         },
         cancelReportProcess() {
             window.location = this.accountPage;
@@ -1114,6 +1160,10 @@
 <style scope>
 .weightreport {
     border-left: 8px solid #9aa5bd; 
+    border-top: 1px solid lightgray;
+}
+.meatreport {
+    border-left: 8px solid #8b4298; 
     border-top: 1px solid lightgray;
 }
     

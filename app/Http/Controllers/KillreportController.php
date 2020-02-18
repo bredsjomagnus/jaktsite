@@ -34,11 +34,12 @@ class KillreportController extends Controller
         $meats                  = Meat::all();
 
         // Summed and sorted list of users shared_kilograms; ['user_id'] => sum (float)
+        $user_boar              = $this->sumMeatWrapper('Vildsvin');
         $user_moose             = $this->sumMeatWrapper('Älg');
         $user_reddeer           = $this->sumMeatWrapper('Kronvilt');
         $user_fallowdeer        = $this->sumMeatWrapper('Dovvilt');
         $user_roedeer           = $this->sumMeatWrapper('Rådjur');
-        $user_boar              = $this->sumMeatWrapper('Vildsvin');
+        
         
         $data = [
             'hunters'           => User::where('occupation', 'hunter')->get(),
@@ -154,7 +155,6 @@ class KillreportController extends Controller
         $result = $table->mapToGroups(function ($item, $key) {
             return [$item['user_id'] => $item['share_kilogram']];
         });
-
         return $result;
     }
 
@@ -191,20 +191,23 @@ class KillreportController extends Controller
         $index = 0;
         foreach($user_group as $id => $arr) {
             $user = User::find($id);
+            
             if($user) {
-                $sum = 0;
-                foreach($arr as $element) {
-                    $sum = $sum + $element;
+                if($user->occupation == 'hunter') {
+                    $sum = 0;
+                    foreach($arr as $element) {
+                        $sum = $sum + $element;
+                    }
+                    $user_meat[$index] = [
+                        'id'            => $id, 
+                        'username'      => $user->username,
+                        'firstname'     => $user->firstname,
+                        'lastname'      => $user->lastname,
+                        'kg'            => $sum
+                    ];
+                    $index += 1;
                 }
-                $user_meat[$index] = [
-                    'id'            => $id, 
-                    'username'      => $user->username,
-                    'firstname'     => $user->firstname,
-                    'lastname'      => $user->lastname,
-                    'kg'            => $sum
-                ];
-                $index += 1;
-            }   
+            }
         }
         $sorted = asort($user_meat);
         return $user_meat;
