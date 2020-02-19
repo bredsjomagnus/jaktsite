@@ -35,4 +35,9 @@ class Meat extends Model
     {
         return $this->animal()->getAttributes()['species'] == $value;
     }
+
+    public function season()
+    {
+        return $this->killreport->season;
+    }
 }

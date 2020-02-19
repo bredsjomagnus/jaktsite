@@ -12,6 +12,8 @@ use App\User;
 use App\Animal;
 use App\Area;
 
+
+
 class KillreportTest extends TestCase
 {
     use RefreshDatabase;
@@ -113,5 +115,28 @@ class KillreportTest extends TestCase
         $killreport = factory(Killreport::class)->create();
 
         $this->assertEquals($killreport->path(), "killreports/1");
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function get_correct_season()
+    {
+        $this->withoutExceptionHandling();
+        $season_1819_1 = "2018-07-01";
+        $season_1819_2 = "2018-06-30";
+
+        $this_season = date('Y-m-d');
+  
+        $res_1 = app('App\Http\Controllers\KillreportController')->getSeason($this_season);
+        $res_2 = app('App\Http\Controllers\KillreportController')->getSeason($season_1819_1);
+        $res_3 = app('App\Http\Controllers\KillreportController')->getSeason($season_1819_2);
+
+
+        $this->assertEquals($res_1, "19/20");
+        $this->assertEquals($res_2, "18/19");
+        $this->assertEquals($res_3, "17/18");
     }
 }

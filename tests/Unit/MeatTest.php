@@ -66,4 +66,17 @@ class MeatTest extends TestCase
 
         $this->assertEquals($meat->path(), 'meat/'.$meat->killreport_id);
     }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function meat_can_get_the_season()
+    {
+        $this->withoutExceptionHandling();
+        $meat = factory(Meat::class)->create();
+
+        $this->assertEquals($meat->season(), '19/20');
+    }
 }

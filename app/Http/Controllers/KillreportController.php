@@ -31,26 +31,40 @@ class KillreportController extends Controller
      */
     public function create()
     {
-        $meats                  = Meat::all();
 
-        // Summed and sorted list of users shared_kilograms; ['user_id'] => sum (float)
-        $user_boar              = $this->sumMeatWrapper('Vildsvin');
-        $user_moose             = $this->sumMeatWrapper('Älg');
-        $user_reddeer           = $this->sumMeatWrapper('Kronvilt');
-        $user_fallowdeer        = $this->sumMeatWrapper('Dovvilt');
-        $user_roedeer           = $this->sumMeatWrapper('Rådjur');
+        $meats                  = Meat::all();
+        $this_season            = $this->getSeason(date('Y-m-d'));
+
+        // The over all seasons total summed and sorted list of users shared_kilograms; ['user_id'] => sum (float)
+        $user_boar_total              = $this->sumMeatWrapper('Vildsvin', 'total');
+        $user_moose_total             = $this->sumMeatWrapper('Älg', 'total');
+        $user_reddeer_total           = $this->sumMeatWrapper('Kronvilt', 'total');
+        $user_fallowdeer_total        = $this->sumMeatWrapper('Dovvilt', 'total');
+        $user_roedeer_total           = $this->sumMeatWrapper('Rådjur', 'total');
+
+        // This seasons summed and sorted lists of users shared_kilograms; ['user_id'] => sum (float)
+        $user_boar_this_season              = $this->sumMeatWrapper('Vildsvin', $this_season);
+        $user_moose_this_season             = $this->sumMeatWrapper('Älg', $this_season);
+        $user_reddeer_this_season           = $this->sumMeatWrapper('Kronvilt', $this_season);
+        $user_fallowdeer_this_season        = $this->sumMeatWrapper('Dovvilt', $this_season);
+        $user_roedeer_this_season           = $this->sumMeatWrapper('Rådjur', $this_season);
         
         
         $data = [
-            'hunters'           => User::where('occupation', 'hunter')->get(),
-            'anonhunter'        => User::where('occupation', 'anonhunter')->limit(1)->get(),
-            'areas'             => Area::all(),
-            'meats'             => $meats,
-            'meat_moose'        => $user_moose,
-            'meat_reddeer'      => $user_reddeer,
-            'meat_fallowdeer'   => $user_fallowdeer,
-            'meat_roedeer'      => $user_roedeer,
-            'meat_boar'         => $user_boar,
+            'hunters'                       => User::where('occupation', 'hunter')->where('role', '!=', 'guest')->get(),
+            'anonhunter'                    => User::where('occupation', 'anonhunter')->limit(1)->get(),
+            'areas'                         => Area::all(),
+            'meats'                         => $meats,
+            'meat_moose_total'              => $user_moose_total,
+            'meat_reddeer_total'            => $user_reddeer_total,
+            'meat_fallowdeer_total'         => $user_fallowdeer_total,
+            'meat_roedeer_total'            => $user_roedeer_total,
+            'meat_boar_total'               => $user_boar_total,
+            'meat_moose_this_season'        => $user_moose_this_season,
+            'meat_reddeer_this_season'      => $user_reddeer_this_season,
+            'meat_fallowdeer_this_season'   => $user_fallowdeer_this_season,
+            'meat_roedeer_this_season'      => $user_roedeer_this_season,
+            'meat_boar_this_season'         => $user_boar_this_season,
         ];
         return view('killreports.create', $data);
     }
@@ -132,9 +146,15 @@ class KillreportController extends Controller
      * @param String $species; 'Älg', 'Kronvilt',...
      * @return Object $result; rows from meats of selected species
      */
-    public function getSpeciesMeat($specie)
+    public function getSpeciesMeat($specie, $season)
     {
         $meats = Meat::all();
+        if($season != 'total') {
+            $meats = $meats->filter(function($row) use ($season) {
+                return $row->season() == $season;
+            });
+        }
+        
         $result = $meats->filter(function ($row) use ($specie)  {
             return $row->isSpecies($specie);
         });
@@ -213,14 +233,47 @@ class KillreportController extends Controller
         return $user_meat;
     }
 
-    public function sumMeatWrapper($value)
+    /**
+     * A wrapper for getting list of objects with 
+     * users [id, username, firstname, lastname, kg] for a species ($species) amd season ($season)
+     * If $season is set to 'total' all kg will be summed up from the begining to now.
+     * Otherwhise $season can be set to ex '19/20' and only sum up kg for this species, this season.
+     * 
+     * @param String $species; 'Älg' or 'Kronvilt' or.....
+     * @param String $season; 'total' or '19/20' or....
+     */
+    public function sumMeatWrapper($species, $season)
     {
-        $sm_res     = $this->getSpeciesMeat($value);
+        $sm_res     = $this->getSpeciesMeat($species, $season);
         $utm_res    = $this->groupUserToMeat($sm_res);
         $filled_res = $this->fillOutGroups($utm_res);
         return $this->sumUserMeat($utm_res);
     }
     
+
+    /**
+     * Get date and return the season for that date
+     * 
+     * @param String $date; format YYYY-mm-dd
+     * @return Stirng $season; format YY/YY eg '19/20'
+     */
+    public function getSeason($date)
+    {
+        
+        $year = substr($date, 0, 4);
+        $yy = substr($year, 2, 2);
+        $season_last_day = $year."-06-30";
+        if(strtotime($date) > strtotime($season_last_day)) {
+            $yy_other = intval($yy) + 1;
+            $season = strval($yy).'/'.strval($yy_other);
+        } else {
+            $yy_other = intval($yy) - 1;
+            $season = strval($yy_other).'/'.strval($yy);
+        }
+
+        return $season;
+        
+    }
 
     // Skapar grupper 
     // killreport_id => [user_id, user_id]

@@ -321,12 +321,17 @@
             >
             <div class="d-flex flex-row justify-content-around">
                 <mdb-btn color="blue-grey" @click.native="stepBackFromMeat()" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
+                <div class="custom-control custom-switch" style="width:110px">
+                    <input type="checkbox" class="custom-control-input" v-model="showTotalMeat" id="customSwitches">
+                    <label v-if="showTotalMeat" class="custom-control-label" for="customSwitches">Totalt</label>
+                    <label v-else class="custom-control-label" for="customSwitches">Jaktsäsong</label>
+                </div>
                 <mdb-btn color="blue-grey" @click.native="setMeat()" size="sm"><mdb-icon icon="chevron-right"/></mdb-btn>
             </div>
                 <div v-if="this.animalfields.species == 'Älg'">
-                    <div class="d-flex flex-column">
+                    <div v-if="showTotalMeat" class="d-flex flex-column">
                         <div
-                        v-for="hunter in meatMoose"
+                        v-for="hunter in meatMooseTotal"
                         :key="hunter.id"
                         >   
                             <div class="d-flex justify-content-center">
@@ -334,13 +339,34 @@
                                 <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click="togglemeat(hunter.id)" >{{hunter.firstname}} {{hunter.lastname}}<br>-- {{hunter.kg}} kg --</mdb-btn>
                             </div>    
                         </div>
-                        
+                    </div>
+                    <div v-else class="d-flex flex-column">
+                        <div
+                        v-for="hunter in meatMooseThisSeason"
+                        :key="hunter.id"
+                        >   
+                            <div class="d-flex justify-content-center">
+                                <!-- <img class="img-fluid z-depth-1 rounded-circle" style="width: 50px; height: 50px; margin-top:5px" :alt="authUser.username" :src="gravatarSrc(hunter.email)"> -->
+                                <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click="togglemeat(hunter.id)" >{{hunter.firstname}} {{hunter.lastname}}<br>-- {{hunter.kg}} kg --</mdb-btn>
+                            </div>    
+                        </div>
                     </div>
                 </div>
                 <div v-if="this.animalfields.species == 'Kronvilt'">
-                    <div class="d-flex flex-column">
+                    <div v-if="showTotalMeat" class="d-flex flex-column">
                         <div
-                        v-for="hunter in meatReddeer"
+                        v-for="hunter in meatReddeerTotal"
+                        :key="hunter.id"
+                        >   
+                            <div class="d-flex flex-row justify-content-center">
+                                <!-- <img class="img-fluid z-depth-1 rounded-circle" style="width: 50px; height: 50px; margin-top:5px" :alt="authUser.username" :src="gravatarSrc(hunter.email)"> -->
+                                <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click="togglemeat(hunter.id)" >{{hunter.firstname}} {{hunter.lastname}}<br>-- {{hunter.kg}} kg --</mdb-btn>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else class="d-flex flex-column">
+                        <div
+                        v-for="hunter in meatReddeerThisSeason"
                         :key="hunter.id"
                         >   
                             <div class="d-flex flex-row justify-content-center">
@@ -352,9 +378,9 @@
                     </div>
                 </div>
                 <div v-if="this.animalfields.species == 'Dovvilt'">
-                    <div class="d-flex flex-column">
+                    <div v-if="showTotalMeat" class="d-flex flex-column">
                         <div
-                        v-for="hunter in meatFallowdeer"
+                        v-for="hunter in meatFallowdeerTotal"
                         :key="hunter.id"
                         >   
                             <div class="d-flex justify-content-center">
@@ -363,12 +389,24 @@
                             </div>    
                         </div>
                         
+                    </div>
+                    <div v-else class="d-flex flex-column">
+                        <div
+                        v-for="hunter in meatFallowdeerThisSeason"
+                        :key="hunter.id"
+                        >   
+                            <div class="d-flex justify-content-center">
+                                <!-- <img class="img-fluid z-depth-1 rounded-circle" style="width: 50px; height: 50px; margin-top:5px" :alt="authUser.username" :src="gravatarSrc(hunter.email)"> -->
+                                <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click="togglemeat(hunter.id)" >{{hunter.firstname}} {{hunter.lastname}}<br>-- {{hunter.kg}} kg --</mdb-btn>
+                            </div>    
+                        </div>
+
                     </div>
                 </div>
                 <div v-if="this.animalfields.species == 'Rådjur'">
-                    <div class="d-flex flex-column">
+                    <div v-if="showTotalMeat" class="d-flex flex-column">
                         <div
-                        v-for="hunter in meatRoedeer"
+                        v-for="hunter in meatRoedeerTotal"
                         :key="hunter.id"
                         >   
                             <div class="d-flex justify-content-center">
@@ -376,13 +414,23 @@
                                 <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click="togglemeat(hunter.id)" >{{hunter.firstname}} {{hunter.lastname}}<br>-- {{hunter.kg}} kg --</mdb-btn>
                             </div>    
                         </div>
-                        
+                    </div>
+                    <div v-else class="d-flex flex-column">
+                        <div
+                        v-for="hunter in meatRoedeerThisSeason"
+                        :key="hunter.id"
+                        >   
+                            <div class="d-flex justify-content-center">
+                                <!-- <img class="img-fluid z-depth-1 rounded-circle" style="width: 50px; height: 50px; margin-top:5px" :alt="authUser.username" :src="gravatarSrc(hunter.email)"> -->
+                                <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click="togglemeat(hunter.id)" >{{hunter.firstname}} {{hunter.lastname}}<br>-- {{hunter.kg}} kg --</mdb-btn>
+                            </div>    
+                        </div>
                     </div>
                 </div>
                 <div v-if="this.animalfields.species == 'Vildsvin'">
-                    <div class="d-flex flex-column">
+                    <div v-if="showTotalMeat" class="d-flex flex-column">
                         <div
-                        v-for="hunter in meatBoar"
+                        v-for="hunter in meatBoarTotal"
                         :key="hunter.id"
                         >   
                             <div class="d-flex justify-content-center">
@@ -390,7 +438,17 @@
                                 <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click="togglemeat(hunter.id)" >{{hunter.firstname}} {{hunter.lastname}}<br>-- {{hunter.kg}} kg --</mdb-btn>
                             </div>    
                         </div>
-                        
+                    </div>
+                    <div v-else class="d-flex flex-column">
+                        <div
+                        v-for="hunter in meatBoarThisSeason"
+                        :key="hunter.id"
+                        >   
+                            <div class="d-flex justify-content-center">
+                                <!-- <img class="img-fluid z-depth-1 rounded-circle" style="width: 50px; height: 50px; margin-top:5px" :alt="authUser.username" :src="gravatarSrc(hunter.email)"> -->
+                                <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click="togglemeat(hunter.id)" >{{hunter.firstname}} {{hunter.lastname}}<br>-- {{hunter.kg}} kg --</mdb-btn>
+                            </div>    
+                        </div>
                     </div>
                 </div>
 
@@ -537,11 +595,16 @@
             'accountPage',
             'areas',
             'meats',
-            'meatMoose',
-            'meatReddeer',
-            'meatFallowdeer',
-            'meatRoedeer',
-            'meatBoar',
+            'meatMooseTotal',
+            'meatReddeerTotal',
+            'meatFallowdeerTotal',
+            'meatRoedeerTotal',
+            'meatBoarTotal',
+            'meatMooseThisSeason',
+            'meatReddeerThisSeason',
+            'meatFallowdeerThisSeason',
+            'meatRoedeerThisSeason',
+            'meatBoarThisSeason',
             'animalUrl',
             'killreportUrl',
             'killreportIndexUrl'
@@ -596,7 +659,8 @@
             shooter_name: null,
             area_name: null,
             thekilldate: null,
-            toggledformeat: []
+            toggledformeat: [],
+            showTotalMeat: false,
         }
 
     },
@@ -613,23 +677,29 @@
         console.log('meats:');
         console.log(this.meats);
 
-        let sortedMoose = this.bubble(this.meatMoose);
-        let sortedReddeer = this.bubble(this.meatReddeer);
-        let sortedFallowdeer = this.bubble(this.meatFallowdeer);
-        let sortedRoedeer = this.bubble(this.meatRoedeer);
-        let sortedBoar = this.bubble(this.meatBoar);
+        let sortedMooseTotal = this.bubble(this.meatMooseTotal);
+        let sortedReddeerTotal = this.bubble(this.meatReddeerTotal);
+        let sortedFallowdeerTotal = this.bubble(this.meatFallowdeerTotal);
+        let sortedRoedeerTotal = this.bubble(this.meatRoedeerTotal);
+        let sortedBoarTotal = this.bubble(this.meatBoarTotal);
+
+        let sortedMooseThisSeason = this.bubble(this.meatMooseThisSeason);
+        let sortedReddeerThisSeason = this.bubble(this.meatReddeerThisSeason);
+        let sortedFallowdeerThisSeason = this.bubble(this.meatFallowdeerThisSeason);
+        let sortedRoedeerThisSeason = this.bubble(this.meatRoedeerThisSeason);
+        let sortedBoarThisSeason = this.bubble(this.meatBoarThisSeason);
 
 
-        console.log('meatMoose:');
-        console.log(this.meatMoose);
-        console.log('meatReddeer:');
-        console.log(this.meatReddeer);
-        console.log('meatFallowdeer:');
-        console.log(this.meatFallowdeer);
-        console.log('meatRoedeer:');
-        console.log(this.meatRoedeer);
-        console.log('meatBoar:');
-        console.log(this.meatBoar);
+        console.log('meatMooseTotal:');
+        console.log(this.meatMooseTotal);
+        console.log('meatReddeerTotal:');
+        console.log(this.meatReddeerTotal);
+        console.log('meatFallowdeerTotal:');
+        console.log(this.meatFallowdeerTotal);
+        console.log('meatRoedeerTotal:');
+        console.log(this.meatRoedeerTotal);
+        console.log('meatBoarTotal:');
+        console.log(this.meatBoarTotal);
 
 
     },
