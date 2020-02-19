@@ -328,8 +328,18 @@
                 </div>
                 <mdb-btn color="blue-grey" @click.native="setMeat()" size="sm"><mdb-icon icon="chevron-right"/></mdb-btn>
             </div>
+            <div class="d-flex justify-content-center">
+                <mdb-btn style="width: 200px"
+                :color="isToggledForMeat(anonhunter[0].id) ? 'indigo' : 'grey'" 
+                @click.native="togglemeat(anonhunter[0].id)"
+                size="sm">
+                Gäst 
+                </mdb-btn>
+            </div>
                 <div v-if="this.animalfields.species == 'Älg'">
+                    
                     <div v-if="showTotalMeat" class="d-flex flex-column">
+                            
                         <div
                         v-for="hunter in meatMooseTotal"
                         :key="hunter.id"
@@ -668,6 +678,8 @@
         console.log(this.hunters);
         console.log("Anonhunter.id:")
         console.log(this.anonhunter[0].id);
+        console.log("Anonhunter:")
+        console.log(this.anonhunter);
         console.log(this.accountPage);
         console.log(this.areas);
         console.log(this.animalUrl);
@@ -706,11 +718,16 @@
     methods: {
         huntername(_id) {
             // console.log(_id);
-            var result = this.hunters.filter(obj => {
+            let res = ""
+            var user = this.hunters.filter(obj => {
                 return obj.id === _id;
             });
-            // console.log(result);
-            return result[0].firstname +" "+ result[0].lastname;
+            if(_id != this.anonhunter[0].id) {
+                res = user[0].firstname +" "+ user[0].lastname;
+            } else {
+                res = "Gäst";
+            }
+            return res
         },
         togglemeat(id) {
             console.log("Togglar id " + id);
