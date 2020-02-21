@@ -8,7 +8,7 @@
       <mdb-input label="Lösenord" icon="lock" v-model="fields.password" type="password"/>
     </div>
     <div>
-      <a href="http://localhost/pwww/jaktsite/public/password">Glömt lösenordet?</a>
+      <a :href="resetbymailUrl">Glömt lösenordet?</a>
     </div>
     <div class="text-center">
       <mdb-btn color="mdb-color" type="submit"><mdb-icon icon="sign-in-alt" class="ml-1"/> - Logga in</mdb-btn>
@@ -28,7 +28,8 @@
       mdbIcon
     },
     props:[
-      'postUrl'
+      'postUrl',
+      'resetbymailUrl'
     ],
     data() {
         return {
@@ -44,6 +45,7 @@
     },
     mounted() {
       console.log(this.postUrl);
+      console.log(this.resetbymailUrl);
     },
     methods: {
       submitForm(event) {
