@@ -52,7 +52,7 @@
 
                 @if (Auth::user()->role == "admin")
 
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item" href="{{ url('/admin') }}">
                         Admin
                     </a>
 

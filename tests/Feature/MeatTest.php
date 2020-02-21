@@ -42,6 +42,6 @@ class MeatTest extends TestCase
 
         $meat = factory(Meat::class)->create();
 
-        $this->get('/meat/10/edit')->assertOk();
+        $this->get('/meat/1/edit')->assertOk();
     }
 }

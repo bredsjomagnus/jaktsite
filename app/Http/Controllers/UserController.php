@@ -103,4 +103,9 @@ class UserController extends Controller
     {
         //
     }
+
+    public function resetlink()
+    {
+        return view('auth.passwords.email');
+    }
 }

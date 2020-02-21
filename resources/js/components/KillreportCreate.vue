@@ -319,23 +319,23 @@
             <mdb-card-body
             v-else-if="step === 'meat'"
             >
-            <div class="d-flex flex-row justify-content-around">
-                <mdb-btn color="blue-grey" @click.native="stepBackFromMeat()" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
-                <div class="custom-control custom-switch" style="width:110px">
-                    <input type="checkbox" class="custom-control-input" v-model="showTotalMeat" id="customSwitches">
-                    <label v-if="showTotalMeat" class="custom-control-label" for="customSwitches">Totalt</label>
-                    <label v-else class="custom-control-label" for="customSwitches">Jaktsäsong</label>
+                <div class="d-flex flex-row justify-content-around">
+                    <mdb-btn color="blue-grey" @click.native="stepBackFromMeat()" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
+                    <div class="custom-control custom-switch" style="width:110px">
+                        <input type="checkbox" class="custom-control-input" v-model="showTotalMeat" id="customSwitches">
+                        <label v-if="showTotalMeat" class="custom-control-label" for="customSwitches">Totalt</label>
+                        <label v-else class="custom-control-label" for="customSwitches">Jaktsäsong</label>
+                    </div>
+                    <mdb-btn color="blue-grey" @click.native="setMeat()" size="sm"><mdb-icon icon="chevron-right"/></mdb-btn>
                 </div>
-                <mdb-btn color="blue-grey" @click.native="setMeat()" size="sm"><mdb-icon icon="chevron-right"/></mdb-btn>
-            </div>
-            <div class="d-flex justify-content-center">
-                <mdb-btn style="width: 200px"
-                :color="isToggledForMeat(anonhunter[0].id) ? 'indigo' : 'grey'" 
-                @click.native="togglemeat(anonhunter[0].id)"
-                size="sm">
-                Gäst 
-                </mdb-btn>
-            </div>
+                <div class="d-flex justify-content-center">
+                    <mdb-btn style="width: 200px"
+                    :color="isToggledForMeat(anonhunter[0].id) ? 'indigo' : 'grey'" 
+                    @click.native="togglemeat(anonhunter[0].id)"
+                    size="sm">
+                    Gäst 
+                    </mdb-btn>
+                </div>
                 <div v-if="this.animalfields.species == 'Älg'">
                     
                     <div v-if="showTotalMeat" class="d-flex flex-column">

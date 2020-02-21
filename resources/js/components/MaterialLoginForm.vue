@@ -7,6 +7,9 @@
       <mdb-input label="Användarnamn" icon="user" v-model="fields.username" type="text"/>
       <mdb-input label="Lösenord" icon="lock" v-model="fields.password" type="password"/>
     </div>
+    <div>
+      <a href="http://localhost/pwww/jaktsite/public/password">Glömt lösenordet?</a>
+    </div>
     <div class="text-center">
       <mdb-btn color="mdb-color" type="submit"><mdb-icon icon="sign-in-alt" class="ml-1"/> - Logga in</mdb-btn>
     </div>
