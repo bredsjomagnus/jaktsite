@@ -21,6 +21,7 @@
   :meat-boar-this-season='{{ json_encode($meat_boar_this_season) }}' 
   :animal-url='{!! json_encode(url("animals/store")) !!}' 
   :killreport-url='{!! json_encode(url("killreports/store")) !!}' 
-  :killreport-index-url='{!! json_encode(url("killreports")) !!}' ></killreport-create>
+  :killreport-index-url='{!! json_encode(url("killreports")) !!}'
+  :meat-url='{!! json_encode(url("meat/store")) !!}' ></killreport-create>
 </div>
 @endsection

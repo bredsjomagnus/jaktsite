@@ -181,11 +181,18 @@
                         <div class="p-0"><mdb-btn :color="animalfields.speciestype == 'Kvigkalv' ? 'indigo' : 'grey'" @click="setSpeciesType('Kvigkalv')" class='w-100 m-0 mb-1'>Kvigkalv</mdb-btn></div>
                         <div class="p-0"><mdb-btn :color="animalfields.speciestype == 'Obestämd kalv' ? 'indigo' : 'grey'" @click="setSpeciesType('Obestämd kalv')" class='w-100 m-0 mb-1'>Obestämd kalv</mdb-btn></div>
                     </div>
-                    <mdb-btn color="blue-grey" @click.native="stepBackFromSpeciesType()" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
+                        <mdb-btn color="blue-grey" @click.native="stepBackFromSpeciesType()" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
                     <mdb-btn
                     v-if="animalfields.speciestype != null"
                     color="blue-grey" 
                     @click.native="setSpeciesType(animalfields.speciestype)"
+                    size="sm">
+                    <mdb-icon icon="chevron-right"/>
+                    </mdb-btn>
+                    <mdb-btn
+                    v-else
+                    color="blue-grey"
+                    @click.native="setUnknownSpeciesType()"
                     size="sm">
                     <mdb-icon icon="chevron-right"/>
                     </mdb-btn>
@@ -210,6 +217,13 @@
                     size="sm">
                     <mdb-icon icon="chevron-right"/>
                     </mdb-btn>
+                    <mdb-btn
+                    v-else
+                    color="blue-grey"
+                    @click.native="setUnknownSpeciesType()"
+                    size="sm">
+                    <mdb-icon icon="chevron-right"/>
+                    </mdb-btn>
                 </div>
                 <div
                 v-else-if="animalfields.species == 'Rådjur'"
@@ -231,6 +245,13 @@
                     size="sm">
                     <mdb-icon icon="chevron-right"/>
                 </mdb-btn>
+                <mdb-btn
+                    v-else
+                    color="blue-grey"
+                    @click.native="setUnknownSpeciesType()"
+                    size="sm">
+                    <mdb-icon icon="chevron-right"/>
+                    </mdb-btn>
                 </div>
                 <div
                 v-else-if="animalfields.species == 'Vildsvin'"
@@ -252,6 +273,14 @@
                     size="sm">
                     <mdb-icon icon="chevron-right"/>
                     </mdb-btn>
+                    <mdb-btn
+                    v-else
+                    color="blue-grey"
+                    @click.native="setUnknownSpeciesType()"
+                    size="sm">
+                    <mdb-icon icon="chevron-right"/>
+                    </mdb-btn>
+
                 </div>
            </mdb-card-body>
 
@@ -555,7 +584,7 @@
                         </div>
                         <div class="w-100 ml-2 mr-4 mb-2 meatreport">
                             <div v-for="id in toggledformeat" :key="id">
-                                <div class="ml-2 mt-2 mb-2">{{ huntername(id) }}</div>    
+                                <div class="ml-2 mt-2 mb-2">{{ huntername(id) }} {{ share_kilogram }} kg</div>    
                             </div>
                         </div>
                     </mdb-row>
@@ -617,7 +646,8 @@
             'meatBoarThisSeason',
             'animalUrl',
             'killreportUrl',
-            'killreportIndexUrl'
+            'killreportIndexUrl',
+            'meatUrl'
         ],
     data() {
         return {
@@ -671,6 +701,7 @@
             thekilldate: null,
             toggledformeat: [],
             showTotalMeat: false,
+            share_kilogram: null
         }
 
     },
@@ -688,6 +719,8 @@
         console.log();
         console.log('meats:');
         console.log(this.meats);
+        console.log('meatUrl:');
+        console.log(this.meatUrl);
 
         let sortedMooseTotal = this.bubble(this.meatMooseTotal);
         let sortedReddeerTotal = this.bubble(this.meatReddeerTotal);
@@ -744,6 +777,23 @@
                 result = true;
             } 
             return result;
+        },
+        getShareKilo() {
+            // console.log("Kommer hit till getShareKilo");
+            let share_kilo = 0;
+            // console.log("this.animalfields.carcass_weight");
+            // console.log(this.animalfields.carcass_weight);
+            // console.log("this.animalfields.aprox_carcass_weight");
+            // console.log(this.animalfields.aprox_carcass_weight);
+            if(this.animalfields.carcass_weight != null) {
+                share_kilo = this.animalfields.carcass_weight/this.toggledformeat.length;
+            } else if(this.animalfields.aprox_carcass_weight != null) {
+                share_kilo = this.animalfields.aprox_carcass_weight/this.toggledformeat.length;
+            }
+
+            // console.log("getShareKilo->share_kilo");
+            // console.log(share_kilo);
+            return share_kilo;
         },
         bubble(obj_unsorted) {
             let bubbling = true;
@@ -1002,6 +1052,21 @@
                 // this.toggleActiveStateR();
             }
         },
+        setUnknownSpeciesType() {
+            this.animalfields.speciestype = 'unknown'
+            this.animalfields.sex = 'unknown';
+            if (this.points()) {
+                this.step = 'points';
+                this.steptitle = "TAGGAR";
+            } else if (this.antlers()) {
+                this.step = 'antlers';
+                this.steptitle = "HORN";
+            } else {
+                this.step = 'weight';
+                this.steptitle = 'VIKTER';
+                // this.toggleActiveStateR();
+            }
+        },
         stepBackFromSpeciesType() {
             this.step = 'species';
             this.steptitle = "DJUR";
@@ -1144,6 +1209,12 @@
             this.activeR = true;
             this.formersteptitle = this.steptitle;
             this.steptitle = "RAPPORT"
+
+            this.share_kilogram = (this.toggledformeat.length > 0) ? this.getShareKilo() : 0;
+            // console.log("this.toggledformeat.length");
+            // console.log(this.toggledformeat.length);
+            // console.log("share_kilogram:");
+            // console.log(this.share_kilogram);
             
         },
         checkFinished(){
@@ -1193,10 +1264,30 @@
         cancelReportProcess() {
             window.location = this.accountPage;
         },
+        getMeatList(killreport_id) {
+            let meatlist = []
+            // console.log('getMeatList->killreport_id');
+            // console.log(killreport_id);
+            if(this.toggledformeat.length > 0) {
+                this.toggledformeat.forEach(user_id => {
+                    let meat = {
+                        'killreport_id': killreport_id,
+                        'user_id': user_id,
+                        'share_kilogram': this.share_kilogram
+                    };
+                    meatlist.push(meat);
+                });
+            } else {
+                meatlist.push({'killreport_id': killreport_id, 'user_id': null, 'share_kilogram': null});
+            }
+
+            return meatlist;
+        },
         submitForm() {
             console.log(this.animalfields);
-            
 
+            this.share_kilogram = (this.toggledformeat.length > 0) ? this.getShareKilo() : 0;
+            
             // console.log(this.killreportfields.killdate);
             axios.post(this.animalUrl, this.animalfields)
 				    .then(response => {
@@ -1211,8 +1302,20 @@
                             .then(response => {
                                 
                                 this.killreportfields = {};
-                                console.log("KILLREPORT RESPONSE:");
-                                console.log(response);
+                                console.log("KILLREPORT RESPONSE [data.killreport.id]:");
+                                console.log(response.data.killreport.id);
+                                let killreport_id = response.data.killreport.id;
+                                let meatlist = this.getMeatList(killreport_id);
+                                // console.log('meatlist');
+                                // console.log(meatlist);
+                                axios.post(this.meatUrl, meatlist)
+                                    .then(response => {
+                                        console.log("MEAT STORED");
+                                    })
+                                    .catch(error => {
+                                        console.log("MEAT ERROR:");
+                                        consoel.log(error);
+                                    })
                             })
                             .catch(error => {
                                 console.log("KILLREPORT STORE ERROR:");

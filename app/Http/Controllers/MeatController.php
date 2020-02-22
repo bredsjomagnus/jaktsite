@@ -36,7 +36,11 @@ class MeatController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        foreach(request()->all() as $row) {
+            $meat = new Meat();
+            $meat = $meat->create($row);
+        }
+        
     }
 
     /**

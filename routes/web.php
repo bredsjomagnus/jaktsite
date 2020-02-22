@@ -39,6 +39,7 @@ Route::post('/animals/{animal}/update', 'AnimalController@update')->middleware('
 
 Route::get('/meat/{killreport}/edit', 'MeatController@edit')->middleware('access:both,none');
 Route::post('/meat/{killreport}/update', 'MeatController@update')->middleware('access:both,none');
+Route::post('/meat/store', 'MeatController@store')->middleware('access:both,none');
 
 Route::get('/admin', 'AdminController@index')->middleware('access:admin,none');
 
