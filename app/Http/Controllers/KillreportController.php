@@ -36,11 +36,18 @@ class KillreportController extends Controller
         $this_season            = $this->getSeason(date('Y-m-d'));
 
         // The over all seasons total summed and sorted list of users shared_kilograms; ['user_id'] => sum (float)
-        $user_boar_total              = $this->sumMeatWrapper('Vildsvin', 'total');
-        $user_moose_total             = $this->sumMeatWrapper('Älg', 'total');
-        $user_reddeer_total           = $this->sumMeatWrapper('Kronvilt', 'total');
-        $user_fallowdeer_total        = $this->sumMeatWrapper('Dovvilt', 'total');
-        $user_roedeer_total           = $this->sumMeatWrapper('Rådjur', 'total');
+        // $user_boar_total              = $this->sumMeatWrapper('Vildsvin', 'total');
+        // $user_moose_total             = $this->sumMeatWrapper('Älg', 'total');
+        // $user_reddeer_total           = $this->sumMeatWrapper('Kronvilt', 'total');
+        // $user_fallowdeer_total        = $this->sumMeatWrapper('Dovvilt', 'total');
+        // $user_roedeer_total           = $this->sumMeatWrapper('Rådjur', 'total');
+
+        // The over all seasons average sorted list of users shared_kilograms; ['user_id'] => sum (float)
+        $user_boar_average              = $this->sumMeatWrapper('Vildsvin', 'average');
+        $user_moose_average             = $this->sumMeatWrapper('Älg', 'average');
+        $user_reddeer_average           = $this->sumMeatWrapper('Kronvilt', 'average');
+        $user_fallowdeer_average        = $this->sumMeatWrapper('Dovvilt', 'average');
+        $user_roedeer_average           = $this->sumMeatWrapper('Rådjur', 'average');
 
         // This seasons summed and sorted lists of users shared_kilograms; ['user_id'] => sum (float)
         $user_boar_this_season              = $this->sumMeatWrapper('Vildsvin', $this_season);
@@ -55,11 +62,11 @@ class KillreportController extends Controller
             'anonhunter'                    => User::where('occupation', 'anonhunter')->limit(1)->get(),
             'areas'                         => Area::all(),
             'meats'                         => $meats,
-            'meat_moose_total'              => $user_moose_total,
-            'meat_reddeer_total'            => $user_reddeer_total,
-            'meat_fallowdeer_total'         => $user_fallowdeer_total,
-            'meat_roedeer_total'            => $user_roedeer_total,
-            'meat_boar_total'               => $user_boar_total,
+            'meat_moose_average'            => $user_moose_average,
+            'meat_reddeer_average'          => $user_reddeer_average,
+            'meat_fallowdeer_average'       => $user_fallowdeer_average,
+            'meat_roedeer_average'          => $user_roedeer_average,
+            'meat_boar_average'             => $user_boar_average,
             'meat_moose_this_season'        => $user_moose_this_season,
             'meat_reddeer_this_season'      => $user_reddeer_this_season,
             'meat_fallowdeer_this_season'   => $user_fallowdeer_this_season,
@@ -146,12 +153,13 @@ class KillreportController extends Controller
      * Filters out rows from meats depending on species of animal
      * 
      * @param String $species; 'Älg', 'Kronvilt',...
+     * @param String $season; is either 'total' for getting all kgs or ex '18/19' for only sum of that season
      * @return Object $result; rows from meats of selected species
      */
     public function getSpeciesMeat($specie, $season)
     {
         $meats = Meat::all();
-        if($season != 'total') {
+        if($season != 'total' && $season != 'average') {
             $meats = $meats->filter(function($row) use ($season) {
                 return $row->season() == $season;
             });
@@ -207,7 +215,7 @@ class KillreportController extends Controller
      * @return Object $uer_meat; key (int) => 'id': user_id (int), 'username' (String), 'firstname', (String), 'lastname' (String), kg (float)
      */
 
-    public function sumUserMeat($user_group)
+    public function sumUserMeat($user_group, $average)
     {
         $user_meat = [];
         $index = 0;
@@ -216,16 +224,26 @@ class KillreportController extends Controller
             
             if($user) {
                 if($user->occupation == 'hunter' && $user->role != 'guest') {
-                    $sum = 0;
+                    $res_kg = 0;
                     foreach($arr as $element) {
-                        $sum = $sum + $element;
+                        $res_kg = $res_kg + $element;
                     }
+                    // If average is true. ie $season == 'average' calculate an set $res_kg to the average
+                    if ($average) {
+                        $start_season = $this->getSeason($user->member_since);
+                        $this_season = $this->getSeason(date('Y-m-d'));
+                        $diff = floatval(intval(substr($this_season, 0, 2)) - intval(substr($start_season, 0, 2)) + 1);
+                        $avg = round($res_kg/$diff, 1);
+                        $res_kg = $avg;
+                    }
+                   
+
                     $user_meat[$index] = [
                         'id'            => $id, 
                         'username'      => $user->username,
                         'firstname'     => $user->firstname,
                         'lastname'      => $user->lastname,
-                        'kg'            => $sum
+                        'kg'            => $res_kg
                     ];
                     $index += 1;
                 }
@@ -239,17 +257,19 @@ class KillreportController extends Controller
      * A wrapper for getting list of objects with 
      * users [id, username, firstname, lastname, kg] for a species ($species) amd season ($season)
      * If $season is set to 'total' all kg will be summed up from the begining to now.
-     * Otherwhise $season can be set to ex '19/20' and only sum up kg for this species, this season.
+     * If $season is set to 'average' all kg will be the sum/number of seasons that hunter has been a member.
+     * Otherwhise $season can be set to ex '19/20' and only sum up kg for this species and season.
      * 
      * @param String $species; 'Älg' or 'Kronvilt' or.....
-     * @param String $season; 'total' or '19/20' or....
+     * @param String $season; 'total' or 'average or a season ex. '19/20'
      */
     public function sumMeatWrapper($species, $season)
     {
+        $average = $season == 'average';
         $sm_res     = $this->getSpeciesMeat($species, $season);
         $utm_res    = $this->groupUserToMeat($sm_res);
         $filled_res = $this->fillOutGroups($utm_res);
-        return $this->sumUserMeat($utm_res);
+        return $this->sumUserMeat($utm_res, $average);
     }
     
 

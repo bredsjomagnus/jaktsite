@@ -351,8 +351,8 @@
                 <div class="d-flex flex-row justify-content-around">
                     <mdb-btn color="blue-grey" @click.native="stepBackFromMeat()" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
                     <div class="custom-control custom-switch" style="width:110px">
-                        <input type="checkbox" class="custom-control-input" v-model="showTotalMeat" id="customSwitches">
-                        <label v-if="showTotalMeat" class="custom-control-label" for="customSwitches">Totalt</label>
+                        <input type="checkbox" class="custom-control-input" v-model="showAverageMeat" id="customSwitches">
+                        <label v-if="showAverageMeat" class="custom-control-label" for="customSwitches">Snitt</label>
                         <label v-else class="custom-control-label" for="customSwitches">Jaktsäsong</label>
                     </div>
                     <mdb-btn color="blue-grey" @click.native="setMeat()" size="sm"><mdb-icon icon="chevron-right"/></mdb-btn>
@@ -367,10 +367,10 @@
                 </div>
                 <div v-if="this.animalfields.species == 'Älg'">
                     
-                    <div v-if="showTotalMeat" class="d-flex flex-column">
+                    <div v-if="showAverageMeat" class="d-flex flex-column">
                             
                         <div
-                        v-for="hunter in meatMooseTotal"
+                        v-for="hunter in meatMooseAverage"
                         :key="hunter.id"
                         >   
                             <div class="d-flex justify-content-center">
@@ -392,9 +392,9 @@
                     </div>
                 </div>
                 <div v-if="this.animalfields.species == 'Kronvilt'">
-                    <div v-if="showTotalMeat" class="d-flex flex-column">
+                    <div v-if="showAverageMeat" class="d-flex flex-column">
                         <div
-                        v-for="hunter in meatReddeerTotal"
+                        v-for="hunter in meatReddeerAverage"
                         :key="hunter.id"
                         >   
                             <div class="d-flex flex-row justify-content-center">
@@ -417,9 +417,9 @@
                     </div>
                 </div>
                 <div v-if="this.animalfields.species == 'Dovvilt'">
-                    <div v-if="showTotalMeat" class="d-flex flex-column">
+                    <div v-if="showAverageMeat" class="d-flex flex-column">
                         <div
-                        v-for="hunter in meatFallowdeerTotal"
+                        v-for="hunter in meatFallowdeerAverage"
                         :key="hunter.id"
                         >   
                             <div class="d-flex justify-content-center">
@@ -443,9 +443,9 @@
                     </div>
                 </div>
                 <div v-if="this.animalfields.species == 'Rådjur'">
-                    <div v-if="showTotalMeat" class="d-flex flex-column">
+                    <div v-if="showAverageMeat" class="d-flex flex-column">
                         <div
-                        v-for="hunter in meatRoedeerTotal"
+                        v-for="hunter in meatRoedeerAverage"
                         :key="hunter.id"
                         >   
                             <div class="d-flex justify-content-center">
@@ -467,9 +467,9 @@
                     </div>
                 </div>
                 <div v-if="this.animalfields.species == 'Vildsvin'">
-                    <div v-if="showTotalMeat" class="d-flex flex-column">
+                    <div v-if="showAverageMeat" class="d-flex flex-column">
                         <div
-                        v-for="hunter in meatBoarTotal"
+                        v-for="hunter in meatBoarAverage"
                         :key="hunter.id"
                         >   
                             <div class="d-flex justify-content-center">
@@ -634,11 +634,11 @@
             'accountPage',
             'areas',
             'meats',
-            'meatMooseTotal',
-            'meatReddeerTotal',
-            'meatFallowdeerTotal',
-            'meatRoedeerTotal',
-            'meatBoarTotal',
+            'meatMooseAverage',
+            'meatReddeerAverage',
+            'meatFallowdeerAverage',
+            'meatRoedeerAverage',
+            'meatBoarAverage',
             'meatMooseThisSeason',
             'meatReddeerThisSeason',
             'meatFallowdeerThisSeason',
@@ -700,7 +700,7 @@
             area_name: null,
             thekilldate: null,
             toggledformeat: [],
-            showTotalMeat: false,
+            showAverageMeat: true,
             share_kilogram: null
         }
 
@@ -722,11 +722,23 @@
         console.log('meatUrl:');
         console.log(this.meatUrl);
 
-        let sortedMooseTotal = this.bubble(this.meatMooseTotal);
-        let sortedReddeerTotal = this.bubble(this.meatReddeerTotal);
-        let sortedFallowdeerTotal = this.bubble(this.meatFallowdeerTotal);
-        let sortedRoedeerTotal = this.bubble(this.meatRoedeerTotal);
-        let sortedBoarTotal = this.bubble(this.meatBoarTotal);
+
+        console.log('meatMooseAverage:');
+        console.log(this.meatMooseAverage);
+        console.log('meatReddeerAverage:');
+        console.log(this.meatReddeerAverage);
+        console.log('meatFallowdeerAverage:');
+        console.log(this.meatFallowdeerAverage);
+        console.log('meatRoedeerAverage:');
+        console.log(this.meatRoedeerAverage);
+        console.log('meatBoarAverage:');
+        console.log(this.meatBoarAverage);
+
+        let sortedMooseAverage = this.bubble(this.meatMooseAverage);
+        let sortedReddeerAverage = this.bubble(this.meatReddeerAverage);
+        let sortedFallowdeerAverage = this.bubble(this.meatFallowdeerAverage);
+        let sortedRoedeerAverage = this.bubble(this.meatRoedeerAverage);
+        let sortedBoarAverage= this.bubble(this.meatBoarAverage);
 
         let sortedMooseThisSeason = this.bubble(this.meatMooseThisSeason);
         let sortedReddeerThisSeason = this.bubble(this.meatReddeerThisSeason);
@@ -734,17 +746,9 @@
         let sortedRoedeerThisSeason = this.bubble(this.meatRoedeerThisSeason);
         let sortedBoarThisSeason = this.bubble(this.meatBoarThisSeason);
 
+        console.log("Kommer hit");
 
-        console.log('meatMooseTotal:');
-        console.log(this.meatMooseTotal);
-        console.log('meatReddeerTotal:');
-        console.log(this.meatReddeerTotal);
-        console.log('meatFallowdeerTotal:');
-        console.log(this.meatFallowdeerTotal);
-        console.log('meatRoedeerTotal:');
-        console.log(this.meatRoedeerTotal);
-        console.log('meatBoarTotal:');
-        console.log(this.meatBoarTotal);
+        
 
 
     },
@@ -798,26 +802,13 @@
         bubble(obj_unsorted) {
             let bubbling = true;
             let notswapped = true;
-            // let objarr = [];
             let obj = obj_unsorted;
             let n = Object.keys(obj).length - 1;
-            // console.log('n');
-            // console.log(n);
-            // let c = 0;
-            // console.log('obj');
-            // console.log(obj);
             while (bubbling) {
                 notswapped = true;
                 for (var k=0; k < n; k++) {
-                    // console.log("KOMMER HIT")
-                    // console.log('obj[k].kg');
-                    // console.log(obj[k].kg);
-                    // console.log('obj[k+1].kg');
-                    // console.log(obj[k+1].kg);
                     if (obj[k].kg > obj[k+1].kg) {
                         var temp = obj[k];
-                        // console.log(temp);
-                        // console.log('temp');
                         obj[k] = obj[k+1];
                         obj[k+1] = temp;
                         notswapped = false;
@@ -826,10 +817,6 @@
                 if (notswapped) {
                     bubbling = false;
                 }
-                // c += 1;
-                // if (c > 1000000) {
-                //     bubbling = false;
-                // }
             }
             return obj;
         },
