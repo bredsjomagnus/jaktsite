@@ -11,6 +11,7 @@ use App\Killreport;
 use App\User;
 use App\Animal;
 use App\Area;
+use App\Meat;
 
 
 
@@ -102,6 +103,35 @@ class KillreportTest extends TestCase
             ]);
 
         $this->assertInstanceOf(Area::class, $killreport->area());
+    }
+
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function a_killreports_has_one_or_many_meats()
+    {
+        $this->withoutExceptionHandling();
+        
+        $user = $this->signIn();
+
+       $killreport = factory(Killreport::class)->create();
+       $meat_1 = factory(Meat::class)->create(['killreport_id' => $killreport->id, 'user_id' => $user->id]);
+       $meat_2 = factory(Meat::class)->create(['killreport_id' => $killreport->id, 'user_id' => 2]);
+       $meat_3 = factory(Meat::class)->create(['killreport_id' => 2, 'user_id' => $user->id]);
+    
+
+        // Testar hasMany relation
+        // Method 1: A comment exists in a post's comment collections.
+        $this->assertTrue($killreport->meat->contains($meat_1));
+
+        // Method 2: Count that a post comments collection exists.
+        $this->assertEquals(2, $killreport->meat->count());
+
+        // Method 3: Comments are related to posts and is a collection instance.
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $killreport->meat);
     }
 
     /**

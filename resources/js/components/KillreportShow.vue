@@ -13,20 +13,21 @@
             <div class="d-flex flex-row justify-content-around">
                 <mdb-btn-group size="sm">
                     <mdb-btn :color="untouched ? 'mdb-color' : 'purple'" @click.native="saveChanges" :disabled="savable" size="sm"><mdb-icon icon="save"/></mdb-btn>
-                    <mdb-btn color="mdb-color" @click.native="divideMeat" :disabled="missingweights" size="sm"><mdb-icon icon="balance-scale"/></mdb-btn>
                     <mdb-btn color="mdb-color" @click.native="images" size="sm"><mdb-icon icon="images"/></mdb-btn>
                 </mdb-btn-group>
             </div>
             <!-- </mdb-btn-toolbar> -->
-                       
+                       <!-- <mdb-icon icon="balance-scale"/> -->
             <!-- <mdb-btn-toolbar> -->
             <div class="d-flex flex-row justify-content-around">
                 <mdb-btn color="mdb-color" @click.native="backToKillreportIndex" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
                 <mdb-btn-group size="sm">
                     <mdb-btn color="mdb-color" @click.native="toggleActiveStateH" :active="activeH" size="sm">Jakt</mdb-btn>
                     <mdb-btn color="mdb-color" @click.native="toggleActiveStateW" :active="activeW" size="sm">Vikter</mdb-btn>
+                    <mdb-btn color="mdb-color" @click.native="toggleActiveStateM" :active="activeM" size="sm">Kött </mdb-btn>
                 </mdb-btn-group>
                 <mdb-btn color="mdb-color" @click.native="undoModal = true" size="sm"><mdb-icon icon="undo"/></mdb-btn>
+                
             </div>
             <!-- </mdb-btn-toolbar> -->
             
@@ -346,7 +347,7 @@
             </mdb-card>
        </div>
 
-       <div v-else>
+       <div v-else-if="activeW">
            <mdb-card>
                 <mdb-card-body :class="cardbodycolorliveweight() ? 'cardborderchanged' : 'cardborder'">
                     <div class="p-3 mb-2">
@@ -398,6 +399,17 @@
           </mdb-card>
        </div>
 
+       <div v-else-if="activeM">
+           <mdb-card class="mt-2">
+               <mdb-card-body class="cardborder">
+                   <mdb-input 
+                    v-for="meat in meats" 
+                    :key="meat.id"
+                        type="Number" :label="huntername(meat.user_id)" v-model="meat.share_kilogram"/>
+               </mdb-card-body>
+           </mdb-card>
+       </div>
+
    </div>
 </template>
 <script>
@@ -431,11 +443,13 @@
     props: [
             'authUser',
             'hunters',
+            'anonhunter',
             'shooter',
             'reporter',
             'area',
             'areas',
             'killreport',
+            'meats',
             'animal',
             'indexUrl',
             'animalUrl',
@@ -446,6 +460,7 @@
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             activeH: true,
             activeW: false,
+            activeM: false,
             untouched: true,
             missingweights: true,
             shooterSelected: this.shooter,
@@ -546,16 +561,38 @@
         console.log(this.animal);
         console.log("killreport: ");
         console.log(this.killreport);
+        console.log("meats: ");
+        console.log(this.meats);
 
     },
     methods: {
+        huntername(_id) {
+            // console.log(_id);
+            let res = ""
+            var user = this.hunters.filter(obj => {
+                return obj.id === _id;
+            });
+            if(_id != this.anonhunter[0].id) {
+                res = user[0].firstname +" "+ user[0].lastname;
+            } else {
+                res = "Gäst";
+            }
+            return res
+        },
         toggleActiveStateH() {
             this.activeH = true;
             this.activeW = false;
+            this.activeM = false;
         },
         toggleActiveStateW() {
             this.activeH = false;
             this.activeW = true;
+            this.activeM = false;
+        },
+        toggleActiveStateM() {
+            this.activeH = false;
+            this.activeW = false;
+            this.activeM = true;
         },
         setShooter(shooter) {
             this.shooterSelected = shooter;

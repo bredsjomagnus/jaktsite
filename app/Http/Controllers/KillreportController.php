@@ -97,6 +97,7 @@ class KillreportController extends Controller
         // dd($killreport->shooter['username']);
         $data = [
             'killreport'    => $killreport,
+            'anonhunter'    => User::where('occupation', 'anonhunter')->limit(1)->get(),
             'hunters'       => User::where('occupation', 'hunter')->get(),
             'areas'         => Area::all()
         ];

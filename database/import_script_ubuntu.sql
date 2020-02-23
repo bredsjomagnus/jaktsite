@@ -1,6 +1,7 @@
 USE jaktsite;
 
 INSERT INTO `jaktsite`.`users`(
+	`id`,
     `active`,
     `role`,
     `occupation`,
@@ -21,6 +22,7 @@ INSERT INTO `jaktsite`.`users`(
     `updated_at`
 )
 SELECT
+	`id`,
     `active`,
     `role`,
     `occupation`,
@@ -178,3 +180,10 @@ FROM
 
 -- Lägger till anon usern
 INSERT into users (active, role, occupation, username, firstname, lastname, password) VALUES ('yes', 'hunter', 'anonhunter', 'anonhunter', '-', '-', 'anonhunter');
+
+-- tar anonhunter id via last_insert_id och ändrar till det för gästern, som tidigare hade user_id = 1
+UPDATE meats
+SET 
+    user_id = last_insert_id()
+WHERE
+    user_id = 1;

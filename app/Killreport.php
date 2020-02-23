@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\User;
 use App\Animal;
 use App\Area;
+use App\Meat;
 
 class Killreport extends Model
 {
@@ -35,5 +36,10 @@ class Killreport extends Model
     public function path()
     {
         return "killreports/".$this->id;
+    }
+
+    public function meat()
+    {
+        return $this->hasMany(Meat::class);
     }
 }
