@@ -401,6 +401,11 @@
 
        <div v-else-if="activeM">
            <mdb-card class="mt-2">
+               <mdb-card-header class="bg-blue-color pl-4">
+                   <div class="d-flex flex-row justify-content-center">
+                       Vikt som skall fördelas: {{ carcassWeight }} kg
+                    </div>
+                   </mdb-card-header>
                <mdb-card-body class="cardborder">
                    <mdb-input 
                     v-for="meat in meats" 
@@ -408,12 +413,19 @@
                         type="Number" :label="huntername(meat.user_id)" v-model="meat.share_kilogram"/>
                </mdb-card-body>
            </mdb-card>
+
+           <mdb-card class="mt-2">
+               <mdb-card-body class="cardborder">
+                   <mdb-input 
+                        type="Number" label="Skottrensning" v-model="waist"/>
+               </mdb-card-body>
+           </mdb-card>
        </div>
 
    </div>
 </template>
 <script>
-  import { mdbBtn, mdbBtnGroup, mdbDropdown, mdbDropdownItem, mdbDropdownMenu, mdbDropdownToggle, mdbCard, mdbCardBody, mdbCardTitle, mdbCardText, mdbRow, mdbCol, mdbBadge, mdbInput, mdbBtnToolbar, mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbIcon, mdbCardImage } from 'mdbvue';
+  import { mdbBtn, mdbBtnGroup, mdbDropdown, mdbDropdownItem, mdbDropdownMenu, mdbDropdownToggle, mdbCard, mdbCardBody, mdbCardTitle, mdbCardText, mdbRow, mdbCol, mdbBadge, mdbInput, mdbBtnToolbar, mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbIcon, mdbCardImage, mdbCardHeader } from 'mdbvue';
   export default {
     name: 'showkillreport',
     components: {
@@ -438,7 +450,8 @@
       mdbModalBody,
       mdbModalFooter,
       mdbIcon,
-      mdbCardImage
+      mdbCardImage,
+      mdbCardHeader
     },
     props: [
             'authUser',
@@ -517,8 +530,8 @@
             elkspeciestypes: ['Tjur', 'Obestämt vuxet hondjur', 'Ko', 'Kviga', 'Tjurkalv', 'Kvigkalv', 'Obestämd kalv'],
             roedeerspeciestypes: ['Bock', 'Obestämt vuxet hondjur', 'Get', 'Smaldjur', 'Bockkilling', 'Getkilling', 'Obestämd killing'],
             boarspeciestypes: ['Galt', 'Obestämt vuxet hondjur', 'Sugga', 'Gylta', 'Galtkulting', 'Suggkulting', 'Obestämd kulting'],
-            krondovspeciestypes: ['Hjort', 'Obestämt vuxet hondjur', 'Hind', 'Smalhind', 'Hjortkalv', 'Hindkalv', 'Obestämd kalv']
-
+            krondovspeciestypes: ['Hjort', 'Obestämt vuxet hondjur', 'Hind', 'Smalhind', 'Hjortkalv', 'Hindkalv', 'Obestämd kalv'],
+            waist: 0
         }
 
     },
@@ -544,6 +557,15 @@
         savable(){
             let notallowed = this.wrongkilldate || this.wrongspeciestype
             return this.untouched || notallowed;
+        },
+        carcassWeight() {
+            let carcass_kilo = 0;
+            if(this.carcass_weightSelected != null) {
+                carcass_kilo = this.carcass_weightSelected;
+            } else if(this.aprox_carcass_weightSelected != null) {
+                carcass_kilo = this.aprox_carcass_weightSelected;
+            }
+            return carcass_kilo;
         }
     },
     mounted() {
@@ -1142,6 +1164,10 @@
 }
 .changedinput > textarea {
     color: #b340b3;
+}
+.bg-blue-color {
+    background-color: #59698d;
+    color: white;
 }
     
 </style>

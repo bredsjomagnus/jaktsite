@@ -43,11 +43,12 @@ class KillreportController extends Controller
         // $user_roedeer_total           = $this->sumMeatWrapper('Rådjur', 'total');
 
         // The over all seasons average sorted list of users shared_kilograms; ['user_id'] => sum (float)
-        $user_boar_average              = $this->sumMeatWrapper('Vildsvin', 'average');
-        $user_moose_average             = $this->sumMeatWrapper('Älg', 'average');
-        $user_reddeer_average           = $this->sumMeatWrapper('Kronvilt', 'average');
-        $user_fallowdeer_average        = $this->sumMeatWrapper('Dovvilt', 'average');
-        $user_roedeer_average           = $this->sumMeatWrapper('Rådjur', 'average');
+        $year_back = 7; // antalet år bakåt medelvärdet skall räknas på.
+        $user_boar_average              = $this->sumMeatWrapper('Vildsvin', 'average', $year_back);
+        $user_moose_average             = $this->sumMeatWrapper('Älg', 'average', $year_back);
+        $user_reddeer_average           = $this->sumMeatWrapper('Kronvilt', 'average', $year_back);
+        $user_fallowdeer_average        = $this->sumMeatWrapper('Dovvilt', 'average', $year_back);
+        $user_roedeer_average           = $this->sumMeatWrapper('Rådjur', 'average', $year_back);
 
         // This seasons summed and sorted lists of users shared_kilograms; ['user_id'] => sum (float)
         $user_boar_this_season              = $this->sumMeatWrapper('Vildsvin', $this_season);
@@ -156,15 +157,30 @@ class KillreportController extends Controller
      * @param String $season; is either 'total' for getting all kgs or ex '18/19' for only sum of that season
      * @return Object $result; rows from meats of selected species
      */
-    public function getSpeciesMeat($specie, $season)
+    public function getSpeciesMeat($specie, $season, $year_back)
     {
         $meats = Meat::all();
+
+
         if($season != 'total' && $season != 'average') {
+            // men är det en säsong man är ute efter är $meats istället
+            // dessa säsonger utfiltrearade
             $meats = $meats->filter(function($row) use ($season) {
                 return $row->season() == $season;
             });
         }
+
+        if($season == 'average' && $year_back) {
+            // Skall man ha ett medelvärde beräknat på ett visst antal år bakåt tar man dagens säsong minus
+            // antalet år bakåt ($year_back)
+            $season = $this->getSeason(date('Y-m-d'));
+            $from_year = intval(substr($season, 0, 2)) - $year_back + 1;
+            $from_date = "20".strval($from_year)."-07-01";
+
+            $meats = Meat::where('created_at', '>=', $from_date)->get();
+        }
         
+        // Hur nu än $meats beräknats ovan så skall tabellen nu filtreras utefter djurslag
         $result = $meats->filter(function ($row) use ($specie)  {
             return $row->isSpecies($specie);
         });
@@ -263,10 +279,10 @@ class KillreportController extends Controller
      * @param String $species; 'Älg' or 'Kronvilt' or.....
      * @param String $season; 'total' or 'average or a season ex. '19/20'
      */
-    public function sumMeatWrapper($species, $season)
+    public function sumMeatWrapper($species, $season, $year_back=false)
     {
         $average = $season == 'average';
-        $sm_res     = $this->getSpeciesMeat($species, $season);
+        $sm_res     = $this->getSpeciesMeat($species, $season, $year_back);
         $utm_res    = $this->groupUserToMeat($sm_res);
         $filled_res = $this->fillOutGroups($utm_res);
         return $this->sumUserMeat($utm_res, $average);
