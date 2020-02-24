@@ -580,12 +580,15 @@
 
                     <mdb-row v-if="toggledformeat.length > 0">
                         <div class="w-100">
-                            <h6 class="d-flex justify-content-center">KÖTT TILLDELAS</h6>
+                            <h6 class="d-flex justify-content-center">KÖTTET TILLDELAS</h6>
                         </div>
-                        <div class="w-100 ml-2 mr-4 mb-2 meatreport">
-                            <div v-for="id in toggledformeat" :key="id">
+                        <div class="w-100 ml-2 mr-4 mb-2 pl-3 meatreport">
+                            <mdb-input 
+                            v-for="id in toggledformeat" :key="id"
+                                type="Number" :label="huntername(id)" v-model="rounded_share_kilogram" disabled/>
+                            <!-- <div v-for="id in toggledformeat" :key="id">
                                 <div class="ml-2 mt-2 mb-2">{{ huntername(id) }} {{ share_kilogram }} kg</div>    
-                            </div>
+                            </div> -->
                         </div>
                     </mdb-row>
 
@@ -704,6 +707,11 @@
             share_kilogram: null
         }
 
+    },
+    computed: {
+        rounded_share_kilogram: function () {
+            return Math.round((this.share_kilogram + Number.EPSILON) * 1000) / 1000;
+        },
     },
     mounted() {
         console.log(this.hunters);
