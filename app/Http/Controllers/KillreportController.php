@@ -176,7 +176,6 @@ class KillreportController extends Controller
             $season = $this->getSeason(date('Y-m-d'));
             $from_year = intval(substr($season, 0, 2)) - $year_back + 1;
             $from_date = "20".strval($from_year)."-07-01";
-
             $meats = Meat::where('created_at', '>=', $from_date)->get();
         }
         
@@ -231,7 +230,7 @@ class KillreportController extends Controller
      * @return Object $uer_meat; key (int) => 'id': user_id (int), 'username' (String), 'firstname', (String), 'lastname' (String), kg (float)
      */
 
-    public function sumUserMeat($user_group, $average)
+    public function sumUserMeat($user_group, $average, $year_back=false)
     {
         $user_meat = [];
         $index = 0;
@@ -244,12 +243,27 @@ class KillreportController extends Controller
                     foreach($arr as $element) {
                         $res_kg = $res_kg + $element;
                     }
-                    // If average is true. ie $season == 'average' calculate an set $res_kg to the average
-                    if ($average) {
+                    
+                    if ($average && !$year_back) {
+                        // Om man vill beräkna medelvärdet från att användaren blev medlem har man inget värde på $year_back
+                        // och man kommer in hit. Då slås användarens totala köttmängd för djurslaget ut på antalet år hen
+                        // varit medlem.
                         $start_season = $this->getSeason($user->member_since);
                         $this_season = $this->getSeason(date('Y-m-d'));
                         $diff = floatval(intval(substr($this_season, 0, 2)) - intval(substr($start_season, 0, 2)) + 1);
                         $avg = round($res_kg/$diff, 1);
+                        $res_kg = $avg;
+                    } else if($average && $year_back) {
+                        // Om man vill beräkna medelvärdet baserat på ett visst antal år bakåt är det antalet år satt till $year_back
+                        // och användarens summerade köttmängd för djuret delar på detta antalet år. Summan som beräknats tidigare är
+                        // också baserat på antalet år bakåt och enbart köttmängder från det antalet år bak fram till idag finns med 
+                        // i summan.
+                        $start_season = $this->getSeason($user->member_since);
+                        $this_season = $this->getSeason(date('Y-m-d'));
+                        $diff = intval(intval(substr($this_season, 0, 2)) - intval(substr($start_season, 0, 2)) + 1);
+                        $n = ($diff > $year_back) ? $year_back : $diff;
+                        // dd("start_season: ".$start_season.", this_season: ".$this_season.", diff: ".$diff.", year_back: ".$year_back.", n: ".$n);
+                        $avg = round($res_kg/$n, 1);
                         $res_kg = $avg;
                     }
                    
@@ -285,7 +299,7 @@ class KillreportController extends Controller
         $sm_res     = $this->getSpeciesMeat($species, $season, $year_back);
         $utm_res    = $this->groupUserToMeat($sm_res);
         $filled_res = $this->fillOutGroups($utm_res);
-        return $this->sumUserMeat($utm_res, $average);
+        return $this->sumUserMeat($utm_res, $average, $year_back);
     }
     
 

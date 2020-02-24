@@ -683,7 +683,7 @@
                 season: null,
                 animal_id: null,
                 area_id: null,
-                image: 'default.png',
+                image: 'default.JPEG',
                 place: null,
                 report_status: 'green',
                 locked: 'no',
@@ -1245,7 +1245,7 @@
             this.killreportfields.place = null;
             this.killreportfields.report_status = 'green';
             this.killreportfields.locked = 'no';
-            this.killreportfields.image = 'default.png',
+            this.killreportfields.image = 'default.JPEG',
             this.animalfields.species = null;
             this.animalfields.speciestype = null;
             this.animalfields.engspecies = null;
