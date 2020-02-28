@@ -351,9 +351,9 @@
            <mdb-card>
                 <mdb-card-body :class="cardbodycolorliveweight() ? 'cardborderchanged' : 'cardborder'">
                     <div class="p-3 mb-2">
-                        <mdb-input :class="live_weightSelected != originlive_weight ? 'changedinput' : ''" type="number" step="0.1" label="Vägd levandevikt" v-model="live_weightSelected" @change="checkliveweightchanges"/>
+                        <mdb-input :class="live_weightSelected != originlive_weight ? 'changedinput' : ''" type="number" step="0.1" label="Vägd levandevikt" v-model.number="live_weightSelected" @change="checkliveweightchanges"/>
                         <p v-if="live_weightSelected != originlive_weight" class="inputmsg" >Urspr.: {{this.originlive_weight}}</p>
-                        <mdb-input :class="aprox_live_weightSelected != originaprox_live_weight ? 'changedinput' : ''" type="number" step="0.1" label="Uppsk. levandevikt" v-model="aprox_live_weightSelected" @change="checkaproxliveweightchanges"/>
+                        <mdb-input :class="aprox_live_weightSelected != originaprox_live_weight ? 'changedinput' : ''" type="number" step="0.1" label="Uppsk. levandevikt" v-model.number="aprox_live_weightSelected" @change="checkaproxliveweightchanges"/>
                         <p v-if="aprox_live_weightSelected != originaprox_live_weight" class="inputmsg" >Urspr.: {{this.originaprox_live_weight}}</p>
                     </div>
                 </mdb-card-body>
@@ -361,9 +361,9 @@
             <mdb-card class="mt-2">
             <mdb-card-body :class="cardbodycolorpassadweight() ? 'cardborderchanged' : 'cardborder'">
                     <div class="p-3 mb-2">
-                        <mdb-input :class="passad_weightSelected != originpassad_weight ? 'changedinput' : ''" type="number" step="0.1" label="Vägd passad vikt" v-model="passad_weightSelected" @change="checkpassadweightchanges"/>
+                        <mdb-input :class="passad_weightSelected != originpassad_weight ? 'changedinput' : ''" type="number" step="0.1" label="Vägd passad vikt" v-model.number="passad_weightSelected" @change="checkpassadweightchanges"/>
                         <p v-if="passad_weightSelected != originpassad_weight" class="inputmsg" >Urspr.: {{this.originpassad_weight}}</p>
-                        <mdb-input :class="aprox_passad_weightSelected != originaprox_passad_weight ? 'changedinput' : ''" type="number" step="0.1" label="Uppsk. passad vikt" v-model="aprox_passad_weightSelected" @change="checkaproxpassadweightchanges"/>
+                        <mdb-input :class="aprox_passad_weightSelected != originaprox_passad_weight ? 'changedinput' : ''" type="number" step="0.1" label="Uppsk. passad vikt" v-model.number="aprox_passad_weightSelected" @change="checkaproxpassadweightchanges"/>
                         <p v-if="aprox_passad_weightSelected != originaprox_passad_weight" class="inputmsg" >Urspr.: {{this.originaprox_passad_weight}}</p>
                     </div>
                 </mdb-card-body>
@@ -372,9 +372,9 @@
             <mdb-card class="mt-2">
                 <mdb-card-body :class="cardbodycolorcarcassweight() ? 'cardborderchanged' : 'cardborder'">
                     <div class="p-3 mb-2">
-                        <mdb-input :class="carcass_weightSelected != origincarcass_weight ? 'changedinput' : ''" type="number" step="0.1" label="Vägd slaktvikt" v-model="carcass_weightSelected" @change="checkcarcassweightchanges"/>
+                        <mdb-input :class="carcass_weightSelected != origincarcass_weight ? 'changedinput' : ''" type="number" step="0.1" label="Vägd slaktvikt" v-model.number="carcass_weightSelected" @change="checkcarcassweightchanges"/>
                         <p v-if="carcass_weightSelected != origincarcass_weight" class="inputmsg" >Urspr.: {{this.origincarcass_weight}}</p>
-                        <mdb-input :class="aprox_carcass_weightSelected != originaprox_carcass_weight ? 'changedinput' : ''" type="number" step="0.1" label="Uppsk. slaktvikt" v-model="aprox_carcass_weightSelected" @change="checkaproxcarcassweightchanges"/>
+                        <mdb-input :class="aprox_carcass_weightSelected != originaprox_carcass_weight ? 'changedinput' : ''" type="number" step="0.1" label="Uppsk. slaktvikt" v-model.number="aprox_carcass_weightSelected" @change="checkaproxcarcassweightchanges"/>
                         <p v-if="aprox_carcass_weightSelected != originaprox_carcass_weight" class="inputmsg" >Urspr.: {{this.originaprox_carcass_weight}}</p>
                     </div>
                 </mdb-card-body>
@@ -383,7 +383,7 @@
             <mdb-card class="mt-2">
                 <mdb-card-body :class="cardbodycolorcutweight() ? 'cardborderchanged' : 'cardborder'">
                     <div class="p-3 mb-2">
-                        <mdb-input :class="cut_weightSelected != origincut_weight ? 'changedinput' : ''" type="number" step="0.1" label="Vägda styckdetaljer" v-model="cut_weightSelected" @change="checkcutweightchanges"/>
+                        <mdb-input :class="cut_weightSelected != origincut_weight ? 'changedinput' : ''" type="number" step="0.1" label="Vägda styckdetaljer" v-model.number="cut_weightSelected" @change="checkcutweightchanges"/>
                         <p v-if="cut_weightSelected != origincut_weight" class="inputmsg" >Urspr.: {{this.origincut_weight}}</p>
                     </div>
                 </mdb-card-body>
@@ -392,7 +392,7 @@
            <mdb-card class="mt-2">
                 <mdb-card-body :class="cardbodycolorheartweight() ? 'cardborderchanged' : 'cardborder'">
                     <div class="p-3 mb-2">
-                        <mdb-input :class="heart_weightSelected != originheart_weight ? 'changedinput' : ''" type="number" step="0.001" label="Vägd hjärtvikt (kg)" v-model="heart_weightSelected" @change="checkheartweightchanges"/>
+                        <mdb-input :class="heart_weightSelected != originheart_weight ? 'changedinput' : ''" type="number" step="0.001" label="Vägd hjärtvikt (kg)" v-model.number="heart_weightSelected" @change="checkheartweightchanges"/>
                         <p v-if="heart_weightSelected != originheart_weight" class="inputmsg" >Urspr.: {{this.originheart_weight}}</p>
                     </div>
                 </mdb-card-body>
@@ -400,24 +400,33 @@
        </div>
 
        <div v-else-if="activeM">
-           <mdb-card class="mt-2">
+            <mdb-card class="mt-2">
                <mdb-card-header class="bg-blue-color pl-4">
                    <div class="d-flex flex-row justify-content-center">
                        Vikt som skall fördelas: {{ carcassWeight }} kg
                     </div>
+                   <div class="d-flex flex-row justify-content-center">
+                       Total fördelat: {{ totalmeat }} kg
+                    </div>
                    </mdb-card-header>
                <mdb-card-body class="cardborder">
+                    <div class="d-flex flex-row justify-content-around meat_button_group">
+                        <mdb-btn-group size="sm">
+                            <mdb-btn color="indigo" @click.native="divideEven" size="sm">Fördela - <mdb-icon icon="balance-scale"/></mdb-btn>
+                            <mdb-btn color="indigo" size="sm">Lägg till - <mdb-icon icon="user-plus"/></mdb-btn>
+                        </mdb-btn-group>
+                    </div>
                    <mdb-input 
                     v-for="meat in meats" 
                     :key="meat.id"
-                        type="Number" :label="huntername(meat.user_id)" v-model="meat.share_kilogram"/>
+                        type="Number" :label="huntername(meat.user_id)" v-model.number="meat.share_kilogram" @change="checkTotal"/>
                </mdb-card-body>
            </mdb-card>
 
            <mdb-card class="mt-2">
                <mdb-card-body class="cardborder">
                    <mdb-input 
-                        type="Number" label="Skottrensning" v-model="waist"/>
+                        type="Number" label="Skottrensning" v-model.number="waist" @change="checkTotal"/>
                </mdb-card-body>
            </mdb-card>
        </div>
@@ -531,7 +540,8 @@
             roedeerspeciestypes: ['Bock', 'Obestämt vuxet hondjur', 'Get', 'Smaldjur', 'Bockkilling', 'Getkilling', 'Obestämd killing'],
             boarspeciestypes: ['Galt', 'Obestämt vuxet hondjur', 'Sugga', 'Gylta', 'Galtkulting', 'Suggkulting', 'Obestämd kulting'],
             krondovspeciestypes: ['Hjort', 'Obestämt vuxet hondjur', 'Hind', 'Smalhind', 'Hjortkalv', 'Hindkalv', 'Obestämd kalv'],
-            waist: 0
+            waist: 0,
+            totalmeat: this.totallyDividedUp
         }
 
     },
@@ -566,6 +576,10 @@
                 carcass_kilo = this.aprox_carcass_weightSelected;
             }
             return carcass_kilo;
+        },
+        totallyDividedUp() {
+            const total = Object.values(this.meats).reduce((t, {share_kilogram}) => t + share_kilogram, 0) + this.waist;
+            return total;
         }
     },
     mounted() {
@@ -588,6 +602,23 @@
 
     },
     methods: {
+        divideEven() {
+            let meattodivide = this.carcassWeight - this.waist;
+            let n = Object.keys(this.meats).length;
+            let res = meattodivide/n;
+            let portion = this.round(res, 2);
+            let keys = Object.keys(this.meats);
+            for(const key in keys) {
+                this.meats[key].share_kilogram = portion;
+            }
+            this.checkTotal();
+        },
+        checkTotal() {
+            this.totalmeat = this.round(Object.values(this.meats).reduce((t, {share_kilogram}) => t + share_kilogram, 0) + this.waist, 1);
+        },
+        round(value, decimals) {
+            return Math.round((value + Number.EPSILON) * 10**decimals) / 10**decimals;
+        },
         huntername(_id) {
             // console.log(_id);
             let res = ""
@@ -1168,6 +1199,12 @@
 .bg-blue-color {
     background-color: #59698d;
     color: white;
+}
+.meat_button_group {
+    margin-top: -20px;
+}
+.btncolor{
+    background-color: #bd794b;
 }
     
 </style>
