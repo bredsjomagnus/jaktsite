@@ -27,10 +27,10 @@
                     <mdb-btn color="mdb-color" @click.native="toggleActiveStateM" :active="activeM" size="sm">Kött </mdb-btn>
                 </mdb-btn-group>
                 <mdb-btn color="mdb-color" @click.native="undoModal = true" size="sm"><mdb-icon icon="undo"/></mdb-btn>
-                
+
             </div>
             <!-- </mdb-btn-toolbar> -->
-            
+
 
         </div>
 
@@ -57,10 +57,10 @@
                 <div
                     v-for="hunter in hunters"
                     :key="hunter.id"
-                    >   
+                    >
                         <div class="d-flex justify-content-center">
                             <mdb-btn class="mb-0" style="width: 300px" :color="shooterId == hunter.id ? 'indigo' : 'grey'" @click="setShooter(hunter)">{{hunter.firstname}} {{hunter.lastname}}</mdb-btn>
-                        </div>    
+                        </div>
                     </div>
             </mdb-modal-body>
             <mdb-modal-footer>
@@ -77,10 +77,10 @@
                 <div
                     v-for="hunter in hunters"
                     :key="hunter.id"
-                    >   
+                    >
                         <div class="d-flex justify-content-center">
                             <mdb-btn class="mb-0" style="width: 300px" :color="reporterId == hunter.id ? 'indigo' : 'grey'" @click="setReporter(hunter)">{{hunter.firstname}} {{hunter.lastname}}</mdb-btn>
-                        </div>    
+                        </div>
                     </div>
             </mdb-modal-body>
             <mdb-modal-footer>
@@ -97,10 +97,10 @@
                 <div
                     v-for="area in areas"
                     :key="area.id"
-                    >   
+                    >
                         <div class="d-flex justify-content-center">
                             <mdb-btn class="mb-0" style="width: 300px" :color="areaSelected.id == area.id ? 'indigo' : 'grey'" @click="setArea(area)">{{area.area_name}}</mdb-btn>
-                        </div>    
+                        </div>
                     </div>
             </mdb-modal-body>
             <mdb-modal-footer>
@@ -118,7 +118,7 @@
                     <mdb-btn class="mb-0" style="width: 300px" :color="kindofhuntSelected == 'Ensamjakt' ? 'indigo' : 'grey'" @click="setKindofhunt('Ensamjakt')">Ensamjakt</mdb-btn>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <mdb-btn class="mb-0" style="width: 300px" :color="kindofhuntSelected == 'Gemensam jakt' ? 'indigo' : 'grey'" @click="setKindofhunt('Gemensam jakt')">Gemensam jakt</mdb-btn>    
+                    <mdb-btn class="mb-0" style="width: 300px" :color="kindofhuntSelected == 'Gemensam jakt' ? 'indigo' : 'grey'" @click="setKindofhunt('Gemensam jakt')">Gemensam jakt</mdb-btn>
                 </div>
             </mdb-modal-body>
             <mdb-modal-footer>
@@ -238,7 +238,7 @@
             <mdb-card>
                 <mdb-card-body :class="shooterSelected.id !== originshooter.id || reporterSelected.id !== originreporter.id || kindofhuntSelected != originkindofhunt ? 'cardborderchanged' : 'cardborder'">
                     <mdb-card-title class="d-flex justify-content-center titlecolor p-1">SKYTT & RAPPORTÖR</mdb-card-title>
-                    
+
                         <!-- rapportör -->
                         <mdb-row>
                             <mdb-col col="9">
@@ -271,7 +271,7 @@
                                     <mdb-btn class="mt-4 pb-2 pt-2 pl-3 pr-3" color="mdb-color" @click.native="kindofhuntModal = true" size="sm"><mdb-icon icon="edit"/></mdb-btn>
                             </mdb-col>
                         </mdb-row>
-                    
+
                 </mdb-card-body>
             </mdb-card>
 
@@ -330,7 +330,7 @@
                                 <mdb-input :class="pointsSelected != originPoints ? 'changedinput' : ''" type="number" min="0" step="1" label="Taggar" v-model="pointsSelected" @change="pointsChanged" />
                                 <p v-if="pointsSelected != originPoints" class="inputmsg" >Urspr. taggar.: {{this.originPoints}}</p>
                             </mdb-col>
-                            
+
                         </mdb-row>
 
                         <mdb-row v-if="antlers()">
@@ -400,32 +400,75 @@
        </div>
 
        <div v-else-if="activeM">
+            <!-- MODAL FÖR ATT ÄNDRA KÖTTILLDELNINGEN -->
+            <mdb-modal size="sm" :show="meetModal" @close="meetModal = false">
+                <mdb-modal-header>
+                    <mdb-modal-title>Ändra köttilldelning</mdb-modal-title>
+                </mdb-modal-header>
+                <mdb-modal-body>
+                    <div class="d-flex justify-content-center">
+                        <mdb-btn class="mb-0" size='sm' style="width: 200px" :color="isToggledForMeat(this.anonhunter[0].id) ? 'indigo' : 'grey'" @click.native="togglemeat(anonhunter[0])">Gäst</mdb-btn>
+                    </div>
+                    <div
+                        v-for="hunter in hunters"
+                        :key="hunter.id"
+                        >
+                            <div
+                             class="d-flex justify-content-center">
+                                <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click.native="togglemeat(hunter)">{{hunter.firstname}} {{hunter.lastname}}</mdb-btn>
+                            </div>
+                        </div>
+                </mdb-modal-body>
+                <mdb-modal-footer>
+                    <mdb-btn color="blue-grey" size="sm" @click.native="meetModal = false">Ångra</mdb-btn>
+                    <mdb-btn color="blue-grey" size="sm" @click.native="meetModal = false">OK!</mdb-btn>
+                </mdb-modal-footer>
+            </mdb-modal>
+
+
+
             <mdb-card class="mt-2">
-               <mdb-card-header class="bg-blue-color pl-4">
+               <mdb-card-header :class="totalmeat == carcassWeight ? 'bg-blue-color pl-4' : 'errorheader pl-4'">
                    <div class="d-flex flex-row justify-content-center">
                        Vikt som skall fördelas: {{ carcassWeight }} kg
                     </div>
                    <div class="d-flex flex-row justify-content-center">
                        Total fördelat: {{ totalmeat }} kg
                     </div>
-                   </mdb-card-header>
-               <mdb-card-body class="cardborder">
                     <div class="d-flex flex-row justify-content-around meat_button_group">
                         <mdb-btn-group size="sm">
                             <mdb-btn color="indigo" @click.native="divideEven" size="sm">Fördela - <mdb-icon icon="balance-scale"/></mdb-btn>
-                            <mdb-btn color="indigo" size="sm">Lägg till - <mdb-icon icon="user-plus"/></mdb-btn>
+                            <mdb-btn color="indigo" @click.native="meetModal = true" size="sm">Ändra - <mdb-icon icon="user-plus"/></mdb-btn>
                         </mdb-btn-group>
                     </div>
-                   <mdb-input 
-                    v-for="meat in meats" 
-                    :key="meat.id"
-                        type="Number" :label="huntername(meat.user_id)" v-model.number="meat.share_kilogram" @change="checkTotal"/>
+                   </mdb-card-header>
+               <mdb-card-body :class="totalmeat == carcassWeight ? 'cardborder' : 'meatcardbordererror'">
+                   <div
+                        v-if="toggledformeat.length > 0">
+                        <div
+                            v-for="meat in toggledformeat"
+                            :key="meat.id">
+
+                            <mdb-input
+                                v-if="huntername(meat.user_id) != 'Ej satt'"
+                                type="Number" :label="huntername(meat.user_id)" v-model.number="meat.share_kilogram" @change="checkTotal"/>
+
+                            
+                        </div>
+                    </div>
+                    <div
+                        v-else>
+                         <mdb-input
+                            v-if="toggledformeat.length == 0"
+                                type="Number" label="EJ SATT" disabled/>
+                    </div>
+                   
                </mdb-card-body>
            </mdb-card>
 
            <mdb-card class="mt-2">
-               <mdb-card-body class="cardborder">
-                   <mdb-input 
+               <mdb-card-body :class="totalmeat == carcassWeight ? 'cardborder' : 'meatcardbordererror'">
+                   <mdb-input
                         type="Number" label="Skottrensning" v-model.number="waist" @change="checkTotal"/>
                </mdb-card-body>
            </mdb-card>
@@ -511,6 +554,7 @@
             areaModal: false,
             antlersModal: false,
             undoModal: false,
+            meetModal: false,
             killdateset: true,
             placechanged: false,
             wrongkilldate: false,
@@ -541,7 +585,16 @@
             boarspeciestypes: ['Galt', 'Obestämt vuxet hondjur', 'Sugga', 'Gylta', 'Galtkulting', 'Suggkulting', 'Obestämd kulting'],
             krondovspeciestypes: ['Hjort', 'Obestämt vuxet hondjur', 'Hind', 'Smalhind', 'Hjortkalv', 'Hindkalv', 'Obestämd kalv'],
             waist: 0,
-            totalmeat: this.totallyDividedUp
+            totalmeat: this.totallyDividedUp,
+            toggledformeat: [],
+            meat_data: {
+                deleted_at: null,
+                id: this.meats[0].id,
+                killreport_id: this.meats[0].killreport_id,
+                share_kilogram: 0,
+                share_lot: null,
+                updated_at: null
+            }
         }
 
     },
@@ -565,8 +618,9 @@
             return this.areaSelected.id;
         },
         savable(){
-            let notallowed = this.wrongkilldate || this.wrongspeciestype
-            return this.untouched || notallowed;
+            let notallowed = this.wrongkilldate || this.wrongspeciestype;
+            let meatok = this.totalmeat != this.carcassWeight;
+            return this.untouched || notallowed || meatok;
         },
         carcassWeight() {
             let carcass_kilo = 0;
@@ -585,6 +639,8 @@
     mounted() {
         console.log("hunters: ");
         console.log(this.hunters);
+        console.log("anonhunter: ");
+        console.log(this.anonhunter);
         console.log("shooter: ");
         console.log(this.shooter);
         console.log("reporter: ");
@@ -599,37 +655,155 @@
         console.log(this.killreport);
         console.log("meats: ");
         console.log(this.meats);
+        console.log("meats-length: ");
+        console.log(this.meats.length);
+        console.log("animalURL: ");
+        console.log(this.animalUrl);
+
+        this.setToggledAtStart()
+
+        this.checkTotal();
 
     },
     methods: {
-        divideEven() {
+        setToggledAtStart() {
+            // Ser till att fylla listan med de som fått köttilldelning
+            // när vyn först laddas
+
+            console.log('this.meats[0].user_id: ', this.meats[0].user_id);
+            if(this.meats[0].user_id != null) {
+                console.log('Lägger till i toggledformeat from start');
+                this.meats.filter(obj => {
+                    this.toggledformeat.push(obj);
+                });
+            } else {
+                this.toggledformeat = []
+            }
+            console.log("TOGGLEDFROMSTART", this.toggledformeat);
+        },
+        togglemeat(hunter) {
+            let meat = this.toggledformeat.filter(obj => {
+                return obj.user_id === hunter.id;
+            });
+
+            // togglar av och på jägare som skall få kött
+            if (meat.length > 0 && this.toggledformeat.length > 0) {
+                // jägaren finns med och skall därför tas bort
+
+                // söker igenom de som är toggladeformeat efter jägarens meatobjekt
+                this.toggledformeat.forEach( (meat, index) => {
+                    if( meat.user_id === hunter.id) {
+                        this.toggledformeat.splice(index, 1); // tar bort det objektet
+                    }
+                });
+                
+            } else {
+                // jägaren finns inte med och skall därför läggas till
+
+                let new_meat = Object.assign({}, this.meat_data); // kopierar meat_data (OBS! shallow copy)
+
+                let new_id = this.meat_data.id + this.toggledformeat.length;
+
+                new_meat['id'] = new_id;
+
+                new_meat['user_id'] = hunter.id;   // lägger till jägarens id
+
+                let dateObj = new Date();
+                new_meat['created_at'] = dateObj.toLocaleString(); //yyyy-mm-dd h:m:s
+                this.toggledformeat.push(new_meat);
+            }
+
+            console.log("togglemeat->toggledformeat: ", this.toggledformeat);
+        },
+        divideEven() { // fixa this.meats till this.toggledformeats
             let meattodivide = this.carcassWeight - this.waist;
-            let n = Object.keys(this.meats).length;
+            // let n = Object.keys(this.meats).length; // antalet som det skall fördelas på
+            let n = Object.keys(this.toggledformeat).length; // antalet som det skall fördelas på
             let res = meattodivide/n;
             let portion = this.round(res, 2);
-            let keys = Object.keys(this.meats);
-            for(const key in keys) {
-                this.meats[key].share_kilogram = portion;
-            }
+            this.toggledformeat.forEach(element => {
+                element.share_kilogram = portion;
+            });
+            // let keys = Object.keys(this.meats);
+            // for(const key in keys) {
+            //     this.meats[key].share_kilogram = portion;
+            // }
             this.checkTotal();
         },
-        checkTotal() {
-            this.totalmeat = this.round(Object.values(this.meats).reduce((t, {share_kilogram}) => t + share_kilogram, 0) + this.waist, 1);
+        checkTotal() { // fixa this.meats till this.toggledformeats
+            // this.totalmeat = this.round(Object.values(this.meats).reduce((t, {share_kilogram}) => t + share_kilogram, 0) + this.waist, 1);
+            this.totalmeat = this.round(this.toggledformeat.reduce((t, {share_kilogram}) => t + share_kilogram, 0) + this.waist, 1);
         },
         round(value, decimals) {
             return Math.round((value + Number.EPSILON) * 10**decimals) / 10**decimals;
         },
         huntername(_id) {
-            // console.log(_id);
+            // console.log("huntername->_id ", _id);
             let res = ""
-            var user = this.hunters.filter(obj => {
-                return obj.id === _id;
-            });
-            if(_id != this.anonhunter[0].id) {
-                res = user[0].firstname +" "+ user[0].lastname;
-            } else {
-                res = "Gäst";
+
+            // eftersom att anonhunter inte finns med i this.hunters
+            // måste man kolla om _id tillhör anonhunter först.
+            // om id är samma som anonhunter returnera 'Gäst'
+            if(_id == this.anonhunter[0].id) {
+                res = 'Gäst';
+            } else { // annars plocka fram användaren
+                // var user = this.toggledformeat.filter(obj => {
+                //     // console.log("toggledformeat.filter->obj", obj);
+                //     return obj.id === _id;
+                // });
+                var user = this.hunters.filter(obj => {
+                    return obj.id === _id;
+                });
+                console.log("huntermane->user", user);
+                // Finns inte användaren så innebär det att köttet ej är tilldelat
+                // annars returnera användarens namn.
+                if(!user[0]){
+                    res = "Ej satt";
+                } else if(_id != this.anonhunter[0].id) {
+                    res = user[0].firstname +" "+ user[0].lastname;
+                }
             }
+            return res
+        },
+        isToggledForMeat(id) {
+            let result = false;
+
+            let meat = this.toggledformeat.filter(obj => {
+                // console.log("isToogledForMeat - filter-> obj.user_id: ", obj.user_id);
+                // console.log("isToogledForMeat - id: ", id)
+                return obj.user_id === id;
+            });
+            // console.log("isToggledForMeat->user[0].user_id: ", user[0].user_id); 
+            if (meat.length > 0) {
+                result = true;
+            }
+
+            // console.log("isToggledForMeat->result: ", result);
+            return result;
+        },
+        hunter_has_meat(_id) {
+            console.log(_id);
+            let res = false;
+
+            // eftersom att anonhunter inte finns med i this.hunters
+            // måste man kolla om _id tillhör anonhunter först.
+            // om id är samma som anonhunter returnera 'Gäst'
+            if(_id == this.anonhunter[0].id) {
+                res = true;
+            } else { // annars plocka fram användaren
+                var user = this.meats.filter(obj => {
+                    return obj.user_id === _id;
+                });
+
+                // Finns inte användaren så innebär det att köttet ej är tilldelat
+                // annars returnera användarens namn.
+                if(!user[0]){
+                    res = false;
+                } else if(_id != this.anonhunter[0].id) {
+                    res = true;
+                }
+            }
+            console.log("res", res);
             return res
         },
         toggleActiveStateH() {
@@ -713,7 +887,7 @@
                 this.wrongkilldate = false;
                 this.killdateset = true;
             }
-            if(this.killdateSelected == "" || this.killdateSelected == null) {              
+            if(this.killdateSelected == "" || this.killdateSelected == null) {
                 this.wrongkilldate = true;
                 this.killdateset = false;
             }
@@ -921,7 +1095,7 @@
             this.checkChanges();
         },
         checkChanges() {
-            
+
             if(this.shooterSelected.id !== this.originshooter.id) {
                 this.untouched = false;
             } else if(this.reporterSelected.id !== this.originreporter.id) {
@@ -965,32 +1139,32 @@
             // this.untouched = true;
             // if(this.shooterSelected.id !== this.originshooter.id) {
             //     this.untouched = false;
-            // } 
+            // }
             // if(this.reporterSelected.id !== this.originreporter.id) {
             //     this.untouched = false;
-            // } 
+            // }
             // if(this.areaSelected.id !== this.originarea.id) {
             //     this.untouched = false;
-            // } 
+            // }
             // if(this.kindofhuntSelected != this.originkindofhunt) {
             //     this.untouched = false;
-            // } 
+            // }
             // if(this.killdateSelected != this.originkilldate) {
             //     this.untouched = false;
-            // } 
+            // }
             // if(this.speciesSelected != this.originSpecies) {
             //     this.untouched = false;
-            // } 
+            // }
             // if(this.speciestypeSelected != this.originSpeciestype) {
             //     this.untouched = false;
-            // } 
+            // }
             // if(this.pointsSelected != this.originPoints) {
             //     console.log("KOMMER TILL POINTS");
             //     this.untouched = false;
-            // } 
+            // }
             // if(this.antlersSelected != this.originAntlers) {
             //     this.untouched = false;
-            // } 
+            // }
         },
         undoChanges() {
             this.shooterSelected = this.originshooter;
@@ -1021,6 +1195,10 @@
             this.untouched = true;
 
             this.undoModal = false;
+
+            this.setToggledAtStart();
+            this.checkTotal();
+            
         },
         engspecies() {
             let value = null;
@@ -1138,7 +1316,7 @@
                     // console.log("this.killreportUrl");
                     // console.log(this.killreportUrl);
                     // console.log("response ", response);
-                  
+
                 })
                 .catch(error => {
                     console.log("ANIMAL UPDATE ERROR:");
@@ -1146,14 +1324,19 @@
                 });
             axios.post(this.killreportUrl, killreportfields)
                 .then(response => {
-                    // console.log("KILLREPORT UPDATE SUCCESS:");
-                    window.location = response.data.redirect;
-                    // console.log("response ", response);
+                    // redirectar tillbaka till rapportarkivet
+                    // window.location = response.data.redirect;
                 })
                 .catch(error => {
                     console.log("KILLREPORT UPDATE ERROR:");
                     console.log(error);
                 });
+
+            console.log("this.toggledformeat under saving process");
+            console.log(this.toggledformeat);
+            this.toggledformeat.forEach(obj => {
+                console.log(obj.user_id);
+            });
         }
     }
   }
@@ -1197,14 +1380,35 @@
     color: #b340b3;
 }
 .bg-blue-color {
-    background-color: #59698d;
-    color: white;
+    /* background-color: #1c2331; */
+    /* background-color: #59698d; */
+    /* border-bottom: 5px solid #59698d; */
+    background-color: white;
+    color: black;
+    border-top: 2px solid #59698d;
+    /* border-bottom: 2px solid #59698d; */
+
 }
 .meat_button_group {
-    margin-top: -20px;
+    /* margin-top: -20px; */
 }
 .btncolor{
     background-color: #bd794b;
 }
-    
+/* .errorheader {
+    background-color: #1c2331;
+    color: white;
+    border-bottom: 5px solid red;
+} */
+.errorheader {
+    background-color: white;
+    /* background-color: #f1f1f1; */
+    color: black;
+    border-top: 2px solid red;
+    /* border-bottom: 2px solid red; */
+}
+.meatcardbordererror {
+    border-left: 10px solid red;
+}
+
 </style>

@@ -154,11 +154,12 @@ class KillreportController extends Controller
      * Filters out rows from meats depending on species of animal
      * 
      * @param String $species; 'Älg', 'Kronvilt',...
-     * @param String $season; is either 'total' for getting all kgs or ex '18/19' for only sum of that season
+     * @param String $season; is either 'total' for getting all kgs, 'average' for average over $year_back years or ex '18/19' for only sum of that season
      * @return Object $result; rows from meats of selected species
      */
     public function getSpeciesMeat($specie, $season, $year_back)
     {
+        // Detta gäller när $season är 'total' men kommer ändras om $season är något annat nedan.
         $meats = Meat::all();
 
 
