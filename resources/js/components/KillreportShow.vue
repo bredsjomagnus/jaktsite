@@ -586,6 +586,10 @@
             krondovspeciestypes: ['Hjort', 'Obestämt vuxet hondjur', 'Hind', 'Smalhind', 'Hjortkalv', 'Hindkalv', 'Obestämd kalv'],
             waist: 0,
             totalmeat: this.totallyDividedUp,
+            toggledformeatfromstart: [],
+            delete_from_toggledformeatfromstart: [],
+            update_from_toggledformeatfromstart: [],
+            create_from_toggledformeatfromstart: [],
             toggledformeat: [],
             meat_data: {
                 deleted_at: null,
@@ -674,14 +678,29 @@
             if(this.meats[0].user_id != null) {
                 console.log('Lägger till i toggledformeat from start');
                 this.meats.filter(obj => {
-                    this.toggledformeat.push(obj);
+                    this.toggledformeatfromstart.push(obj);
+
+                    // För att inte objektet i både toggledformeatfromstart och i toggledformeat skall vara samma objekt och därmed
+                    // ändras båda två när andelen kött justeras så måste jag göra en deep copy och lägga den i toogledformeat. På så vis
+                    // ändras bara share_kilogram i objektet i toggledformeat när man justerar i vyn. Medan objektet i toggledformeatfromstart inte
+                    // ändras utan håller sig samma som står i databastabellen meat.
+                    var deep_copy_of_obj = {};
+                    for (const [key, value] of Object.entries(obj)) {
+                        deep_copy_of_obj[key] = value;
+                    }
+                    this.toggledformeat.push(deep_copy_of_obj);
                 });
             } else {
-                this.toggledformeat = []
+                // console.log("kommer hit där jag sätter this.toggledformeat = ['ingen']") 
+                this.toggledformeatfromstart = [];
+                this.toggledformeat = [];
             }
-            console.log("TOGGLEDFROMSTART", this.toggledformeat);
+            // console.log("setToggledAtStart->this.toggledformeatfromstart", this.toggledformeatfromstart);
+            // console.log("setToggledAtStart->this.toggledformeat", this.toggledformeat);
         },
         togglemeat(hunter) {
+
+            
             let meat = this.toggledformeat.filter(obj => {
                 return obj.user_id === hunter.id;
             });
@@ -713,7 +732,87 @@
                 this.toggledformeat.push(new_meat);
             }
 
-            console.log("togglemeat->toggledformeat: ", this.toggledformeat);
+            
+            this.toggledeletearray();
+            this.toggleupdatearray();
+            this.togglecreatearray();
+            // console.log("EFTER; this.update_from_toggledformeatfromstart: ", this.update_from_toggledformeatfromstart);
+            // console.log("EFTER KONTROLL; this.delete_from_toggledformeatfromstart: ", this.delete_from_toggledformeatfromstart);
+
+
+        },
+        togglecreatearray() {
+            // De nya som togglas in för meat skall creatas i databastabellen meat.
+            
+            // nollställer create_from_toggledformeatfromstart:array
+            this.create_from_toggledformeatfromstart = [];
+            // Går igenom alla som är togglade för meat
+            this.toggledformeat.forEach( (meat, index) => {
+                var new_hunter = true; // utgår från att jägaren är ny och skall läggas till.
+                this.toggledformeatfromstart.forEach( (meat_from_start, index_from_start) => {
+                    // Om jägaren redan fanns med från start jär det ingen ny jägare
+                    if( meat.user_id === meat_from_start.user_id ) {
+                        new_hunter = false;
+                    }
+                });
+                // Om det är en ny jägare skall den raden skapas i databastabellen meat
+                if( new_hunter ) {
+                    console.log("Lägger till i create")
+                    this.create_from_toggledformeatfromstart.push(meat);
+                }
+            });
+
+            console.log("togglecreatesrray->this.create_from_toggledformeatfromstart: ", this.create_from_toggledformeatfromstart);
+            
+
+            
+        },
+        toggleupdatearray() {
+            // boolean
+            var sameasbefore;
+
+            // array
+            this.update_from_toggledformeatfromstart = []; // tömmer listan för att fylla på igen de som saknas från start.
+
+
+            this.toggledformeatfromstart.forEach( (meatfromstart, indexfromstart) => {
+                sameasbefore = false; // Utgår från att jägarna som är kvar inte längre har samma andel kött.
+                this.toggledformeat.forEach( (meat, index) => {
+                    // Går igenom listan med de jägare som för tillfället är togglade för kött.
+                    if( meat.user_id === meatfromstart.user_id ) {
+                        // console.log("toggleupdatearray->meat.user_id: ", meat.user_id);
+                        // console.log("toggleupdatearray->meat.share_kilogram "+ meat.share_kilogram + " vs meatfromstart.share_kilogram: " + meatfromstart.share_kilogram);
+
+                        // Har jägaren samma antal kilo eller slots nu som i början så är det sameasbefore
+                        // Annars lägger man till det förändrarde objektet meat i update_from_toggledformeatfromstart:array
+                        if( ((meat.share_kilogram === meatfromstart.share_kilogram) && (meat.share_lot === meatfromstart.share_lot)) ) {
+                            sameasbefore = true;
+                        } else {
+                            this.update_from_toggledformeatfromstart.push(meat)
+                        }
+                        // console.log("toggleupdatearray->sameasbefore: ", sameasbefore);
+                    }
+                });
+            });
+        },
+        toggledeletearray() {
+            // Kontrollerar vilka jägare som eventuellt skall tas bort från meat-tabellen i jämförelse med hur det var från start.
+            var stillthere;
+            this.delete_from_toggledformeatfromstart = []; // tömmer listan för att fylla på igen de som saknas från start.
+            this.toggledformeatfromstart.forEach( (meatfromstart, indexfromstart) => {
+                stillthere = false; // utgår ifrån att jägaren som var med från start inte längre är kvar.
+                this.toggledformeat.forEach( (meat, index) => {
+                    // Går igenom listan med de jägare som för tillfället är togglade för kött.
+                    if( meat.user_id === meatfromstart.user_id ) {
+                        stillthere = true;
+                    }
+                });
+                if ( !stillthere ) {
+                    // Är jägaren som var med från start inte kvar så skall den läggas i
+                    // this.delete_from_toggledformeatfromstart
+                    this.delete_from_toggledformeatfromstart.push(meatfromstart);
+                }
+            });
         },
         divideEven() { // fixa this.meats till this.toggledformeats
             let meattodivide = this.carcassWeight - this.waist;
@@ -733,6 +832,9 @@
         checkTotal() { // fixa this.meats till this.toggledformeats
             // this.totalmeat = this.round(Object.values(this.meats).reduce((t, {share_kilogram}) => t + share_kilogram, 0) + this.waist, 1);
             this.totalmeat = this.round(this.toggledformeat.reduce((t, {share_kilogram}) => t + share_kilogram, 0) + this.waist, 1);
+            this.toggleupdatearray();
+            this.togglecreatearray();
+            console.log("EFTER; this.update_from_toggledformeatfromstart: ", this.update_from_toggledformeatfromstart);
         },
         round(value, decimals) {
             return Math.round((value + Number.EPSILON) * 10**decimals) / 10**decimals;
@@ -754,7 +856,7 @@
                 var user = this.hunters.filter(obj => {
                     return obj.id === _id;
                 });
-                console.log("huntermane->user", user);
+                // console.log("huntermane->user", user);
                 // Finns inte användaren så innebär det att köttet ej är tilldelat
                 // annars returnera användarens namn.
                 if(!user[0]){
@@ -1324,6 +1426,24 @@
                 });
             axios.post(this.killreportUrl, killreportfields)
                 .then(response => {
+                    console.log("killreport response");
+                    var killreport = response.data.killreport;
+                    var killreportid = killreport.id;
+                    console.log(killreportid);
+                    console.log("meat_data:")
+                    console.log(this.meat_data);
+
+                    // här behöver man kolla in meattabellen om det redan finns jägare som tilldelats kött för denna rapport. 
+                    //I sådana fall kommer de kanske behöva uppdateras. Om det inte finns några jägare för denna rapport så skall det läggas till nya.
+
+
+                    // axios.post(this.meatUrl, meatreportfields)
+                    // .then(response => {
+                    //     // behöver här få tag på killreportid
+
+                    // });
+
+
                     // redirectar tillbaka till rapportarkivet
                     // window.location = response.data.redirect;
                 })
@@ -1331,6 +1451,8 @@
                     console.log("KILLREPORT UPDATE ERROR:");
                     console.log(error);
                 });
+
+            
 
             console.log("this.toggledformeat under saving process");
             console.log(this.toggledformeat);

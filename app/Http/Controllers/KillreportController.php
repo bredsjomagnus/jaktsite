@@ -136,7 +136,7 @@ class KillreportController extends Controller
 
         // $killreports = Killreport::where('deleted_at', null)->orderBy('killdate', 'desc')->get();
 
-        return ['redirect' => url('killreports')];
+        return ['redirect' => url('killreports'), 'killreport' => $killreport];
     }
 
     /**

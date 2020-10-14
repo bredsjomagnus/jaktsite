@@ -165,7 +165,7 @@ class KillreportTest extends TestCase
         $res_3 = app('App\Http\Controllers\KillreportController')->getSeason($season_1819_2);
 
 
-        $this->assertEquals($res_1, "19/20");
+        $this->assertEquals($res_1, "20/21");
         $this->assertEquals($res_2, "18/19");
         $this->assertEquals($res_3, "17/18");
     }
