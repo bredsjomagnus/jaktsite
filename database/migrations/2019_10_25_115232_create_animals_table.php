@@ -29,7 +29,7 @@ class CreateAnimalsTable extends Migration
             $table->float('aprox_carcass_weight')->nullable();
             $table->float('cut_weight')->nullable();
             $table->float('heart_weight')->nullable();
-            $table->float('waste')->nullable();
+            $table->float('waste')->default(0);
             $table->string('waste_notes')->nullable();
             $table->string('antlers')->nullable();
             $table->integer('points')->nullable();

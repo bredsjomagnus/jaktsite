@@ -38,8 +38,9 @@ Route::post('/animals/store', 'AnimalController@store')->middleware('access:both
 Route::post('/animals/{animal}/update', 'AnimalController@update')->middleware('access:both,none');
 
 Route::get('/meat/{killreport}/edit', 'MeatController@edit')->middleware('access:both,none');
-Route::post('/meat/{meat}/update', 'MeatController@update')->middleware('access:both,none');
+Route::patch('/meat/{meat}/update', 'MeatController@update')->middleware('access:both,none');
 Route::post('/meat/store', 'MeatController@store')->middleware('access:both,none');
+Route::delete('/meat/{meat}/delete', 'MeatController@destroy')->middleware('access:both,none');
 
 Route::get('/admin', 'AdminController@index')->middleware('access:admin,none');
 

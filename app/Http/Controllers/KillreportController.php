@@ -34,6 +34,7 @@ class KillreportController extends Controller
 
         $meats                  = Meat::all();
         $this_season            = $this->getSeason(date('Y-m-d'));
+        // dd($this_season);
 
         // The over all seasons total summed and sorted list of users shared_kilograms; ['user_id'] => sum (float)
         // $user_boar_total              = $this->sumMeatWrapper('Vildsvin', 'total');
@@ -73,6 +74,7 @@ class KillreportController extends Controller
             'meat_fallowdeer_this_season'   => $user_fallowdeer_this_season,
             'meat_roedeer_this_season'      => $user_roedeer_this_season,
             'meat_boar_this_season'         => $user_boar_this_season,
+            'this_season'                   => $this_season
         ];
         return view('killreports.create', $data);
     }

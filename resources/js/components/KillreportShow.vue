@@ -581,11 +581,12 @@
             originaprox_carcass_weight: this.animal.aprox_carcass_weight,
             origincut_weight: this.animal.cut_weight,
             originheart_weight: this.animal.heart_weight,
+            orginalwaste_weight: this.animal.waste,
             elkspeciestypes: ['Tjur', 'Obestämt vuxet hondjur', 'Ko', 'Kviga', 'Tjurkalv', 'Kvigkalv', 'Obestämd kalv'],
             roedeerspeciestypes: ['Bock', 'Obestämt vuxet hondjur', 'Get', 'Smaldjur', 'Bockkilling', 'Getkilling', 'Obestämd killing'],
             boarspeciestypes: ['Galt', 'Obestämt vuxet hondjur', 'Sugga', 'Gylta', 'Galtkulting', 'Suggkulting', 'Obestämd kulting'],
             krondovspeciestypes: ['Hjort', 'Obestämt vuxet hondjur', 'Hind', 'Smalhind', 'Hjortkalv', 'Hindkalv', 'Obestämd kalv'],
-            waist: 0,
+            waist: this.animal.waste,
             totalmeat: this.totallyDividedUp,
             toggledformeatfromstart: [],
             delete_from_toggledformeatfromstart: [],
@@ -623,8 +624,19 @@
             return this.areaSelected.id;
         },
         savable(){
+            let meatok;
+            var delete_all = ((this.toggledformeatfromstart.length == this.delete_from_toggledformeatfromstart.length) && (this.create_from_toggledformeatfromstart.length == 0));
+            console.log("savable->delete_all: ", delete_all);
             let notallowed = this.wrongkilldate || this.wrongspeciestype;
-            let meatok = this.totalmeat != this.carcassWeight;
+            if(delete_all) {
+                meatok = false;
+            } else {
+                meatok = this.totalmeat != this.carcassWeight;
+            }
+
+            console.log("this.untouched: ", this.untouched);
+            console.log("notallowed: ", notallowed);
+            console.log("meatok: ", meatok);
             return this.untouched || notallowed || meatok;
         },
         carcassWeight() {
@@ -739,6 +751,8 @@
             this.toggledeletearray();
             this.toggleupdatearray();
             this.togglecreatearray();
+
+            this.checkChanges();
             // console.log("EFTER; this.update_from_toggledformeatfromstart: ", this.update_from_toggledformeatfromstart);
             // console.log("EFTER KONTROLL; this.delete_from_toggledformeatfromstart: ", this.delete_from_toggledformeatfromstart);
 
@@ -837,6 +851,8 @@
             this.totalmeat = this.round(this.toggledformeat.reduce((t, {share_kilogram}) => t + share_kilogram, 0) + this.waist, 1);
             this.toggleupdatearray();
             this.togglecreatearray();
+            this.toggledeletearray();
+            this.checkChanges();
             // console.log("EFTER; this.update_from_toggledformeatfromstart: ", this.update_from_toggledformeatfromstart);
         },
         round(value, decimals) {
@@ -1237,6 +1253,14 @@
                 this.untouched = false;
             } else if(this.heart_weightSelected != this.originheart_weight) {
                 this.untouched = false;
+            } else if(this.delete_from_toggledformeatfromstart.length != 0) {
+                this.untouched = false;
+            } else if(this.update_from_toggledformeatfromstart.length != 0) {
+                this.untouched = false;
+            } else if(this.create_from_toggledformeatfromstart.length != 0) {
+                this.untouched = false;
+            } else if(this.waist != this.orginalwaste_weight) {
+                this.untouched = false;
             } else {
                 this.untouched = true;
             }
@@ -1291,6 +1315,7 @@
             this.aprox_carcass_weightSelected = this.originaprox_carcass_weight;
             this.cut_weightSelected = this.origincut_weight;
             this.heart_weightSelected = this.originheart_weight;
+            this.waist = this.orginalwaste_weight;
 
             this.wrongkilldate = false;
             this.wrongspeciestype = false;
@@ -1300,6 +1325,10 @@
             this.untouched = true;
 
             this.undoModal = false;
+
+            this.delete_from_toggledformeatfromstart = [];
+            this.create_from_toggledformeatfromstart = [];
+            this.update_from_toggledformeatfromstart = [];
 
             this.setToggledAtStart();
             this.checkTotal();
@@ -1383,7 +1412,7 @@
                 'aprox_carcass_weight': this.aprox_carcass_weightSelected == null ? null : parseFloat(this.aprox_carcass_weightSelected),
                 'cut_weight': this.cut_weightSelected == null ? null : parseFloat(this.cut_weightSelected),
                 'heart_weight': this.heart_weightSelected == null ? null : parseInt(this.heart_weightSelected),
-                'waste': null,
+                'waste': this.waist,
                 'waste_notes': null,
                 'antlers': this.antlersSelected == null ? null : this.antlersSelected,
                 'points': this.pointsSelected == null ? null : parseInt(this.pointsSelected)
@@ -1427,42 +1456,7 @@
                     console.log("ANIMAL UPDATE ERROR:");
                     console.log(error);
                 });
-            axios.post(this.killreportUrl, killreportfields)
-                .then(response => {
-                    // Här skall det eventuellt tas bort från meattabellen via this.delete_from_toggledformeatfromstart
-
-                    // Här skall det eventuellt uppdatera i meattabellen this.update_from_toggledformeatfromstart
-
-                    // Här skall det eventuellt skapas till meattabellen this.create_from_toggledformeatfromstart
-                    // console.log("MEAT DELETE ARRAY: ");
-                    // console.log(this.delete_from_toggledformeatfromstart);
-                    // console.log();
-                    // console.log("MEAT UPDATE ARRAY: ");
-                    // console.log(this.update_from_toggledformeatfromstart);
-                    // console.log();
-                    // console.log("MEAT CREATE ARRAY: ");
-                    // console.log(this.create_from_toggledformeatfromstart);
-                    // console.log();
-                    
-
-                    // här behöver man kolla in meattabellen om det redan finns jägare som tilldelats kött för denna rapport. 
-                    //I sådana fall kommer de kanske behöva uppdateras. Om det inte finns några jägare för denna rapport så skall det läggas till nya.
-
-
-                    // axios.post(this.meatUrl, meatreportfields)
-                    // .then(response => {
-                    //     // behöver här få tag på killreportid
-
-                    // });
-
-
-                    // redirectar tillbaka till rapportarkivet
-                    // window.location = response.data.redirect;
-                })
-                .catch(error => {
-                    console.log("KILLREPORT UPDATE ERROR:");
-                    console.log(error);
-                });
+            
 
 
 
@@ -1471,7 +1465,7 @@
                 console.log("Nu skall det uppdateras meat-tabell");
                 this.update_from_toggledformeatfromstart.forEach( (meat) => {
                     var meat_update_url = this.meatUrl+'/'+meat['id']+'/update';
-                    axios.post(meat_update_url, meat)
+                    axios.patch(meat_update_url, meat)
                         .then(response => {
                             console.log("UPDATED: ", meat);
                         })
@@ -1492,12 +1486,12 @@
 
 
 
-                    // nu är problemet att det alltid är skapat null rad för varje killreport. Därför måste
+                    // nu är problemet att det alltid är skapat en null rad för varje killreport. Därför måste
                     // det i dessa fall uppdateras den förrsta raden och de eventuellt följande raderna skapas nya.
                     if( this.toggledformeatfromstart.length === 0 && index === 0) {
                         
                         var meat_update_url = this.meatUrl+'/'+this.meats[0].id+'/update';
-                        axios.post(meat_update_url, meat)
+                        axios.patch(meat_update_url, meat)
                             .then(response => {
                                 console.log("UPDATED: ", meat);
                             })
@@ -1507,16 +1501,18 @@
                             });
                     } else {
                         console.log("skall spara med axios")
-                        console.log(meat);
+                        // console.log(meat);
+
+                        // ta eventuellt med notes när det läggs till i vyn.
                         var meat_to_store = {
                             killreport_id: meat['killreport_id'],
                             share_kilogram: meat['share_kilogram'],
                             share_lot: meat['share_lot'],
                             user_id: meat['user_id']
                         }
-                        console.log('meat_to_store');
-                        console.log(meat_to_store);
-                        // let data = JSON.stringify({meat});
+                        // console.log('meat_to_store');
+                        // console.log(meat_to_store);
+                        
                         axios.post(meat_store_url, [meat_to_store])
                             .then(response => {
                                 console.log("CREATED MEAT");
@@ -1533,6 +1529,70 @@
                     
                 });
             }
+
+            // När man skall ta bort. Tar man bort allt så skall ändå en nullrad finnas kvar. Så ta bort alla utom sista och uppdatera sista till null.
+            if( this.delete_from_toggledformeatfromstart.length > 0 ) {
+                // kollar ifall det skall lämnas helt tomt. Det kan man göra genom att kolla om antalet från början är lika många som det skall tas bort. Samtidgit
+                // som det inte skapas några nya.
+                var delete_all = ((this.toggledformeatfromstart.length == this.delete_from_toggledformeatfromstart.length) && (this.create_from_toggledformeatfromstart.length == 0));
+                console.log("this.delete_from_toggledformeatfromstart.length: ", this.delete_from_toggledformeatfromstart.length);
+                console.log("this.toggledformeatfromstart.length: ", this.toggledformeatfromstart.length);
+                console.log("this.create_from_toggledformeatfromstart.length: ", this.create_from_toggledformeatfromstart.length);
+                console.log("delete_all: ", delete_all);
+
+
+
+                // Börja med att ta bort alla som är i tabort-listan
+                this.delete_from_toggledformeatfromstart.forEach( (meat, index) => {
+
+                    var meat_delete_url = this.meatUrl+'/'+meat['id']+'/delete';
+                    axios.delete(meat_delete_url, meat)
+                        .then(response => {
+                            console.log("Deleted");
+                            console.log(meat);
+                        })
+                        .catch(error => {
+                            console.log("MEAT DELETE ERROR");
+                            console.log(error);
+                        });
+                });
+
+                // OM sedan det var så att man tog bort alla jägare så lägg till en meat med null i allt utom killreport_id
+                if( delete_all ) {
+                    console.log("deleted all");
+                    var meat_store_url = this.meatUrl+'/store';
+                    var meat_to_store = {
+                        killreport_id: this.meats[0].killreport_id,
+                        share_kilogram: null,
+                        share_lot: null,
+                        user_id: null
+                    }
+                    // console.log('meat_to_store');
+                    // console.log(meat_to_store);
+                    
+                    axios.post(meat_store_url, [meat_to_store])
+                        .then(response => {
+                            console.log("CREATED MEAT");
+                            console.log(meat);
+                        })
+                        .catch(error => {
+                            console.log("MEAT CREATE ERROR");
+                            console.log(error);
+                        });
+                }
+
+            }
+
+
+            axios.post(this.killreportUrl, killreportfields)
+                .then(response => {
+                    // redirectar tillbaka till rapportarkivet
+                    window.location = response.data.redirect;
+                })
+                .catch(error => {
+                    console.log("KILLREPORT UPDATE ERROR:");
+                    console.log(error);
+                });
 
             
 

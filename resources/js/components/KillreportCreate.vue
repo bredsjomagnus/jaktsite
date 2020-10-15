@@ -353,7 +353,7 @@
                     <div class="custom-control custom-switch" style="width:110px">
                         <input type="checkbox" class="custom-control-input" v-model="showAverageMeat" id="customSwitches">
                         <label v-if="showAverageMeat" class="custom-control-label" for="customSwitches">Snitt</label>
-                        <label v-else class="custom-control-label" for="customSwitches">Jaktsäsong</label>
+                        <label v-else class="custom-control-label" for="customSwitches">Jaktsäsong {{season}}</label>
                     </div>
                     <mdb-btn color="blue-grey" @click.native="setMeat()" size="sm"><mdb-icon icon="chevron-right"/></mdb-btn>
                 </div>
@@ -650,7 +650,8 @@
             'animalUrl',
             'killreportUrl',
             'killreportIndexUrl',
-            'meatUrl'
+            'meatUrl',
+            'season'
         ],
     data() {
         return {
@@ -672,6 +673,7 @@
                 aprox_carcass_weight: null,
                 cut_weight: null,
                 heart_weight: null,
+                waste: 0
             },
             killreportfields: {
                 

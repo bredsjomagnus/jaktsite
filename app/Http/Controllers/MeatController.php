@@ -85,6 +85,6 @@ class MeatController extends Controller
      */
     public function destroy(Meat $meat)
     {
-        //
+        $meat->delete();
     }
 }

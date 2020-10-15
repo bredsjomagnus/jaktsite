@@ -142,8 +142,30 @@ class MeatTest extends TestCase
 
         
         // Uppdaterar och kontrollerar att uppdateringen återspeglas i databasen.
-        $this->post('/meat/'.$meat->id.'/update', ['share_kilogram' => $meat['share_kilogram']]);
+        $this->patch('/meat/'.$meat->id.'/update', ['share_kilogram' => $meat['share_kilogram']]);
         $this->assertDatabaseHas('meats', ['share_kilogram' => $meat['share_kilogram']]);
+
+    }
+
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_user_can_delete_a_meat()
+    {
+        // loggar in
+        $this->signIn();
+
+        // skapar en meat och sparar den i databasen
+        $meat = factory(Meat::class)->create();
+
+        // kontrollear att den ligger i databasen
+        $this->assertDatabaseHas('meats', ['id' => $meat['id']]);
+
+        $this->delete('/meat/'.$meat->id.'/delete', ['id' => $meat['id']]);
+
+        $this->assertDatabaseMissing('meats', ['id' => $meat['id']]);
 
     }
 }

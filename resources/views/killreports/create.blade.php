@@ -9,6 +9,7 @@
   :anonhunter="{{ $anonhunter }}" 
   :areas="{{ $areas }}" 
   :meats="{{ $meats }}" 
+  :season="{{ json_encode($this_season) }}"
   :meat-moose-average='{{ json_encode($meat_moose_average) }}' 
   :meat-reddeer-average='{{ json_encode($meat_reddeer_average) }}' 
   :meat-fallowdeer-average='{{ json_encode($meat_fallowdeer_average) }}' 
