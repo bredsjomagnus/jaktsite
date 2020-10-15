@@ -1484,30 +1484,51 @@
 
             // Om det finns någon jägare som skall läggas till görs det här
             if( this.create_from_toggledformeatfromstart.length > 0) {
+
+
                 console.log("Nu skall det läggas till i meat-tabellen");
-                this.create_from_toggledformeatfromstart.forEach( (meat) => {
+                this.create_from_toggledformeatfromstart.forEach( (meat, index) => {
                     var meat_store_url = this.meatUrl+'/store';
-                    
-                    console.log("skall spara med axios")
-                    console.log(meat);
-                    var meat_to_store = {
-                        killreport_id: meat['killreport_id'],
-                        share_kilogram: meat['share_kilogram'],
-                        share_lot: meat['share_lot'],
-                        user_id: meat['user_id']
+
+
+
+                    // nu är problemet att det alltid är skapat null rad för varje killreport. Därför måste
+                    // det i dessa fall uppdateras den förrsta raden och de eventuellt följande raderna skapas nya.
+                    if( this.toggledformeatfromstart.length === 0 && index === 0) {
+                        
+                        var meat_update_url = this.meatUrl+'/'+this.meats[0].id+'/update';
+                        axios.post(meat_update_url, meat)
+                            .then(response => {
+                                console.log("UPDATED: ", meat);
+                            })
+                            .catch(error => {
+                                console.log("MEAT UPDATE ERROR");
+                                console.log(error);
+                            });
+                    } else {
+                        console.log("skall spara med axios")
+                        console.log(meat);
+                        var meat_to_store = {
+                            killreport_id: meat['killreport_id'],
+                            share_kilogram: meat['share_kilogram'],
+                            share_lot: meat['share_lot'],
+                            user_id: meat['user_id']
+                        }
+                        console.log('meat_to_store');
+                        console.log(meat_to_store);
+                        // let data = JSON.stringify({meat});
+                        axios.post(meat_store_url, [meat_to_store])
+                            .then(response => {
+                                console.log("CREATED MEAT");
+                                console.log(meat);
+                            })
+                            .catch(error => {
+                                console.log("MEAT CREATE ERROR");
+                                console.log(error);
+                            });
                     }
-                    console.log('meat_to_store');
-                    console.log(meat_to_store);
-                    // let data = JSON.stringify({meat});
-                    axios.post(meat_store_url, [meat_to_store])
-                        .then(response => {
-                            console.log("CREATED MEAT");
-                            console.log(meat);
-                        })
-                        .catch(error => {
-                            console.log("MEAT CREATE ERROR");
-                            console.log(error);
-                        });
+                    
+                    
                     
                     
                 });
