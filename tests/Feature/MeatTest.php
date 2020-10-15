@@ -27,6 +27,8 @@ class MeatTest extends TestCase
 
         $meat = factory(Meat::class)->create();
 
+        
+
         $this->get('/meat/'.$meat->killreport_id.'/edit')->assertOk();
     }
 
@@ -117,5 +119,31 @@ class MeatTest extends TestCase
         $this->assertDatabaseHas('meats', ['user_id' => $meat_attributes_1['user_id']]);
         $this->assertDatabaseHas('meats', ['user_id' => $meat_attributes_2['user_id']]);
         $this->assertDatabaseHas('meats', ['user_id' => $meat_attributes_3['user_id']]);
+    }
+
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_user_can_update_a_meat()
+    {
+        // $this->withoutExceptionHandling();
+        $this->signIn();
+
+        // Skapar en meat
+        $meat = factory(Meat::class)->create();
+        
+        // Kontrollerar att den ligger i databasen
+        $this->assertDatabaseHas('meats', ['share_kilogram' => $meat['share_kilogram']]);
+
+        // Ändrar share_kilogram
+        $meat['share_kilogram'] = $meat['share_kilogram'] + 1;
+
+        
+        // Uppdaterar och kontrollerar att uppdateringen återspeglas i databasen.
+        $this->post('/meat/'.$meat->id.'/update', ['share_kilogram' => $meat['share_kilogram']]);
+        $this->assertDatabaseHas('meats', ['share_kilogram' => $meat['share_kilogram']]);
+
     }
 }

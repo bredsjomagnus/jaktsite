@@ -74,7 +74,7 @@ class MeatController extends Controller
      */
     public function update(Request $request, Meat $meat)
     {
-        //
+        $meat->update(request()->all());
     }
 
     /**

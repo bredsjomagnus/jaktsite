@@ -518,7 +518,8 @@
             'animal',
             'indexUrl',
             'animalUrl',
-            'killreportUrl'
+            'killreportUrl',
+            'meatUrl'
         ],
     data() {
         return {
@@ -663,6 +664,8 @@
         console.log(this.meats.length);
         console.log("animalURL: ");
         console.log(this.animalUrl);
+        console.log("meatURL: ");
+        console.log(this.meatUrl);
 
         this.setToggledAtStart()
 
@@ -762,7 +765,7 @@
                 }
             });
 
-            console.log("togglecreatesrray->this.create_from_toggledformeatfromstart: ", this.create_from_toggledformeatfromstart);
+            // console.log("togglecreatesrray->this.create_from_toggledformeatfromstart: ", this.create_from_toggledformeatfromstart);
             
 
             
@@ -834,7 +837,7 @@
             this.totalmeat = this.round(this.toggledformeat.reduce((t, {share_kilogram}) => t + share_kilogram, 0) + this.waist, 1);
             this.toggleupdatearray();
             this.togglecreatearray();
-            console.log("EFTER; this.update_from_toggledformeatfromstart: ", this.update_from_toggledformeatfromstart);
+            // console.log("EFTER; this.update_from_toggledformeatfromstart: ", this.update_from_toggledformeatfromstart);
         },
         round(value, decimals) {
             return Math.round((value + Number.EPSILON) * 10**decimals) / 10**decimals;
@@ -1426,12 +1429,21 @@
                 });
             axios.post(this.killreportUrl, killreportfields)
                 .then(response => {
-                    console.log("killreport response");
-                    var killreport = response.data.killreport;
-                    var killreportid = killreport.id;
-                    console.log(killreportid);
-                    console.log("meat_data:")
-                    console.log(this.meat_data);
+                    // Här skall det eventuellt tas bort från meattabellen via this.delete_from_toggledformeatfromstart
+
+                    // Här skall det eventuellt uppdatera i meattabellen this.update_from_toggledformeatfromstart
+
+                    // Här skall det eventuellt skapas till meattabellen this.create_from_toggledformeatfromstart
+                    // console.log("MEAT DELETE ARRAY: ");
+                    // console.log(this.delete_from_toggledformeatfromstart);
+                    // console.log();
+                    // console.log("MEAT UPDATE ARRAY: ");
+                    // console.log(this.update_from_toggledformeatfromstart);
+                    // console.log();
+                    // console.log("MEAT CREATE ARRAY: ");
+                    // console.log(this.create_from_toggledformeatfromstart);
+                    // console.log();
+                    
 
                     // här behöver man kolla in meattabellen om det redan finns jägare som tilldelats kött för denna rapport. 
                     //I sådana fall kommer de kanske behöva uppdateras. Om det inte finns några jägare för denna rapport så skall det läggas till nya.
@@ -1451,6 +1463,55 @@
                     console.log("KILLREPORT UPDATE ERROR:");
                     console.log(error);
                 });
+
+
+
+            // Om det finns någon jägare att uppdatera görs det här
+            if( this.update_from_toggledformeatfromstart.length > 0) {
+                console.log("Nu skall det uppdateras meat-tabell");
+                this.update_from_toggledformeatfromstart.forEach( (meat) => {
+                    var meat_update_url = this.meatUrl+'/'+meat['id']+'/update';
+                    axios.post(meat_update_url, meat)
+                        .then(response => {
+                            console.log("UPDATED: ", meat);
+                        })
+                        .catch(error => {
+                            console.log("MEAT UPDATE ERROR");
+                            console.log(error);
+                        });
+                });
+            }
+
+            // Om det finns någon jägare som skall läggas till görs det här
+            if( this.create_from_toggledformeatfromstart.length > 0) {
+                console.log("Nu skall det läggas till i meat-tabellen");
+                this.create_from_toggledformeatfromstart.forEach( (meat) => {
+                    var meat_store_url = this.meatUrl+'/store';
+                    
+                    console.log("skall spara med axios")
+                    console.log(meat);
+                    var meat_to_store = {
+                        killreport_id: meat['killreport_id'],
+                        share_kilogram: meat['share_kilogram'],
+                        share_lot: meat['share_lot'],
+                        user_id: meat['user_id']
+                    }
+                    console.log('meat_to_store');
+                    console.log(meat_to_store);
+                    // let data = JSON.stringify({meat});
+                    axios.post(meat_store_url, [meat_to_store])
+                        .then(response => {
+                            console.log("CREATED MEAT");
+                            console.log(meat);
+                        })
+                        .catch(error => {
+                            console.log("MEAT CREATE ERROR");
+                            console.log(error);
+                        });
+                    
+                    
+                });
+            }
 
             
 
