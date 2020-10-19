@@ -12,6 +12,9 @@ use App\Meat;
 
 class KillreportController extends Controller
 {
+
+    protected $redirectTo = '/welcome';
+
     /**
      * Display a listing of the resource.
      *

@@ -57,7 +57,7 @@
                     </a>
 
                     <a class="dropdown-item" href="{{ url('user/create') }}">
-                        Registrera ny användare
+                        Registrera
                     </a>
       
                 @endif

@@ -31,6 +31,8 @@
     <!-- MDB core JavaScript -->
     <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.10/js/mdb.min.js"></script> -->
 
+    
+
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
@@ -45,5 +47,6 @@
     </div>
 
 <script type="text/javascript" src="js/mdb.min.js"></script>
+
 </body>
 </html>

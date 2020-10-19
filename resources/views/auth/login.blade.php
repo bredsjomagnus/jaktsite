@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.welcome_app')
 
 @section('content')
 <div class="container">
@@ -8,4 +8,5 @@
     :resetbymail-url='{!! json_encode(url("password")) !!}'>
     </material-login-form>
 </div>
+
 @endsection
