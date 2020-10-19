@@ -30,6 +30,8 @@ Vue.component('material-navbar', require('./components/MaterialNavbar.vue').defa
 Vue.component('killreport-create', require('./components/KillreportCreate.vue').default);
 Vue.component('killreport-index', require('./components/KillreportIndex.vue').default);
 Vue.component('killreport-show', require('./components/KillreportShow.vue').default);
+Vue.component('admin-navbar', require('./components/AdminNavbar.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

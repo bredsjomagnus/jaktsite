@@ -45,3 +45,6 @@ Route::delete('/meat/{meat}/delete', 'MeatController@destroy')->middleware('acce
 Route::get('/admin', 'AdminController@index')->middleware('access:admin,none');
 
 Route::get('/password', 'UserController@resetlink');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
