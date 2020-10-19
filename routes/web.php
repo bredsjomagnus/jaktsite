@@ -17,7 +17,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/welcome', 'HomeController@index')->name('home');
 
 // Route::get('/user/create', 'UserController@create'); //access($request, Closure $next, $key='user', $object='none') $key='admin', 'user' or 'both'
 Route::get('/user/create', 'UserController@create')->middleware('access:admin'); //access($request, Closure $next, $key='user', $object='none') $key='admin', 'user' or 'both'
@@ -45,6 +46,6 @@ Route::delete('/meat/{meat}/delete', 'MeatController@destroy')->middleware('acce
 Route::get('/admin', 'AdminController@index')->middleware('access:admin,none');
 
 Route::get('/password', 'UserController@resetlink');
-Auth::routes();
+// Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');

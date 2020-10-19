@@ -31,6 +31,7 @@ Vue.component('killreport-create', require('./components/KillreportCreate.vue').
 Vue.component('killreport-index', require('./components/KillreportIndex.vue').default);
 Vue.component('killreport-show', require('./components/KillreportShow.vue').default);
 Vue.component('admin-navbar', require('./components/AdminNavbar.vue').default);
+Vue.component('welcome', require('./components/Welcome.vue').default);
 
 
 /**
