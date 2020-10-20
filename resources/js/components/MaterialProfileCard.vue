@@ -14,7 +14,9 @@
 		</div>
 	</div>
 
+	
 	<div class="d-flex flex-row justify-content-around">
+		
 		<mdb-btn-toolbar>
 			<mdb-btn-group size="sm">
 				<mdb-btn size="sm" color="mdb-color" tag='a' :href="url.rapportarkivet">Arkivet</mdb-btn>
@@ -40,11 +42,21 @@
 			<mdb-input label="Mobilnummer" v-model="fields.mobilenumber"  />
 			<mdb-input label="Tel." v-model="fields.phonenumber"  />
 			<input type="hidden" name="_token" :value="csrf">
-			<div class="text-center">
-				<mdb-btn color="mdb-color" type="submit"><mdb-icon icon="user-edit" class="ml-1"/> - Uppdatera</mdb-btn>
+			
+			
+			<div class="d-flex flex-row justify-content-around" style="margin-top: -10px;">
+				<mdb-btn size="sm" color="mdb-color" type="submit"><mdb-icon icon="user-edit" class="ml-1"/> - Uppdatera</mdb-btn>
 			</div>
+			
 
 		</form>
+		<hr>
+		<form @submit.prevent="logout">
+			<div class="d-flex flex-row justify-content-around" style="margin-top: -10px;">
+				<mdb-btn size="sm" color="elegant" type="submit" :href="url.logouturl">Logga ut</mdb-btn>
+			</div>
+		</form>
+
     </mdb-card-body>
   </mdb-card>
   </div>
@@ -71,7 +83,9 @@
 			'gravatarSrc',
 			'killreporturl',
 			'killreportindexurl',
-			'adminurl'
+			'adminurl',
+			'logouturl',
+			'welcomeurl'
 			],
 		data() {
 			return {
@@ -93,7 +107,9 @@
 					update: window.location.pathname + "/update",
 					killreport: this.killreporturl,
 					rapportarkivet: this.killreportindexurl,
-					adminurl: this.adminurl
+					adminurl: this.adminurl,
+					logouturl: this.logouturl,
+					welcomeurl: this.welcomeurl
 				}
 			}
 		},
@@ -105,16 +121,19 @@
 		},
 		methods: {
 			submitForm(event) {
-			axios.post(this.url.update, this.fields)
-				 .then(response => {
-					this.fields = {};
-					// console.log(response.request.responseURL)
-					window.location = response.request.responseURL;	// redirect to whatever the response from controller method says.
-				})
-				.catch(error => {
-					console.log(error);
-				});
-		}
+				axios.post(this.url.update, this.fields)
+					.then(response => {
+						this.fields = {};
+						// console.log(response.request.responseURL)
+						window.location = response.request.responseURL;	// redirect to whatever the response from controller method says.
+					})
+					.catch(error => {
+						console.log(error);
+					});
+			},
+			logout(event) {
+				axios.post(this.url.logouturl).then(() => location.href = this.url.welcomeurl);
+			}
 		}
 	}
 </script>

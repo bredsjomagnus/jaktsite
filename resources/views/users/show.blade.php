@@ -6,6 +6,8 @@
   :killreporturl='{!! json_encode(url("killreports/create")) !!}' 
   :killreportindexurl='{!! json_encode(url("killreports")) !!}' 
   :adminurl='{!! json_encode(url("admin")) !!}' 
+  :logouturl='{!! json_encode(url("logout")) !!}' 
+  :welcomeurl='{!! json_encode(url("")) !!}' 
   :auth-user="{{ Auth::user() }}" 
   :gravatar-src='{!! json_encode( Gravatar::src(Auth::user()->email)) !!}'>
   </material-profile-card>

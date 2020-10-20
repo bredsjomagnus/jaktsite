@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="jumbotron card card-image" style="background-image: url('{{asset('images/res/elk12.JPG')}}')">
+<div class="jumbotron card card-image" style="margin-top: -25px; background-image: url('{{asset('images/res/elk12.JPG')}}')">
   <div class="text-white text-center py-5 px-4">
     <div>
       <h4>RAPPORTERING AV DJUR</h4>
