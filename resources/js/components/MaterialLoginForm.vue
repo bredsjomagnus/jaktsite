@@ -16,6 +16,10 @@
     </div>
     <input type="hidden" name="_token" :value="csrf">
   </form>
+  <br>
+  <div class="text-center">
+    <p style="color: red;">{{errormessage}}</p>
+  </div>
   </div>
   <!-- Material form login -->
 </template>
@@ -42,7 +46,8 @@
             },
             log: {
               path: window.location.pathname
-            }
+            },
+            errormessage: ""
         }
     },
     mounted() {
@@ -51,9 +56,11 @@
     },
     methods: {
       submitForm(event) {
-        console.log("POST URL")
-        console.log(this.postUrl)
-
+        // console.log("POST URL")
+        // console.log(this.postUrl)
+        // console.log("FÖRE this.errormessage");
+        // console.log(this.errormessage);
+        this.errormessage = "";
 
         console.log(window.location.pathname);
         // console.log(event)
@@ -68,6 +75,9 @@
             })
             .catch(error => {
               console.log(error);
+              this.errormessage = "Felaktig emailadress eller lösenord!";
+              console.log("ERROR this.errormessage");
+              console.log(this.errormessage);
             });
       }
     }
