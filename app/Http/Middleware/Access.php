@@ -18,7 +18,7 @@ class Access
     {
         // if guest
         if(auth()->user() === null) {
-            return redirect('home');
+            return redirect('login');
         }
 
         if($object === 'user') {
@@ -27,20 +27,23 @@ class Access
         }
         
         if($key === 'admin') {
+            // Om det enbart är öppet för admin och user inte är admin
             if(!auth()->user()->is_admin()){
-                return redirect('home');
+                return redirect('login');
             }
         } else if($key === 'both') {
             if($object === 'user') {
+                // om det är öppet för admin OCH användare men är ingetdera
                 if($router_user_id !== auth()->user()->id && !auth()->user()->is_admin()){
-                    return redirect('home');
+                    return redirect('login');
                 }
             }
             
         } else if ($key === 'user') {
             if($object === 'user') {
+                // om det är öppet för användare men inte är det
                 if($router_user_id !== auth()->user()->id){
-                    return redirect('home');
+                    return redirect('login');
                 }
             }
             

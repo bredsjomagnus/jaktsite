@@ -1,5 +1,6 @@
 <template>
   <!-- Material form login -->
+  <div class="justify-content-center" style="margin-top: 100px;">
   <!-- @submit.prevent="submitForm" -->
   <form @submit.prevent="submitForm">
     <p class="h4 text-center mb-4">Logga in</p>
@@ -15,6 +16,7 @@
     </div>
     <input type="hidden" name="_token" :value="csrf">
   </form>
+  </div>
   <!-- Material form login -->
 </template>
 <script>
