@@ -1,6 +1,6 @@
 <template>
   <!-- Material form login -->
-  <div class="justify-content-center" style="margin-top: 100px;">
+  <div class="justify-content-center" style="margin-top: 75px;">
   <!-- @submit.prevent="submitForm" -->
   <form @submit.prevent="submitForm">
     <p class="h4 text-center mb-4">Logga in</p>

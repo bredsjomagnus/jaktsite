@@ -1,7 +1,6 @@
 <template>
     <div>
         <div>
-
             <div class="d-flex flex-row justify-content-around" style="margin-top:-20px">
                 <mdb-card class='w-100' color="unique-color-dark">
                     <mdb-card-text class="d-flex justify-content-center">{{this.steptitle}}</mdb-card-text>

@@ -1,4 +1,6 @@
 <template>
+<div>
+	
   <mdb-card>
     <!-- <mdb-card-image src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20%286%29.jpg" alt="Card image cap"></mdb-card-image> -->
 	<div class="d-flex justify-content-center" style="padding-bottom:16px; padding-top:10px; background-color: rgb(122, 160, 189);">
@@ -11,7 +13,20 @@
       		<p style="color:white">{{fields.firstname}} {{fields.lastname}}</p>
 		</div>
 	</div>
-	<mdb-btn color="mdb-color" tag='a' :href="url.killreport"><mdb-icon icon="paw" class="ml-1"/> - Rapportera djur</mdb-btn>
+
+	<div class="d-flex flex-row justify-content-around">
+		<mdb-btn-toolbar>
+			<mdb-btn-group size="sm">
+				<mdb-btn size="sm" color="mdb-color" tag='a' :href="url.rapportarkivet">Arkivet</mdb-btn>
+				<mdb-btn size="sm" color="mdb-color" tag='a' :href="url.killreport">Rapportera</mdb-btn>
+
+				<mdb-btn v-if="authUser.role == 'admin'" size="sm" color="mdb-color" tag='a' :href="url.adminurl">Admin</mdb-btn>
+			</mdb-btn-group>
+		</mdb-btn-toolbar>
+	</div>
+
+		
+
     <mdb-card-body class="infopart">
       <!-- <mdb-card-title>Profildata</mdb-card-title> -->
 	  	<form @submit.prevent="submitForm">
@@ -32,10 +47,11 @@
 		</form>
     </mdb-card-body>
   </mdb-card>
+  </div>
 </template>
 <script>
 	import axios from "axios";
-	import { mdbCard, mdbCardImage, mdbCardBody, mdbCardTitle, mdbCardText, mdbBtn, mdbInput, mdbIcon} from 'mdbvue';
+	import { mdbCard, mdbCardImage, mdbCardBody, mdbCardTitle, mdbCardText, mdbBtn, mdbInput, mdbIcon, mdbBtnGroup, mdbBtnToolbar} from 'mdbvue';
 	export default {
 		name: 'CardPage',
 		components: {
@@ -46,12 +62,16 @@
 			mdbCardText,
 			mdbBtn,
 			mdbInput,
-			mdbIcon
+			mdbIcon,
+			mdbBtnGroup,
+			mdbBtnToolbar
 		},
 		props: [
 			'authUser',
 			'gravatarSrc',
-			'killreporturl'
+			'killreporturl',
+			'killreportindexurl',
+			'adminurl'
 			],
 		data() {
 			return {
@@ -71,7 +91,9 @@
 				},
 				url: {
 					update: window.location.pathname + "/update",
-					killreport: this.killreporturl
+					killreport: this.killreporturl,
+					rapportarkivet: this.killreportindexurl,
+					adminurl: this.adminurl
 				}
 			}
 		},
