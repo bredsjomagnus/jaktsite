@@ -1,5 +1,17 @@
 <template>
 <div>
+
+	<div class="d-flex flex-row justify-content-around" style="margin-top: -20px; margin-bottom: 5px;">
+		
+		<mdb-btn-toolbar>
+			<mdb-btn-group size="sm">
+				<mdb-btn size="sm" color="mdb-color" tag='a' :href="url.rapportarkivet">Arkivet</mdb-btn>
+				<mdb-btn size="sm" color="mdb-color" tag='a' :href="url.killreport">Rapportera</mdb-btn>
+
+				<mdb-btn v-if="authUser.role == 'admin'" size="sm" color="mdb-color" tag='a' :href="url.adminurl">Admin</mdb-btn>
+			</mdb-btn-group>
+		</mdb-btn-toolbar>
+	</div>
 	
   <mdb-card>
     <!-- <mdb-card-image src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20%286%29.jpg" alt="Card image cap"></mdb-card-image> -->
@@ -15,17 +27,7 @@
 	</div>
 
 	
-	<div class="d-flex flex-row justify-content-around">
-		
-		<mdb-btn-toolbar>
-			<mdb-btn-group size="sm">
-				<mdb-btn size="sm" color="mdb-color" tag='a' :href="url.rapportarkivet">Arkivet</mdb-btn>
-				<mdb-btn size="sm" color="mdb-color" tag='a' :href="url.killreport">Rapportera</mdb-btn>
-
-				<mdb-btn v-if="authUser.role == 'admin'" size="sm" color="mdb-color" tag='a' :href="url.adminurl">Admin</mdb-btn>
-			</mdb-btn-group>
-		</mdb-btn-toolbar>
-	</div>
+	
 
 		
 
