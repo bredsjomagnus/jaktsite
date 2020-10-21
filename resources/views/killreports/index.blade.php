@@ -4,8 +4,8 @@
 <div class="container">
   <div class="d-flex justify-content-center" style="margin-top: -20px; margin-bottom: 5px;">
     <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-      <a type="button" class="btn btn-mdb-color btn-sm" href="{{ url(auth()->user()->path()) }}">Min sida</a>
-      <a type="button" class="btn btn-mdb-color btn-sm" href="{{ url('/killreports/create') }}">Rapportera</a>
+      <button class="btn btn-mdb-color btn-sm" ><a style="color: white;" href="{{ url(auth()->user()->path()) }}">Min sida</a></button>
+      <button class="btn btn-mdb-color btn-sm" ><a style="color: white;" href="{{ url('/killreports/create') }}">Rapportera</a></button>
     </div>
   </div>
     <!-- Card deck -->
