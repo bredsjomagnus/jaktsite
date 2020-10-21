@@ -613,6 +613,13 @@
                         type="Number" label="Skottrensning" v-model.number="waist" @change="checkTotal"/>
                </mdb-card-body>
            </mdb-card>
+
+            <mdb-card class="mt-2">
+                <mdb-card-body :class="totalmeat == carcassWeight ? 'cardborder' : 'meatcardbordererror'">
+                    <mdb-input type="textarea" label="Anteckning" v-model="waste_notes" :rows="5" @change="checkChanges"/>
+                </mdb-card-body>
+
+            </mdb-card>
        </div>
 
    </div>
@@ -734,6 +741,7 @@
             origincut_weight: this.animal.cut_weight,
             originheart_weight: this.animal.heart_weight,
             orginalwaste_weight: this.animal.waste,
+            orginalwaste_notes: this.animal.waste_notes,
             elkspeciestypes: ['Tjur', 'Obestämt vuxet hondjur', 'Ko', 'Kviga', 'Tjurkalv', 'Kvigkalv', 'Obestämd kalv'],
             roedeerspeciestypes: ['Bock', 'Obestämt vuxet hondjur', 'Get', 'Smaldjur', 'Bockkilling', 'Getkilling', 'Obestämd killing'],
             boarspeciestypes: ['Galt', 'Obestämt vuxet hondjur', 'Sugga', 'Gylta', 'Galtkulting', 'Suggkulting', 'Obestämd kulting'],
@@ -753,7 +761,8 @@
                 share_kilogram: 0,
                 share_lot: null,
                 updated_at: null
-            }
+            },
+            waste_notes: this.animal.waste_notes
         }
 
     },
@@ -858,6 +867,9 @@
         console.log("dovtotaldennasäsongen: ", this.meatFallowdeerThisSeason);
         console.log("råtotaldennasäsongen: ", this.meatRoedeerThisSeason);
         console.log("svintotaldennasäsongen: ", this.meatBoarThisSeason);
+
+
+        console.log("Waste notes: ", this.waste_notes);
 
         this.setToggledAtStart()
 
@@ -1463,6 +1475,8 @@
                 this.untouched = false;
             } else if(this.waist != this.orginalwaste_weight) {
                 this.untouched = false;
+            } else if(this.waste_notes != this.orginalwaste_notes) {
+                this.untouched = false;
             } else {
                 this.untouched = true;
             }
@@ -1615,7 +1629,7 @@
                 'cut_weight': this.cut_weightSelected == null ? null : parseFloat(this.cut_weightSelected),
                 'heart_weight': this.heart_weightSelected == null ? null : parseInt(this.heart_weightSelected),
                 'waste': this.waist,
-                'waste_notes': null,
+                'waste_notes': this.waste_notes,
                 'antlers': this.antlersSelected == null ? null : this.antlersSelected,
                 'points': this.pointsSelected == null ? null : parseInt(this.pointsSelected)
             };
