@@ -45,7 +45,7 @@
                     <!-- <p class="card-text">Skytt: </p> -->
                     <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
                     <!-- <button type="button" class="btn btn-light-blue btn-md">Read more</button> -->
-                    <a type="button" class="btn btn-mdb-color btn-sm" href="{{url($killreport->path())}}">Rapporten</a>
+                    <button class="btn btn-mdb-color btn-sm"><a href="{{url($killreport->path())}}" style="color: white;">Rapporten</a></button>
 
                 </div>
 
