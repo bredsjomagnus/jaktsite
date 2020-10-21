@@ -38,10 +38,10 @@
 </head>
 <body>
 
-    <div id="app">
+    <div id="app" >
         @include('includes.navbar')
 
-        <main class="py-4">
+        <main class="py-4" style="min-height: 74vh;">
             @yield('content')
         </main>
 
