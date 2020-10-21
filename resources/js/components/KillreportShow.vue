@@ -403,13 +403,154 @@
             <!-- MODAL FÖR ATT ÄNDRA KÖTTILLDELNINGEN -->
             <mdb-modal size="sm" :show="meetModal" @close="meetModal = false">
                 <mdb-modal-header>
-                    <mdb-modal-title>Ändra köttilldelning</mdb-modal-title>
+                    <mdb-modal-title>Ändra köttilldelning: {{speciesSelected}}</mdb-modal-title>
                 </mdb-modal-header>
                 <mdb-modal-body>
+                    <div class="d-flex flex-row justify-content-center">
+                        <div class="custom-control custom-switch" style="width:110px">
+                            <input type="checkbox" class="custom-control-input" v-model="showAverageMeat" id="customSwitches">
+                            <label v-if="showAverageMeat" class="custom-control-label" for="customSwitches">Snitt</label>
+                            <label v-else class="custom-control-label" for="customSwitches">Jaktsäsong {{season}}</label>
+                        </div>
+                    </div>
+
                     <div class="d-flex justify-content-center">
                         <mdb-btn class="mb-0" size='sm' style="width: 200px" :color="isToggledForMeat(this.anonhunter[0].id) ? 'indigo' : 'grey'" @click.native="togglemeat(anonhunter[0])">Gäst</mdb-btn>
                     </div>
-                    <div
+
+                    <div v-if="this.speciesSelected == 'Älg'">
+                        <div v-if="showAverageMeat" class="d-flex flex-column">      
+                            <div
+                            v-for="hunter in meatMooseAverage"
+                            :key="hunter.id"
+                            >
+                            <div
+                                class="d-flex justify-content-center">
+                                     <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click="togglemeat(hunter)" >{{hunter.firstname}} {{hunter.lastname}}<br>-- {{hunter.kg}} kg --</mdb-btn>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class="d-flex flex-column">
+                            <div
+                            v-for="hunter in meatMooseThisSeason"
+                            :key="hunter.id"
+                            >   
+                                <div class="d-flex justify-content-center">
+                                    <!-- <img class="img-fluid z-depth-1 rounded-circle" style="width: 50px; height: 50px; margin-top:5px" :alt="authUser.username" :src="gravatarSrc(hunter.email)"> -->
+                                    <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click="togglemeat(hunter)" >{{hunter.firstname}} {{hunter.lastname}}<br>-- {{hunter.kg}} kg --</mdb-btn>
+                                </div>    
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-if="this.speciesSelected == 'Kronvilt'">
+                        <div v-if="showAverageMeat" class="d-flex flex-column">  
+                            <div
+                            v-for="hunter in meatReddeerAverage"
+                            :key="hunter.id"
+                            >
+                            <div
+                                class="d-flex justify-content-center">
+                                     <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click="togglemeat(hunter)" >{{hunter.firstname}} {{hunter.lastname}}<br>-- {{hunter.kg}} kg --</mdb-btn>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class="d-flex flex-column">
+                            <div
+                            v-for="hunter in meatReddeerThisSeason"
+                            :key="hunter.id"
+                            >   
+                                <div class="d-flex justify-content-center">
+                                    <!-- <img class="img-fluid z-depth-1 rounded-circle" style="width: 50px; height: 50px; margin-top:5px" :alt="authUser.username" :src="gravatarSrc(hunter.email)"> -->
+                                    <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click="togglemeat(hunter)" >{{hunter.firstname}} {{hunter.lastname}}<br>-- {{hunter.kg}} kg --</mdb-btn>
+                                </div>    
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-if="this.speciesSelected == 'Dovvilt'">
+                        <div v-if="showAverageMeat" class="d-flex flex-column">  
+                            <div
+                            v-for="hunter in meatFallowdeerAverage"
+                            :key="hunter.id"
+                            >
+                            <div
+                                class="d-flex justify-content-center">
+                                     <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click="togglemeat(hunter)" >{{hunter.firstname}} {{hunter.lastname}}<br>-- {{hunter.kg}} kg --</mdb-btn>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class="d-flex flex-column">
+                            <div
+                            v-for="hunter in meatFallowdeerThisSeason"
+                            :key="hunter.id"
+                            >   
+                                <div class="d-flex justify-content-center">
+                                    <!-- <img class="img-fluid z-depth-1 rounded-circle" style="width: 50px; height: 50px; margin-top:5px" :alt="authUser.username" :src="gravatarSrc(hunter.email)"> -->
+                                    <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click="togglemeat(hunter)" >{{hunter.firstname}} {{hunter.lastname}}<br>-- {{hunter.kg}} kg --</mdb-btn>
+                                </div>    
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-if="this.speciesSelected == 'Rådjur'">
+                        <div v-if="showAverageMeat" class="d-flex flex-column">  
+                            <div
+                            v-for="hunter in meatRoedeerAverage"
+                            :key="hunter.id"
+                            >
+                            <div
+                                class="d-flex justify-content-center">
+                                     <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click="togglemeat(hunter)" >{{hunter.firstname}} {{hunter.lastname}}<br>-- {{hunter.kg}} kg --</mdb-btn>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class="d-flex flex-column">
+                            <div
+                            v-for="hunter in meatRoedeerThisSeason"
+                            :key="hunter.id"
+                            >   
+                                <div class="d-flex justify-content-center">
+                                    <!-- <img class="img-fluid z-depth-1 rounded-circle" style="width: 50px; height: 50px; margin-top:5px" :alt="authUser.username" :src="gravatarSrc(hunter.email)"> -->
+                                    <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click="togglemeat(hunter)" >{{hunter.firstname}} {{hunter.lastname}}<br>-- {{hunter.kg}} kg --</mdb-btn>
+                                </div>    
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-if="this.speciesSelected == 'Vildsvin'">
+                        <div v-if="showAverageMeat" class="d-flex flex-column">  
+                            <div
+                            v-for="hunter in meatBoarAverage"
+                            :key="hunter.id"
+                            >
+                            <div
+                                class="d-flex justify-content-center">
+                                     <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click="togglemeat(hunter)" >{{hunter.firstname}} {{hunter.lastname}}<br>-- {{hunter.kg}} kg --</mdb-btn>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class="d-flex flex-column">
+                            <div
+                            v-for="hunter in meatBoarThisSeason"
+                            :key="hunter.id"
+                            >   
+                                <div class="d-flex justify-content-center">
+                                    <!-- <img class="img-fluid z-depth-1 rounded-circle" style="width: 50px; height: 50px; margin-top:5px" :alt="authUser.username" :src="gravatarSrc(hunter.email)"> -->
+                                    <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click="togglemeat(hunter)" >{{hunter.firstname}} {{hunter.lastname}}<br>-- {{hunter.kg}} kg --</mdb-btn>
+                                </div>    
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+                    
+                    <!-- <div
                         v-for="hunter in hunters"
                         :key="hunter.id"
                         >
@@ -417,7 +558,7 @@
                              class="d-flex justify-content-center">
                                 <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click.native="togglemeat(hunter)">{{hunter.firstname}} {{hunter.lastname}}</mdb-btn>
                             </div>
-                        </div>
+                        </div> -->
                 </mdb-modal-body>
                 <mdb-modal-footer>
                     <mdb-btn color="blue-grey" size="sm" @click.native="meetModal = false">Ångra</mdb-btn>
@@ -519,7 +660,18 @@
             'indexUrl',
             'animalUrl',
             'killreportUrl',
-            'meatUrl'
+            'meatUrl',
+            'meatMooseAverage',
+            'meatReddeerAverage',
+            'meatFallowdeerAverage',
+            'meatRoedeerAverage',
+            'meatBoarAverage',
+            'meatMooseThisSeason',
+            'meatReddeerThisSeason',
+            'meatFallowdeerThisSeason',
+            'meatRoedeerThisSeason',
+            'meatBoarThisSeason',
+            'season'
         ],
     data() {
         return {
@@ -593,6 +745,7 @@
             update_from_toggledformeatfromstart: [],
             create_from_toggledformeatfromstart: [],
             toggledformeat: [],
+            showAverageMeat: true,
             meat_data: {
                 deleted_at: null,
                 id: this.meats[0].id,
@@ -678,6 +831,33 @@
         console.log(this.animalUrl);
         console.log("meatURL: ");
         console.log(this.meatUrl);
+        
+
+        let sortedMooseAverage = this.bubble(this.meatMooseAverage);
+        let sortedReddeerAverage = this.bubble(this.meatReddeerAverage);
+        let sortedFallowdeerAverage = this.bubble(this.meatFallowdeerAverage);
+        let sortedRoedeerAverage = this.bubble(this.meatRoedeerAverage);
+        let sortedBoarAverage= this.bubble(this.meatBoarAverage);
+
+        let sortedMooseThisSeason = this.bubble(this.meatMooseThisSeason);
+        let sortedReddeerThisSeason = this.bubble(this.meatReddeerThisSeason);
+        let sortedFallowdeerThisSeason = this.bubble(this.meatFallowdeerThisSeason);
+        let sortedRoedeerThisSeason = this.bubble(this.meatRoedeerThisSeason);
+        let sortedBoarThisSeason = this.bubble(this.meatBoarThisSeason);
+
+        console.log("**** AVERAGES ****");
+        console.log("Älgmedel: ", this.meatMooseAverage);
+        console.log("kronmedel: ", this.meatReddeerAverage);
+        console.log("dovmedel: ", this.meatFallowdeerAverage);
+        console.log("råmedel: ", this.meatRoedeerAverage);
+        console.log("svinmedel: ", this.meatBoarAverage);
+
+        console.log("**** TOTALT DENNA SÄSONGEN ****");
+        console.log("Älgtotaldennasäsongen: ", this.meatMooseThisSeason);
+        console.log("krontotaldennasäsongen: ", this.meatReddeerThisSeason);
+        console.log("dovtotaldennasäsongen: ", this.meatFallowdeerThisSeason);
+        console.log("råtotaldennasäsongen: ", this.meatRoedeerThisSeason);
+        console.log("svintotaldennasäsongen: ", this.meatBoarThisSeason);
 
         this.setToggledAtStart()
 
@@ -712,6 +892,28 @@
             }
             // console.log("setToggledAtStart->this.toggledformeatfromstart", this.toggledformeatfromstart);
             // console.log("setToggledAtStart->this.toggledformeat", this.toggledformeat);
+        },
+        bubble(obj_unsorted) {
+            // sorterar köttobjekten
+            let bubbling = true;
+            let notswapped = true;
+            let obj = obj_unsorted;
+            let n = Object.keys(obj).length - 1;
+            while (bubbling) {
+                notswapped = true;
+                for (var k=0; k < n; k++) {
+                    if (obj[k].kg > obj[k+1].kg) {
+                        var temp = obj[k];
+                        obj[k] = obj[k+1];
+                        obj[k+1] = temp;
+                        notswapped = false;
+                    }
+                }
+                if (notswapped) {
+                    bubbling = false;
+                }
+            }
+            return obj;
         },
         togglemeat(hunter) {
 

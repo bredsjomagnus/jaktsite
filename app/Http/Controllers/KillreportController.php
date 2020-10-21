@@ -107,12 +107,42 @@ class KillreportController extends Controller
      */
     public function show(Killreport $killreport)
     {
+
+        $this_season                        = $this->getSeason(date('Y-m-d'));
+
+        // The over all seasons average sorted list of users shared_kilograms; ['user_id'] => sum (float)
+        $year_back = 7; // antalet år bakåt medelvärdet skall räknas på.
+        $user_boar_average                  = $this->sumMeatWrapper('Vildsvin', 'average', $year_back);
+        $user_moose_average                 = $this->sumMeatWrapper('Älg', 'average', $year_back);
+        $user_reddeer_average               = $this->sumMeatWrapper('Kronvilt', 'average', $year_back);
+        $user_fallowdeer_average            = $this->sumMeatWrapper('Dovvilt', 'average', $year_back);
+        $user_roedeer_average               = $this->sumMeatWrapper('Rådjur', 'average', $year_back);
+
+        // This seasons summed and sorted lists of users shared_kilograms; ['user_id'] => sum (float)
+        $user_boar_this_season              = $this->sumMeatWrapper('Vildsvin', $this_season);
+        $user_moose_this_season             = $this->sumMeatWrapper('Älg', $this_season);
+        $user_reddeer_this_season           = $this->sumMeatWrapper('Kronvilt', $this_season);
+        $user_fallowdeer_this_season        = $this->sumMeatWrapper('Dovvilt', $this_season);
+        $user_roedeer_this_season           = $this->sumMeatWrapper('Rådjur', $this_season);
+
+
         // dd($killreport->shooter['username']);
         $data = [
-            'killreport'    => $killreport,
-            'anonhunter'    => User::where('occupation', 'anonhunter')->limit(1)->get(),
-            'hunters'       => User::where('occupation', 'hunter')->get(),
-            'areas'         => Area::all()
+            'killreport'                    => $killreport,
+            'anonhunter'                    => User::where('occupation', 'anonhunter')->limit(1)->get(),
+            'hunters'                       => User::where('occupation', 'hunter')->get(),
+            'areas'                         => Area::all(),
+            'meat_moose_average'            => $user_moose_average,
+            'meat_reddeer_average'          => $user_reddeer_average,
+            'meat_fallowdeer_average'       => $user_fallowdeer_average,
+            'meat_roedeer_average'          => $user_roedeer_average,
+            'meat_boar_average'             => $user_boar_average,
+            'meat_moose_this_season'        => $user_moose_this_season,
+            'meat_reddeer_this_season'      => $user_reddeer_this_season,
+            'meat_fallowdeer_this_season'   => $user_fallowdeer_this_season,
+            'meat_roedeer_this_season'      => $user_roedeer_this_season,
+            'meat_boar_this_season'         => $user_boar_this_season,
+            'this_season'                   => $this_season
         ];
         return view('killreports.show', $data);
     }
@@ -285,7 +315,7 @@ class KillreportController extends Controller
                 }
             }
         }
-        $sorted = asort($user_meat);
+        // $sorted = asort($user_meat);
         return $user_meat;
     }
 
