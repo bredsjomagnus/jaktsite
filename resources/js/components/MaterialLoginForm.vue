@@ -1,6 +1,6 @@
 <template>
   <!-- Material form login -->
-  <div class="justify-content-center" style="margin-top: 75px;">
+  <div class="justify-content-center" style="margin-top: 50px;">
   <!-- @submit.prevent="submitForm" -->
   <form @submit.prevent="submitForm">
     <p class="h4 text-center mb-4">Logga in</p>
@@ -8,14 +8,16 @@
       <mdb-input label="Användarnamn" icon="user" v-model="fields.username" type="text"/>
       <mdb-input label="Lösenord" icon="lock" v-model="fields.password" type="password"/>
     </div>
-    <div class="d-flex justify-content-between">
-      <p style="width:125px"></p>
-      <span style="color: red;">{{errormessage}}</span>
-      <a :href="resetbymailUrl">Glömt lösenordet?</a>
+    <div class="d-flex justify-content-center" style="height: 25px;">
+      <span style="color: red;"> {{errormessage}} </span>
     </div>
     <br>
     <div class="d-flex justify-content-center">
       <mdb-btn color="mdb-color" type="submit"><mdb-icon icon="sign-in-alt" class="ml-1"/> - Logga in</mdb-btn>
+    </div>
+    <br>
+    <div class="text-center">
+      <a :href="resetbymailUrl">Glömt lösenordet?</a>
     </div>
     <input type="hidden" name="_token" :value="csrf">
   </form>
