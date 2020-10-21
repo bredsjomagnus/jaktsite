@@ -44,6 +44,8 @@
         <main class="py-4">
             @yield('content')
         </main>
+
+        @include('includes.footer')
     </div>
 
 <script type="text/javascript" src="js/mdb.min.js"></script>

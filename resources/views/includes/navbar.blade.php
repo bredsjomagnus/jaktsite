@@ -1,8 +1,8 @@
 <!--Navbar-->
-<nav class="navbar navbar-expand-lg navbar-dark unique-color">
+<nav class="navbar navbar-expand-lg navbar-dark stylish-color-dark">
 
   <!-- Navbar brand -->
-  <a class="navbar-brand" href="#">SMÅRIS</a>
+  <a class="navbar-brand" style="color: #dec08f;" href="#"><img class="rounded-circle" height="30px" src="{{ asset('images/logo/smårislogo.png') }}" alt="logo"> SMÅRIS</a>
 
   <!-- Collapse button -->
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"

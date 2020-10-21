@@ -8,18 +8,21 @@
       <mdb-input label="Användarnamn" icon="user" v-model="fields.username" type="text"/>
       <mdb-input label="Lösenord" icon="lock" v-model="fields.password" type="password"/>
     </div>
-    <div>
+    <div class="d-flex justify-content-between">
+      <p style="width:125px"></p>
+      <span style="color: red;">{{errormessage}}</span>
       <a :href="resetbymailUrl">Glömt lösenordet?</a>
     </div>
-    <div class="text-center">
+    <br>
+    <div class="d-flex justify-content-center">
       <mdb-btn color="mdb-color" type="submit"><mdb-icon icon="sign-in-alt" class="ml-1"/> - Logga in</mdb-btn>
     </div>
     <input type="hidden" name="_token" :value="csrf">
   </form>
   <br>
-  <div class="text-center">
+  <!-- <div class="text-center">
     <p style="color: red;">{{errormessage}}</p>
-  </div>
+  </div> -->
   </div>
   <!-- Material form login -->
 </template>
@@ -47,7 +50,7 @@
             log: {
               path: window.location.pathname
             },
-            errormessage: ""
+            errormessage: " "
         }
     },
     mounted() {
@@ -80,6 +83,7 @@
               console.log(this.errormessage);
             });
       }
+      
     }
     
   }
