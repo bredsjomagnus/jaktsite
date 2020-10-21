@@ -41,7 +41,7 @@
     <div id="app" >
         @include('includes.navbar')
 
-        <main class="py-4" style="min-height: 74vh;">
+        <main class="py-4" style="min-height: 73vh;">
             @yield('content')
         </main>
 
