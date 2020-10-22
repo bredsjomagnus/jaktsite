@@ -43,6 +43,8 @@ Route::patch('/meat/{meat}/update', 'MeatController@update')->middleware('access
 Route::post('/meat/store', 'MeatController@store')->middleware('access:both,none');
 Route::delete('/meat/{meat}/delete', 'MeatController@destroy')->middleware('access:both,none');
 
+Route::get('/image/{killreport}/edit', 'ImageController@edit')->middleware('access:both,none');
+
 Route::get('/admin', 'AdminController@index')->middleware('access:admin,none');
 
 Route::get('/password', 'UserController@resetlink');

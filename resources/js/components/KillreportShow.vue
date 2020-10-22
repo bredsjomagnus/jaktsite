@@ -13,7 +13,7 @@
             <div class="d-flex flex-row justify-content-around">
                 <mdb-btn-group size="sm">
                     <mdb-btn :color="untouched ? 'mdb-color' : 'purple'" @click.native="saveChanges" :disabled="savable" size="sm"><mdb-icon icon="save"/></mdb-btn>
-                    <mdb-btn color="mdb-color" @click.native="images" size="sm"><mdb-icon icon="images"/></mdb-btn>
+                    <mdb-btn color="mdb-color" @click.native="toImagesView" size="sm"><mdb-icon icon="images"/></mdb-btn>
                 </mdb-btn-group>
             </div>
             <!-- </mdb-btn-toolbar> -->
@@ -665,6 +665,7 @@
             'meats',
             'animal',
             'indexUrl',
+            'imageUrl',
             'animalUrl',
             'killreportUrl',
             'meatUrl',
@@ -867,7 +868,6 @@
         console.log("dovtotaldennasäsongen: ", this.meatFallowdeerThisSeason);
         console.log("råtotaldennasäsongen: ", this.meatRoedeerThisSeason);
         console.log("svintotaldennasäsongen: ", this.meatBoarThisSeason);
-
 
         console.log("Waste notes: ", this.waste_notes);
 
@@ -1299,6 +1299,9 @@
             this.antlersSelected = antler;
             this.antlersModal = false;
             this.checkChanges();
+        },
+        toImagesView() {
+            window.location = this.imageUrl;
         },
         backToKillreportIndex() {
             window.location = this.indexUrl;
@@ -1868,9 +1871,6 @@
     border-top: 2px solid #59698d;
     /* border-bottom: 2px solid #59698d; */
 
-}
-.meat_button_group {
-    /* margin-top: -20px; */
 }
 .btncolor{
     background-color: #bd794b;

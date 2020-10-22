@@ -10,6 +10,7 @@ use Tests\TestCase;
 use App\User;
 use App\Animal;
 use App\Killreport;
+use App\Image;
 
 class UserTest extends TestCase
 {
@@ -90,6 +91,24 @@ class UserTest extends TestCase
         $data = $this->report_kill($user, $user); // data['shooter', 'reporter', 'animal', 'area', 'killreport']
 
         $this->assertCount(1, $data['shooter']->animals);
+    }
+
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_user_has_one_or_many_images()
+    {
+        $user = $this->signIn();
+
+        $image_1 = factory(Image::class)->create(['user_id' => $user->id]);
+        $image_2 = factory(Image::class)->create(['user_id' => $user->id]);
+        $image_3 = factory(Image::class)->create(['user_id' => 2]);
+
+        $this->assertTrue($user->images->contains($image_1));
+        $this->assertEquals(2, $user->images->count());
+        $this->assertInstanceOf(Collection::class, $user->images);
     }
 
     /**

@@ -65,4 +65,9 @@ class User extends Authenticatable
     {
         return $this->role == 'admin';
     }
+
+    public function images()
+    {
+        return $this->hasMany(Image::class);
+    }
 }

@@ -104,7 +104,7 @@ class UserTest extends TestCase
         ];
 
         $this->patch($johan->path()."/update", $new_attributes)
-            ->assertRedirect('home');
+            ->assertRedirect('login');
 
         $this->assertDatabaseMissing('users', $new_attributes);
             
@@ -187,7 +187,7 @@ class UserTest extends TestCase
         $guest_attributes['password'] = 'new_password123';
 
         // trying to store guest redirects to 'home'
-        $this->post('/user/store', $guest_attributes)->assertRedirect('/home');
+        $this->post('/user/store', $guest_attributes)->assertRedirect('/login');
 
         // guest is not in database
         $this->assertDatabaseMissing('users', ['username' => $guest_attributes['username']]);      
@@ -215,7 +215,7 @@ class UserTest extends TestCase
         $guest_attributes['password'] = 'new_password123';
 
         // trying to store guest redirects to 'home'
-        $this->post('/user/store', $guest_attributes)->assertRedirect('/home');
+        $this->post('/user/store', $guest_attributes)->assertRedirect('/login');
 
         // guest is not in database
         $this->assertDatabaseMissing('users', ['username' => $guest_attributes['username']]);      

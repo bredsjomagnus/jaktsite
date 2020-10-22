@@ -52,7 +52,7 @@ class KillreportTest extends TestCase
         $this->withoutExceptionHandling();
 
 
-        $this->get('/killreports/create')->assertRedirect('home');
+        $this->get('/killreports/create')->assertRedirect('login');
     }
 
     /**
@@ -136,7 +136,7 @@ class KillreportTest extends TestCase
     {
         $this->withoutExceptionHandling();
   
-        $this->get('/killreports')->assertRedirect('/home');
+        $this->get('/killreports')->assertRedirect('/login');
 
     }
 
@@ -169,7 +169,7 @@ class KillreportTest extends TestCase
 
         $killreport = factory(Killreport::class)->create();
 
-        $this->get('/killreports/'.$killreport->id)->assertRedirect('/home');
+        $this->get('/killreports/'.$killreport->id)->assertRedirect('/login');
     }
 
     /**

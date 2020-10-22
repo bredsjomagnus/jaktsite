@@ -8,6 +8,7 @@ use App\User;
 use App\Animal;
 use App\Area;
 use App\Meat;
+use App\Image;
 
 class Killreport extends Model
 {
@@ -41,5 +42,10 @@ class Killreport extends Model
     public function meat()
     {
         return $this->hasMany(Meat::class);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(Image::class);
     }
 }

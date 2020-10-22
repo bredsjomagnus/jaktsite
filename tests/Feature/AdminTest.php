@@ -35,7 +35,7 @@ class AdminTest extends TestCase
         $this->withoutExceptionHandling();
         $user = factory(User::class)->create(['role' => 'user']);
         $this->signIn($user);
-        $response = $this->get('/admin')->assertRedirect('/home');
+        $response = $this->get('/admin')->assertRedirect('/login');
     }
     
     /**
@@ -48,7 +48,7 @@ class AdminTest extends TestCase
         $this->withoutExceptionHandling();
         $user = factory(User::class)->create(['role' => 'guest']);
         $this->signIn($user);
-        $response = $this->get('/admin')->assertRedirect('/home');
+        $response = $this->get('/admin')->assertRedirect('/login');
     }
 
     /**
@@ -59,6 +59,6 @@ class AdminTest extends TestCase
     public function an_user_not_logged_in_cannot_access_the_admin_gui()
     {
         $this->withoutExceptionHandling();
-        $response = $this->get('/admin')->assertRedirect('/home');
+        $response = $this->get('/admin')->assertRedirect('/login');
     }
 }
