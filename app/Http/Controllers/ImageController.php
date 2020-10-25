@@ -86,7 +86,8 @@ class ImageController extends Controller
     {
         // dd($killreport);
         $data = [
-            'killreport'    => $killreport
+            'killreport'    => $killreport,
+            'images'        => $killreport->images
         ];
         return view('image.edit', $data);
     }

@@ -1,40 +1,99 @@
 <template>
   <mdb-container>
 
-    <div class="w-100">
-        <form>
-            <div>
-                <span>Max storlek 3 Mb</span>
+       <!-- <mdb-btn-toolbar> -->
+            <div class="d-flex flex-row justify-content-around">
+                <mdb-btn color="mdb-color" @click.native="backToKillreport" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
+                <mdb-btn-group size="sm">
+                    <mdb-btn color="mdb-color" @click.native="toggleActiveStateG" :active="activeG" size="sm"> <mdb-icon icon="images"/> </mdb-btn>
+                    <mdb-btn color="mdb-color" @click.native="toggleActiveStateU" :active="activeU" size="sm"> <mdb-icon icon="cloud-upload-alt"/> </mdb-btn>
+                </mdb-btn-group>
+                <mdb-btn color="mdb-color" @click.native="undoModal = true" size="sm"><mdb-icon icon="undo"/></mdb-btn>
+
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroupFileAddon01">Bild</span>
-                </div>
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" @change="addImage">
-                    <label class="custom-file-label" for="inputGroupFile01">...</label>
-                </div>
+            <!-- </mdb-btn-toolbar> -->
+
+    <div v-if="activeG">
+        <div class="">
+
+            <div
+                v-for="image in images"
+                :key="image.id"
+                class="mb-2"
+            >
+
+                <mdb-card class="w-100">
+                    <mdb-view hover cascade>
+                        <a href="#!" class="d-flex flex-row justify-content-center">
+                            <mdb-card-image class="align-content-center" :src="imageurl(image.id, image.name)" alt="Card image cap" ></mdb-card-image>
+                            <mdb-mask flex-center waves overlay="white-slight"></mdb-mask>
+                        </a>
+                    </mdb-view>
+                    <mdb-card-body class="text-center pb-0" cascade>
+                        <mdb-card-title><strong>Alison Belmont</strong></mdb-card-title>
+                        <h5 class="blue-text"><strong>Graffiti Artist</strong></h5>
+                        <mdb-card-text>Sed ut perspiciatis unde omnis iste natus sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</mdb-card-text>
+                        <a class="icons-sm li-ic"><mdb-icon fab icon="linkedin" /></a>
+                        <a class="icons-sm tw-ic"><mdb-icon fab icon="twitter" /></a>
+                        <a class="icons-sm fb-ic"><mdb-icon fab icon="facebook" /></a>
+                        <mdb-card-footer class="text-muted mt-4">2 days ago</mdb-card-footer>
+                    </mdb-card-body>
+                </mdb-card>
+
             </div>
-            <div class="d-flex flex-row justify-content-center mt-2">
-                <p :class="error ? 'error_message' : 'success_message'">{{message}}</p>
-            </div>
-        </form>
+         </div>
     </div>
+    <div v-else-if="activeU">
+         <div class="w-100">
+            <form>
+                <div>
+                    <i class='text-muted' style="font-size:12px;">Bilder över 2 MB komprimeras.</i>
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroupFileAddon01">Bild</span>
+                    </div>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" @change="addImage">
+                        <label class="custom-file-label" for="inputGroupFile01">...</label>
+                    </div>
+                </div>
+                <div class="d-flex flex-row justify-content-center mt-2">
+                    <p :class="error ? 'error_message' : 'success_message'">{{message}}</p>
+                </div>
+            </form>
+        </div>
+    </div>
+   
   </mdb-container>
 </template>
 <script>
-	import { mdbContainer } from 'mdbvue';
+	import { mdbContainer, mdbBtn, mdbBtnGroup,mdbBtnToolbar, mdbIcon, mdbCard, mdbView, mdbCardBody, mdbCardTitle, mdbCardImage, mdbMask, mdbCardFooter} from 'mdbvue';
 	export default {
 		name: 'ImageEdit',
 		components: {
-			mdbContainer
+            mdbContainer,
+            mdbBtn,
+            mdbBtnGroup,
+            mdbBtnToolbar,
+            mdbIcon,
+            mdbCard,
+            mdbView,
+            mdbCardBody,
+            mdbCardTitle,
+            mdbCardImage,
+            mdbMask,
+            mdbCardFooter
         },
         props: [
             "killreport",
             "authUser",
             "imageStoreUrl",
             "imageBaseUrl",
-            "fileStoreUrl"
+            "fileStoreUrl",
+            "images",
+            "storageBaseUrl",
+            "killreportUrl"
         ],
         data() {
             return {
@@ -46,7 +105,10 @@
                     display: 'no',
                 },
                 message: '',
-                error: false
+                error: false,
+                activeG: true,
+                activeU: false,
+                
 
             }
         },
@@ -57,10 +119,30 @@
             console.log("this.imageStoreUrl: ", this.imageStoreUrl);
             console.log("this.imageBaseUrl: ", this.imageBaseUrl);
             console.log("this.fileStoreUrl: ", this.fileStoreUrl);
+            console.log("this.images: ", this.images);
+            console.log("this.storageBaseUrl: ", this.storageBaseUrl);
+            console.log("this.killreportUrl: ", this.killreportUrl);
             
 
         },
 		methods: {
+            imageurl(id, filename) {
+                
+                let url = this.storageBaseUrl+"/k"+this.killreport.id+"_i"+id+"_u"+this.authUser.id+"_"+filename;
+                console.log("imageurl: ", url);
+                return url;
+            },
+            toggleActiveStateG() {
+                this.activeG = true;
+                this.activeU = false;
+            },
+            toggleActiveStateU() {
+                this.activeG = false;
+                this.activeU = true;
+            },
+            backToKillreport() {
+                window.location = this.killreportUrl;
+            },
 			addImage(event) {
                 /*
                     Kontrollerar att det bara är en fil som skickas och att den är tillåten (image/png,jpg,jpeg)
@@ -109,7 +191,7 @@
                                         let formdata = new FormData();
 
                                         // filename
-                                        let filename = "k"+this.killreport.id+"_i"+image_id+ "_u"+this.authUser.id+"_" +file.name.split('.')[0] + "." + filetype[1];
+                                        let filename = "k"+this.killreport.id+"_i"+image_id+ "_u"+this.authUser.id+"_" +file.name.split('.')[0] + "." + file.name.split('.')[1];
                                         console.log("filename: ", filename);
 
                                         // appendar data
@@ -139,6 +221,8 @@
                                                         })
                                                 } else {
                                                     this.message = file.name +" uppladdad!";
+                                                    this.toggleActiveStateG();
+                                                    window.location.reload();
                                                 }
 
                                                 

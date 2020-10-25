@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class FileController extends Controller
 {
@@ -36,25 +37,51 @@ class FileController extends Controller
      */
     public function store(Request $request)
     {
-    //    dd($request->file('file')->getClientOriginalName());
+        // begränsning för när bilden komprimeras
+        $limit = 2000000;
 
-        
+        // filen
+        $file = $request->file('file');
 
-        // Log::info($request->file('file')->isValid());
-        Log::info($request->file('file')->getClientOriginalName());
-        Log::info($request->file('file')->isValid());
-        
+        // bilden som GD från image intervention
+        $img = Image::make($request->file('file'));
+
+        // bildstorlek
+        $size = $img->filesize();
+
         // filename
         $filename = $request->file('file')->getClientOriginalName();
 
+        // splitar upp namnet så att jag kan komma åt formatet
+        $filearray = explode('.', $filename);
 
-        if( $request->file('file')->isValid() ) {
+        // filformat
+        $format = $filearray[1];
+
+        
+        // om bilden är valid och storleken är mindre än ovan satta limit
+        if( $request->file('file')->isValid() && $size < $limit) {
+
+            // spara bilden i images/killreports
             $path = $request->file('file')->storeAs('images/killreports', $filename, 'public');
-            // Log::info($path);
+        } else {
+
+            // om bildstorleken är större än ovan satta limit
+            if($size > $limit) {
+
+                // kvalitén som skall sättas beror på förhållandet limit och bildstorlek
+                $quality = floor(($limit/$size)*100);
+ 
+                // komprimera med ovan beräknade kvalitétsfaktor
+                $newimg = Image::make($file->getRealPath())->encode(strtolower($format), $quality);
+
+                // spara bilden i images/killreports
+                Storage::disk('local')->put('public/images/killreports/'.$filename, $newimg);
+            }
         }
 
         
-
+        // kontroll om bilden nu finns i images/killreports
         if( Storage::disk('public')->exists('images/killreports/'.$filename) ) {
             return response()->json( ['message' => 'success'] );
         } else {
