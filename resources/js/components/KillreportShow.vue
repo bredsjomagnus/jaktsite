@@ -841,6 +841,8 @@
         console.log(this.animalUrl);
         console.log("meatURL: ");
         console.log(this.meatUrl);
+        console.log("imageUrl:")
+        console.log(this.imageUrl);
         
 
         let sortedMooseAverage = this.bubble(this.meatMooseAverage);

@@ -44,6 +44,10 @@ Route::post('/meat/store', 'MeatController@store')->middleware('access:both,none
 Route::delete('/meat/{meat}/delete', 'MeatController@destroy')->middleware('access:both,none');
 
 Route::get('/image/{killreport}/edit', 'ImageController@edit')->middleware('access:both,none');
+Route::post('/image/{killreport}/store', 'ImageController@store')->middleware('access:both,none');
+Route::delete('/image/{image}/delete', 'ImageController@destroy')->middleware('access:both,none');
+
+Route::post('/file/store', 'FileController@store')->middleware('access:both,none');
 
 Route::get('/admin', 'AdminController@index')->middleware('access:admin,none');
 
