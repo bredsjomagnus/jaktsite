@@ -6,6 +6,7 @@
 <image-edit
     :killreport="{{ json_encode($killreport) }}"
     :auth-user="{{ Auth::user() }}"
+    :users='{{ json_encode($users)}}'
     :image-store-url='{!! json_encode(url("image/".$killreport->id."/store")) !!}'
     :image-base-url='{!! json_encode(url("image")) !!}'
     :file-store-url='{!! json_encode(url("file/store")) !!}'

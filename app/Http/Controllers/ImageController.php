@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Image;
 use App\Killreport;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -87,7 +88,8 @@ class ImageController extends Controller
         // dd($killreport);
         $data = [
             'killreport'    => $killreport,
-            'images'        => $killreport->images
+            'images'        => $killreport->images,
+            'users'         => User::where('role', 'user')->orWhere('role', 'admin')->get()
         ];
         return view('image.edit', $data);
     }

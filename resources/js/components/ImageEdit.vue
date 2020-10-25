@@ -25,18 +25,23 @@
                 <mdb-card class="w-100">
                     <mdb-view hover cascade>
                         <a href="#!" class="d-flex flex-row justify-content-center">
-                            <mdb-card-image class="align-content-center" :src="imageurl(image.id, image.name)" alt="Card image cap" ></mdb-card-image>
+                            <mdb-card-image class="align-content-center" :src="imageurl(image)" alt="Card image cap" ></mdb-card-image>
                             <mdb-mask flex-center waves overlay="white-slight"></mdb-mask>
                         </a>
                     </mdb-view>
-                    <mdb-card-body class="text-center pb-0" cascade>
-                        <mdb-card-title><strong>Alison Belmont</strong></mdb-card-title>
-                        <h5 class="blue-text"><strong>Graffiti Artist</strong></h5>
-                        <mdb-card-text>Sed ut perspiciatis unde omnis iste natus sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</mdb-card-text>
-                        <a class="icons-sm li-ic"><mdb-icon fab icon="linkedin" /></a>
-                        <a class="icons-sm tw-ic"><mdb-icon fab icon="twitter" /></a>
-                        <a class="icons-sm fb-ic"><mdb-icon fab icon="facebook" /></a>
-                        <mdb-card-footer class="text-muted mt-4">2 days ago</mdb-card-footer>
+                    <mdb-card-body class="pb-0" style="margin-top: -20px;" cascade>
+                        <i class="text-muted" style="font-size: 12px;">Uppladdat av {{username(image.user_id)}}</i>
+                        <div class="text-center mt-2"
+                        v-if="image.display == 'yes'"
+                        >
+                            <p ><mdb-icon icon="eye"/> Satt rapportkortets bild.</p>
+                        </div>
+                        
+                        <mdb-card-footer class="text-muted mt-4">
+                            <mdb-btn color="mdb-color" @click.native="toggleImageDisplay(image.id)" :active="image.display == 'yes'" size="sm"><mdb-icon icon="star"/> </mdb-btn>
+                            <mdb-btn color="mdb-color" size="sm"><mdb-icon icon="redo-alt"/> </mdb-btn>
+                            <mdb-btn color="danger" size="sm"><mdb-icon icon="trash-alt"/> </mdb-btn>
+                        </mdb-card-footer>
                     </mdb-card-body>
                 </mdb-card>
 
@@ -93,7 +98,8 @@
             "fileStoreUrl",
             "images",
             "storageBaseUrl",
-            "killreportUrl"
+            "killreportUrl",
+            "users"
         ],
         data() {
             return {
@@ -122,13 +128,27 @@
             console.log("this.images: ", this.images);
             console.log("this.storageBaseUrl: ", this.storageBaseUrl);
             console.log("this.killreportUrl: ", this.killreportUrl);
+            console.log("this.users: ", this.users);
             
 
         },
 		methods: {
-            imageurl(id, filename) {
+            toggleImageDisplay(image_id) {
+
+            },
+            username(id) {
+                console.log("USERNAME->id: ", id);
+                let user = this.users.filter(obj => {
+                    return obj.id === id;
+                });
+
+                console.log("user: ", user);
+
+                return user[0].firstname + " " + user[0].lastname;
+            },
+            imageurl(image, filename) {
                 
-                let url = this.storageBaseUrl+"/k"+this.killreport.id+"_i"+id+"_u"+this.authUser.id+"_"+filename;
+                let url = this.storageBaseUrl+"/k"+this.killreport.id+"_i"+image.id+"_u"+image.user_id+"_"+image.name;
                 console.log("imageurl: ", url);
                 return url;
             },
