@@ -1,5 +1,4 @@
 
-
 @extends('layouts.app')
 
 @section('content')
@@ -13,6 +12,9 @@
     :images='{{ json_encode($images) }}'
     :storage-base-url='{{ json_encode(asset("storage/images/killreports")) }}'
     :killreport-url='{!! json_encode(url("killreports/".$killreport->id)) !!}'
+    :image-base-url='{!! json_encode(url("image")) !!}'
+    :file-base-url='{!! json_encode(url("file")) !!}'
+    :killreport-index-url='{!! json_encode(url("killreports")) !!}'
 ></image-edit>
 
 @endsection

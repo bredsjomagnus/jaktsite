@@ -103,7 +103,7 @@ class ImageController extends Controller
      */
     public function update(Request $request, Image $image)
     {
-        //
+        $image->update(request()->all());
     }
 
     /**
@@ -117,7 +117,7 @@ class ImageController extends Controller
         if( (Auth::user()->id == $image->user_id) || (Auth::user()->role == 'admin') ) {
             $image->delete();
 
-            return response()->json(['message' => $image->id." ".$image->name." deleted"]);
+            return response()->json(['message' => 'success']);
         }
 
         return response()->json(['message' => $image->id." ".$image->name." NOT deleted"]);

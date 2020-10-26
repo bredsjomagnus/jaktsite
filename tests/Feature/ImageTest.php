@@ -154,4 +154,30 @@ class ImageTest extends TestCase
         // antar att bilden fortfarande är kvar i databasen
         $this->assertDatabaseMissing('images', ['id' => $image->id]);
     }
+
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_user_can_update_a_killreport_image()
+    {
+        $this->withoutExceptionHandling();
+        $this->signIn();
+
+        $image = factory(Image::class)->create(['display' => 'no']);
+
+        $this->assertDatabaseHas('images', ['id' => $image->id, 'display' => 'no']);
+
+        $image->display = 'yes';
+
+        $image_attributes = $image->getAttributes();
+
+        // dd($image_attributes);
+
+        $this->patch('/image/'.$image->id.'/update', $image_attributes)->assertOk();
+
+        $this->assertDatabaseHas('images', ['id' => $image->id, 'display' => 'yes']);
+        $this->assertDatabaseMissing('images', ['display' => 'no']);
+    }
 }

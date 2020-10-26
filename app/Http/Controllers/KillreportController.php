@@ -23,7 +23,7 @@ class KillreportController extends Controller
     public function index()
     {
         $killreports = Killreport::where('deleted_at', null)->orderBy('killdate', 'desc')->get();
-
+    
         return view('killreports.index', compact('killreports'));
     }
 

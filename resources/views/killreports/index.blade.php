@@ -23,7 +23,8 @@
                     
                     
                     <!-- <img class="card-img-top" src="{{ asset('images/hunterimages/'.$killreport->image) }}" alt="fuck"> -->
-                    <img class="card-img-top lazy" data-src="{{ asset('images/huntingimages/'.$killreport->image) }}" alt="">
+                    <!-- <img class="card-img-top lazy" data-src="{{ asset('images/huntingimages/'.$killreport->image) }}" alt=""> -->
+                    <img class="card-img-top lazy" data-src="{{ $killreport->display_path() }}?<?php $date = new DateTime(); echo $date->getTimestamp(); ?>" alt="{{$killreport->display_path()}})">
                     <a href="#!">
                         <div class="mask rgba-white-slight"></div>
                     </a>
@@ -34,7 +35,7 @@
 
                     <!--Title-->
                     
-                    <h6 class="card-title">{{substr($killreport->killdate, 0, 10)}}</h6>
+                    <h6 class="card-title">Rapport #{{$killreport->id}} - {{substr($killreport->killdate, 0, 10)}}</h6>
                     <!--Text-->
                     <p class="card-text">
                         <strong>{{$killreport->animal()['species']}}</strong> - {{$killreport->animal()['speciestype']}}<?= $killreport->animal()['antlers'] ? "; " . $killreport->animal()['antlers'] : "" ?>
@@ -46,6 +47,7 @@
                     <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
                     <!-- <button type="button" class="btn btn-light-blue btn-md">Read more</button> -->
                     <button class="btn btn-mdb-color btn-sm"><a href="{{url($killreport->path())}}" style="color: white;">Rapporten</a></button>
+                    <button class="btn btn-mdb-color btn-sm"><a href="{{url( '/image/'.$killreport->id.'/edit' )}}" style="color: white;">Bilder</a></button>
 
                 </div>
 

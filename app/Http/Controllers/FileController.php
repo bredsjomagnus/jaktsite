@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\DB;
+
 
 class FileController extends Controller
 {
@@ -43,6 +45,8 @@ class FileController extends Controller
         // filen
         $file = $request->file('file');
 
+        Log::info("file: ".$file->getClientOriginalName());
+
         // bilden som GD från image intervention
         $img = Image::make($request->file('file'));
 
@@ -52,18 +56,21 @@ class FileController extends Controller
         // filename
         $filename = $request->file('file')->getClientOriginalName();
 
+        
+
         // splitar upp namnet så att jag kan komma åt formatet
         $filearray = explode('.', $filename);
 
         // filformat
         $format = $filearray[1];
 
-        
+
         // om bilden är valid och storleken är mindre än ovan satta limit
         if( $request->file('file')->isValid() && $size < $limit) {
 
             // spara bilden i images/killreports
-            $path = $request->file('file')->storeAs('images/killreports', $filename, 'public');
+            // $path = $request->file('file')->storeAs('images/killreports', $filename, 'public');
+            $path = $request->file('file')->storeAs('public/images/killreports', $filename, 'local');
         } else {
 
             // om bildstorleken är större än ovan satta limit
@@ -71,12 +78,19 @@ class FileController extends Controller
 
                 // kvalitén som skall sättas beror på förhållandet limit och bildstorlek
                 $quality = floor(($limit/$size)*100);
- 
+                Log::info('quality: '.$quality);
                 // komprimera med ovan beräknade kvalitétsfaktor
+
                 $newimg = Image::make($file->getRealPath())->encode(strtolower($format), $quality);
+
+                // $newimg = Image::make($request->file('file'))->encode(strtolower($format), $quality);
+                // $newimg = $img->encode(strtolower($format), $quality);
+                // $newimg = Image::make($file->getRealPath())->encode('jpeg', $quality);
 
                 // spara bilden i images/killreports
                 Storage::disk('local')->put('public/images/killreports/'.$filename, $newimg);
+                
+                // Storage::disk('local')->put('public/images/killreports/'.$filename, $img);
             }
         }
 
@@ -121,9 +135,21 @@ class FileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update_rotate(Request $request, $id)
     {
-        //
+        $image_res = DB::select('select * from images where id = ?', [$id]);
+
+        if( $image_res ) {
+            $image = $image_res[0];
+            $name = 'k'.$image->killreport_id.'_i'.$image->id.'_u'.$image->user_id.'_'.$image->name;
+            $image_path = Storage::disk('local')->path('public/images/killreports/'.$name);
+
+            $img_gd = Image::make($image_path)->rotate(-90)->save();
+
+            return response()->json(['message' => 'success']);
+        } else {
+            return response()->json(['message' => 'failure']);
+        }
     }
 
     /**
@@ -132,8 +158,21 @@ class FileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $image_res = DB::select('select * from images where id = ?', [$id]);
+
+        if( count($image_res) == 1) {
+            $image = $image_res[0];
+            $name = 'k'.$image->killreport_id.'_i'.$image->id.'_u'.$image->user_id.'_'.$image->name;
+            Storage::disk('local')->delete('public/images/killreports/'.$name);
+            return response()->json(['message' => 'success']);
+        } else {
+            return response()->json(['message' => 'failure']);
+        }
+
+        
+        
+        
     }
 }

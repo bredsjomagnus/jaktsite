@@ -1,5 +1,8 @@
 <template>
   <mdb-container>
+        <div class="d-flex flex-row justify-content-around" style="margin-top: -20px;">
+            <mdb-btn color="mdb-color" @click.native="backToKillreport_index" size="sm">Akrivet</mdb-btn>
+        </div>
 
        <!-- <mdb-btn-toolbar> -->
             <div class="d-flex flex-row justify-content-around">
@@ -22,29 +25,40 @@
                 class="mb-2"
             >
 
-                <mdb-card class="w-100">
+                <mdb-card class="w-100 p-0">
                     <mdb-view hover cascade>
                         <a href="#!" class="d-flex flex-row justify-content-center">
                             <mdb-card-image class="align-content-center" :src="imageurl(image)" alt="Card image cap" ></mdb-card-image>
                             <mdb-mask flex-center waves overlay="white-slight"></mdb-mask>
                         </a>
                     </mdb-view>
-                    <mdb-card-body class="pb-0" style="margin-top: -20px;" cascade>
-                        <i class="text-muted" style="font-size: 12px;">Uppladdat av {{username(image.user_id)}}</i>
-                        <div class="text-center mt-2"
-                        v-if="image.display == 'yes'"
-                        >
-                            <p ><mdb-icon icon="eye"/> Satt rapportkortets bild.</p>
+                    <mdb-card-body class="pb-0" cascade>
+                        <div class="w-100 pt-1 m-0 align-left" style="background-color: lightgray;" cascade>
+                            <ul style="list-style-type:none;">
+                                <li class="text-muted" style="font-size: 12px;"><strong>Rapport #{{killreport.id}}, skapad {{killreport.created_at}}</strong></li>
+                                <li class="text-muted" style="font-size: 12px;">Bildnamn: <strong>{{image.name}}</strong></li>
+                                <li class="text-muted" style="font-size: 12px;">Uppladdat av: <strong>{{username(image.user_id)}}</strong></li>
+                                <!-- <li class="text-muted" style="font-size: 12px;">Path: <strong>{{imageurl(image)}}</strong></li> -->
+                            </ul>
+                        </div>
+                        <div v-if="image.description != ''">
+                            <p>{{image.description}}</p>
                         </div>
                         
-                        <mdb-card-footer class="text-muted mt-4">
-                            <mdb-btn color="mdb-color" @click.native="toggleImageDisplay(image.id)" :active="image.display == 'yes'" size="sm"><mdb-icon icon="star"/> </mdb-btn>
-                            <mdb-btn color="mdb-color" size="sm"><mdb-icon icon="redo-alt"/> </mdb-btn>
-                            <mdb-btn color="danger" size="sm"><mdb-icon icon="trash-alt"/> </mdb-btn>
+                        <mdb-card-footer :class="['w-100', 'text-muted', 'mt-4', {'display_footer_color': image.display == 'yes'}]">
+                            <mdb-btn color="mdb-color" @click.native="toggleImageDisplay(image)" :active="image.display == 'yes'" size="sm">
+                                <mdb-icon 
+                                v-if="image.display == 'yes'" icon="eye"
+                                /> 
+                                <mdb-icon 
+                                v-if="image.display == 'no'" icon="eye-slash"
+                                /> 
+                                </mdb-btn>
+                            <mdb-btn color="mdb-color" @click.native="rotateImage(image)" size="sm"><mdb-icon icon="redo-alt"/> </mdb-btn>
+                            <mdb-btn color="danger" @click.native="deleteImage(image)" size="sm"><mdb-icon icon="trash-alt"/> </mdb-btn>
                         </mdb-card-footer>
                     </mdb-card-body>
                 </mdb-card>
-
             </div>
          </div>
     </div>
@@ -54,18 +68,35 @@
                 <div>
                     <i class='text-muted' style="font-size:12px;">Bilder över 2 MB komprimeras.</i>
                 </div>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="inputGroupFileAddon01">Bild</span>
-                    </div>
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" @change="addImage">
-                        <label class="custom-file-label" for="inputGroupFile01">...</label>
-                    </div>
-                </div>
+                
                 <div class="d-flex flex-row justify-content-center mt-2">
                     <p :class="error ? 'error_message' : 'success_message'">{{message}}</p>
                 </div>
+               <mdb-card>
+                    <mdb-card-body class="cardborder">
+                        <!-- <mdb-card-title></mdb-card-title> -->
+                        <!-- <mdb-input type="text" class="w-100" label="Namn" v-model="upload_image.name" /> -->
+                        <mdb-input type="textarea" class="w-100" label="Lägga till en beskrivning?" v-model="upload_image.description" />
+                    </mdb-card-body>
+                </mdb-card>
+                <mdb-card class="mt-2">
+                    <mdb-card-body class="cardborder">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroupFileAddon01">Ladda upp</span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" @change="addImage()">
+                                <label class="custom-file-label" for="inputGroupFile01">{{this.file_input_name}}</label>
+                                
+                            </div>
+                    </div>
+                    </mdb-card-body>
+                </mdb-card>
+                
+                <!-- <div class="d-flex flex-row justify-content-right mt-2">
+                    <mdb-btn color="mdb-color" @click.native="addImage()" size="sm">Ladda upp</mdb-btn>
+                </div> -->
             </form>
         </div>
     </div>
@@ -73,7 +104,7 @@
   </mdb-container>
 </template>
 <script>
-	import { mdbContainer, mdbBtn, mdbBtnGroup,mdbBtnToolbar, mdbIcon, mdbCard, mdbView, mdbCardBody, mdbCardTitle, mdbCardImage, mdbMask, mdbCardFooter} from 'mdbvue';
+	import { mdbContainer, mdbBtn, mdbBtnGroup,mdbBtnToolbar, mdbIcon, mdbCard, mdbView, mdbCardBody, mdbCardTitle, mdbCardImage, mdbMask, mdbCardFooter, mdbInput } from 'mdbvue';
 	export default {
 		name: 'ImageEdit',
 		components: {
@@ -88,7 +119,8 @@
             mdbCardTitle,
             mdbCardImage,
             mdbMask,
-            mdbCardFooter
+            mdbCardFooter,
+            mdbInput
         },
         props: [
             "killreport",
@@ -99,21 +131,28 @@
             "images",
             "storageBaseUrl",
             "killreportUrl",
-            "users"
+            "users",
+            "imageBaseUrl",
+            "fileBaseUrl",
+            "killreportIndexUrl"
         ],
         data() {
             return {
-                image: {
+                upload_image: {
                     killreport_id: this.killreport.id,
                     user_id: this.authUser.id,
                     path: 'images/killreports',
-                    name: 'name',
+                    name: '',
                     display: 'no',
+                    description: ''
                 },
                 message: '',
                 error: false,
                 activeG: true,
                 activeU: false,
+                images: this.images,
+                file: null,
+                file_input_name: ''
                 
 
             }
@@ -129,11 +168,86 @@
             console.log("this.storageBaseUrl: ", this.storageBaseUrl);
             console.log("this.killreportUrl: ", this.killreportUrl);
             console.log("this.users: ", this.users);
+            console.log("this.imageBaseUrl: ", this.imageBaseUrl);
+            console.log("this.fileBaseUrl: ", this.fileBaseUrl);
+            console.log("this.killreportIndexUrl: ", this.killreportIndexUrl);
             
 
         },
 		methods: {
-            toggleImageDisplay(image_id) {
+            toggleImageDisplay(image) {
+                if(image.display == 'yes') {
+                    image.display = 'no';
+                } else {
+                    image.display = 'yes';
+                }
+
+                console.log("AFTER TOGGLE image: ", image);
+                console.log("AFTER TOGGLE this.images: ", this.images);
+
+                let display_images = this.images.filter(obj => {
+                    return obj.display == 'yes';
+                });
+
+                console.log(display_images)
+
+                display_images.forEach(obj => {
+                    if(obj.id != image.id) {
+                        obj.display = 'no';
+                        this.updateImage(obj);
+                    }
+
+                });
+
+                this.updateImage(image);
+            },
+            updateImage(image) {
+                 let imageUpdateUrl = this.imageBaseUrl+'/'+image.id+'/update';
+
+                axios.patch(imageUpdateUrl, image)
+                    .then(response => {
+                        console.log('updated image');
+                    })
+                    .catch(error => {
+                        console.log("update image error: ", error);
+                    });
+            },
+            deleteImage(image) {
+                let imageDeleteUrl = this.imageBaseUrl+'/'+image.id+'/delete';
+                let fileDeleteUrl = this.fileBaseUrl+'/'+image.id+'/delete';
+                let image_storage_path = this.imageurl(image);
+                console.log("deleting image: ", image_storage_path);
+                axios.delete(fileDeleteUrl, image)
+                    .then(response => {
+                        console.log("deleting file");
+                        console.log('file-delete-message: ', response.data.message);
+                         axios.delete(imageDeleteUrl, image)
+                            .then(response => {
+                                console.log("delete image message: ", response.data.message);
+                                window.location.reload();
+                            })
+                            .catch(error => {
+                                console.log("image delete error: ", error);  
+                            });
+                    })
+                    .catch(error => {
+                        console.log("file delete error: ", error);
+                    });
+
+
+               
+            },
+            rotateImage(image) {
+                let fileRotateUrl = this.fileBaseUrl+'/'+image.id+'/rotate';
+                axios.patch(fileRotateUrl, image)
+                    .then(response => {
+                        console.log("rotate image");
+                        console.log('file-rotate-message: ', response.data.message);
+                        window.location.reload();
+                    })
+                    .catch(error => {
+                        console.log("file rotate error: ", error);
+                    });
 
             },
             username(id) {
@@ -146,11 +260,12 @@
 
                 return user[0].firstname + " " + user[0].lastname;
             },
-            imageurl(image, filename) {
-                
+            imageurl(image) {
+                // lägger till datestamp för att inte uppdateringarna skall hänga sig i cache. Då ser webbläsaren bilden som ny varje gång.
+                const datestamp = Date.now();
                 let url = this.storageBaseUrl+"/k"+this.killreport.id+"_i"+image.id+"_u"+image.user_id+"_"+image.name;
-                console.log("imageurl: ", url);
-                return url;
+                console.log("imageurl: ", url+"?"+datestamp);
+                return url+"?"+datestamp;
             },
             toggleActiveStateG() {
                 this.activeG = true;
@@ -163,7 +278,10 @@
             backToKillreport() {
                 window.location = this.killreportUrl;
             },
-			addImage(event) {
+            backToKillreport_index() {
+                window.location = this.killreportIndexUrl;
+            },
+            onFileChanged() {
                 /*
                     Kontrollerar att det bara är en fil som skickas och att den är tillåten (image/png,jpg,jpeg)
                 */
@@ -177,11 +295,11 @@
                 if(event.target.files.length == 1) {
                     
                     // filen; file.name, file.type, file.size, file.lastModified, file.lastModifiedDate
-                    let file = event.target.files[0];
-                    console.log("file: ", file);
+                    this.file = event.target.files[0];
+                    console.log("file: ", this.file);
 
                     // ex filetype = ['image', 'png']
-                    let filetype = file.type.split('/'); 
+                    let filetype = this.file.type.split('/'); 
 
                     // innehåller arrayen filetype nu två element
                     if(filetype.length == 2) {
@@ -189,14 +307,52 @@
                         // Kollar så att filen är en bild med tillåtet format; png, jpg, jpeg
                         if( (filetype[0] === 'image' && (filetype[1].toLowerCase() === 'png' || filetype[1].toLowerCase() === 'jpg' || filetype[1].toLowerCase() === 'jpeg')) ) {
                             console.log("Tillåten fil");
-                            
-                            this.image.name = file.name;
 
+                            // this.upload_image.name = this.file.name.split('.')[0];
+                            this.file_input_name = this.file.name;
+                            
+                        }
+                    }
+                }
+            },
+			addImage() {
+                // lägger till formatet innan jag laddar upp bilden till databasen
+                // let firstpart_name = this.upload_image.name;
+                // this.upload_image.name = this.upload_image.name + "." + this.file.name.split('.')[1];
+
+                 /*
+                    Kontrollerar att det bara är en fil som skickas och att den är tillåten (image/png,jpg,jpeg)
+                */
+               event.preventDefault();
+
+               //återställer ett eventuellt felmeddelnade
+               this.message = '';
+               this.error = false;
+
+                // Kontrollera att det bara är en fil
+                if(event.target.files.length == 1) {
+                    
+                    // filen; file.name, file.type, file.size, file.lastModified, file.lastModifiedDate
+                    this.file = event.target.files[0];
+                    console.log("file: ", this.file);
+
+                    // ex filetype = ['image', 'png']
+                    let filetype = this.file.type.split('/'); 
+
+                    // innehåller arrayen filetype nu två element
+                    if(filetype.length == 2) {
+
+                        // Kollar så att filen är en bild med tillåtet format; png, jpg, jpeg
+                        if( (filetype[0] === 'image' && (filetype[1].toLowerCase() === 'png' || filetype[1].toLowerCase() === 'jpg' || filetype[1].toLowerCase() === 'jpeg')) ) {
+                            console.log("Tillåten fil");
+
+                            // this.upload_image.name = this.file.name.split('.')[0];
+                            this.file_input_name = this.file.name;
+
+                            this.upload_image.name = this.file.name;
                             // lägger till rad om bild i databasen
-                            axios.post(this.imageStoreUrl, this.image)
+                            axios.post(this.imageStoreUrl, this.upload_image)
                                 .then(response => {
-                                    
-                                    
                                     if( response.data.worked ) {
                                         console.log("image med id "+ response.data.image_id +" tillagd i databasen")
 
@@ -211,11 +367,11 @@
                                         let formdata = new FormData();
 
                                         // filename
-                                        let filename = "k"+this.killreport.id+"_i"+image_id+ "_u"+this.authUser.id+"_" +file.name.split('.')[0] + "." + file.name.split('.')[1];
+                                        let filename = "k"+this.killreport.id+"_i"+image_id+ "_u"+this.authUser.id+"_" +this.file.name.split('.')[0]+"."+this.file.name.split('.')[1];
                                         console.log("filename: ", filename);
 
                                         // appendar data
-                                        formdata.append('file', file, filename);
+                                        formdata.append('file', this.file, filename);
 
                                         // skickar bilden till servern för att sparas på disk
                                         axios.post(this.fileStoreUrl, formdata, config)
@@ -224,9 +380,9 @@
 
                                                 // om inte filen kunde sparas på disk måste den nyligen databassparade image tas bort.
                                                 if( response.data.message == 'failure') {
-                                                    let filesize = Math.round((file.size/1000000*10))/10;
-                                                    this.message = file.name +" kunde inte laddas upp till servern? Filesize: "+filesize +" Mb";
-                                                    this.error = true
+                                                    // let filesize = Math.round((this.file.size/1000000*10))/10;
+                                                    // this.message = this.file.name +" kunde inte laddas upp till servern? Filesize: "+filesize +" Mb";
+                                                    // this.error = true
 
                                                     // endpoint för att ta bort bilderna
                                                     let imageDeleteUrl = this.imageBaseUrl+'/'+image_id+'/delete';
@@ -240,32 +396,27 @@
                                                             console.log("delete image error: ", error)
                                                         })
                                                 } else {
-                                                    this.message = file.name +" uppladdad!";
+                                                    this.message = this.file.name +" uppladdad!";
                                                     this.toggleActiveStateG();
                                                     window.location.reload();
                                                 }
 
                                                 
 
+                                                        })
+                                                        .catch(error => {
+                                                            console.log("file store: ", error);
+                                                        })
+                                                }
                                             })
                                             .catch(error => {
-                                                console.log("file store: ", error);
-                                            })
-                                    }
-                                })
-                                .catch(error => {
-                                    console.log("store image error: ", error);
-                                })
-
-                        } else {
-                            console.log("Otillåten fil");
+                                                console.log("store image error: ", error);
+                                            });
                         }
-                    } else {
-                        console.log("filetype.length är inte två")
                     }
-                } else {
-                    console.log("Fler än en fil");
                 }
+
+                        
 
 
                 // axios.post(imageCreateUrl, this.image)
@@ -280,11 +431,17 @@
 		}
 	}
 </script>
-<style>
+<style scope>
 .error_message {
     color: red;
 }
 .success_message {
     color: green;
+}
+.display_footer_color {
+    background-color: #e5ebde;
+}
+.cardborder {
+    border-left: 10px solid #59698d;
 }
 </style>

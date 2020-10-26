@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 use App\Killreport;
@@ -199,5 +200,82 @@ class KillreportTest extends TestCase
         $this->assertEquals($res_1, "20/21");
         $this->assertEquals($res_2, "18/19");
         $this->assertEquals($res_3, "17/18");
+    }
+
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_killreport_can_get_its_display_image()
+    {
+        $killreport = factory(Killreport::class)->create();
+        $image_display = factory(Image::class)->create([
+            'killreport_id'     => $killreport->id,
+            'display'           => 'yes',
+            'name'              => 'image_display.jpg',
+        ]);
+
+        $image_no_display = factory(Image::class)->create([
+            'killreport_id'     => $killreport->id,
+            'display'           => 'no',
+            'name'              => 'image_no_display.jpg',
+        ]);
+
+        
+        $this->assertEquals($image_display->getAttributes(), $killreport->display_image()->getAttributes());
+        $this->assertNotEquals($image_no_display->getAttributes(), $killreport->display_image()->getAttributes());
+    }
+
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_killreport_can_get_its_display_image_path()
+    {
+        $killreport = factory(Killreport::class)->create();
+        $image_display = factory(Image::class)->create([
+            'killreport_id'     => $killreport->id,
+            'display'           => 'yes',
+            'name'              => 'image_display.jpg',
+        ]);
+
+        $image_no_display = factory(Image::class)->create([
+            'killreport_id'     => $killreport->id,
+            'display'           => 'no',
+            'name'              => 'image_no_display.jpg',
+        ]);
+
+        $this->assertEquals(asset('storage/images/killreports').'/'.$image_display->prefix_and_name(),$killreport->display_path());
+        $this->assertNotEquals(asset('storage/images/killreports').'/'.$image_no_display->prefix_and_name(), $killreport->display_path());
+    }
+
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_killreport_get_defult_display_image_if_now_other_is_set()
+    {
+        $this->withoutExceptionHandling();
+        $killreport = factory(Killreport::class)->create();
+        $image_1 = factory(Image::class)->create([
+            'killreport_id'     => $killreport->id,
+            'display'           => 'no',
+            'name'              => 'image_1.jpg',
+        ]);
+
+        $image_2 = factory(Image::class)->create([
+            'killreport_id'     => $killreport->id,
+            'display'           => 'no',
+            'name'              => 'image_2.jpg',
+        ]);
+
+        // dd($killreport->display_path());
+        
+        // dd(Storage::path('public/images/killreports/default_display.jpg'));
+        $this->assertEquals(asset('storage/images/killreports/default_display.jpg'), $killreport->display_path());
+        $this->assertNotEquals(asset('storage/images/killreports/').'/'.$image_1->prefix_and_name(),$killreport->display_path());
     }
 }
