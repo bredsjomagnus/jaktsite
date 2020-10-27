@@ -32,8 +32,8 @@
                             <mdb-mask flex-center waves overlay="white-slight"></mdb-mask>
                         </a>
                     </mdb-view>
-                    <mdb-card-body class="pb-0" cascade>
-                        <div class="w-100 pt-1 m-0 align-left" style="background-color: lightgray;" cascade>
+                    <mdb-card-body class="pb-0">
+                        <div class="w-100 pt-3 m-0 align-left info_field_bg">
                             <ul style="list-style-type:none;">
                                 <li class="text-muted" style="font-size: 12px;"><strong>Rapport #{{killreport.id}}, skapad {{killreport.created_at}}</strong></li>
                                 <li class="text-muted" style="font-size: 12px;">Bildnamn: <strong>{{image.name}}</strong></li>
@@ -41,21 +41,25 @@
                                 <!-- <li class="text-muted" style="font-size: 12px;">Path: <strong>{{imageurl(image)}}</strong></li> -->
                             </ul>
                         </div>
-                        <div v-if="image.description != ''">
-                            <p>{{image.description}}</p>
-                        </div>
+                        <mdb-input type='textarea' label='Bildtext' v-model="image.description" />
+        
                         
                         <mdb-card-footer :class="['w-100', 'text-muted', 'mt-4', {'display_footer_color': image.display == 'yes'}]">
+                             <mdb-row>
+                                <mdb-btn class="w-100" color="mdb-color" @click.native="update_description(image)" size="sm"> Uppdatera beskrivning </mdb-btn>
+                            </mdb-row>
                             <mdb-btn color="mdb-color" @click.native="toggleImageDisplay(image)" :active="image.display == 'yes'" size="sm">
-                                <mdb-icon 
-                                v-if="image.display == 'yes'" icon="eye"
-                                /> 
-                                <mdb-icon 
-                                v-if="image.display == 'no'" icon="eye-slash"
-                                /> 
+                                <span v-if="image.display == 'yes'">
+                                    <mdb-icon icon="eye"/> - Visas
+                                </span>
+                                <span v-if="image.display == 'no'">
+                                    <mdb-icon icon="eye-slash" /> - Dold
+                                </span>
                                 </mdb-btn>
-                            <mdb-btn color="mdb-color" @click.native="rotateImage(image)" size="sm"><mdb-icon icon="redo-alt"/> </mdb-btn>
-                            <mdb-btn color="danger" @click.native="deleteImage(image)" size="sm"><mdb-icon icon="trash-alt"/> </mdb-btn>
+                            <mdb-btn color="mdb-color" @click.native="rotateImage(image)" size="sm"><mdb-icon icon="redo-alt"/> - Rotera</mdb-btn>
+                            <mdb-row>
+                                <mdb-btn class="w-100" color="danger" @click.native="deleteImage(image)" size="sm"><mdb-icon icon="trash-alt"/> </mdb-btn>
+                            </mdb-row>
                         </mdb-card-footer>
                     </mdb-card-body>
                 </mdb-card>
@@ -104,7 +108,7 @@
   </mdb-container>
 </template>
 <script>
-	import { mdbContainer, mdbBtn, mdbBtnGroup,mdbBtnToolbar, mdbIcon, mdbCard, mdbView, mdbCardBody, mdbCardTitle, mdbCardImage, mdbMask, mdbCardFooter, mdbInput } from 'mdbvue';
+	import { mdbContainer, mdbBtn, mdbBtnGroup,mdbBtnToolbar, mdbIcon, mdbCard, mdbView, mdbCardBody, mdbCardTitle, mdbCardImage, mdbMask, mdbCardFooter, mdbInput, mdbRow } from 'mdbvue';
 	export default {
 		name: 'ImageEdit',
 		components: {
@@ -120,7 +124,8 @@
             mdbCardImage,
             mdbMask,
             mdbCardFooter,
-            mdbInput
+            mdbInput,
+            mdbRow
         },
         props: [
             "killreport",
@@ -175,6 +180,16 @@
 
         },
 		methods: {
+            update_description(image) {
+                let imageUpdateUrl = this.imageBaseUrl+'/'+image.id+'/update';
+                axios.patch(imageUpdateUrl, image)
+                    .then(response => {
+                        console.log("Image description updated");
+                    })
+                    .catch(error => {
+                        console.log("update image description error: ", error);
+                    })
+            },
             toggleImageDisplay(image) {
                 if(image.display == 'yes') {
                     image.display = 'no';
@@ -438,8 +453,12 @@
 .success_message {
     color: green;
 }
+.info_field_bg {
+    background-color: #F7F7F7;
+    border-bottom: 1px solid #D8D8D8;
+}
 .display_footer_color {
-    background-color: #e5ebde;
+    background-color: #e9efe4;
 }
 .cardborder {
     border-left: 10px solid #59698d;

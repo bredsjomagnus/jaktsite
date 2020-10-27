@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+  .cell_size {
+    font-size: 10px;
+  }
+</style>
 <div class="container">
   <div class="d-flex justify-content-center" style="margin-top: -20px; margin-bottom: 5px;">
     <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
@@ -14,7 +19,7 @@
         @foreach($killreports as $killreport)
             
             <!-- Card -->
-            <div class="card mb-4" style="min-width: 300px; max-height:500px;">
+            <div class="card mb-4" style="min-width: 300px; max-height:1000px;">
 
                 <!--Card image-->
                 <div class="view overlay">
@@ -24,25 +29,42 @@
                     
                     <!-- <img class="card-img-top" src="{{ asset('images/hunterimages/'.$killreport->image) }}" alt="fuck"> -->
                     <!-- <img class="card-img-top lazy" data-src="{{ asset('images/huntingimages/'.$killreport->image) }}" alt=""> -->
-                    <img class="card-img-top lazy" data-src="{{ $killreport->display_path() }}?<?php $date = new DateTime(); echo $date->getTimestamp(); ?>" alt="{{$killreport->display_path()}})">
+                    <img class="card-img-top lazy" data-src="{{ $killreport->display_path() }}?<?php $date = new DateTime(); echo $date->getTimestamp(); ?>" alt="">
+                     
                     <a href="#!">
-                        <div class="mask rgba-white-slight"></div>
+                        <div class="mask rgba-white-slight"><span></span></div>
                     </a>
                 </div>
 
                 <!--Card content-->
                 <div class="card-body" style="border-left: 5px solid {{ $killreport->report_status }}">
+                    
+                    <!--Title-->               
+                    <h6 class="card-text" style="border-bottom: 1px solid #D8D8D8;">RAPPORT #{{$killreport->id}} - DATUM: {{substr($killreport->killdate, 0, 10)}}</h6>
+                   
+                    <!-- Beskrivning -->
+                    <div style="border-bottom: 1px solid #D8D8D8;">
+                      <span class="card-text" style="font-size: 12px;"><strong>Bildtext:</strong></span><br>
+                      <i class="card-text" style="font-size: 12px;"><?= $killreport->display_image() == "default_display.jpg" ? "Bildtext saknas" : $killreport->display_image()->description ?></i>
+                    </div>
 
-                    <!--Title-->
-                    
-                    <h6 class="card-title">Rapport #{{$killreport->id}} - {{substr($killreport->killdate, 0, 10)}}</h6>
-                    <!--Text-->
-                    <p class="card-text">
-                        <strong>{{$killreport->animal()['species']}}</strong> - {{$killreport->animal()['speciestype']}}<?= $killreport->animal()['antlers'] ? "; " . $killreport->animal()['antlers'] : "" ?>
-                    </p>
-                    
-                    
-                    <p class="card-text">{{$killreport->shooter['firstname']}} <i>{{$killreport->area()['area_name']}}</i></p>
+                    <div class="mt-2 mb-4" style="border-bottom: 1px solid #D8D8D8;">
+                     <span class="card-text" style="font-size: 12px;"><strong>Raportdata:</strong></span><br>
+                      <table class="card-text" >
+                        <tr>
+                          <td style="font-size: 12px; font-weight: bold;">Djur:</td>
+                          <td style="font-size: 12px;">{{$killreport->animal()['species']}} - {{$killreport->animal()['speciestype']}}<?= $killreport->animal()['antlers'] ? "; " . $killreport->animal()['antlers'] : "" ?></td>
+                        </tr>
+                        <tr>
+                          <td style="font-size: 12px; font-weight: bold;"><strong>Skytt:</strong></td>
+                          <td style="font-size: 12px;">{{$killreport->shooter['firstname']}} {{$killreport->shooter['lastname']}}, [{{$killreport->kindofhunt}}]</td>
+                        </tr>
+                        <tr>
+                          <td style="font-size: 12px; font-weight: bold;"><strong>Område:</strong></td>
+                          <td style="font-size: 12px;">{{$killreport->area()['area_name']}}</td>
+                        </tr>
+                      </table>
+                    </div>
                     <!-- <p class="card-text">Skytt: </p> -->
                     <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
                     <!-- <button type="button" class="btn btn-light-blue btn-md">Read more</button> -->
