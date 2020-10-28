@@ -13,7 +13,7 @@ class CreateImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('images', function (Blueprint $table) {
+        Schema::create('imagesv2', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('killreport_id');
             $table->unsignedBigInteger('user_id');

@@ -80,7 +80,7 @@ class FileController extends Controller
         // om bilden är valid och storleken är mindre än ovan satta limit
         if( $request->file('file')->isValid() && $size < $limit) {
             $size_readable = $this->human_filesize($size, 2);
-            DB::select('UPDATE images SET filesize = ?, filesize_readable = ? WHERE id = ?', [$size, $size_readable, $image_id]);
+            DB::select('UPDATE imagesv2 SET filesize = ?, filesize_readable = ? WHERE id = ?', [$size, $size_readable, $image_id]);
             
 
             // spara bilden i images/killreports
@@ -105,7 +105,7 @@ class FileController extends Controller
                 
                 $newfilesize = $newimg->filesize();
                 $newsize_readable = $this->human_filesize($newfilesize, 2);
-                DB::select('UPDATE images SET filesize = ?, filesize_readable = ? WHERE id = ?', [$newfilesize, $newsize_readable, $image_id]);
+                DB::select('UPDATE imagesv2 SET filesize = ?, filesize_readable = ? WHERE id = ?', [$newfilesize, $newsize_readable, $image_id]);
                 
                 
 
@@ -165,7 +165,7 @@ class FileController extends Controller
      */
     public function update_rotate(Request $request, $id)
     {
-        $image_res = DB::select('select * from images where id = ?', [$id]);
+        $image_res = DB::select('select * from imagesv2 where id = ?', [$id]);
 
         if( $image_res ) {
             $image = $image_res[0];
@@ -188,7 +188,7 @@ class FileController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $image_res = DB::select('select * from images where id = ?', [$id]);
+        $image_res = DB::select('select * from imagesv2 where id = ?', [$id]);
 
         if( count($image_res) == 1) {
             $image = $image_res[0];
