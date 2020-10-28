@@ -118,7 +118,7 @@ class FileController extends Controller
 
                 $newfilesize = Storage::disk('local')->size('public/images/killreports/'.$filename);
                 $newsize_readable = $this->human_filesize($newfilesize, 2);
-                DB::select('UPDATE images SET filesize = ?, filesize_readable = ? WHERE id = ?', [$newfilesize, $newsize_readable, $image_id]);
+                DB::select('UPDATE imagesv2 SET filesize = ?, filesize_readable = ? WHERE id = ?', [$newfilesize, $newsize_readable, $image_id]);
             }
         }
 
