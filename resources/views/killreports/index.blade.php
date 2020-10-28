@@ -30,8 +30,10 @@
                     <!-- <img class="card-img-top" src="{{ asset('images/hunterimages/'.$killreport->image) }}" alt="fuck"> -->
                     <!-- <img class="card-img-top lazy" data-src="{{ asset('images/huntingimages/'.$killreport->image) }}" alt=""> -->
                     <img class="card-img-top lazy" data-src="{{ $killreport->display_path() }}?<?php $date = new DateTime(); echo $date->getTimestamp(); ?>" alt="">
+                    
+                   
                      
-                    <a href="#!">
+                    <a href="{{url( '/image/'.$killreport->id.'/edit' )}}">
                         <div class="mask rgba-white-slight"><span></span></div>
                     </a>
                 </div>
