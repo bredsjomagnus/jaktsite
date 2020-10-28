@@ -105,4 +105,23 @@ class MeatTest extends TestCase
         $from_date_3 = "20".strval($from_year_3)."-07-01";
         $this->assertEquals("2014-07-01", $from_date_3);
     }
+
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_meat_can_return_user_name()
+    {
+        $magnus = factory(User::class)->create([
+            'firstname'     => 'Magnus',
+            'lastname'      => 'Andersson'
+        ]);
+
+        $meat = factory(Meat::class)->create([
+            'user_id'       => $magnus->id
+        ]);
+
+        $this->assertEquals('Magnus Andersson', $meat->get_users_name());
+    }
 }

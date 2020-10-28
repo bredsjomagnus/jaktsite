@@ -45,7 +45,7 @@ class AuthenticationTest extends TestCase
     {
         $john = factory(User::class)->create(); // not signed in user
         $jane = $this->signIn(); // signed in user
-        $this->get($john->path())->assertRedirect('home');
+        $this->get($john->path())->assertRedirect('login');
 
     }
 
@@ -74,7 +74,7 @@ class AuthenticationTest extends TestCase
         $admin = factory(User::class)->create(['role' => 'admin']); // admin user
         $this->signIn($admin); // sign in admin
 
-        $this->get('/home')->assertSee('Admin');
+        $this->get($admin->path())->assertSee('Admin');
 
     }
 
@@ -85,10 +85,10 @@ class AuthenticationTest extends TestCase
      */
     public function user_cannot_see_admin_link_in_navbar()
     {
-        $admin = factory(User::class)->create(['role' => 'user']); // non admin user
-        $this->signIn($admin); // sign in
+        $user = factory(User::class)->create(['role' => 'user']); // non admin user
+        $this->signIn($user); // sign in
 
-        $this->get('/home')->assertDontSee('Admin');
+        $this->get($user->path())->assertDontSee('Admin');
 
     }
 

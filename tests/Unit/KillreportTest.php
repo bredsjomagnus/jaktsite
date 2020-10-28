@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 use App\Killreport;
@@ -12,6 +13,7 @@ use App\User;
 use App\Animal;
 use App\Area;
 use App\Meat;
+use App\Image;
 
 
 
@@ -117,10 +119,10 @@ class KillreportTest extends TestCase
         
         $user = $this->signIn();
 
-       $killreport = factory(Killreport::class)->create();
-       $meat_1 = factory(Meat::class)->create(['killreport_id' => $killreport->id, 'user_id' => $user->id]);
-       $meat_2 = factory(Meat::class)->create(['killreport_id' => $killreport->id, 'user_id' => 2]);
-       $meat_3 = factory(Meat::class)->create(['killreport_id' => 2, 'user_id' => $user->id]);
+        $killreport = factory(Killreport::class)->create();
+        $meat_1 = factory(Meat::class)->create(['killreport_id' => $killreport->id, 'user_id' => $user->id]);
+        $meat_2 = factory(Meat::class)->create(['killreport_id' => $killreport->id, 'user_id' => 2]);
+        $meat_3 = factory(Meat::class)->create(['killreport_id' => 2, 'user_id' => $user->id]);
     
 
         // Testar hasMany relation
@@ -133,6 +135,36 @@ class KillreportTest extends TestCase
         // Method 3: Comments are related to posts and is a collection instance.
         $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $killreport->meat);
     }
+
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_killreport_has_one_or_many_images()
+    {
+        $this->withoutExceptionHandling();
+        $user = $this->signIn();
+
+        $killreport = factory(Killreport::class)->create();
+
+        $image_1 = factory(Image::class)->create([
+            'killreport_id' => $killreport->id,
+            'user_id'       => $user->id
+            ]);
+        $image_2 = factory(Image::class)->create([
+            'killreport_id' => $killreport->id,
+            'user_id'       => 2
+            ]);
+        
+
+        $this->assertTrue($killreport->images->contains($image_1));
+
+        $this->assertEquals(2, $killreport->images->count());
+
+        $this->assertInstanceOf(Collection::class, $killreport->images);
+    }
+
 
     /**
      * @test
@@ -169,4 +201,86 @@ class KillreportTest extends TestCase
         $this->assertEquals($res_2, "18/19");
         $this->assertEquals($res_3, "17/18");
     }
+
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_killreport_can_get_its_display_image()
+    {
+        $killreport = factory(Killreport::class)->create();
+
+        
+        $image_display = factory(Image::class)->create([
+            'killreport_id'     => $killreport->id,
+            'display'           => 'yes',
+            'name'              => 'image_display.jpg',
+        ]);
+
+        $image_no_display = factory(Image::class)->create([
+            'killreport_id'     => $killreport->id,
+            'display'           => 'no',
+            'name'              => 'image_no_display.jpg',
+        ]);
+
+        
+        $this->assertEquals($image_display->getAttributes(), $killreport->display_image()->getAttributes());
+        $this->assertNotEquals($image_no_display->getAttributes(), $killreport->display_image()->getAttributes());
+    }
+
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_killreport_can_get_its_display_image_path()
+    {
+        $killreport = factory(Killreport::class)->create();
+        $image_display = factory(Image::class)->create([
+            'killreport_id'     => $killreport->id,
+            'display'           => 'yes',
+            'name'              => 'image_display.jpg',
+        ]);
+
+        $image_no_display = factory(Image::class)->create([
+            'killreport_id'     => $killreport->id,
+            'display'           => 'no',
+            'name'              => 'image_no_display.jpg',
+        ]);
+
+        $this->assertEquals(asset('storage/images/killreports').'/'.$image_display->prefix_and_name(),$killreport->display_path());
+        $this->assertNotEquals(asset('storage/images/killreports').'/'.$image_no_display->prefix_and_name(), $killreport->display_path());
+    }
+
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_killreport_get_defult_display_image_if_now_other_is_set()
+    {
+        $this->withoutExceptionHandling();
+        $killreport = factory(Killreport::class)->create();
+        $image_1 = factory(Image::class)->create([
+            'killreport_id'     => $killreport->id,
+            'display'           => 'no',
+            'name'              => 'image_1.jpg',
+        ]);
+
+        $image_2 = factory(Image::class)->create([
+            'killreport_id'     => $killreport->id,
+            'display'           => 'no',
+            'name'              => 'image_2.jpg',
+        ]);
+
+        // dd($killreport->display_path());
+        
+        // dd(Storage::path('public/images/killreports/default_display.jpg'));
+        $this->assertEquals(asset('storage/images/killreports/default_display.jpg'), $killreport->display_path());
+        $this->assertNotEquals(asset('storage/images/killreports/').'/'.$image_1->prefix_and_name(),$killreport->display_path());
+    }
+
+
+
 }

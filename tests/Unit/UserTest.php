@@ -10,6 +10,7 @@ use Tests\TestCase;
 use App\User;
 use App\Animal;
 use App\Killreport;
+use App\Image;
 
 class UserTest extends TestCase
 {
@@ -94,6 +95,24 @@ class UserTest extends TestCase
 
     /**
      * @test
+     * 
+     * @return void
+     */
+    public function a_user_has_one_or_many_images()
+    {
+        $user = $this->signIn();
+
+        $image_1 = factory(Image::class)->create(['user_id' => $user->id]);
+        $image_2 = factory(Image::class)->create(['user_id' => $user->id]);
+        $image_3 = factory(Image::class)->create(['user_id' => 2]);
+
+        $this->assertTrue($user->images->contains($image_1));
+        $this->assertEquals(2, $user->images->count());
+        $this->assertInstanceOf(Collection::class, $user->images);
+    }
+
+    /**
+     * @test
      *
      * @return void
      */
@@ -107,6 +126,21 @@ class UserTest extends TestCase
         $user5 = factory(User::class)->create(['occupation' => 'hunter']);
 
         $this->assertCount(3, User::where('occupation', 'hunter')->get());
+    }
+
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_user_can_return_name_by_id()
+    {
+        $user = factory(User::class)->create([
+            'firstname'     => 'Magnus',
+            'lastname'      => 'Andersson'
+        ]);
+
+        $this->assertEquals('Magnus Andersson', $user->get_name());
     }
 
     
