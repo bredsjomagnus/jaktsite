@@ -53,10 +53,22 @@ class FileController extends Controller
         // bildstorlek
         $size = $img->filesize();
 
+        
+        
+
         // filename
         $filename = $request->file('file')->getClientOriginalName();
 
-        
+        // exploderar filnamnet; ['k98', 'i23', 'u4', 'namnet']
+        $filename_array = explode('_', $filename);
+
+        // tar ut andra delen med image id, ex 'i23' och där tas allt med utom första i:et
+        $image_id = intval(substr($filename_array[1], 1));
+
+        Log::info('filename: '.$filename);
+        Log::info($filename_array);
+        Log::info($filename_array[1]);
+        Log::info('image_id: '.$image_id);
 
         // splitar upp namnet så att jag kan komma åt formatet
         $filearray = explode('.', $filename);
@@ -67,6 +79,9 @@ class FileController extends Controller
 
         // om bilden är valid och storleken är mindre än ovan satta limit
         if( $request->file('file')->isValid() && $size < $limit) {
+            $size_readable = $this->human_filesize($size, 2);
+            DB::select('UPDATE images SET filesize = ?, filesize_readable = ? WHERE id = ?', [$size, $size_readable, $image_id]);
+            
 
             // spara bilden i images/killreports
             // $path = $request->file('file')->storeAs('images/killreports', $filename, 'public');
@@ -87,10 +102,23 @@ class FileController extends Controller
                 // $newimg = $img->encode(strtolower($format), $quality);
                 // $newimg = Image::make($file->getRealPath())->encode('jpeg', $quality);
 
+                
+                $newfilesize = $newimg->filesize();
+                $newsize_readable = $this->human_filesize($newfilesize, 2);
+                DB::select('UPDATE images SET filesize = ?, filesize_readable = ? WHERE id = ?', [$newfilesize, $newsize_readable, $image_id]);
+                
+                
+
+
+
                 // spara bilden i images/killreports
                 Storage::disk('local')->put('public/images/killreports/'.$filename, $newimg);
                 
                 // Storage::disk('local')->put('public/images/killreports/'.$filename, $img);
+
+                $newfilesize = Storage::disk('local')->size('public/images/killreports/'.$filename);
+                $newsize_readable = $this->human_filesize($newfilesize, 2);
+                DB::select('UPDATE images SET filesize = ?, filesize_readable = ? WHERE id = ?', [$newfilesize, $newsize_readable, $image_id]);
             }
         }
 
@@ -169,10 +197,11 @@ class FileController extends Controller
             return response()->json(['message' => 'success']);
         } else {
             return response()->json(['message' => 'failure']);
-        }
+        }        
+    }
 
-        
-        
-        
+    public function human_filesize($size, $precision = 2) {
+        for($i = 0; ($size / 1024) > 0.9; $i++, $size /= 1024) {}
+        return round($size, $precision).['B','kB','MB','GB','TB','PB','EB','ZB','YB'][$i];
     }
 }

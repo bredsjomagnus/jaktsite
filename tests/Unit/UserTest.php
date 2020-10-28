@@ -128,6 +128,21 @@ class UserTest extends TestCase
         $this->assertCount(3, User::where('occupation', 'hunter')->get());
     }
 
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_user_can_return_name_by_id()
+    {
+        $user = factory(User::class)->create([
+            'firstname'     => 'Magnus',
+            'lastname'      => 'Andersson'
+        ]);
+
+        $this->assertEquals('Magnus Andersson', $user->get_name());
+    }
+
     
 
 }

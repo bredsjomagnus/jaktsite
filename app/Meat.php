@@ -40,4 +40,9 @@ class Meat extends Model
     {
         return $this->killreport->season;
     }
+
+    public function get_users_name()
+    {
+        return $this->hunter->get_name();
+    }
 }

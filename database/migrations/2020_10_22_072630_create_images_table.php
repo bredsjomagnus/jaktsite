@@ -21,6 +21,8 @@ class CreateImagesTable extends Migration
             $table->string('path');
             $table->string('display')->default('no');
             $table->text('description')->nullable();
+            $table->bigInteger('filesize')->default(0);
+            $table->string('filesize_readable')->nullable();
             $table->timestamps();
         });
     }

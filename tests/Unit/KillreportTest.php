@@ -210,6 +210,8 @@ class KillreportTest extends TestCase
     public function a_killreport_can_get_its_display_image()
     {
         $killreport = factory(Killreport::class)->create();
+
+        
         $image_display = factory(Image::class)->create([
             'killreport_id'     => $killreport->id,
             'display'           => 'yes',
@@ -278,4 +280,7 @@ class KillreportTest extends TestCase
         $this->assertEquals(asset('storage/images/killreports/default_display.jpg'), $killreport->display_path());
         $this->assertNotEquals(asset('storage/images/killreports/').'/'.$image_1->prefix_and_name(),$killreport->display_path());
     }
+
+
+
 }

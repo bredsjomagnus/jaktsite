@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Killreport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 use App\User;
 use App\Area;
@@ -22,6 +23,11 @@ class KillreportController extends Controller
      */
     public function index()
     {
+        // ser till att fylla på meatstabellen för att anpassa till version 2
+        // kan slås av när tabellerna väl stämmer.
+        // $this->dev_check_killreport_meat_tables();
+
+
         $killreports = Killreport::where('deleted_at', null)->orderBy('killdate', 'desc')->get();
     
         return view('killreports.index', compact('killreports'));
@@ -362,6 +368,24 @@ class KillreportController extends Controller
         return $season;
         
     }
+
+    public function dev_check_killreport_meat_tables()
+    {
+         // hämta alla killreport
+        $killreports = Killreport::all();
+
+        // gå igenom varje killreport
+        foreach($killreports as $killreport) {
+
+            // om det saknas kött kopplat till rapporten
+            if(count($killreport->meat) == 0) {
+                $newmeat = new Meat();
+                $newmeat->create(['killreport_id' => $killreport->id]);
+            }
+           
+        }
+    }
+
 
     // Skapar grupper 
     // killreport_id => [user_id, user_id]

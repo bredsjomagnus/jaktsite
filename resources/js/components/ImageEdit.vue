@@ -34,10 +34,10 @@
                     </mdb-view>
                     <mdb-card-body class="pb-0">
                         <div class="w-100 pt-3 m-0 align-left info_field_bg">
-                            <ul style="list-style-type:none;">
+                            <ul class="pl-3" style="list-style-type:none;">
                                 <li class="text-muted" style="font-size: 12px;"><strong>Rapport #{{killreport.id}}, skapad {{killreport.created_at}}</strong></li>
-                                <li class="text-muted" style="font-size: 12px;">Bildnamn: <strong>{{image.name}}</strong></li>
-                                <li class="text-muted" style="font-size: 12px;">Uppladdat av: <strong>{{username(image.user_id)}}</strong></li>
+                                <li class="text-muted" style="font-size: 12px;"><strong>Bild:</strong> {{image.name}}, {{image.filesize_readable}}</li>
+                                <li class="text-muted" style="font-size: 12px;"><strong>Uppladdad av:</strong> {{username(image.user_id)}}</li>
                                 <!-- <li class="text-muted" style="font-size: 12px;">Path: <strong>{{imageurl(image)}}</strong></li> -->
                             </ul>
                         </div>
@@ -48,15 +48,19 @@
                              <mdb-row>
                                 <mdb-btn class="w-100" color="mdb-color" @click.native="update_description(image)" size="sm"> Uppdatera beskrivning </mdb-btn>
                             </mdb-row>
-                            <mdb-btn color="mdb-color" @click.native="toggleImageDisplay(image)" :active="image.display == 'yes'" size="sm">
-                                <span v-if="image.display == 'yes'">
-                                    <mdb-icon icon="eye"/> - Visas
-                                </span>
-                                <span v-if="image.display == 'no'">
-                                    <mdb-icon icon="eye-slash" /> - Dold
-                                </span>
-                                </mdb-btn>
-                            <mdb-btn color="mdb-color" @click.native="rotateImage(image)" size="sm"><mdb-icon icon="redo-alt"/> - Rotera</mdb-btn>
+                            <mdb-row>
+                                <div class="w-100 d-flex flex-row justify-content-center">
+                                    <mdb-btn color="mdb-color" @click.native="toggleImageDisplay(image)" :active="image.display == 'yes'" size="sm">
+                                        <span v-if="image.display == 'yes'">
+                                            <mdb-icon icon="eye"/> - Visas
+                                        </span>
+                                        <span v-if="image.display == 'no'">
+                                            <mdb-icon icon="eye-slash" /> - Dold
+                                        </span>
+                                        </mdb-btn>
+                                    <mdb-btn color="mdb-color" @click.native="rotateImage(image)" size="sm"><mdb-icon icon="redo-alt"/> - Rotera</mdb-btn>
+                                </div>
+                            </mdb-row>
                             <mdb-row>
                                 <mdb-btn class="w-100" color="danger" @click.native="deleteImage(image)" size="sm"><mdb-icon icon="trash-alt"/> </mdb-btn>
                             </mdb-row>
@@ -80,7 +84,9 @@
                     <mdb-card-body class="cardborder">
                         <!-- <mdb-card-title></mdb-card-title> -->
                         <!-- <mdb-input type="text" class="w-100" label="Namn" v-model="upload_image.name" /> -->
-                        <mdb-input type="textarea" class="w-100" label="Lägga till en beskrivning?" v-model="upload_image.description" />
+
+                        <mdb-input v-if="authUser.role == 'admin'" type="number" label="dev user_id" v-model="dev_user_id" />
+                        <mdb-input type="textarea" class="w-100" label="Lägga till en beskrivning?" v-model="this.upload_image.description" />
                     </mdb-card-body>
                 </mdb-card>
                 <mdb-card class="mt-2">
@@ -149,7 +155,7 @@
                     path: 'images/killreports',
                     name: '',
                     display: 'no',
-                    description: ''
+                    description: '-'
                 },
                 message: '',
                 error: false,
@@ -157,7 +163,8 @@
                 activeU: false,
                 images: this.images,
                 file: null,
-                file_input_name: ''
+                file_input_name: '',
+                dev_user_id: 2
                 
 
             }
@@ -365,6 +372,16 @@
                             this.file_input_name = this.file.name;
 
                             this.upload_image.name = this.file.name;
+
+                            // if(this.upload_image.description == null){
+                            //     this.upload_image.description = '-';
+                            // }
+
+                            console.log("dev_user_id: ", this.dev_user_id);
+                            console.log("dev_user_id type: ", typeof this.dev_user_id);
+
+                            this.upload_image.user_id = this.dev_user_id;
+                            
                             // lägger till rad om bild i databasen
                             axios.post(this.imageStoreUrl, this.upload_image)
                                 .then(response => {
@@ -381,8 +398,13 @@
                                         // instansierar formdata
                                         let formdata = new FormData();
 
+
+
                                         // filename
-                                        let filename = "k"+this.killreport.id+"_i"+image_id+ "_u"+this.authUser.id+"_" +this.file.name.split('.')[0]+"."+this.file.name.split('.')[1];
+                                        // let filename = "k"+this.killreport.id+"_i"+image_id+ "_u"+this.authUser.id+"_" +this.file.name.split('.')[0]+"."+this.file.name.split('.')[1];
+                                        
+                                        // filename - dev
+                                        let filename = "k"+this.killreport.id+"_i"+image_id+ "_u"+this.upload_image.user_id+"_" +this.file.name.split('.')[0]+"."+this.file.name.split('.')[1];
                                         console.log("filename: ", filename);
 
                                         // appendar data

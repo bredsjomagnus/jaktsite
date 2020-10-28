@@ -42,14 +42,15 @@
                     <!--Title-->               
                     <h6 class="card-text" style="border-bottom: 1px solid #D8D8D8;">RAPPORT #{{$killreport->id}} - DATUM: {{substr($killreport->killdate, 0, 10)}}</h6>
                    
+                   
                     <!-- Beskrivning -->
                     <div style="border-bottom: 1px solid #D8D8D8;">
-                      <span class="card-text" style="font-size: 12px;"><strong>Bildtext:</strong></span><br>
+                      <span class="card-text" style="font-size: 12px;"><strong>BILDTEXT</strong></span><br>
                       <i class="card-text" style="font-size: 12px;"><?= $killreport->display_image() == "default_display.jpg" ? "Bildtext saknas" : $killreport->display_image()->description ?></i>
                     </div>
 
                     <div class="mt-2 mb-4" style="border-bottom: 1px solid #D8D8D8;">
-                     <span class="card-text" style="font-size: 12px;"><strong>Raportdata:</strong></span><br>
+                     <span class="card-text" style="font-size: 12px;"><strong>RAPPPORTDATA</strong></span><br>
                       <table class="card-text" >
                         <tr>
                           <td style="font-size: 12px; font-weight: bold;">Djur:</td>
@@ -65,6 +66,19 @@
                         </tr>
                       </table>
                     </div>
+                    <div class="mt-2 mb-4" style="border-bottom: 1px solid #D8D8D8;">
+                      <span class="card-text" style="font-size: 12px;"><strong>KÖTTILLDELNING</strong></span><br>
+                      <table class="card-text" >
+                      @foreach($killreport->meat as $meat)
+                        @if(!is_null($meat->user_id))
+                          <tr>
+                            <td style="font-size: 12px; font-weight: bold;"><?= $meat->get_users_name() == '- -' ? 'Gäst' : $meat->get_users_name()?>:</td>
+                            <td style="font-size: 12px;">{{$meat->share_kilogram}} kg</td>
+                          </tr>
+                        @endif
+                      @endforeach
+                      </table>
+                     </div>
                     <!-- <p class="card-text">Skytt: </p> -->
                     <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
                     <!-- <button type="button" class="btn btn-light-blue btn-md">Read more</button> -->
