@@ -449,6 +449,8 @@
                                             });
                         }
                     }
+                } else {
+                    this.message = "Kan bara lägga till en bild i taget!";
                 }
 
                         
