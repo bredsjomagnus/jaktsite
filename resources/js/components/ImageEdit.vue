@@ -85,7 +85,7 @@
                         <!-- <mdb-card-title></mdb-card-title> -->
                         <!-- <mdb-input type="text" class="w-100" label="Namn" v-model="upload_image.name" /> -->
 
-                        <mdb-input v-if="authUser.role == 'admin'" type="number" label="dev user_id" v-model="dev_user_id" />
+                        <!-- <mdb-input v-if="authUser.role == 'admin'" type="number" label="dev user_id" v-model="dev_user_id" /> -->
                         <mdb-input type="textarea" class="w-100" label="Lägga till en beskrivning?" v-model="this.upload_image.description" />
                     </mdb-card-body>
                 </mdb-card>
@@ -183,8 +183,6 @@
             console.log("this.imageBaseUrl: ", this.imageBaseUrl);
             console.log("this.fileBaseUrl: ", this.fileBaseUrl);
             console.log("this.killreportIndexUrl: ", this.killreportIndexUrl);
-            
-
         },
 		methods: {
             update_description(image) {
@@ -380,7 +378,7 @@
                             console.log("dev_user_id: ", this.dev_user_id);
                             console.log("dev_user_id type: ", typeof this.dev_user_id);
 
-                            this.upload_image.user_id = this.dev_user_id;
+                            // this.upload_image.user_id = this.dev_user_id;
                             
                             // lägger till rad om bild i databasen
                             axios.post(this.imageStoreUrl, this.upload_image)
