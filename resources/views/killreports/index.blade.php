@@ -20,40 +20,43 @@
             
             <!-- Card -->
             <div class="card mb-4" style="min-width: 300px; max-height:1000px;">
+              <div class="text-left" style="background-color: #dccc9b;">
+                <p class="pl-2 card-text" style="font-size: 12px;">#{{$killreport->id}}</p>
+              </div>  
 
                 <!--Card image-->
                 <div class="view overlay">
-                    <!-- <img class="card-img-top" src="https://lh3.googleusercontent.com/8S0LLfZsIGDHXfudM9bg_2OAORYZ-bx4GCbhBLkmMvikst77hjMw0B-6-hDmjhIZP3VzOQHRpo6Hbi368LMwE1xmMGl31_IRYQyCjQE--g5_jTsLibf-A7Ov3l8LP6sIqrSRj97g8gMRwdF1KSKVrfXy7qAFVAZmtZDKZJhHAZKSCqa7fTewv2RM8qFi0GL_onMhytsIwa4vBJBCW7oEW9HDxr0B5efHTg6dEOmsYSxlr3Kv3wx6-I8HmWpPpRgSBYNYzHoR71Bxaubc2ZY_uLQjvI8DlBKM0SgMK2qg51Y25-Cj7KLZrDE4QpaHJH5T3b7MTVeODFkmipbbcIH5T8BUQnfBvwrlRy1xZbseanPC2bE7lOrjeUxbnjaDDb5m02apwJvBEKdKnmvOV-MAe7zGM89eRGy5b3vVWeLV8cBFo9IvrVtwBCdo86Zr7MYhGx-xVduq7OD_H4MhfxcHeukDPJ8kuv0la3x2yXW8x77IASD9sagMsI0GrPO8tOl9b0FApdfgHocF804wpQZZBGlenj-kIgy2Cz-4OJ0i1nHi5RfVZtG7cUOwIRmosFSh3iI3DeAxsrfQCWZv3sggM1mNgo9ZfTnI9DdcG1hPW28-zFGe9AGD4u6Nr06be_hD1nViM6SuRpaEzB78Do-qRdXeNMPTzL0dQnNvuyLJ4QUKWTSE2u50f-JArlhYohk9WTmIgKiCdtKMPZRkxbbMuvEG3dOM0qjQ1E22yrYmKBD_vaRB=w1579-h888-no" alt="Card image cap"> -->
-                    
-                    
-                    
-                    <!-- <img class="card-img-top" src="{{ asset('images/hunterimages/'.$killreport->image) }}" alt="fuck"> -->
-                    <!-- <img class="card-img-top lazy" data-src="{{ asset('images/huntingimages/'.$killreport->image) }}" alt=""> -->
+
+                    <!-- bilden -->
                     <img class="card-img-top lazy" data-src="{{ $killreport->display_path() }}?<?php $date = new DateTime(); echo $date->getTimestamp(); ?>" alt="">
-                    
-                   
-                     
+                    <!-- länk via bilden -->
                     <a href="{{url( '/image/'.$killreport->id.'/edit' )}}">
                         <div class="mask rgba-white-slight"><span></span></div>
                     </a>
+
                 </div>
 
                 <!--Card content-->
                 <div class="card-body" style="border-left: 5px solid {{ $killreport->report_status }}">
                     
-                    <!--Title-->               
-                    <h6 class="card-text" style="border-bottom: 1px solid #D8D8D8;">RAPPORT #{{$killreport->id}} - DATUM: {{substr($killreport->killdate, 0, 10)}}</h6>
+                    <!--Title-->
+                    <!-- <div class="pt-2 text-center align-middle" style="background-color: #F7F7F7;"> -->
+                                 
                    
                    
                     <!-- Beskrivning -->
                     <div style="border-bottom: 1px solid #D8D8D8;">
-                      <span class="card-text" style="font-size: 12px;"><strong>BILDTEXT</strong></span><br>
+                      <!-- <span class="card-text" style="font-size: 12px;"><strong>BILDTEXT</strong></span><br> -->
                       <i class="card-text" style="font-size: 12px;"><?= $killreport->display_image() == "default_display.jpg" ? "Bildtext saknas" : $killreport->display_image()->description ?></i>
                     </div>
 
-                    <div class="mt-2 mb-4" style="border-bottom: 1px solid #D8D8D8;">
+                    <div class="mt-2 mb-4 w-100" style="border-bottom: 1px solid #D8D8D8;">
                      <span class="card-text" style="font-size: 12px;"><strong>RAPPPORTDATA</strong></span><br>
-                      <table class="card-text" >
+                      <table class="w-100 card-text table-striped" >
+                        <tr>
+                          <td style="font-size: 12px; font-weight: bold;">Datum:</td>
+                          <td style="font-size: 12px;">{{substr($killreport->killdate, 0, 10)}}</td>
+                        </tr>
                         <tr>
                           <td style="font-size: 12px; font-weight: bold;">Djur:</td>
                           <td style="font-size: 12px;">{{$killreport->animal()['species']}} - {{$killreport->animal()['speciestype']}}<?= $killreport->animal()['antlers'] ? "; " . $killreport->animal()['antlers'] : "" ?></td>
@@ -68,9 +71,10 @@
                         </tr>
                       </table>
                     </div>
-                    <div class="mt-2 mb-4" style="border-bottom: 1px solid #D8D8D8;">
+                    <div class="mt-2 mb-4 w-100" style="border-bottom: 1px solid #D8D8D8;">
                       <span class="card-text" style="font-size: 12px;"><strong>KÖTTILLDELNING</strong></span><br>
                       <table class="card-text" >
+                        <tbody>
                       @foreach($killreport->meat as $meat)
                         @if(!is_null($meat->user_id))
                           <tr>
@@ -79,13 +83,18 @@
                           </tr>
                         @endif
                       @endforeach
+                        </tbody>
                       </table>
                      </div>
                     <!-- <p class="card-text">Skytt: </p> -->
                     <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
                     <!-- <button type="button" class="btn btn-light-blue btn-md">Read more</button> -->
-                    <button class="btn btn-mdb-color btn-sm"><a href="{{url($killreport->path())}}" style="color: white;">Rapporten</a></button>
-                    <button class="btn btn-mdb-color btn-sm"><a href="{{url( '/image/'.$killreport->id.'/edit' )}}" style="color: white;">Bilder</a></button>
+                    <div class="d-flex flex-row justify-content-around card-footer">
+                      <button class="btn btn-mdb-color btn-sm"><a href="{{url($killreport->path())}}" style="color: white;">Rapporten</a></button>
+                      <button class="btn btn-mdb-color btn-sm"><a href="{{url( '/image/'.$killreport->id.'/edit' )}}" style="color: white;">Bilder</a></button>
+                    </div>
+    
+    </div>
 
                 </div>
 

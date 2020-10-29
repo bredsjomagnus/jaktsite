@@ -211,7 +211,6 @@ class KillreportTest extends TestCase
     {
         $killreport = factory(Killreport::class)->create();
 
-        
         $image_display = factory(Image::class)->create([
             'killreport_id'     => $killreport->id,
             'display'           => 'yes',
@@ -224,9 +223,10 @@ class KillreportTest extends TestCase
             'name'              => 'image_no_display.jpg',
         ]);
 
-        
-        $this->assertEquals($image_display->getAttributes(), $killreport->display_image()->getAttributes());
-        $this->assertNotEquals($image_no_display->getAttributes(), $killreport->display_image()->getAttributes());
+       
+
+        $this->assertEquals($image_display->id, $killreport->display_image()->id);
+        $this->assertNotEquals($image_no_display->id, $killreport->display_image()->id);
     }
 
     /**

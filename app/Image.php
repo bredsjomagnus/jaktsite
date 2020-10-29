@@ -11,6 +11,11 @@ use App\User;
 class Image extends Model
 {
     protected $guarded = [];
+    protected $casts = [
+        'id'                => 'integer',
+        'killreport_id'     => 'integer',
+        'user_id'           => 'integer'
+    ];
 
     public function killreport()
     {
