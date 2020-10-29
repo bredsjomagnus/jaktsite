@@ -1,11 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<style>
-  .cell_size {
-    font-size: 10px;
-  }
-</style>
+
+<!-- container -->
 <div class="container">
   <div class="d-flex justify-content-center" style="margin-top: -20px; margin-bottom: 5px;">
     <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
@@ -16,98 +13,97 @@
     <!-- Card deck -->
     <div class="card-deck clearfix">
 
-        @foreach($killreports as $killreport)
-            
-            <!-- Card -->
-            <div class="card mb-4" style="min-width: 300px; max-height:1000px;">
-              <div class="text-left" style="background-color: #dccc9b;">
-                <p class="pl-2 card-text" style="font-size: 12px;">#{{$killreport->id}}</p>
-              </div>  
+      @foreach($killreports as $killreport)
+          
+        <!-- Card -->
+        <div class="card mb-4" style="min-width: 300px; max-height:1000px;">
 
-                <!--Card image-->
-                <div class="view overlay">
+          <!-- översta kanten med killreport->id -->
+          <div class="text-left" style="background-color: #dccc9b;">
+            <p class="pl-2 card-text" style="font-size: 12px;">#{{$killreport->id}}</p>
+          </div>  
 
-                    <!-- bilden -->
-                    <img class="card-img-top lazy" data-src="{{ $killreport->display_path() }}?<?php $date = new DateTime(); echo $date->getTimestamp(); ?>" alt="">
-                    <!-- länk via bilden -->
-                    <a href="{{url( '/image/'.$killreport->id.'/edit' )}}">
-                        <div class="mask rgba-white-slight"><span></span></div>
-                    </a>
+          <!--Card image-->
+          <div class="view overlay">
 
-                </div>
+              <!-- bilden -->
+              <img class="card-img-top lazy" data-src="{{ $killreport->display_path() }}?<?php $date = new DateTime(); echo $date->getTimestamp(); ?>" alt="">
+              <!-- länk via bilden -->
+              <a href="{{url( '/image/'.$killreport->id.'/edit' )}}">
+                  <div class="mask rgba-white-slight"><span></span></div>
+              </a>
 
-                <!--Card content-->
-                <div class="card-body" style="border-left: 5px solid {{ $killreport->report_status }}">
-                    
-                    <!--Title-->
-                    <!-- <div class="pt-2 text-center align-middle" style="background-color: #F7F7F7;"> -->
-                                 
-                   
-                   
-                    <!-- Beskrivning -->
-                    <div style="border-bottom: 1px solid #D8D8D8;">
-                      <!-- <span class="card-text" style="font-size: 12px;"><strong>BILDTEXT</strong></span><br> -->
-                      <i class="card-text" style="font-size: 12px;"><?= $killreport->display_image() == "default_display.jpg" ? "Bildtext saknas" : $killreport->display_image()->description ?></i>
-                    </div>
+          </div>
+          <!--/Card image-->
 
-                    <div class="mt-2 mb-4 w-100" style="border-bottom: 1px solid #D8D8D8;">
-                     <span class="card-text" style="font-size: 12px;"><strong>RAPPPORTDATA</strong></span><br>
-                      <table class="w-100 card-text table-striped" >
-                        <tr>
-                          <td style="font-size: 12px; font-weight: bold;">Datum:</td>
-                          <td style="font-size: 12px;">{{substr($killreport->killdate, 0, 10)}}</td>
-                        </tr>
-                        <tr>
-                          <td style="font-size: 12px; font-weight: bold;">Djur:</td>
-                          <td style="font-size: 12px;">{{$killreport->animal()['species']}} - {{$killreport->animal()['speciestype']}}<?= $killreport->animal()['antlers'] ? "; " . $killreport->animal()['antlers'] : "" ?></td>
-                        </tr>
-                        <tr>
-                          <td style="font-size: 12px; font-weight: bold;"><strong>Skytt:</strong></td>
-                          <td style="font-size: 12px;">{{$killreport->shooter['firstname']}} {{$killreport->shooter['lastname']}}, [{{$killreport->kindofhunt}}]</td>
-                        </tr>
-                        <tr>
-                          <td style="font-size: 12px; font-weight: bold;"><strong>Område:</strong></td>
-                          <td style="font-size: 12px;">{{$killreport->area()['area_name']}}</td>
-                        </tr>
-                      </table>
-                    </div>
-                    <div class="mt-2 mb-4 w-100" style="border-bottom: 1px solid #D8D8D8;">
-                      <span class="card-text" style="font-size: 12px;"><strong>KÖTTILLDELNING</strong></span><br>
-                      <table class="card-text" >
-                        <tbody>
-                      @foreach($killreport->meat as $meat)
-                        @if(!is_null($meat->user_id))
-                          <tr>
-                            <td style="font-size: 12px; font-weight: bold;"><?= $meat->get_users_name() == '- -' ? 'Gäst' : $meat->get_users_name()?>:</td>
-                            <td style="font-size: 12px;">{{$meat->share_kilogram}} kg</td>
-                          </tr>
-                        @endif
-                      @endforeach
-                        </tbody>
-                      </table>
-                     </div>
-                    <!-- <p class="card-text">Skytt: </p> -->
-                    <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
-                    <!-- <button type="button" class="btn btn-light-blue btn-md">Read more</button> -->
-                    <div class="d-flex flex-row justify-content-around card-footer">
-                      <button class="btn btn-mdb-color btn-sm"><a href="{{url($killreport->path())}}" style="color: white;">Rapporten</a></button>
-                      <button class="btn btn-mdb-color btn-sm"><a href="{{url( '/image/'.$killreport->id.'/edit' )}}" style="color: white;">Bilder</a></button>
-                    </div>
-    
-    </div>
+          <!--Card content-->
+          <div class="card-body" style="border-left: 5px solid {{ $killreport->report_status }}">
 
-                </div>
-
+            <!-- Beskrivning -->
+            <div style="border-bottom: 1px solid #D8D8D8;">
+              <!-- <span class="card-text" style="font-size: 12px;"><strong>BILDTEXT</strong></span><br> -->
+              <i class="card-text" style="font-size: 12px;"><?= $killreport->display_image() == "default_display.jpg" ? "Bildtext saknas" : $killreport->display_image()->description ?></i>
             </div>
-            <!-- Card -->
-            
-        @endforeach
 
+            <!-- rapportdata -->
+            <div class="mt-2 mb-4 w-100" style="border-bottom: 1px solid #D8D8D8;">
+              <span class="card-text" style="font-size: 12px;"><strong>RAPPPORTDATA</strong></span><br>
+              <table class="w-100 card-text table-striped" >
+                <tr>
+                  <td style="font-size: 12px; font-weight: bold;">Datum:</td>
+                  <td style="font-size: 12px;">{{substr($killreport->killdate, 0, 10)}}</td>
+                </tr>
+                <tr>
+                  <td style="font-size: 12px; font-weight: bold;">Djur:</td>
+                  <td style="font-size: 12px;">{{$killreport->animal()['species']}} - {{$killreport->animal()['speciestype']}}<?= $killreport->animal()['antlers'] ? "; " . $killreport->animal()['antlers'] : "" ?></td>
+                </tr>
+                <tr>
+                  <td style="font-size: 12px; font-weight: bold;"><strong>Skytt:</strong></td>
+                  <td style="font-size: 12px;">{{$killreport->shooter['firstname']}} {{$killreport->shooter['lastname']}}, [{{$killreport->kindofhunt}}]</td>
+                </tr>
+                <tr>
+                  <td style="font-size: 12px; font-weight: bold;"><strong>Område:</strong></td>
+                  <td style="font-size: 12px;">{{$killreport->area()['area_name']}}</td>
+                </tr>
+              </table>
+            </div>
+
+            <!-- köttilldelning -->
+            <div class="mt-2 mb-4 w-100" style="border-bottom: 1px solid #D8D8D8;">
+              <span class="card-text" style="font-size: 12px;"><strong>KÖTTILLDELNING</strong></span><br>
+              <table class="card-text" >
+                <tbody>
+                @foreach($killreport->meat as $meat)
+                  @if(!is_null($meat->user_id))
+                    <tr>
+                      <td style="font-size: 12px; font-weight: bold;"><?= $meat->get_users_name() == '- -' ? 'Gäst' : $meat->get_users_name()?>:</td>
+                      <td style="font-size: 12px;">{{$meat->share_kilogram}} kg</td>
+                    </tr>
+                  @endif
+                @endforeach
+                </tbody>
+              </table>
+              <i class="card-text" style="font-size: 12px;">{{$killreport->animal()->waste_notes}}</i>
+            </div>
+            
+            <!-- footer -->
+            <div class="d-flex flex-row justify-content-around card-footer">
+              <button class="btn btn-mdb-color btn-sm "><a href="{{url($killreport->path())}}" style="color: white;">Rapporten</a></button>
+              <button class="btn btn-mdb-color btn-sm "><a href="{{url( '/image/'.$killreport->id.'/edit' )}}" style="color: white;">Bilder</a></button>
+            </div>
+            
+          </div>
+          <!--/Card content-->
+
+        </div>
+        <!-- /Card -->    
+      @endforeach
     </div>
     <!-- Card deck -->
-
-   
 </div>
+<!-- /Container -->
+   
+
 
 @endsection
 <script>
