@@ -191,6 +191,7 @@ class KillreportController extends Controller
     public function destroy(KillReport $killreport)
     {
         $killreport->delete();
+        return redirect('/killreports');
     }
 
     /**
