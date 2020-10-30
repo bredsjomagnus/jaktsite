@@ -41,13 +41,11 @@
                                 <!-- <li class="text-muted" style="font-size: 12px;">Path: <strong>{{imageurl(image)}}</strong></li> -->
                             </ul>
                         </div>
-                        <mdb-input type='textarea' label='Bildtext' v-model="image.description" />
+                        <mdb-input @change="onDescriptionChange()" type='textarea' label='Bildtext' v-model="image.description" />
+                        <mdb-btn class="w-100" :disabled="enable_update_description" color="mdb-color" @click.native="update_description(image)" size="sm"> Uppdatera bildtext </mdb-btn>
         
                         
                         <mdb-card-footer :class="['w-100', 'text-muted', 'mt-4', {'display_footer_color': image.display == 'yes'}]">
-                             <mdb-row>
-                                <mdb-btn class="w-100" color="mdb-color" @click.native="update_description(image)" size="sm"> Uppdatera beskrivning </mdb-btn>
-                            </mdb-row>
                             <mdb-row>
                                 <div class="w-100 d-flex flex-row justify-content-center">
                                     <mdb-btn color="mdb-color" @click.native="toggleImageDisplay(image)" :active="image.display == 'yes'" size="sm">
@@ -61,10 +59,13 @@
                                     <mdb-btn color="mdb-color" @click.native="rotateImage(image)" size="sm"><mdb-icon icon="redo-alt"/> - Rotera</mdb-btn>
                                 </div>
                             </mdb-row>
-                            <mdb-row>
-                                <mdb-btn class="w-100" color="danger" @click.native="deleteImage(image)" size="sm"><mdb-icon icon="trash-alt"/> </mdb-btn>
-                            </mdb-row>
+                            
                         </mdb-card-footer>
+                       
+                            <div class="mb-2 w-100 text-center" style="background-color: lightgray;">
+                                <mdb-btn class="w-20" color="danger" @click.native="deleteImage(image)" size="sm"><mdb-icon icon="trash-alt"/> </mdb-btn>
+                            </div>
+                       
                     </mdb-card-body>
                 </mdb-card>
             </div>
@@ -155,7 +156,7 @@
                     path: 'images/killreports',
                     name: '',
                     display: 'no',
-                    description: '-'
+                    description: null
                 },
                 message: '',
                 error: false,
@@ -164,7 +165,8 @@
                 images: this.images,
                 file: null,
                 file_input_name: '',
-                dev_user_id: 2
+                dev_user_id: 2,
+                enable_update_description: true
                 
 
             }
@@ -185,15 +187,22 @@
             console.log("this.killreportIndexUrl: ", this.killreportIndexUrl);
         },
 		methods: {
+            onDescriptionChange(event) {
+                console.log("onDescriptionChange");
+                this.enable_update_description = false;
+            },
             update_description(image) {
                 let imageUpdateUrl = this.imageBaseUrl+'/'+image.id+'/update';
                 axios.patch(imageUpdateUrl, image)
                     .then(response => {
                         console.log("Image description updated");
+                        this.enable_update_description = true;
                     })
                     .catch(error => {
                         console.log("update image description error: ", error);
-                    })
+                    });
+                
+                
             },
             toggleImageDisplay(image) {
                 if(image.display == 'yes') {
