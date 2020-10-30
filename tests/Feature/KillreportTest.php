@@ -9,6 +9,8 @@ use Tests\TestCase;
 use App\User;
 use App\Area;
 use App\Animal;
+use App\Meat;
+use App\Image;
 use App\Killreport;
 
 class KillreportTest extends TestCase
@@ -214,8 +216,125 @@ class KillreportTest extends TestCase
 
     }
 
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function only_admins_see_delete_btn_in_killreport_index_view() 
+    {
+
+        // admin skall se 'ta bort'-knappen
+        $admin = factory(User::class)->create([
+            'role'  => 'admin'
+        ]);
+
+        $this->signIn($admin);
+
+        $killreport = factory(Killreport::class)->create();
+
+        $this->get('/killreports')->assertSee('btn-danger'); // 'ta bort'-knappen
 
 
 
+        // user skall inte se 'ta bort'-knappen
+        $user = factory(User::class)->create([
+            'role'  => 'user'
+        ]);
+
+        $this->signIn($user);
+
+        $this->get('/killreports')->assertDontSee('btn-danger'); // 'ta bort'-knappen
+    }
+
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function only_admins_can_delete_a_killreport()
+    {
+        // admin skall kunna ta bort killreport
+        $admin = factory(User::class)->create([
+            'role'  => 'admin'
+        ]);
+
+        $this->signIn($admin);
+
+        $killreport = factory(Killreport::class)->create();
+
+        $this->assertDatabaseHas('killreports', ['id'   => $killreport->id]);
+
+        $this->delete('/killreports/'.$killreport->id.'/delete')->assertOk();
+
+        $this->assertDatabaseMissing('killreports', ['id'   => $killreport->id]);
+
+        // user skall inte kunna ta bort killreport
+        $user = factory(User::class)->create([
+            'role'  => 'user'
+        ]);
+
+        $this->signIn($user);
+
+         $killreport = factory(Killreport::class)->create();
+
+        $this->assertDatabaseHas('killreports', ['id'   => $killreport->id]);
+
+        $this->delete('/killreports/'.$killreport->id.'/delete')->assertRedirect('login');
+    }
+
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function when_a_killreport_is_deleted_so_is_its_animal_meat_images()
+    {
+        // admin skall kunna ta bort killreport
+        $admin = factory(User::class)->create([
+            'role'  => 'admin'
+        ]);
+
+        $this->signIn($admin);
+
+        $animal = factory(Animal::class)->create();
+
+        $killreport = factory(Killreport::class)->create([
+            'animal_id'     => $animal->id
+        ]);
+
+        $meat_1 = factory(Meat::class)->create([
+            'killreport_id' => $killreport->id
+        ]);
+        $meat_2 = factory(Meat::class)->create([
+            'killreport_id' => $killreport->id
+        ]);
+
+        $image_1 = factory(Image::class)->create([
+            'killreport_id' => $killreport->id
+        ]);
+        $image_2 = factory(Image::class)->create([
+            'killreport_id' => $killreport->id
+        ]);
+
+
+        $this->assertDatabaseHas('animals', ['id'   => $animal->id]);
+        $this->assertDatabaseHas('killreports', ['id'   => $killreport->id]);
+        $this->assertDatabaseHas('meats', ['id'   => $meat_1->id]);
+        $this->assertDatabaseHas('meats', ['id'   => $meat_2->id]);
+        $this->assertDatabaseHas('images', ['id'   => $image_1->id]);
+        $this->assertDatabaseHas('images', ['id'   => $image_2->id]);
+
+        $this->delete('/killreports/'.$killreport->id.'/delete');
+
+
+        $this->assertDatabaseMissing('animals', ['id'   => $animal->id]);
+        $this->assertDatabaseMissing('killreports', ['id'   => $killreport->id]);
+        $this->assertDatabaseMissing('meats', ['id'   => $meat_1->id]);
+        $this->assertDatabaseMissing('meats', ['id'   => $meat_2->id]);
+        $this->assertDatabaseMissing('images', ['id'   => $image_1->id]);
+        $this->assertDatabaseMissing('images', ['id'   => $image_2->id]);
+        
+    }
 
 }

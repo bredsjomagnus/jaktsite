@@ -88,9 +88,24 @@
             
             <!-- footer -->
             <div class="d-flex flex-row justify-content-around card-footer">
-              <button class="btn btn-mdb-color btn-sm "><a href="{{url($killreport->path())}}" style="color: white;">Rapporten</a></button>
-              <button class="btn btn-mdb-color btn-sm "><a href="{{url( '/image/'.$killreport->id.'/edit' )}}" style="color: white;">Bilder</a></button>
-            </div>
+              <button class="btn btn-mdb-color btn-sm"><a href="{{url($killreport->path())}}" style="color: white;">Rapporten</a></button>
+              <button class="btn btn-mdb-color btn-sm"><a href="{{url( '/image/'.$killreport->id.'/edit' )}}" style="color: white;">Bilder</a></button>
+              @if(Auth::user()->role == 'admin')
+              </div>
+              <div class="w-100 justify-content-right">
+                <form method="POST" action="{{url( '/killreports/'.$killreport->id.'/delete' )}}">
+                  @csrf
+                  @method('DELETE')
+                  <button onclick="return confirm('Detta tar oåterkalleligt bort rapporten, djuret, köttilldelning och bilder som är associerat med rapporten. Vill du fortsätta?')" class="btn btn-danger btn-sm" type="submit"><span class="fas fa-trash-alt"></span></button>
+                  <!-- <button class="btn btn-danger btn-sm"><a href="{{url( '/killreports/'.$killreport->id.'/delete' )}}" style="color: white;"><span class="fas fa-trash-alt"></span></a></button> -->
+                </form>
+              </div>
+              @else
+              </div>
+
+              @endif
+              
+            
             
           </div>
           <!--/Card content-->

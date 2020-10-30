@@ -29,6 +29,8 @@ class KillreportController extends Controller
 
 
         $killreports = Killreport::where('deleted_at', null)->orderBy('killdate', 'desc')->get();
+
+        
     
         return view('killreports.index', compact('killreports'));
     }
@@ -186,9 +188,9 @@ class KillreportController extends Controller
      * @param  \App\KillReport  $killReport
      * @return \Illuminate\Http\Response
      */
-    public function destroy(KillReport $killReport)
+    public function destroy(KillReport $killreport)
     {
-        //
+        $killreport->delete();
     }
 
     /**

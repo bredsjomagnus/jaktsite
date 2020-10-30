@@ -69,4 +69,23 @@ class Killreport extends Model
         }
         
     }
+
+    public static function boot ()
+    {
+        parent::boot();
+
+
+        static::deleting(function($killreport) {
+            Animal::find($killreport->animal_id)->delete();
+            foreach($killreport->meat as $meat) {
+                $meat->delete();
+            }
+            foreach($killreport->images as $image) {
+                $image->delete();
+                
+                $name = 'k'.$image->killreport_id.'_i'.$image->id.'_u'.$image->user_id.'_'.$image->name;
+                Storage::disk('local')->delete('public/images/killreports/'.$name);
+            }
+        });
+    }
 }
