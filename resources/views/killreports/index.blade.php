@@ -92,8 +92,8 @@
               <button class="btn btn-mdb-color btn-sm"><a href="{{url( '/image/'.$killreport->id.'/edit' )}}" style="color: white;">Bilder</a></button>
               @if(Auth::user()->role == 'admin')
               </div>
-              <div class="w-100 justify-content-right">
-                <form method="POST" action="{{url( '/killreports/'.$killreport->id.'/delete' )}}">
+              <div class="w-100 justify-content-right" style="background-color: lightgray;">
+                <form class="w-100 text-center" method="POST" action="{{url( '/killreports/'.$killreport->id.'/delete' )}}">
                   @csrf
                   @method('DELETE')
                   <button onclick="return confirm('Detta tar oåterkalleligt bort rapporten, djuret, köttilldelning och bilder som är associerat med rapporten. Vill du fortsätta?')" class="btn btn-danger btn-sm" type="submit"><span class="fas fa-trash-alt"></span></button>
