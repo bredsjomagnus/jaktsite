@@ -242,26 +242,29 @@
                     });
             },
             deleteImage(image) {
-                let imageDeleteUrl = this.imageBaseUrl+'/'+image.id+'/delete';
-                let fileDeleteUrl = this.fileBaseUrl+'/'+image.id+'/delete';
-                let image_storage_path = this.imageurl(image);
-                console.log("deleting image: ", image_storage_path);
-                axios.delete(fileDeleteUrl, image)
-                    .then(response => {
-                        console.log("deleting file");
-                        console.log('file-delete-message: ', response.data.message);
-                         axios.delete(imageDeleteUrl, image)
-                            .then(response => {
-                                console.log("delete image message: ", response.data.message);
-                                window.location.reload();
-                            })
-                            .catch(error => {
-                                console.log("image delete error: ", error);  
-                            });
-                    })
-                    .catch(error => {
-                        console.log("file delete error: ", error);
-                    });
+                if( confirm('Vill du ta bort bilden?')) {
+                    let imageDeleteUrl = this.imageBaseUrl+'/'+image.id+'/delete';
+                    let fileDeleteUrl = this.fileBaseUrl+'/'+image.id+'/delete';
+                    let image_storage_path = this.imageurl(image);
+                    console.log("deleting image: ", image_storage_path);
+                    axios.delete(fileDeleteUrl, image)
+                        .then(response => {
+                            console.log("deleting file");
+                            console.log('file-delete-message: ', response.data.message);
+                            axios.delete(imageDeleteUrl, image)
+                                .then(response => {
+                                    console.log("delete image message: ", response.data.message);
+                                    window.location.reload();
+                                })
+                                .catch(error => {
+                                    console.log("image delete error: ", error);  
+                                });
+                        })
+                        .catch(error => {
+                            console.log("file delete error: ", error);
+                        }); 
+                }
+                
 
 
                
