@@ -25,7 +25,7 @@ class KillreportController extends Controller
     {
         // ser till att fylla på meatstabellen för att anpassa till version 2
         // kan slås av när tabellerna väl stämmer.
-        // $this->dev_check_killreport_meat_tables();
+        $this->dev_check_killreport_meat_tables();
 
 
         $killreports = Killreport::where('deleted_at', null)->orderBy('killdate', 'desc')->get();
