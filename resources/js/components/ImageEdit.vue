@@ -185,6 +185,11 @@
             console.log("this.imageBaseUrl: ", this.imageBaseUrl);
             console.log("this.fileBaseUrl: ", this.fileBaseUrl);
             console.log("this.killreportIndexUrl: ", this.killreportIndexUrl);
+
+            if(this.images.length == 0) {
+                this.upload_image.display = 'yes';
+            }
+            
         },
 		methods: {
             onDescriptionChange(event) {
