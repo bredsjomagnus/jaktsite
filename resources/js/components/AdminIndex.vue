@@ -1,6 +1,6 @@
 <template>
     <div>
-        <sidebar-menu :menu="menu" :collapsed="true" :width="'200px'" :relative="false" @item-click="onItemClick"/>
+        <sidebar-menu :menu="menu" :disableHover="true" :collapsed="true" :width="'350px'" :relative="false" @item-click="onItemClick"/>
         <div style="margin-left: 70px">
             <div v-if="page == 'users'">
                 <p>ANVÄNDARE</p>
@@ -11,11 +11,44 @@
                         bordered
                         responsive
                         :tfoot="false"
+                        
+                        
                     />
                 </div>
             </div>
-            <div v-else-if="page == 'edit_user'">
+            <div v-else-if="page == 'edit_user'" style="margin-right:20px;">
                 <h6>#{{this.account_edit.id}}, {{this.account_edit.firstname}} {{this.account_edit.lastname}}</h6>
+                <mdb-card>
+                 
+                   
+                      
+
+                    <mdb-card-body class="infopart">
+                    <!-- <mdb-card-title>Profildata</mdb-card-title> -->
+                        <form @submit.prevent="submitForm">
+                            <mdb-input label="Användarnamn" v-model="account_edit.username" disabled />
+                            <mdb-input label="Email" v-model="account_edit.email" disabled />
+                            <mdb-input label="Förnamn" v-model="account_edit.firstname" />
+                            <mdb-input label="Efternamn" v-model="account_edit.lastname" />
+                            <mdb-input label="Adress" v-model="account_edit.address"  />
+                            <mdb-input label="Postnummer" v-model="account_edit.postnumber"  />
+                            <mdb-input label="Ort" v-model="account_edit.city"  />
+                            <mdb-input label="Mobilnummer" v-model="account_edit.mobilenumber"  />
+                            <mdb-input label="Tel." v-model="account_edit.phonenumber"  />
+                            
+                            
+                            <div class="d-flex flex-row justify-content-around" style="margin-top: -10px;">
+                                <mdb-btn size="sm" color="mdb-color" type="submit"><mdb-icon icon="user-edit" class="ml-1"/> - Uppdatera</mdb-btn>
+                            </div>
+                            
+
+                        </form>
+
+                    
+
+                    </mdb-card-body>
+                   
+                </mdb-card>
             </div>
             <div v-else-if="page == 'charts'">
                 <p>DIAGRAM</p>
@@ -24,17 +57,22 @@
                 <p>RAPPORTER</p>
             </div>
         </div>
-  </div>
+    </div>
 </template>
 
 <script>
 import { SidebarMenu } from 'vue-sidebar-menu';
- import { mdbDatatable, mdbBtn } from 'mdbvue';
+ import { mdbDatatable, mdbBtn, mdbCard, mdbCardBody, mdbInput, mdbContainer, mdbIcon } from 'mdbvue';
 export default {
     components: {
             SidebarMenu,
             mdbDatatable,
-            mdbBtn
+            mdbBtn,
+            mdbCard,
+            mdbCardBody,
+            mdbInput,
+            mdbContainer,
+            mdbIcon
         },
         props:[
             'accountPage',
@@ -51,7 +89,16 @@ export default {
                 {
                     // href: '/',
                     title: 'Användare',
-                    icon: 'fa fa-user'
+                    icon: 'fa fa-user',
+                    child: [
+                        {
+                            // href: '/charts/sublink',
+                            title: 'Användare - tabell'
+                        },
+                        {
+                            title: 'Användare - ny'
+                        }
+                    ]
                 },
                 {
                     // href: '/',
@@ -81,7 +128,7 @@ export default {
             data: {
                 columns: [
                     {
-                    label: 'Redigera',
+                    label: 'Ändra',
                     field: 'edit',
                     sort: false
                     },
@@ -91,13 +138,8 @@ export default {
                     sort: true
                     },
                     {
-                    label: 'Förnamn',
-                    field: 'firstname',
-                    sort: true
-                    },
-                    {
-                    label: 'Efternamn',
-                    field: 'lastname',
+                    label: 'Namn',
+                    field: 'name',
                     sort: true
                     },
                     {
@@ -153,6 +195,7 @@ export default {
                 // account['edit'] =  "<mdb-btn color='mdb-color' size='sm'>hej</mdb-btn>";
                 let id = account.id;
                 account['edit'] =  "<button onclick='editUser("+id+")' class='btn btn-mdb-color btn-sm fa fa-user-edit'></button>";
+                account['name'] = account.firstname +" "+ account.lastname;
 
             });
             return table_rows;
@@ -172,7 +215,7 @@ export default {
             console.log('item ', item);
             console.log('node ', node);
             
-            if(item.title == 'Användare') {
+            if(item.title == 'Användare - tabell') {
                 this.page = 'users';
             } else if( item.title == 'Diagram') {
                 this.page = 'charts';
@@ -185,3 +228,8 @@ export default {
     }
 }
 </script> 
+<style scoped>
+.infopart {
+	margin-top: -25px;
+}
+</style>
