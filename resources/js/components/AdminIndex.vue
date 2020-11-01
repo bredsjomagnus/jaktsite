@@ -14,6 +14,9 @@
                     />
                 </div>
             </div>
+            <div v-else-if="page == 'edit_user'">
+                <h6>#{{this.account_edit.id}}, {{this.account_edit.firstname}} {{this.account_edit.lastname}}</h6>
+            </div>
             <div v-else-if="page == 'charts'">
                 <p>DIAGRAM</p>
             </div>
@@ -73,6 +76,7 @@ export default {
                 }
             ],
             page: 'users',
+            account_edit: null,
 
             data: {
                 columns: [
@@ -130,24 +134,38 @@ export default {
     computed: {
        
     },
+    created(){
+        window.editUser = this.editUser;
+        },
     mounted() {
-        this.table_rows = _.cloneDeep(this.accounts);
-        this.table_rows.forEach(account => {
-            account['edit'] = '<mdb-';
+        // this.table_rows = _.cloneDeep(this.accounts);
+        // this.table_rows.forEach(account => {
+        //     account['edit'] = '<mdb-';
 
-        });
+        // });
 
-        console.log('users', this.table_rows);
+        // console.log('users', this.table_rows);
     },
     methods: {
          tablerows() {
             let table_rows = _.cloneDeep(this.accounts);
             table_rows.forEach(account => {
                 // account['edit'] =  "<mdb-btn color='mdb-color' size='sm'>hej</mdb-btn>";
-                account['edit'] =  "<button class='btn btn-unique fa fa-user-edit'></button>";
+                let id = account.id;
+                account['edit'] =  "<button onclick='editUser("+id+")' class='btn btn-mdb-color btn-sm fa fa-user-edit'></button>";
 
             });
             return table_rows;
+        },
+        editUser(id) {
+            // får idnummer på user från editknappen i tabellen.
+            let account = this.accounts.filter(obj => {
+                return obj.id === id;
+            });
+            this.account_edit = account[0];
+            // byt sida till edit_user
+            this.page = 'edit_user';
+
         },
         onItemClick(event, item, node) {
             console.log('event ', event);
