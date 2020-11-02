@@ -2,7 +2,7 @@
     <div>
         <sidebar-menu :menu="menu" :disableHover="true" :collapsed="true" :width="'350px'" :relative="false" @item-click="onItemClick"/>
         <div style="margin-left: 70px">
-            <div v-if="page == 'users'" class='right_correction'>
+            <div v-if="page == 'users_table'" class='right_correction'>
                 <p>ANVÄNDARE</p>
                 <div>
                     <mdb-datatable
@@ -19,12 +19,7 @@
             <div v-else-if="page == 'edit_user'" class='right_correction'>
                 <h6>#{{this.account_edit.id}}, {{this.account_edit.firstname}} {{this.account_edit.lastname}}</h6>
                 <mdb-card>
-                 
-                   
-                      
-
                     <mdb-card-body class="infopart">
-                    <!-- <mdb-card-title>Profildata</mdb-card-title> -->
                         <form @submit.prevent="updateUser">
                             <label v-if="account_edit.occupation != 'webmaster'" class="mt-4 text-muted" style="font-size: 12px;" for="activeselect">Aktiv</label>
                             <select v-if="account_edit.occupation != 'webmaster'" id="activeselect" class="mb-2 custom-select custom-select-sm" v-model="account_edit.active">
@@ -60,7 +55,6 @@
                     </mdb-card>
                     <mdb-card class="mt-2">
                      <mdb-card-body class="infopart">
-                    <!-- <mdb-card-title>Profildata</mdb-card-title> -->
                         <form @submit.prevent="updatePassword">
                             <mdb-input label="Nytt lösenord" v-model="account_edit_password1" type='password' />
                             <mdb-input label="Bekräfta lösenord" v-model="account_edit_password2" type='password' />
@@ -77,6 +71,54 @@
                     </mdb-card-body>
                    
                 </mdb-card>
+            </div>
+            <div v-else-if="page == 'users_new'" class='right_correction'>
+                <p>NY ANVÄNDARE</p>
+
+
+                <mdb-card>
+               
+                <mdb-card-body class="infopart">
+            <!-- Material form create user -->
+            <!-- @submit.prevent="submitForm" -->
+                <form @submit.prevent="createUser" class="formpart mt-2">
+                        <label class="text-muted" style="font-size: 12px;" for="roleselect">Aktiv</label>
+                        <select id="roleselect" class="custom-select custom-select-sm" v-model="newUser.active">
+                            <option value="yes">yes</option>
+                            <option value="no">no</option>
+                        </select>
+                        <label class="text-muted" style="font-size: 12px;" for="roleselect">Roll</label>
+                        <select id="roleselect" class="custom-select custom-select-sm" v-model="newUser.role">
+                            <option selected>user</option>
+                            <option value="guest">guest</option>
+                            <option value="admin">admin</option>
+                        </select>
+                        <label class="text-muted" style="font-size: 12px;" for="roleselect">Avdelning</label>
+                        <select id="roleselect" class="custom-select custom-select-sm" v-model="newUser.occupation">
+                            <option selected>hunter</option>
+                            <option value="devaccount">devaccount</option>
+                        </select>
+                        <mdb-input label="Användarnamn" v-model="newUser.username" />
+                        <mdb-input label="Email" type="email" v-model="newUser.email" />
+                        <mdb-input label="Förnamn" v-model="newUser.firstname" />
+                        <mdb-input label="Efternamn" v-model="newUser.lastname" />
+                        <mdb-input label="Lösenord" type="password" v-model="newUser.password1" />
+                        <mdb-input label="Bekräfta lösenord" type="password" v-model="newUser.password2" />
+                        <input type="hidden" name="_token" :value="csrf">
+                        <div class="text-center">
+                            <mdb-btn color="mdb-color" type="submit"><mdb-icon icon="user-plus" class="ml-1"/> - Skapa</mdb-btn>
+                        </div>
+                         
+                        <div class="d-flex flex-row justify-content-around" >
+                            <span class="error_message">{{new_user_message}}</span>
+                        </div>
+
+                    </form>
+            <!-- Material form create user -->
+                </mdb-card-body>
+            </mdb-card>
+
+
             </div>
             <div v-else-if="page == 'charts'">
                 <p>DIAGRAM</p>
@@ -151,12 +193,24 @@ export default {
                     icon: 'fa fa-backward',
                 }
             ],
-            page: 'users',
+            page: 'users_table',
             account_edit: null,
             account_edit_password1: null,
             account_edit_password2: null,
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             new_password_message: '',
+            new_user_message: '',
+            newUser: {
+                active: 'yes',
+                role: 'user',
+                occupation: 'hunter',
+                username: '',
+                email: '',
+                firstname: '',
+                lastname: '',
+                password1: '',
+                password2: ''
+            },
 
             data: {
                 columns: [
@@ -243,7 +297,9 @@ export default {
             console.log('node ', node);
             
             if(item.title == 'Användare - tabell') {
-                this.page = 'users';
+                this.page = 'users_table';
+            } else if( item.title == 'Användare - ny') {
+                this.page = 'users_new';
             } else if( item.title == 'Diagram') {
                 this.page = 'charts';
             } else if( item.title == 'Rapporter') {
@@ -258,36 +314,106 @@ export default {
 				axios.patch(updateUserUrl, this.account_edit)
 					.then(response => {
 						this.account_edit = null;
-						this.page = 'users';
+						this.page = 'users_table';
 					})
 					.catch(error => {
 						console.log('update user error: ', error);
 					});
-            },
-            updatePassword() {
-                let updateUserUrl = this.userBaseUrl + '/' + this.account_edit.id + '/update';
-                if(this.account_edit_password1 != null && this.account_edit_password1 != '') {
-                    if(this.account_edit_password1 === this.account_edit_password2) {
-                        this.account_edit.password = this.account_edit_password1;
+        },
+        updatePassword() {
+            let updateUserUrl = this.userBaseUrl + '/' + this.account_edit.id + '/update';
+            if(this.account_edit_password1 != null && this.account_edit_password1 != '') {
+                if(this.account_edit_password1 === this.account_edit_password2) {
+                    this.account_edit.password = this.account_edit_password1;
 
-                        console.log('this.account_edit: ', this.account_edit)
-                        axios.patch(updateUserUrl, this.account_edit)
-                            .then(response => {
-                                this.account_edit = null;
-                                this.page = 'users';
-                            })
-                            .catch(error => {
-                                console.log('update user error: ', error);
-                            });
-                        
-                    } else {
-                        this.new_password_message = "Lösenorden stämmer inte överens.";
-                    }
+                    console.log('this.account_edit: ', this.account_edit)
+                    axios.patch(updateUserUrl, this.account_edit)
+                        .then(response => {
+                            this.account_edit = null;
+                            this.page = 'users_table';
+                            this.new_password_message = '';
+                        })
+                        .catch(error => {
+                            console.log('update user error: ', error);
+                        });
                     
                 } else {
-                    this.new_password_message = "Får inte ange tomma lösenord";
+                    this.new_password_message = "Lösenorden stämmer inte överens.";
                 }
+                
+            } else {
+                this.new_password_message = "Får inte ange tomma lösenord";
             }
+        },
+        createUser() {
+            let storeUserUrl = this.userBaseUrl + '/store';
+
+            let username_check = this.accounts.filter(obj => {
+                return obj.username === this.newUser.username;
+            });
+
+            console.log("username_check: ", username_check);
+            
+            let email_check = this.accounts.filter(obj => {
+                return obj.email === this.newUser.email;
+            });
+
+
+            if(username_check.length == 0) {
+
+                if(email_check.length == 0 || this.newUser.email == '') {
+                    if(this.newUser.username != null && this.newUser.username != '') {
+                        if(this.newUser.password1 === this.newUser.password2) {
+                            if(this.newUser.password1 != null && this.newUser.password2 != '') {
+                                let userToCreate = {
+                                    active: this.newUser.active,
+                                    role: this.newUser.role,
+                                    occupation: this.newUser.occupation,
+                                    username: this.newUser.username,
+                                    email: this.newUser.email,
+                                    firstname: this.newUser.firstname,
+                                    lastname: this.newUser.lastname,
+                                    password: this.newUser.password1,
+                                }
+                                axios.post(storeUserUrl, userToCreate)
+                                    .then(response => {
+                                        this.newUser = {
+                                            active: 'yes',
+                                            role: 'user',
+                                            occupation: 'hunter',
+                                            username: '',
+                                            email: '',
+                                            firstname: '',
+                                            lastname: '',
+                                            password1: '',
+                                            password2: ''
+                                        };
+                                        this.new_password_message = '';
+                                        window.location.reload();
+                                        // this.page = 'users_table';
+                                        
+                                    })
+                                    .catch(error => {
+                                        console.log('update user error: ', error);
+                                    });
+                            } else {
+                                this.new_user_message = "Får inte ange tomma lösenord"; 
+                            }
+                        } else {
+                            this.new_user_message = "Lösenorden stämmer inte överens.";
+                        }
+                    } else {
+                        this.new_user_message = "Måste ange ett användarnamn.";
+                    }
+
+                } else {
+                    this.new_user_message = "Emailadressen upptagen av annat konto.";
+                }
+            } else {
+                this.new_user_message = "Användarnamnet upptaget av annat konto.";
+            }
+
+        }
     }
 }
 </script> 
