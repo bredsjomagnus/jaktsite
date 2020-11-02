@@ -123,11 +123,12 @@
 		},
 		methods: {
 			submitForm(event) {
-				axios.post(this.url.update, this.fields)
+				axios.patch(this.url.update, this.fields)
 					.then(response => {
 						this.fields = {};
 						// console.log(response.request.responseURL)
-						window.location = response.request.responseURL;	// redirect to whatever the response from controller method says.
+						// window.location = response.request.responseURL;	// redirect to whatever the response from controller method says.
+						window.location.reload();
 					})
 					.catch(error => {
 						console.log(error);

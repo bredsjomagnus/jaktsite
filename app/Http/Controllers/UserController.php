@@ -88,9 +88,18 @@ class UserController extends Controller
         // dd(request()->all());
         // TODO
         // VALIDERA REQUESTDATA
-        $user->update($request->all());
 
-        return redirect($user->path());
+        $attributes = request()->all();
+
+        // dd($attributes);
+        if(request()->exists('password')){
+            $pre_hash = $attributes['password'];
+            $attributes['password'] = Hash::make($attributes['password']);
+
+        }
+        $user->update($attributes);
+
+        // return redirect($user->path());
     }
 
     /**

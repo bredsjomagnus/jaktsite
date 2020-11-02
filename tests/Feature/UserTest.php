@@ -74,8 +74,7 @@ class UserTest extends TestCase
             "phonenumber"   =>  "new_phonenumber"
         ];
 
-        $this->patch($user->path()."/update", $new_attributes)
-            ->assertRedirect($user->path());
+        $this->patch($user->path()."/update", $new_attributes);
 
         $this->assertDatabaseHas('users', $new_attributes);
             
@@ -132,8 +131,7 @@ class UserTest extends TestCase
             "phonenumber"   =>  "new_phonenumber"
         ];
 
-        $this->patch($johan->path()."/update", $new_attributes)
-            ->assertRedirect($johan->path());
+        $this->patch($johan->path()."/update", $new_attributes);
 
         $this->assertDatabaseHas('users', $new_attributes);
             

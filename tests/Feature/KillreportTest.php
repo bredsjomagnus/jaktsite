@@ -254,6 +254,7 @@ class KillreportTest extends TestCase
      */
     public function only_admins_can_delete_a_killreport()
     {
+        $this->withoutExceptionHandling();
         // admin skall kunna ta bort killreport
         $admin = factory(User::class)->create([
             'role'  => 'admin'
@@ -265,7 +266,7 @@ class KillreportTest extends TestCase
 
         $this->assertDatabaseHas('killreports', ['id'   => $killreport->id]);
 
-        $this->delete('/killreports/'.$killreport->id.'/delete')->assertOk();
+        $this->delete('/killreports/'.$killreport->id.'/delete');
 
         $this->assertDatabaseMissing('killreports', ['id'   => $killreport->id]);
 
