@@ -52,9 +52,34 @@
 			
 
 		</form>
-		<hr>
+				</mdb-card-body>
+		</mdb-card>
+
+		<mdb-card class="mt-2">
+                     <mdb-card-body>
+                    <!-- <mdb-card-title>Profildata</mdb-card-title> -->
+                        <form @submit.prevent="updatePassword">
+                            <mdb-input label="Nytt lösenord" v-model="account_edit_password1" type='password' />
+                            <mdb-input label="Bekräfta lösenord" v-model="account_edit_password2" type='password' />
+                            <input type="hidden" name="_token" :value="csrf">
+                            
+                            
+                            <div class="d-flex flex-row justify-content-around" style="margin-top: -10px;">
+                                <mdb-btn size="sm" color="mdb-color" type="submit"><mdb-icon icon="user-edit" class="ml-1"/> - Nytt lösenord</mdb-btn>
+                            </div>
+                            <div class="d-flex flex-row justify-content-around" >
+                                <span class="error_message">{{new_password_message}}</span>
+                            </div>
+                        </form>
+                    </mdb-card-body>
+                   
+                </mdb-card>
+		
+
+		<mdb-card class="mt-2">
+                     <mdb-card-body>
 		<form @submit.prevent="logout">
-			<div class="d-flex flex-row justify-content-around" style="margin-top: -10px;">
+			<div class="d-flex flex-row justify-content-around">
 				<mdb-btn size="sm" color="elegant" type="submit" :href="url.logouturl">Logga ut</mdb-btn>
 			</div>
 		</form>
@@ -103,7 +128,8 @@
 					postnumber: this.authUser.postnumber,
 					city: this.authUser.city,
 					mobilenumber: this.authUser.mobilenumber,
-					phonenumber: this.authUser.phonenumber
+					phonenumber: this.authUser.phonenumber,
+
 				},
 				url: {
 					update: window.location.pathname + "/update",
@@ -112,7 +138,10 @@
 					adminurl: this.adminurl,
 					logouturl: this.logouturl,
 					welcomeurl: this.welcomeurl
-				}
+				},
+				new_password_message: '',
+				account_edit_password1: null,
+				account_edit_password2: null
 			}
 		},
 		mounted() {
@@ -134,6 +163,31 @@
 						console.log(error);
 					});
 			},
+			updatePassword() {
+                if(this.account_edit_password1 != null && this.account_edit_password1 != '') {
+                    if(this.account_edit_password1 === this.account_edit_password2) {
+                        this.fields.password = this.account_edit_password1;
+
+                        console.log('this.fields: ', this.fields)
+                        axios.patch(this.url.update, this.fields)
+                            .then(response => {
+                                this.fields = {};
+								// console.log(response.request.responseURL)
+								// window.location = response.request.responseURL;	// redirect to whatever the response from controller method says.
+								window.location.reload();
+                            })
+                            .catch(error => {
+                                console.log('update user error: ', error);
+                            });
+                        
+                    } else {
+                        this.new_password_message = "Lösenorden stämmer inte överens.";
+                    }
+                    
+                } else {
+                    this.new_password_message = "Får inte ange tomma lösenord";
+                }
+            },
 			logout(event) {
 				axios.post(this.url.logouturl).then(() => location.href = this.url.welcomeurl);
 			}
@@ -143,5 +197,9 @@
 <style scoped>
 .infopart {
 	margin-top: -25px;
+}
+.error_message {
+    color: red;
+    font-size: 12px;
 }
 </style>

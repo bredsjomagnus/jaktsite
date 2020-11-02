@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 use App\User;
 use Illuminate\Http\Request;
@@ -85,19 +86,23 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        // dd(request()->all());
-        // TODO
-        // VALIDERA REQUESTDATA
+        // dd('$user->id: '.$user->id.' Auth::user()->id: '.Auth::user()->id);
+        if($user->id == Auth::user()->id || Auth::user()->role == 'admin') {
+            $attributes = request()->all();
+        
 
-        $attributes = request()->all();
+            // dd($attributes);
+            if(request()->exists('password')){
+                $pre_hash = $attributes['password'];
+                $attributes['password'] = Hash::make($attributes['password']);
 
-        // dd($attributes);
-        if(request()->exists('password')){
-            $pre_hash = $attributes['password'];
-            $attributes['password'] = Hash::make($attributes['password']);
+            
+            }
+            // dd($attributes);
 
+            $user->update($attributes);
         }
-        $user->update($attributes);
+        
 
         // return redirect($user->path());
     }
