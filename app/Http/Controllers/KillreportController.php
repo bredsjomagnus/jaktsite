@@ -25,10 +25,12 @@ class KillreportController extends Controller
     {
         // ser till att fylla på meatstabellen för att anpassa till version 2
         // kan slås av när tabellerna väl stämmer.
-        $this->dev_check_killreport_meat_tables();
+        // $this->dev_check_killreport_meat_tables();
 
 
         $killreports = Killreport::where('deleted_at', null)->orderBy('killdate', 'desc')->get();
+
+        
 
         
     
@@ -132,6 +134,12 @@ class KillreportController extends Controller
         $user_reddeer_this_season           = $this->sumMeatWrapper('Kronvilt', $this_season);
         $user_fallowdeer_this_season        = $this->sumMeatWrapper('Dovvilt', $this_season);
         $user_roedeer_this_season           = $this->sumMeatWrapper('Rådjur', $this_season);
+
+
+        if(count($killreport->meat) == 0) {
+                $newmeat = new Meat();
+                $newmeat->create(['killreport_id' => $killreport->id]);
+        }
 
 
         // dd($killreport->shooter['username']);
