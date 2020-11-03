@@ -9,7 +9,13 @@ require('./bootstrap');
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'mdbvue/build/css/mdb.css';
 
+import VueSidebarMenu from 'vue-sidebar-menu';
+import 'vue-sidebar-menu/dist/vue-sidebar-menu.css';
+// Vue.use(VueSidebarMenu);
+
 window.Vue = require('vue');
+
+var sidebar = require('vue-sidebar-menu');
 
 /**
  * The following block of code may be used to automatically register your
@@ -22,6 +28,9 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
+
+
+
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('material-profile-card', require('./components/MaterialProfileCard.vue').default);
 Vue.component('material-login-form', require('./components/MaterialLoginForm.vue').default);
@@ -33,7 +42,9 @@ Vue.component('killreport-show', require('./components/KillreportShow.vue').defa
 Vue.component('admin-navbar', require('./components/AdminNavbar.vue').default);
 Vue.component('welcome', require('./components/Welcome.vue').default);
 Vue.component('image-edit', require('./components/ImageEdit.vue').default);
+Vue.component('admin-index', require('./components/AdminIndex.vue').default);
 
+Vue.component('sidebar', require('./components/AdminIndex.vue'));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

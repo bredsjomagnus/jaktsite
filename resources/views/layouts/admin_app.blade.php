@@ -39,7 +39,7 @@
 <body>
 
     <div id="app">
-        @include('includes.admin_navbar')
+        <!-- @include('includes.admin_navbar') -->
 
         <main class="py-4">
             @yield('content')
