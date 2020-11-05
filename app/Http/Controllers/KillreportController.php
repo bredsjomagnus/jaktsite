@@ -27,13 +27,8 @@ class KillreportController extends Controller
         // kan slås av när tabellerna väl stämmer.
         // $this->dev_check_killreport_meat_tables();
 
-
         $killreports = Killreport::where('deleted_at', null)->orderBy('killdate', 'desc')->get();
 
-        
-
-        
-    
         return view('killreports.index', compact('killreports'));
     }
 
@@ -280,7 +275,7 @@ class KillreportController extends Controller
      * for certain species.
      * 
      * @param Collection $user_group; user_id (int) => (Array) [shared_kilogram (float), shared_kilogram (float),...]
-     * @return Object $uer_meat; key (int) => 'id': user_id (int), 'username' (String), 'firstname', (String), 'lastname' (String), kg (float)
+     * @return Array $uer_meat; key (int) => 'id': user_id (int), 'username' (String), 'firstname', (String), 'lastname' (String), kg (float)
      */
 
     public function sumUserMeat($user_group, $average, $year_back=false)
@@ -380,22 +375,22 @@ class KillreportController extends Controller
         
     }
 
-    public function dev_check_killreport_meat_tables()
-    {
-         // hämta alla killreport
-        $killreports = Killreport::all();
+    // public function dev_check_killreport_meat_tables()
+    // {
+    //      // hämta alla killreport
+    //     $killreports = Killreport::all();
 
-        // gå igenom varje killreport
-        foreach($killreports as $killreport) {
+    //     // gå igenom varje killreport
+    //     foreach($killreports as $killreport) {
 
-            // om det saknas kött kopplat till rapporten
-            if(count($killreport->meat) == 0) {
-                $newmeat = new Meat();
-                $newmeat->create(['killreport_id' => $killreport->id]);
-            }
+    //         // om det saknas kött kopplat till rapporten
+    //         if(count($killreport->meat) == 0) {
+    //             $newmeat = new Meat();
+    //             $newmeat->create(['killreport_id' => $killreport->id]);
+    //         }
            
-        }
-    }
+    //     }
+    // }
 
 
     // Skapar grupper 

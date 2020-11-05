@@ -16,20 +16,20 @@ class ImageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
-    }
+    // public function index()
+    // {
+    //     //
+    // }
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    // public function create()
+    // {
         
-    }
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -72,10 +72,10 @@ class ImageController extends Controller
      * @param  \App\Image  $image
      * @return \Illuminate\Http\Response
      */
-    public function show(Image $image)
-    {
-        //
-    }
+    // public function show(Image $image)
+    // {
+    //     //
+    // }
 
     /**
      * Show the form for editing the specified resource.

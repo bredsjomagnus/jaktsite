@@ -26,6 +26,7 @@
                 <directory suffix=".php">./app/Http/Controllers/Auth</directory>
                 <file>./app/Middleware/Authenticate.php</file>
                 <file>./app/Middleware/Redirect.php</file>
+                <file>./app/Providers/BroadcastServiceProvider.php</file>
             </exclude>
         </whitelist>
     </filter>

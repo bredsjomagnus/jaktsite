@@ -12,28 +12,27 @@ class AnimalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
-    }
+    // public function index()
+    // {
+    //     //
+    // }
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+    // public function create()
+    // {
+    //     //
+    // }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Http\JsonResponse 
      */
-    public function store(Request $request)
+    public function store()
     {
         $animal = new Animal;
         $animal = $animal->create(request()->all());
@@ -47,10 +46,10 @@ class AnimalController extends Controller
      * @param  \App\Animal  $animal
      * @return \Illuminate\Http\Response
      */
-    public function show(Animal $animal)
-    {
-        //
-    }
+    // public function show(Animal $animal)
+    // {
+    //     //
+    // }
 
     /**
      * Show the form for editing the specified resource.
@@ -58,25 +57,21 @@ class AnimalController extends Controller
      * @param  \App\Animal  $animal
      * @return \Illuminate\Http\Response
      */
-    public function edit(Animal $animal)
-    {
-        //
-    }
+    // public function edit(Animal $animal)
+    // {
+    //     //
+    // }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Animal  $animal
-     * @return \Illuminate\Http\Response
+     * @return Array <string, string>
      */
     public function update(Request $request, Animal $animal)
     {   
-        // dd(request()->all());
         $animal->update(request()->all());
-        // $animal->update($animal->getAttributes());
-        // dd($animal);
-        // return redirect('home');
 
         return ['animalresponse' => 'update ok'];
     }
@@ -87,8 +82,8 @@ class AnimalController extends Controller
      * @param  \App\Animal  $animal
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Animal $animal)
-    {
-        //
-    }
+    // public function destroy(Animal $animal)
+    // {
+    //     //
+    // }
 }

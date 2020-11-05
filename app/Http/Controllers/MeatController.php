@@ -13,20 +13,20 @@ class MeatController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
-    }
+    // public function index()
+    // {
+    //     //
+    // }
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+    // public function create()
+    // {
+    //     //
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -49,10 +49,10 @@ class MeatController extends Controller
      * @param  \App\Meat  $meat
      * @return \Illuminate\Http\Response
      */
-    public function show(Meat $meat)
-    {
-        //
-    }
+    // public function show(Meat $meat)
+    // {
+    //     //
+    // }
 
     /**
      * Show the form for editing the specified resource.
