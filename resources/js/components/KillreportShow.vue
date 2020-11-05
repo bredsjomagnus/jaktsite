@@ -348,7 +348,9 @@
        </div>
 
        <div v-else-if="activeW">
-           <mdb-card class="mt-2">
+
+           <!-- flyttad på test hit -->
+           <mdb-card>
                 <mdb-card-body :class="cardbodycolorcarcassweight() ? 'cardborderchanged' : 'cardborder'">
                     <div class="p-3 mb-2">
                         <mdb-input :class="carcass_weightSelected != origincarcass_weight ? 'changedinput' : ''" type="number" step="0.1" label="Vägd slaktvikt" v-model.number="carcass_weightSelected" @change="checkcarcassweightchanges"/>
@@ -358,7 +360,8 @@
                     </div>
                 </mdb-card-body>
             </mdb-card>
-           <mdb-card>
+
+           <mdb-card class="mt-2">
                 <mdb-card-body :class="cardbodycolorliveweight() ? 'cardborderchanged' : 'cardborder'">
                     <div class="p-3 mb-2">
                         <mdb-input :class="live_weightSelected != originlive_weight ? 'changedinput' : ''" type="number" step="0.1" label="Vägd levandevikt" v-model.number="live_weightSelected" @change="checkliveweightchanges"/>

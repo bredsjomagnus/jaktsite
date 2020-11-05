@@ -319,16 +319,16 @@
                 </div>
                 <div class="d-flex flex-column">
                     <div class="p-3 mb-2" style="border-left: 8px solid #9aa5bd; border-bottom: 1px solid #d0d0d0;">
+                        <mdb-input type="number" step="0.1" label="Slaktvikt" v-model="animalfields.carcass_weight"/>
+                        <mdb-input type="number" step="0.1" label="Uppskattad slaktvikt" v-model="animalfields.aprox_carcass_weight"/>
+                    </div>
+                    <div class="p-3 mb-2" style="border-left: 8px solid #9aa5bd; border-bottom: 1px solid #d0d0d0;">
                         <mdb-input type="number" step="0.1" label="Levandevikt" v-model="animalfields.live_weight"/>
                         <mdb-input type="number" step="0.1" label="Uppskattad levandevikt" v-model="animalfields.aprox_live_weight"/>
                     </div>
                     <div class="p-3 mb-2" style="border-left: 8px solid #9aa5bd; border-bottom: 1px solid #d0d0d0;">
                         <mdb-input type="number" step="0.1" label="Passad vikt" v-model="animalfields.passad_weight"/>
                         <mdb-input type="number" step="0.1" label="Uppskattad passad vikt" v-model="animalfields.aprox_passad_weight"/>
-                    </div>
-                    <div class="p-3 mb-2" style="border-left: 8px solid #9aa5bd; border-bottom: 1px solid #d0d0d0;">
-                        <mdb-input type="number" step="0.1" label="Slaktvikt" v-model="animalfields.carcass_weight"/>
-                        <mdb-input type="number" step="0.1" label="Uppskattad slaktvikt" v-model="animalfields.aprox_carcass_weight"/>
                     </div>
                     <div class="p-3 mb-2" style="border-left: 8px solid #9aa5bd; border-bottom: 1px solid #d0d0d0;">
                         <mdb-input type="number" step="0.1" label="Styckdetaljer" v-model="animalfields.cut_weight"/>
