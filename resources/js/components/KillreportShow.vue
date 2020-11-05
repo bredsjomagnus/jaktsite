@@ -348,6 +348,16 @@
        </div>
 
        <div v-else-if="activeW">
+           <mdb-card class="mt-2">
+                <mdb-card-body :class="cardbodycolorcarcassweight() ? 'cardborderchanged' : 'cardborder'">
+                    <div class="p-3 mb-2">
+                        <mdb-input :class="carcass_weightSelected != origincarcass_weight ? 'changedinput' : ''" type="number" step="0.1" label="Vägd slaktvikt" v-model.number="carcass_weightSelected" @change="checkcarcassweightchanges"/>
+                        <p v-if="carcass_weightSelected != origincarcass_weight" class="inputmsg" >Urspr.: {{this.origincarcass_weight}}</p>
+                        <mdb-input :class="aprox_carcass_weightSelected != originaprox_carcass_weight ? 'changedinput' : ''" type="number" step="0.1" label="Uppsk. slaktvikt" v-model.number="aprox_carcass_weightSelected" @change="checkaproxcarcassweightchanges"/>
+                        <p v-if="aprox_carcass_weightSelected != originaprox_carcass_weight" class="inputmsg" >Urspr.: {{this.originaprox_carcass_weight}}</p>
+                    </div>
+                </mdb-card-body>
+            </mdb-card>
            <mdb-card>
                 <mdb-card-body :class="cardbodycolorliveweight() ? 'cardborderchanged' : 'cardborder'">
                     <div class="p-3 mb-2">
@@ -369,16 +379,7 @@
                 </mdb-card-body>
             </mdb-card>
 
-            <mdb-card class="mt-2">
-                <mdb-card-body :class="cardbodycolorcarcassweight() ? 'cardborderchanged' : 'cardborder'">
-                    <div class="p-3 mb-2">
-                        <mdb-input :class="carcass_weightSelected != origincarcass_weight ? 'changedinput' : ''" type="number" step="0.1" label="Vägd slaktvikt" v-model.number="carcass_weightSelected" @change="checkcarcassweightchanges"/>
-                        <p v-if="carcass_weightSelected != origincarcass_weight" class="inputmsg" >Urspr.: {{this.origincarcass_weight}}</p>
-                        <mdb-input :class="aprox_carcass_weightSelected != originaprox_carcass_weight ? 'changedinput' : ''" type="number" step="0.1" label="Uppsk. slaktvikt" v-model.number="aprox_carcass_weightSelected" @change="checkaproxcarcassweightchanges"/>
-                        <p v-if="aprox_carcass_weightSelected != originaprox_carcass_weight" class="inputmsg" >Urspr.: {{this.originaprox_carcass_weight}}</p>
-                    </div>
-                </mdb-card-body>
-            </mdb-card>
+            <!-- orginal slaktvikt platsen -->
 
             <mdb-card class="mt-2">
                 <mdb-card-body :class="cardbodycolorcutweight() ? 'cardborderchanged' : 'cardborder'">
