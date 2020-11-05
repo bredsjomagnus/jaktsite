@@ -3,7 +3,7 @@ build:
     coverage:
       tests:
         override:
-          - command: vendor/bin/phpunit
+          - command: ./vendor/bin/phpunit
             coverage:
               file: phpunit.xml
 
