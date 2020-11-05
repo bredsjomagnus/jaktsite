@@ -234,7 +234,16 @@
             </mdb-modal-footer>
         </mdb-modal>
 
+        <div></div>
+
         <div v-if="activeH">
+
+
+            <img class="par" :src="killreportImage" alt="very cool bg">
+
+
+
+
             <mdb-card>
                 <mdb-card-body :class="shooterSelected.id !== originshooter.id || reporterSelected.id !== originreporter.id || kindofhuntSelected != originkindofhunt ? 'cardborderchanged' : 'cardborder'">
                     <mdb-card-title class="d-flex justify-content-center titlecolor p-1">SKYTT & RAPPORTÖR</mdb-card-title>
@@ -274,6 +283,7 @@
 
                 </mdb-card-body>
             </mdb-card>
+             
 
             <!-- tid och plats -->
             <mdb-card class="mt-2">
@@ -655,7 +665,7 @@
       mdbModalFooter,
       mdbIcon,
       mdbCardImage,
-      mdbCardHeader
+      mdbCardHeader,
     },
     props: [
             'authUser',
@@ -683,7 +693,8 @@
             'meatFallowdeerThisSeason',
             'meatRoedeerThisSeason',
             'meatBoarThisSeason',
-            'season'
+            'season',
+            'killreportImage'
         ],
     data() {
         return {
@@ -847,6 +858,8 @@
         console.log(this.meatUrl);
         console.log("imageUrl:")
         console.log(this.imageUrl);
+
+        console.log("killreportImage: ", this.killreportImage);
         
 
         let sortedMooseAverage = this.bubble(this.meatMooseAverage);
@@ -1895,6 +1908,12 @@
 }
 .meatcardbordererror {
     border-left: 10px solid red;
+}
+.par {
+    width: 100%;
+    object-fit: cover;
+    max-height:50vh;
+
 }
 
 </style>

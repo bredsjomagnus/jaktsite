@@ -12,6 +12,7 @@
     :areas="{{ $areas }}" 
     :animal="{{ $killreport->animal() }}" 
     :killreport="{{ $killreport }}"
+    :killreport-image="{{ json_encode($killreport->display_path()) }}"
     :meats="{{ $killreport->meat }}"
     :index-url='{!! json_encode(url("killreports/")) !!}'
     :image-url='{!! json_encode(url("image/".$killreport->id."/edit")) !!}'
