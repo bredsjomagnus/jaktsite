@@ -3,10 +3,10 @@ build:
     coverage:
       tests:
         override:
-          - command: ./vendor/bin/phpunit
+          - command: ./vendor/bin/phpunit --coverage-clover=coverage
             coverage:
-              file: phpunit.xml
+              file: coverage
 
               # These formats are supported:
               # clover, cobertura, jacoco, python-cc, ruby-cc, go-cc, lcov
-              format: clover
+              format: php-clover
