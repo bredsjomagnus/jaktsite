@@ -238,11 +238,7 @@
 
         <div v-if="activeH">
 
-
             <img class="par" :src="killreportImage" alt="very cool bg">
-
-
-
 
             <mdb-card>
                 <mdb-card-body :class="shooterSelected.id !== originshooter.id || reporterSelected.id !== originreporter.id || kindofhuntSelected != originkindofhunt ? 'cardborderchanged' : 'cardborder'">
@@ -283,7 +279,7 @@
 
                 </mdb-card-body>
             </mdb-card>
-             
+            
 
             <!-- tid och plats -->
             <mdb-card class="mt-2">
@@ -355,7 +351,11 @@
 
                 </mdb-card-body>
             </mdb-card>
+                
+
+
        </div>
+       
 
        <div v-else-if="activeW">
 
@@ -1914,6 +1914,31 @@
     object-fit: cover;
     max-height:50vh;
 
+}
+.parallax-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  perspective: 8px;
+  perspective-origin: 0%;
+  display: flex;
+}
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: translateZ(0px);
+}
+
+.foreground {
+  margin-top: auto;
+  margin-bottom: 50px;
+  transform-origin: 0;
+  transform: translateZ(1px)scale(0.926);
 }
 
 </style>

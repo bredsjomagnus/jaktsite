@@ -1,6 +1,12 @@
 <template>
   <mdb-container>
-        <div class="d-flex flex-row justify-content-around" style="margin-top: -20px;">
+       <div class="d-flex flex-row justify-content-around" style="margin-top:-20px">
+                <mdb-card class='w-100' color="unique-color-dark">
+                    <mdb-card-text class="d-flex justify-content-center">BILDER</mdb-card-text>
+                </mdb-card>
+            </div>
+
+        <div class="d-flex flex-row justify-content-around">
             <mdb-btn color="mdb-color" @click.native="backToKillreport_index" size="sm">Akrivet</mdb-btn>
         </div>
 
@@ -9,7 +15,7 @@
                 <mdb-btn color="mdb-color" @click.native="backToKillreport" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
                 <mdb-btn-group size="sm">
                     <mdb-btn color="mdb-color" @click.native="toggleActiveStateG" :active="activeG" size="sm"> <mdb-icon icon="images"/> </mdb-btn>
-                    <mdb-btn color="mdb-color" @click.native="toggleActiveStateU" :active="activeU" size="sm"> <mdb-icon icon="cloud-upload-alt"/> </mdb-btn>
+                    <mdb-btn color="mdb-color" @click.native="toggleActiveStateU" :active="activeU" size="sm"> <mdb-icon icon="cloud-upload-alt"/></mdb-btn>
                 </mdb-btn-group>
                 <mdb-btn color="mdb-color" @click.native="undoModal = true" size="sm"><mdb-icon icon="undo"/></mdb-btn>
 
@@ -41,7 +47,7 @@
                                 <!-- <li class="text-muted" style="font-size: 12px;">Path: <strong>{{imageurl(image)}}</strong></li> -->
                             </ul>
                         </div>
-                        <mdb-input @change="onDescriptionChange()" type='textarea' label='Bildtext' v-model="image.description" />
+                        <mdb-input @change="onDescriptionChange()" type='textarea' label='Bildtext' v-model="image.description" :rows="2" />
                         <mdb-btn class="w-100" :disabled="enable_update_description" color="mdb-color" @click.native="update_description(image)" size="sm"> Uppdatera bildtext </mdb-btn>
         
                         
@@ -73,42 +79,49 @@
     </div>
     <div v-else-if="activeU">
          <div class="w-100">
-            <form>
-                <div>
-                    <i class='text-muted' style="font-size:12px;">Bilder över 2 MB komprimeras.</i>
-                </div>
+            <div v-if="loading" class="spinner-border text-primary spinner-pos" role="status">
+                    <span class="sr-only"></span>
+            </div>
+            <div v-else>
                 
-                <div class="d-flex flex-row justify-content-center mt-2">
-                    <p :class="error ? 'error_message' : 'success_message'">{{message}}</p>
-                </div>
-               <mdb-card>
-                    <mdb-card-body class="cardborder">
-                        <!-- <mdb-card-title></mdb-card-title> -->
-                        <!-- <mdb-input type="text" class="w-100" label="Namn" v-model="upload_image.name" /> -->
-
-                        <!-- <mdb-input v-if="authUser.role == 'admin'" type="number" label="dev user_id" v-model="dev_user_id" /> -->
-                        <mdb-input type="textarea" class="w-100" label="Lägga till en beskrivning?" v-model="this.upload_image.description" />
-                    </mdb-card-body>
-                </mdb-card>
-                <mdb-card class="mt-2">
-                    <mdb-card-body class="cardborder">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroupFileAddon01">Ladda upp</span>
-                            </div>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" @change="addImage()">
-                                <label class="custom-file-label" for="inputGroupFile01">{{this.file_input_name}}</label>
-                                
-                            </div>
+                <form>
+                    <div>
+                        <i class='text-muted' style="font-size:12px;">Bilder över 2 MB komprimeras.</i>
                     </div>
-                    </mdb-card-body>
-                </mdb-card>
                 
-                <!-- <div class="d-flex flex-row justify-content-right mt-2">
-                    <mdb-btn color="mdb-color" @click.native="addImage()" size="sm">Ladda upp</mdb-btn>
-                </div> -->
-            </form>
+                    
+                    <div class="d-flex flex-row justify-content-center mt-2">
+                        <p :class="error ? 'error_message' : 'success_message'">{{message}}</p>
+                    </div>
+                <mdb-card>
+                        <mdb-card-body class="cardborder">
+                            <!-- <mdb-card-title></mdb-card-title> -->
+                            <!-- <mdb-input type="text" class="w-100" label="Namn" v-model="upload_image.name" /> -->
+
+                            <!-- <mdb-input v-if="authUser.role == 'admin'" type="number" label="dev user_id" v-model="dev_user_id" /> -->
+                            <mdb-input type="textarea" class="w-100" label="Lägga till en bildtext?" v-model="this.upload_image.description" />
+                        </mdb-card-body>
+                    </mdb-card>
+                    <mdb-card class="mt-2">
+                        <mdb-card-body class="cardborder">
+                            <div class="input-group">
+                                <!-- <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroupFileAddon01"></span>
+                                </div> -->
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" @change="addImage()">
+                                    <label class="custom-file-label" for="inputGroupFile01">{{this.file_input_name}}</label>
+                                    
+                                </div>
+                        </div>
+                        </mdb-card-body>
+                    </mdb-card>
+                    
+                    <!-- <div class="d-flex flex-row justify-content-right mt-2">
+                        <mdb-btn color="mdb-color" @click.native="addImage()" size="sm">Ladda upp</mdb-btn>
+                    </div> -->
+                </form>
+             </div>
         </div>
     </div>
    
@@ -166,7 +179,8 @@
                 file: null,
                 file_input_name: '',
                 dev_user_id: 2,
-                enable_update_description: true
+                enable_update_description: true,
+                loading: false
                 
 
             }
@@ -362,6 +376,8 @@
                 */
                event.preventDefault();
 
+               this.loading = true;
+
                //återställer ett eventuellt felmeddelnade
                this.message = '';
                this.error = false;
@@ -443,9 +459,11 @@
                                                     axios.delete(imageDeleteUrl, image_id)
                                                         .then(response => {
                                                             console.log("delete image response: " ,response.data.message);
+                                                            this.loading = false;
                                                         })
                                                         .catch(error => {
                                                             console.log("delete image error: ", error)
+                                                            this.loading = false;
                                                         })
                                                 } else {
                                                     this.message = this.file.name +" uppladdad!";
@@ -469,6 +487,8 @@
                 } else {
                     this.message = "Kan bara lägga till en bild i taget!";
                 }
+
+                
 
                         
 
@@ -501,5 +521,9 @@
 }
 .cardborder {
     border-left: 10px solid #59698d;
+}
+.spinner-pos {
+    margin-top: 40%;
+    margin-left: 45%;
 }
 </style>
