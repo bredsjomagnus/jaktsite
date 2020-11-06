@@ -6,21 +6,25 @@
                 </mdb-card>
             </div>
 
-        <div class="d-flex flex-row justify-content-around">
-            <mdb-btn color="mdb-color" @click.native="backToKillreport_index" size="sm">Akrivet</mdb-btn>
-        </div>
+        
 
        <!-- <mdb-btn-toolbar> -->
             <div class="d-flex flex-row justify-content-around">
-                <mdb-btn color="mdb-color" @click.native="backToKillreport" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
+                
                 <mdb-btn-group size="sm">
-                    <mdb-btn color="mdb-color" @click.native="toggleActiveStateG" :active="activeG" size="sm"> <mdb-icon icon="images"/> </mdb-btn>
-                    <mdb-btn color="mdb-color" @click.native="toggleActiveStateU" :active="activeU" size="sm"> <mdb-icon icon="cloud-upload-alt"/></mdb-btn>
+                    <mdb-btn color="mdb-color" @click.native="toggleActiveStateU" :active="activeU" size="sm"> <mdb-icon icon="cloud-upload-alt"/> - Ladda upp</mdb-btn>
+                    <mdb-btn color="mdb-color" @click.native="toggleActiveStateG" :active="activeG" size="sm"> <mdb-icon icon="images"/> - Bilder</mdb-btn>
                 </mdb-btn-group>
-                <mdb-btn color="mdb-color" @click.native="undoModal = true" size="sm"><mdb-icon icon="undo"/></mdb-btn>
+                
 
             </div>
             <!-- </mdb-btn-toolbar> -->
+            <div class="d-flex flex-row justify-content-around">
+                 <mdb-btn-group size="sm">
+                    <mdb-btn color="mdb-color" @click.native="backToKillreport_index" size="sm">Arkivet</mdb-btn>
+                    <mdb-btn color="mdb-color" @click.native="backToKillreport" size="sm">Rapporten</mdb-btn>
+                </mdb-btn-group>
+            </div>
 
     <div v-if="activeG">
         <div class="">
@@ -47,9 +51,6 @@
                                 <!-- <li class="text-muted" style="font-size: 12px;">Path: <strong>{{imageurl(image)}}</strong></li> -->
                             </ul>
                         </div>
-                        <mdb-input @change="onDescriptionChange()" type='textarea' label='Bildtext' v-model="image.description" :rows="2" />
-                        <mdb-btn class="w-100" :disabled="enable_update_description" color="mdb-color" @click.native="update_description(image)" size="sm"> Uppdatera bildtext </mdb-btn>
-        
                         
                         <mdb-card-footer :class="['w-100', 'text-muted', 'mt-4', {'display_footer_color': image.display == 'yes'}]">
                             <mdb-row>
@@ -67,9 +68,35 @@
                             </mdb-row>
                             
                         </mdb-card-footer>
+
+                        <hr>
+
+                        <div class="accordion accordion-wrapper" id="accordionExample275">
+
+                                <div id="headingOne2">
+                                <i class="mb-0">
+                                    <a style="color: rgb(113 113 113);" class="accordion-btn" type="button" data-toggle="collapse" data-target="#collapseOne2"
+                                    aria-expanded="true" aria-controls="collapseOne2">
+                                        Klicka här för att visa/dölja bildtext
+                                    </a>
+                                </i>
+                                </div>
+                                <div id="collapseOne2" class="collapse" aria-labelledby="headingOne2"
+                                    data-parent="#accordionExample275">
+                                    <div>
+                                         <mdb-input @change="onDescriptionChange()" type='textarea' label='Bildtext' v-model="image.description" :rows="5" />
+                                        <mdb-btn class="w-100" :disabled="enable_update_description" color="mdb-color" @click.native="update_description(image)" size="sm"> Uppdatera bildtext </mdb-btn>
+        
+                                    </div>
+                                </div>
+                            
+  
+                        </div>
                        
-                            <div class="mb-2 w-100 text-center" style="background-color: lightgray;">
-                                <mdb-btn class="w-20" color="danger" @click.native="deleteImage(image)" size="sm"><mdb-icon icon="trash-alt"/> </mdb-btn>
+                        
+                       
+                            <div class="mt-4 mb-2 w-100 text-center" style="background-color: #F7F7F7;">
+                                <mdb-btn class="w-20" color="mdb-color" @click.native="deleteImage(image)" size="sm"><mdb-icon icon="trash-alt"/> - Ta bort bild </mdb-btn>
                             </div>
                        
                     </mdb-card-body>
@@ -525,5 +552,15 @@
 .spinner-pos {
     margin-top: 40%;
     margin-left: 45%;
+}
+.accordion-btn {
+    font-size: 10px;
+    padding: 0;
+}
+.accordion-wrapper {
+    margin-top: -20px;
+    padding: 0;
+    border-top: 1px solid #F7F7F7;
+    border-bottom: 1px solid #F7F7F7;
 }
 </style>
