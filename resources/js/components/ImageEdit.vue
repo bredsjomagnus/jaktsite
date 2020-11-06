@@ -2,7 +2,7 @@
   <mdb-container>
        <div class="d-flex flex-row justify-content-around" style="margin-top:-20px">
                 <mdb-card class='w-100' color="unique-color-dark">
-                    <mdb-card-text class="d-flex justify-content-center">BILDER</mdb-card-text>
+                    <mdb-card-text class="d-flex justify-content-center">Rapportens bilder</mdb-card-text>
                 </mdb-card>
             </div>
 
@@ -43,16 +43,7 @@
                         </a>
                     </mdb-view>
                     <mdb-card-body class="pb-0">
-                        <div class="w-100 pt-3 m-0 align-left info_field_bg">
-                            <ul class="pl-3" style="list-style-type:none;">
-                                <li class="text-muted" style="font-size: 12px;"><strong>Rapport #{{killreport.id}}, skapad {{killreport.created_at}}</strong></li>
-                                <li class="text-muted" style="font-size: 12px;"><strong>Bild:</strong> {{image.name}}, {{image.filesize_readable}}</li>
-                                <li class="text-muted" style="font-size: 12px;"><strong>Uppladdad av:</strong> {{username(image.user_id)}}</li>
-                                <!-- <li class="text-muted" style="font-size: 12px;">Path: <strong>{{imageurl(image)}}</strong></li> -->
-                            </ul>
-                        </div>
-                        
-                        <mdb-card-footer :class="['w-100', 'text-muted', 'mt-4', {'display_footer_color': image.display == 'yes'}]">
+                         <mdb-card-footer :class="['w-100', 'text-muted', 'mt-1', {'display_footer_color': image.display == 'yes'}]">
                             <mdb-row>
                                 <div class="w-100 d-flex flex-row justify-content-center">
                                     <mdb-btn color="mdb-color" @click.native="toggleImageDisplay(image)" :active="image.display == 'yes'" size="sm">
@@ -68,18 +59,28 @@
                             </mdb-row>
                             
                         </mdb-card-footer>
+                        <div class="w-100 pt-3 m-0 align-left info_field_bg">
+                            <ul class="pl-3" style="list-style-type:none;">
+                                <li class="text-muted" style="font-size: 12px;"><strong>Rapport #{{killreport.id}}, skapad {{killreport.created_at}}</strong></li>
+                                <li class="text-muted" style="font-size: 12px;"><strong>Bild:</strong> {{image.name}}, {{image.filesize_readable}}</li>
+                                <li class="text-muted" style="font-size: 12px;"><strong>Uppladdad av:</strong> {{username(image.user_id)}}</li>
+                                <!-- <li class="text-muted" style="font-size: 12px;">Path: <strong>{{imageurl(image)}}</strong></li> -->
+                            </ul>
+                        </div>
+                        
+                       
 
                         <hr>
 
-                        <div class="accordion accordion-wrapper" id="accordionExample275">
+                        <div class="accordion accordion-wrapper " id="accordionExample275">
 
-                                <div id="headingOne2">
-                                <i class="mb-0">
-                                    <a style="color: rgb(113 113 113);" class="accordion-btn" type="button" data-toggle="collapse" data-target="#collapseOne2"
-                                    aria-expanded="true" aria-controls="collapseOne2">
-                                        Klicka här för att visa/dölja bildtext
-                                    </a>
-                                </i>
+                                <div class="d-flex flex-row justify-content-center" id="headingOne2" style="background-color: #f7f7f7; border-top: 3px solid #dccc9b;">
+                                    <p class="mb-0">
+                                        <a style="color: rgb(113 113 113);" class="accordion-btn" type="button" data-toggle="collapse" data-target="#collapseOne2"
+                                        aria-expanded="true" aria-controls="collapseOne2">
+                                            Klicka här för att visa/dölja bildtext
+                                        </a>
+                                    </p>
                                 </div>
                                 <div id="collapseOne2" class="collapse" aria-labelledby="headingOne2"
                                     data-parent="#accordionExample275">
@@ -95,7 +96,7 @@
                        
                         
                        
-                            <div class="mt-4 mb-2 w-100 text-center" style="background-color: #F7F7F7;">
+                            <div class="mt-4 mb-2 w-100 text-center" style="background-color: #DCCC9B;">
                                 <mdb-btn class="w-20" color="mdb-color" @click.native="deleteImage(image)" size="sm"><mdb-icon icon="trash-alt"/> - Ta bort bild </mdb-btn>
                             </div>
                        
