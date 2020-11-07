@@ -5,15 +5,15 @@
   <a class="navbar-brand" style="color: #dec08f;" href="#"><img class="rounded-circle" height="30px" src="{{ asset('images/logo/smårislogo.png') }}" alt="logo"> Småris</a>
 
   <!-- Collapse button -->
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+  <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
     aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
-  </button>
+  </button> -->
 
   <!-- Collapsible content -->
-  <div class="collapse navbar-collapse" id="basicExampleNav">
+  <!-- <div class="collapse navbar-collapse" id="basicExampleNav">
 
-    <!-- Links -->
+    Links 
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
         <a class="nav-link" href="{{ url('home') }}">Home
@@ -29,18 +29,18 @@
 
     </ul>
 
-    <!-- Right Side Of Navbar -->
+    Right Side Of Navbar 
     <ul class="navbar-nav ml-auto">
-        <!-- Authentication Links -->
+         Authentication Links 
         @guest
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
             </li>
-            <!-- <li class="nav-item">
+             <li class="nav-item">
               <a class="dropdown-item" href="{{ url('user/create') }}">
                         Registrera ny användare
               </a>
-            </li> -->
+            </li> 
             
         @else
             <li class="nav-item dropdown">
@@ -78,8 +78,8 @@
             </li>
         @endguest
     </ul>
-    <!-- Links -->
-  </div>
+     Links 
+  </div> -->
   <!-- Collapsible content -->
 
 </nav>
