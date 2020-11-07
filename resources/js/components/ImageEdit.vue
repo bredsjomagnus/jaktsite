@@ -27,7 +27,7 @@
             </div>
 
     <div v-if="activeG">
-        <div class="">
+        <div>
 
             <div
                 v-for="image in images"
@@ -74,15 +74,15 @@
 
                         <div class="accordion accordion-wrapper " id="accordionExample275">
 
-                                <div class="d-flex flex-row justify-content-center" id="headingOne2" style="background-color: #f7f7f7; border-top: 3px solid #dccc9b;">
+                                <div class="d-flex flex-row justify-content-center" id="headingOne" style="background-color: #f7f7f7; border-top: 3px solid #dccc9b;">
                                     <p class="mb-0">
-                                        <a style="color: rgb(113 113 113);" class="accordion-btn" type="button" data-toggle="collapse" data-target="#collapseOne2"
+                                        <a style="color: rgb(113 113 113);" class="accordion-btn" data-toggle="collapse" data-target="#collapseOne"
                                         aria-expanded="true" aria-controls="collapseOne2">
                                             Klicka här för att visa/dölja bildtext
                                         </a>
                                     </p>
                                 </div>
-                                <div id="collapseOne2" class="collapse" aria-labelledby="headingOne2"
+                                <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
                                     data-parent="#accordionExample275">
                                     <div>
                                          <mdb-input @change="onDescriptionChange()" type='textarea' label='Bildtext' v-model="image.description" :rows="5" />
@@ -96,7 +96,7 @@
                        
                         
                        
-                            <div class="mt-4 mb-2 w-100 text-center" style="background-color: #DCCC9B;">
+                            <div class="mt-4 mb-2 w-100 text-center" style="background-color: rgb(247 247 247);">
                                 <mdb-btn class="w-20" color="mdb-color" @click.native="deleteImage(image)" size="sm"><mdb-icon icon="trash-alt"/> - Ta bort bild </mdb-btn>
                             </div>
                        
@@ -127,7 +127,7 @@
                             <!-- <mdb-input type="text" class="w-100" label="Namn" v-model="upload_image.name" /> -->
 
                             <!-- <mdb-input v-if="authUser.role == 'admin'" type="number" label="dev user_id" v-model="dev_user_id" /> -->
-                            <mdb-input type="textarea" class="w-100" label="Lägga till en bildtext?" v-model="this.upload_image.description" />
+                            <mdb-input type="textarea" class="w-100" label="Lägga till en bildtext?" v-model="upload_image.description" />
                         </mdb-card-body>
                     </mdb-card>
                     <mdb-card class="mt-2">
@@ -229,7 +229,11 @@
             console.log("this.killreportIndexUrl: ", this.killreportIndexUrl);
 
             if(this.images.length == 0) {
+                // Har rapporten inga bilder skall första bilden sättas som display
+                // och man skall direkt landa på ladda upp vyn
                 this.upload_image.display = 'yes';
+                this.activeG = false;
+                this.activeU = true;
             }
             
         },
@@ -440,6 +444,8 @@
                             console.log("dev_user_id type: ", typeof this.dev_user_id);
 
                             // this.upload_image.user_id = this.dev_user_id;
+
+                            console.log("this.upload_image: ", this.upload_image);
                             
                             // lägger till rad om bild i databasen
                             axios.post(this.imageStoreUrl, this.upload_image)

@@ -266,7 +266,7 @@ class KillreportTest extends TestCase
 
         $this->assertDatabaseHas('killreports', ['id'   => $killreport->id]);
 
-        $this->delete('/killreports/'.$killreport->id.'/delete');
+        $this->post('/killreports/'.$killreport->id.'/delete');
 
         $this->assertDatabaseMissing('killreports', ['id'   => $killreport->id]);
 
@@ -281,7 +281,7 @@ class KillreportTest extends TestCase
 
         $this->assertDatabaseHas('killreports', ['id'   => $killreport->id]);
 
-        $this->delete('/killreports/'.$killreport->id.'/delete')->assertRedirect('login');
+        $this->post('/killreports/'.$killreport->id.'/delete')->assertRedirect('login');
     }
 
     /**
@@ -326,7 +326,7 @@ class KillreportTest extends TestCase
         $this->assertDatabaseHas('images', ['id'   => $image_1->id]);
         $this->assertDatabaseHas('images', ['id'   => $image_2->id]);
 
-        $this->delete('/killreports/'.$killreport->id.'/delete');
+        $this->post('/killreports/'.$killreport->id.'/delete');
 
 
         $this->assertDatabaseMissing('animals', ['id'   => $animal->id]);

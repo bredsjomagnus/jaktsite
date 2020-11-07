@@ -29,7 +29,7 @@
               <!-- bilden -->
               <img class="card-img-top lazy" data-src="{{ $killreport->display_path() }}?<?php $date = new DateTime(); echo $date->getTimestamp(); ?>" alt="">
               <!-- länk via bilden -->
-              <a href="{{url( '/image/'.$killreport->id.'/edit' )}}">
+              <a href="{{url($killreport->path())}}">
                   <div class="mask rgba-white-slight"><span></span></div>
               </a>
 

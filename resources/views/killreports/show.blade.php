@@ -18,6 +18,7 @@
     :image-url='{!! json_encode(url("image/".$killreport->id."/edit")) !!}'
     :animal-url='{!! json_encode(url("animals/".$killreport->animal()->id."/update")) !!}' 
     :killreport-url='{!! json_encode(url("killreports/".$killreport->id."/update")) !!}'
+    :killreport-delete-url='{!! json_encode(url("killreports/".$killreport->id."/delete")) !!}'
     :meat-url='{!! json_encode(url("meat/")) !!}'
     :season="{{ json_encode($this_season) }}"
     :meat-moose-average='{{ json_encode($meat_moose_average) }}' 

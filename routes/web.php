@@ -32,7 +32,7 @@ Route::get('/killreports/create', 'KillreportController@create')->middleware('ac
 Route::post('/killreports/store', 'KillreportController@store')->middleware('access:both,none');
 Route::get('/killreports/{killreport}/edit', 'KillreportController@edit')->middleware('access:both,none');
 Route::post('/killreports/{killreport}/update', 'KillreportController@update')->middleware('access:both,none');
-Route::delete('/killreports/{killreport}/delete', 'KillreportController@destroy')->middleware('access:admin');
+Route::post('/killreports/{killreport}/delete', 'KillreportController@destroy')->middleware('access:admin');
 Route::get('killreports/{killreport}', 'KillreportController@show')->middleware('access:both,killreport');
 Route::get('/killreports', 'KillreportController@index')->middleware('access:both,none');
 

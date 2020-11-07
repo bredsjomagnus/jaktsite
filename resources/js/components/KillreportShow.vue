@@ -48,6 +48,20 @@
             </mdb-modal-footer>
         </mdb-modal>
 
+        <!-- MODAL FÖR ATT RADERA KILLREPORT -->
+        <mdb-modal size="sm" :show="deleteModal" @close="deleteModal = false">
+            <mdb-modal-header>
+                <mdb-modal-title>Radera rapporten</mdb-modal-title>
+            </mdb-modal-header>
+            <mdb-modal-body>
+                <p>Detta tar oåterkalleligt bort rapporten, djuret, köttilldelning och bilder som är associerat med rapporten. Vill du fortsätta?</p>
+            </mdb-modal-body>
+            <mdb-modal-footer>
+                <mdb-btn color="danger" size="sm" @click.native="deleteReport">Radera</mdb-btn>
+                <mdb-btn color="blue-grey" size="sm" @click.native="deleteModal = false">Ångra</mdb-btn>
+            </mdb-modal-footer>
+        </mdb-modal>
+
        <!-- MODAL FÖR ATT ÄNDRA SKYTT -->
         <mdb-modal size="sm" :show="shooterModal" @close="shooterModal = false">
             <mdb-modal-header>
@@ -351,10 +365,16 @@
 
                 </mdb-card-body>
             </mdb-card>
+
+            <mdb-card class="mt-2" v-if="authUser.role == 'admin'">
+                <mdb-card-body class="d-flex justify-content-center titlecolor p-1">
+                    <mdb-btn color="danger" @click.native="deleteModal = true" size='sm'>Radera rapporten</mdb-btn>
+                </mdb-card-body>
+            </mdb-card>
                 
 
 
-       </div>
+       </div> <!-- /rapportdata -->
        
 
        <div v-else-if="activeW">
@@ -682,6 +702,7 @@
             'imageUrl',
             'animalUrl',
             'killreportUrl',
+            'killreportDeleteUrl',
             'meatUrl',
             'meatMooseAverage',
             'meatReddeerAverage',
@@ -730,6 +751,7 @@
             areaModal: false,
             antlersModal: false,
             undoModal: false,
+            deleteModal: false,
             meetModal: false,
             killdateset: true,
             placechanged: false,
@@ -1839,6 +1861,16 @@
             this.toggledformeat.forEach(obj => {
                 console.log(obj.user_id);
             });
+        },
+        deleteReport() {
+            axios.post(this.killreportDeleteUrl, this.killreport)
+                .then(response => {
+                    console.log("Killreport deleted");
+                    window.location = this.indexUrl;
+                })
+                .catch(error => {
+                    console.log("Killreport delete error: ", error);
+                })
         }
     }
   }
