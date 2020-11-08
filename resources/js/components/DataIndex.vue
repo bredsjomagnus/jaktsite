@@ -15,29 +15,29 @@
             </div>
 
             <div v-if="this.speciesSelected == 'Älg'">
-                <div v-if="showAverageMeat" class="d-flex flex-column w-100">      
-                    <table class="table-striped meattable">
+                <div v-if="showAverageMeat" class="d-flex justify-content-center w-100">      
+                    <table class="table-striped meattable w-100">
                         <tbody>
 
                             <tr
                             v-for="hunter in meatMooseAverage"
                             :key="hunter.id"
                             >   
-                                <td>{{hunter.firstname}} {{hunter.lastname}}</td>
+                                <td width="80%">{{hunter.firstname}} {{hunter.lastname}}</td>
                                 <td>{{hunter.kg}} kg</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div v-else class="d-flex flex-column w-100">
-                    <table class="table-striped meattable">
+                <div v-else class="d-flex justify-content-center w-100">
+                    <table class="table-striped meattable w-100">
                         <tbody>
 
                             <tr
                             v-for="hunter in meatMooseTotal"
                             :key="hunter.id"
                             >   
-                                <td>{{hunter.firstname}} {{hunter.lastname}}</td>
+                                <td width="80%">{{hunter.firstname}} {{hunter.lastname}}</td>
                                 <td>{{hunter.kg}} kg</td>
                             </tr>
                         </tbody>
@@ -46,29 +46,29 @@
             </div>
 
             <div v-if="this.speciesSelected == 'Kronvilt'">
-                <div v-if="showAverageMeat" class="d-flex flex-column w-100">  
-                    <table class="table-striped meattable">
+                <div v-if="showAverageMeat" class="d-flex justify-content-center w-100">  
+                    <table class="table-striped meattable w-100">
                         <tbody>
 
                             <tr
                             v-for="hunter in meatReddeerAverage"
                             :key="hunter.id"
                             >   
-                                <td>{{hunter.firstname}} {{hunter.lastname}}</td>
+                                <td width="80%">{{hunter.firstname}} {{hunter.lastname}}</td>
                                 <td>{{hunter.kg}} kg</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div v-else class="d-flex flex-column w-100">
-                    <table class="table-striped meattable">
+                <div v-else class="d-flex justify-content-center w-100">
+                    <table class="table-striped meattable w-100">
                         <tbody>
 
                             <tr
                             v-for="hunter in meatReddeerTotal"
                             :key="hunter.id"
                             >   
-                                <td>{{hunter.firstname}} {{hunter.lastname}}</td>
+                                <td width="80%">{{hunter.firstname}} {{hunter.lastname}}</td>
                                 <td>{{hunter.kg}} kg</td>
                             </tr>
                         </tbody>
@@ -77,29 +77,29 @@
             </div>
 
             <div v-if="this.speciesSelected == 'Dovvilt'">
-                <div v-if="showAverageMeat" class="d-flex flex-column w-100">  
-                    <table class="table-striped meattable">
+                <div v-if="showAverageMeat" class="d-flex justify-content-center w-100">  
+                    <table class="table-striped meattable w-100">
                         <tbody>
 
                             <tr
                             v-for="hunter in meatFallowdeerAverage"
                             :key="hunter.id"
                             >   
-                                <td>{{hunter.firstname}} {{hunter.lastname}}</td>
+                                <td width="80%">{{hunter.firstname}} {{hunter.lastname}}</td>
                                 <td>{{hunter.kg}} kg</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div v-else class="d-flex flex-column w-100">
-                    <table class="table-striped meattable">
+                <div v-else class="d-flex justify-content-center w-100">
+                    <table class="table-striped meattable w-100">
                         <tbody>
 
                             <tr
                             v-for="hunter in meatFallowdeerTotal"
                             :key="hunter.id"
                             >   
-                                <td>{{hunter.firstname}} {{hunter.lastname}}</td>
+                                <td width="80%">{{hunter.firstname}} {{hunter.lastname}}</td>
                                 <td>{{hunter.kg}} kg</td>
                             </tr>
                         </tbody>
@@ -108,27 +108,27 @@
             </div>
 
             <div v-if="this.speciesSelected == 'Rådjur'">
-                <div v-if="showAverageMeat" class="d-flex flex-column w-100">  
-                    <table class="table-striped meattable">
+                <div v-if="showAverageMeat" class="d-flex justify-content-center w-100">  
+                    <table class="table-striped meattable w-100">
                         <tbody>
                             <tr
                             v-for="hunter in meatRoedeerAverage"
                             :key="hunter.id"
                             >   
-                                <td>{{hunter.firstname}} {{hunter.lastname}}</td>
+                                <td width="80%">{{hunter.firstname}} {{hunter.lastname}}</td>
                                 <td>{{hunter.kg}} kg</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div v-else class="d-flex flex-column w-100">
-                    <table class="table-striped meattable">
+                <div v-else class="d-flex justify-content-center w-100">
+                    <table class="table-striped meattable w-100">
                         <tbody>
                            <tr
                             v-for="hunter in meatRoedeerTotal"
                             :key="hunter.id"
                             >   
-                                <td>{{hunter.firstname}} {{hunter.lastname}}</td>
+                                <td width="80%">{{hunter.firstname}} {{hunter.lastname}}</td>
                                 <td>{{hunter.kg}} kg</td>
                             </tr>
                         </tbody>
@@ -137,27 +137,27 @@
             </div>
 
             <div v-if="this.speciesSelected == 'Vildsvin'">
-                <div v-if="showAverageMeat" class="d-flex flex-column w-100">  
-                    <table class="table-striped meattable">
+                <div v-if="showAverageMeat" class="d-flex justify-content-center w-100">  
+                    <table class="table-striped meattable w-100">
                         <tbody>
                             <tr
                             v-for="hunter in meatBoarAverage"
                             :key="hunter.id"
                             >   
-                                <td>{{hunter.firstname}} {{hunter.lastname}}</td>
+                                <td width="80%">{{hunter.firstname}} {{hunter.lastname}}</td>
                                 <td>{{hunter.kg}} kg</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div v-else class="d-flex flex-column w-100">
-                    <table class="table-striped meattable">
+                <div v-else class="d-flex justify-content-center w-100">
+                    <table class="table-striped meattable w-100">
                         <tbody>
                             <tr
                             v-for="hunter in meatBoarTotal"
                             :key="hunter.id"
                             >   
-                                <td>{{hunter.firstname}} {{hunter.lastname}}</td>
+                                <td  width="80%">{{hunter.firstname}} {{hunter.lastname}}</td>
                                 <td>{{hunter.kg}} kg</td>
                             </tr>
                         </tbody>
