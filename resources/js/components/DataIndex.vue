@@ -15,8 +15,8 @@
             </div>
 
             <div v-if="this.speciesSelected == 'Älg'">
-                <div v-if="showAverageMeat" class="d-flex flex-column">      
-                    <table class="table-striped">
+                <div v-if="showAverageMeat" class="d-flex flex-column w-100">      
+                    <table class="table-striped meattable">
                         <tbody>
 
                             <tr
@@ -29,8 +29,8 @@
                         </tbody>
                     </table>
                 </div>
-                <div v-else class="d-flex flex-column">
-                    <table class="table-striped">
+                <div v-else class="d-flex flex-column w-100">
+                    <table class="table-striped meattable">
                         <tbody>
 
                             <tr
@@ -46,8 +46,8 @@
             </div>
 
             <div v-if="this.speciesSelected == 'Kronvilt'">
-                <div v-if="showAverageMeat" class="d-flex flex-column">  
-                    <table class="table-striped">
+                <div v-if="showAverageMeat" class="d-flex flex-column w-100">  
+                    <table class="table-striped meattable">
                         <tbody>
 
                             <tr
@@ -60,8 +60,8 @@
                         </tbody>
                     </table>
                 </div>
-                <div v-else class="d-flex flex-column">
-                    <table class="table-striped">
+                <div v-else class="d-flex flex-column w-100">
+                    <table class="table-striped meattable">
                         <tbody>
 
                             <tr
@@ -77,8 +77,8 @@
             </div>
 
             <div v-if="this.speciesSelected == 'Dovvilt'">
-                <div v-if="showAverageMeat" class="d-flex flex-column">  
-                    <table class="table-striped">
+                <div v-if="showAverageMeat" class="d-flex flex-column w-100">  
+                    <table class="table-striped meattable">
                         <tbody>
 
                             <tr
@@ -91,8 +91,8 @@
                         </tbody>
                     </table>
                 </div>
-                <div v-else class="d-flex flex-column">
-                    <table class="table-striped">
+                <div v-else class="d-flex flex-column w-100">
+                    <table class="table-striped meattable">
                         <tbody>
 
                             <tr
@@ -108,8 +108,8 @@
             </div>
 
             <div v-if="this.speciesSelected == 'Rådjur'">
-                <div v-if="showAverageMeat" class="d-flex flex-column">  
-                    <table class="table-striped">
+                <div v-if="showAverageMeat" class="d-flex flex-column w-100">  
+                    <table class="table-striped meattable">
                         <tbody>
                             <tr
                             v-for="hunter in meatRoedeerAverage"
@@ -121,8 +121,8 @@
                         </tbody>
                     </table>
                 </div>
-                <div v-else class="d-flex flex-column">
-                    <table class="table-striped">
+                <div v-else class="d-flex flex-column w-100">
+                    <table class="table-striped meattable">
                         <tbody>
                            <tr
                             v-for="hunter in meatRoedeerTotal"
@@ -137,8 +137,8 @@
             </div>
 
             <div v-if="this.speciesSelected == 'Vildsvin'">
-                <div v-if="showAverageMeat" class="d-flex flex-column">  
-                    <table class="table-striped">
+                <div v-if="showAverageMeat" class="d-flex flex-column w-100">  
+                    <table class="table-striped meattable">
                         <tbody>
                             <tr
                             v-for="hunter in meatBoarAverage"
@@ -150,8 +150,8 @@
                         </tbody>
                     </table>
                 </div>
-                <div v-else class="d-flex flex-column">
-                    <table class="table-striped">
+                <div v-else class="d-flex flex-column w-100">
+                    <table class="table-striped meattable">
                         <tbody>
                             <tr
                             v-for="hunter in meatBoarTotal"
@@ -296,5 +296,8 @@
 <style scope>
  .species-btn {
      width: 300px;
+ }
+ .meatable {
+     width: 100%;
  }
 </style>
