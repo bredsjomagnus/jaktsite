@@ -36,7 +36,7 @@
                                     <td width="80%">{{hunter.firstname}} {{hunter.lastname}}</td>
                                     <td>{{hunter.kg}} kg</td>
                                 </tr>
-                                <tr class="table-sumrow">
+                                <tr class="table-sumrow" style="background-color: #dccc9b;">
                                     <td width="80%">Snitt</td>
                                     <td>{{ averageMeat(meatMooseAverage) }} kg</td>
                                 </tr>
@@ -54,7 +54,7 @@
                                     <td width="80%">{{hunter.firstname}} {{hunter.lastname}}</td>
                                     <td>{{hunter.kg}} kg</td>
                                 </tr>
-                                <tr class="table-sumrow">
+                                <tr class="table-sumrow" style="background-color: #dccc9b;">
                                     <td width="80%">Totalt</td>
                                     <td>{{ totalMeat(meatMooseTotal) }} kg</td>
                                 </tr>
@@ -75,7 +75,7 @@
                                     <td width="80%">{{hunter.firstname}} {{hunter.lastname}}</td>
                                     <td>{{hunter.kg}} kg</td>
                                 </tr>
-                                <tr class="table-sumrow">
+                                <tr class="table-sumrow" style="background-color: #dccc9b;">
                                     <td width="80%">Snitt</td>
                                     <td>{{ averageMeat(meatReddeerAverage) }} kg</td>
                                 </tr>
@@ -93,7 +93,7 @@
                                     <td width="80%">{{hunter.firstname}} {{hunter.lastname}}</td>
                                     <td>{{hunter.kg}} kg</td>
                                 </tr>
-                                <tr class="table-sumrow">
+                                <tr class="table-sumrow" style="background-color: #dccc9b;">
                                     <td width="80%">Totalt</td>
                                     <td>{{ totalMeat(meatReddeerTotal) }} kg</td>
                                 </tr>
@@ -114,7 +114,7 @@
                                     <td width="80%">{{hunter.firstname}} {{hunter.lastname}}</td>
                                     <td>{{hunter.kg}} kg</td>
                                 </tr>
-                                <tr class="table-sumrow">
+                                <tr class="table-sumrow" style="background-color: #dccc9b;">
                                     <td width="80%">Snitt</td>
                                     <td>{{ averageMeat(meatFallowdeerAverage) }} kg</td>
                                 </tr>
@@ -132,7 +132,7 @@
                                     <td width="80%">{{hunter.firstname}} {{hunter.lastname}}</td>
                                     <td>{{hunter.kg}} kg</td>
                                 </tr>
-                                <tr class="table-sumrow">
+                                <tr class="table-sumrow" style="background-color: #dccc9b;">
                                     <td width="80%">Totalt</td>
                                     <td>{{ totalMeat(meatFallowdeerTotal) }} kg</td>
                                 </tr>
@@ -152,7 +152,7 @@
                                     <td width="80%">{{hunter.firstname}} {{hunter.lastname}}</td>
                                     <td>{{hunter.kg}} kg</td>
                                 </tr>
-                                <tr class="table-sumrow">
+                                <tr class="table-sumrow" style="background-color: #dccc9b;">
                                     <td width="80%">Snitt</td>
                                     <td>{{ averageMeat(meatRoedeerAverage) }} kg</td>
                                 </tr>
@@ -169,7 +169,7 @@
                                     <td width="80%">{{hunter.firstname}} {{hunter.lastname}}</td>
                                     <td>{{hunter.kg}} kg</td>
                                 </tr>
-                                <tr class="table-sumrow">
+                                <tr class="table-sumrow" style="background-color: #dccc9b;">
                                     <td width="80%">Totalt</td>
                                     <td>{{ totalMeat(meatRoedeerTotal) }} kg</td>
                                 </tr>
@@ -189,7 +189,7 @@
                                     <td width="80%">{{hunter.firstname}} {{hunter.lastname}}</td>
                                     <td>{{hunter.kg}} kg</td>
                                 </tr>
-                                <tr class="table-sumrow">
+                                <tr class="table-sumrow" style="background-color: #dccc9b;">
                                     <td width="80%">Snitt</td>
                                     <td>{{ averageMeat(meatBoarAverage) }} kg</td>
                                 </tr>
@@ -206,7 +206,7 @@
                                     <td  width="80%">{{hunter.firstname}} {{hunter.lastname}}</td>
                                     <td>{{hunter.kg}} kg</td>
                                 </tr>
-                                <tr class="table-sumrow">
+                                <tr class="table-sumrow" style="background-color: #dccc9b;">
                                     <td width="80%">Totalt</td>
                                     <td>{{ totalMeat(meatBoarTotal) }} kg</td>
                                 </tr>
@@ -379,6 +379,5 @@
  }
  .table-sumrow {
      border-top: 1px dashed grey; 
-     background-color: #dccc9b;
  }
 </style>
