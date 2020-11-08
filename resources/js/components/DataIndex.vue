@@ -343,12 +343,11 @@
             this.showAverageMeat = true;
         },
         totalMeat(total) {
-            let sum = 0;
-            total.map(obj => {
-                sum = sum + obj.kg;
-            });
+            let res = total.reduce( (sum, obj) => {
+                return sum + obj.kg;
+            }, 0);
 
-            return sum; 
+            return res; 
         },
         averageMeat(average) {
             let sum = 0;
