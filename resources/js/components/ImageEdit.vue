@@ -96,7 +96,7 @@
                        
                         
                        
-                            <div class="mt-4 mb-2 w-100 text-center" style="background-color: rgb(247 247 247);">
+                            <div v-if="authUser.role == 'admin' || authUser.id == image.user_id" class="mt-4 mb-2 w-100 text-center" style="background-color: rgb(247 247 247);">
                                 <mdb-btn class="w-20" color="mdb-color" @click.native="deleteImage(image)" size="sm"><mdb-icon icon="trash-alt"/> - Ta bort bild </mdb-btn>
                             </div>
                        

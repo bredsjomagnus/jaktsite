@@ -44,6 +44,8 @@ Route::patch('/meat/{meat}/update', 'MeatController@update')->middleware('access
 Route::post('/meat/store', 'MeatController@store')->middleware('access:both,none');
 Route::delete('/meat/{meat}/delete', 'MeatController@destroy')->middleware('access:both,none');
 
+Route::get('/data', 'DataController@index')->middleware('access:both');
+
 Route::get('/image/{killreport}/edit', 'ImageController@edit')->middleware('access:both,none');
 Route::patch('/image/{image}/update', 'ImageController@update')->middleware('access:both,none');
 Route::post('/image/{killreport}/store', 'ImageController@store')->middleware('access:both,none');

@@ -15,7 +15,7 @@ class MeatController extends Controller
      */
     // public function index()
     // {
-    //     //
+    //     return view('meat.index');
     // }
 
     /**

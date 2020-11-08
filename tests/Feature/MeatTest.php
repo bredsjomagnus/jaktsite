@@ -168,4 +168,5 @@ class MeatTest extends TestCase
         $this->assertDatabaseMissing('meats', ['id' => $meat['id']]);
 
     }
+
 }

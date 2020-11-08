@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 
 class FileController extends Controller
@@ -188,13 +189,27 @@ class FileController extends Controller
      */
     public function destroy(Request $request, $id)
     {
+        // Ta fram bilden som skall tas bort ur databasen (bilden tas bort ur databasen i steg två efter att filen tagits bort)
         $image_res = DB::select('select * from images where id = ?', [$id]);
 
+        // Om det finns en sådan bild i databasen som eftersökts
         if( count($image_res) == 1) {
+
+            // $image_res är en array med resultat från queryn så man måste ta fram första elementet för att nå sjäva bilden
             $image = $image_res[0];
-            $name = 'k'.$image->killreport_id.'_i'.$image->id.'_u'.$image->user_id.'_'.$image->name;
-            Storage::disk('local')->delete('public/images/killreports/'.$name);
-            return response()->json(['message' => 'success']);
+
+            // säkerhetskoll för att se till att det bara är admin eller själva ägaren till bilden som kan ta bort filen.
+            if( (Auth::user()->id == $image->user_id) || (Auth::user()->role == 'admin') ) {
+                $name = 'k'.$image->killreport_id.'_i'.$image->id.'_u'.$image->user_id.'_'.$image->name;
+                Storage::disk('local')->delete('public/images/killreports/'.$name);
+                return response()->json(['message' => 'success']);
+
+            // är det inte ägaren till bilden eller admin så misslyckas försöket att radera filen
+            } else {
+                return response()->json(['message' => 'failure']);
+            }
+
+        // Finns det ingen sådan bild i databasen misslyckas man med att ta bort filen
         } else {
             return response()->json(['message' => 'failure']);
         }        
