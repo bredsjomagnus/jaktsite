@@ -5,6 +5,7 @@
     <data-index 
     :hunters="{{ $hunters }}"
     :anonhunter="{{ $anonhunter }}"
+    :user-profile-url='{!! json_encode(url(Auth::user()->path())) !!}' 
     :killreport-base-url='{!! json_encode(url("killreports")) !!}'
     :meat-moose-average='{{ json_encode($meat_moose_average) }}' 
     :meat-reddeer-average='{{ json_encode($meat_reddeer_average) }}' 
@@ -15,7 +16,7 @@
     :meat-reddeer-total='{{ json_encode($meat_reddeer_total) }}' 
     :meat-fallowdeer-total='{{ json_encode($meat_fallowdeer_total) }}' 
     :meat-roedeer-total='{{ json_encode($meat_roedeer_total) }}' 
-    :meat-boar-total='{{ json_encode($meat_boar_total) }}' 
+    :meat-boar-total='{{ json_encode($meat_boar_total) }}'
     >
     </data-index>
 

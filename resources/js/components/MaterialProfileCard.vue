@@ -1,7 +1,7 @@
 <template>
 <div>
 
-	<div class="d-flex flex-row justify-content-around" style="margin-top: -20px; margin-bottom: 5px;">
+	<div class="d-flex flex-row justify-content-around" style="margin-top: -20px; margin-bottom: 5px; background-color: rgb(236 236 236);">
 		
 		<mdb-btn-toolbar>
 			<mdb-btn-group size="sm">

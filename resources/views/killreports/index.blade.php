@@ -4,7 +4,7 @@
 
 <!-- container -->
 <div class="container">
-  <div class="d-flex justify-content-center" style="margin-top: -20px; margin-bottom: 5px;">
+  <div class="d-flex justify-content-center" style="margin-top: -20px; margin-bottom: 5px; background-color: rgb(236 236 236);">
     <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
       <button class="btn btn-mdb-color btn-sm" ><a style="color: white;" href="{{ url(auth()->user()->path()) }}">Min sida</a></button>
       <button class="btn btn-mdb-color btn-sm" ><a style="color: white;" href="{{ url('/killreports/create') }}">Rapportera</a></button>
