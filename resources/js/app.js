@@ -43,6 +43,7 @@ Vue.component('admin-navbar', require('./components/AdminNavbar.vue').default);
 Vue.component('welcome', require('./components/Welcome.vue').default);
 Vue.component('image-edit', require('./components/ImageEdit.vue').default);
 Vue.component('admin-index', require('./components/AdminIndex.vue').default);
+Vue.component('data-index', require('./components/DataIndex.vue').default);
 
 Vue.component('sidebar', require('./components/AdminIndex.vue'));
 

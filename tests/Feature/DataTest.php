@@ -21,8 +21,10 @@ class DataTest extends TestCase
      */
     public function a_user_can_get_to_data_index_view()
     {
-        $this->withoutExceptionHandling();
+        // $this->withoutExceptionHandling();
         // Loggar in vanlig användare
+
+        
         $user = factory(User::class)->create([
             'role'      => 'user'
         ]);
