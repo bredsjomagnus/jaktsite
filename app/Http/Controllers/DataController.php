@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Traits\MeatSum;
+use App\Traits\AnimalSum;
 
 use App\User;
 
 class DataController extends Controller
 {
     use MeatSum;
+    use AnimalSum;
+
+
     /**
      * Display a listing of the resource.
      *
@@ -32,6 +36,7 @@ class DataController extends Controller
         $user_fallowdeer_average        = $this->sumMeatWrapper('Dovvilt', 'average', $year_back);
         $user_roedeer_average           = $this->sumMeatWrapper('Rådjur', 'average', $year_back);
 
+
         $data = [
             'hunters'                       => User::where('occupation', 'hunter')->where('role', '!=', 'guest')->get(),
             'anonhunter'                    => User::where('occupation', 'anonhunter')->limit(1)->get(),
@@ -45,6 +50,11 @@ class DataController extends Controller
             'meat_fallowdeer_total'         => $user_fallowdeer_total,
             'meat_roedeer_total'            => $user_roedeer_total,
             'meat_boar_total'               => $user_boar_total,
+            'animal_moose'                  => $this->getAnimalsOfSpecies('Älg'),
+            'animal_reddeer'                => $this->getAnimalsOfSpecies('Kronvilt'),
+            'animal_fallowdeer'             => $this->getAnimalsOfSpecies('Dovvilt'),
+            'animal_boar'                   => $this->getAnimalsOfSpecies('Vildsvin'),
+            'animal_roedeer'                => $this->getAnimalsOfSpecies('Rådjur'),
         ];
 
         return view('data.index', $data);

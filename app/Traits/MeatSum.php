@@ -3,8 +3,6 @@
 namespace App\Traits;
 
 use App\User;
-use App\Area;
-use App\Animal;
 use App\Meat;
 
 trait MeatSum

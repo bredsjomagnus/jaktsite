@@ -2,13 +2,23 @@
     <mdb-container>
 
         <!-- </mdb-btn-toolbar> -->
-        <div class="d-flex flex-row justify-content-around" style="background-color: rgb(236 236 236);">
+        <div class="d-flex flex-row justify-content-around" style="background-color: rgb(236 236 236); margin-top: -20px;">
             <mdb-btn-group size="sm">
                 <mdb-btn color="mdb-color" @click.native="backToUserProfile" size="sm">Min sida</mdb-btn>
                 <mdb-btn color="mdb-color" @click.native="backToKillreport_create" size="sm">Rapportera</mdb-btn>
                 <mdb-btn color="mdb-color" @click.native="backToKillreport_index" size="sm">Arkivet</mdb-btn>
             </mdb-btn-group>
         </div>
+             <!-- <mdb-btn-toolbar> -->
+            <div class="d-flex flex-row justify-content-around">
+                <mdb-btn-group size="sm">
+                    <mdb-btn color="mdb-color" @click.native="toggleToD" :active="activeD" size="sm">Djur</mdb-btn>
+                    <mdb-btn color="mdb-color" @click.native="toggleToC" :active="activeC" size="sm">Diagram</mdb-btn>
+
+                </mdb-btn-group>
+            </div>
+            <!-- </mdb-btn-toolbar> -->
+        
         
         <!-- MODAL FÖR ATT ÄNDRA KÖTTILLDELNINGEN -->
         <mdb-modal size="sm" :show="meetModal" @close="meetModal = false">
@@ -219,26 +229,42 @@
                 <mdb-btn color="blue-grey" size="sm" @click.native="closeModal">OK!</mdb-btn>
             </mdb-modal-footer>
         </mdb-modal>
-        <div class="mt-4 d-flex justify-content-center">
-            <mdb-btn class="species-btn" color="grey" size="lg" @click.native="selectSpecies('Kronvilt')"> KRONVILT </mdb-btn>
+
+
+        <div v-if="activeD">
+
+            <div class="d-flex justify-content-center">
+                <mdb-btn class="species-btn" color="grey" size="lg" @click.native="selectSpecies('Kronvilt')"> KRONVILT </mdb-btn>
+            </div>
+            <div class="d-flex justify-content-center">
+                <mdb-btn class="species-btn" color="grey" size="lg" @click.native="selectSpecies('Dovvilt')"> DOVVILT </mdb-btn>
+            </div>
+            <div class="d-flex justify-content-center">
+                <mdb-btn class="species-btn" color="grey" size="lg" @click.native="selectSpecies('Älg')"> ÄLG </mdb-btn>
+            </div>
+            <div class="d-flex justify-content-center">
+                <mdb-btn class="species-btn" color="grey" size="lg" @click.native="selectSpecies('Vildsvin')"> VILDSVIN </mdb-btn>
+            </div>
+            <div class="d-flex justify-content-center">
+                <mdb-btn class="species-btn" color="grey" size="lg" @click.native="selectSpecies('Rådjur')"> RÅDJUR </mdb-btn>
+            </div>
+
         </div>
-        <div class="d-flex justify-content-center">
-            <mdb-btn class="species-btn" color="grey" size="lg" @click.native="selectSpecies('Dovvilt')"> DOVVILT </mdb-btn>
-        </div>
-        <div class="d-flex justify-content-center">
-            <mdb-btn class="species-btn" color="grey" size="lg" @click.native="selectSpecies('Älg')"> ÄLG </mdb-btn>
-        </div>
-        <div class="d-flex justify-content-center">
-            <mdb-btn class="species-btn" color="grey" size="lg" @click.native="selectSpecies('Vildsvin')"> VILDSVIN </mdb-btn>
-        </div>
-        <div class="d-flex justify-content-center">
-            <mdb-btn class="species-btn" color="grey" size="lg" @click.native="selectSpecies('Rådjur')"> RÅDJUR </mdb-btn>
+
+
+        <div v-else-if="activeC">
+             <mdb-bar-chart
+                :data="numAnimalBarChartData"
+                :options="numAnimalBarChartOptions"
+                :width="600"
+                :height="300"
+            ></mdb-bar-chart>
         </div>
     
     </mdb-container>
 </template>
 <script>
-  import { mdbBtn, mdbBtnGroup, mdbBtnToolbar, mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbContainer } from 'mdbvue';
+  import { mdbBtn, mdbBtnGroup, mdbBtnToolbar, mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbContainer, mdbBarChart } from 'mdbvue';
   export default {
     name: 'killreport',
     components: {
@@ -250,7 +276,8 @@
       mdbModalTitle,
       mdbModalBody,
       mdbModalFooter,
-      mdbContainer
+      mdbContainer,
+      mdbBarChart
     },
     props: [
             'hunters',
@@ -266,14 +293,84 @@
             'meatRoedeerTotal',
             'meatBoarTotal',
             'killreportBaseUrl',
-            'userProfileUrl'
+            'userProfileUrl',
+            'animalMoose',
+            'animalReddeer',
+            'animalFallowdeer',
+            'animalBoar',
+            'animalRoedeer'
         ],
     data() {
         return {
             showAverageMeat:true,
-            meetModal:false,
-            speciesSelected: null
-
+            meetModal: false,
+            speciesSelected: null,
+            activeD: true,
+            activeC: false,
+            numAnimalBarChartData: {
+                labels: [
+                    "Kronvilt",
+                    "Dovvilt",
+                    "Älg",
+                    "Vildsvin",
+                    "Rådjur"
+                ],
+                datasets: [
+                    {
+                        label: "Antal skjutna djur",
+                        data: [
+                            this.animalReddeer.length,
+                            this.animalFallowdeer.length,
+                            this.animalMoose.length,
+                            this.animalBoar.length,
+                            this.animalRoedeer.length,
+                            ],
+                        backgroundColor: [
+                            "rgba(255, 99, 132, 0.7)",
+                            "rgba(54, 162, 235, 0.7)",
+                            "rgba(255, 206, 86, 0.7)",
+                            "rgba(75, 192, 192, 0.7)",
+                            "rgba(153, 102, 255, 0.7)"
+                        ],
+                        borderColor: [
+                            "rgba(255,99,132,1)",
+                            "rgba(54, 162, 235, 1)",
+                            "rgba(255, 206, 86, 1)",
+                            "rgba(75, 192, 192, 1)",
+                            "rgba(153, 102, 255, 1)"
+                        ],
+                        borderWidth: 1
+                    }
+                ]
+            },
+            numAnimalBarChartOptions: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    xAxes: [
+                    {
+                        barPercentage: 1,
+                        gridLines: {
+                        display: true,
+                        color: "rgba(0, 0, 0, 0.1)"
+                        }
+                    }
+                    ],
+                    yAxes: [
+                    {
+                        gridLines: {
+                        display: true,
+                        color: "rgba(0, 0, 0, 0.1)"
+                        }
+                    }
+                    ]
+                }
+            }
+        }
+    },
+    computed: {
+        numAnimalArray() {
+            
         }
     },
     mounted() {
@@ -302,6 +399,14 @@
 
         console.log('sortedMooseTotal: ', sortedMooseTotal);
         console.log('sortedFallowdeerTotal: ', sortedFallowdeerTotal);
+
+        console.log('animalMoose: ', this.animalMoose);
+        console.log('animalReddeer: ', this.animalReddeer);
+        console.log('animalFallowdeer: ', this.animalFallowdeer);
+        console.log('animalBoar: ', this.animalBoar);
+        console.log('animalRoedeer: ', this.animalRoedeer);
+
+        console.log('this.animalMoose.length: ', this.animalMoose.length);
     },
     methods: {
         bubble(obj_unsorted) {
@@ -365,6 +470,14 @@
 
             return res;
 
+        },
+        toggleToD() {
+            this.activeD = true;
+            this.activeC = false;
+        },
+        toggleToC() {
+            this.activeC = true;
+            this.activeD = false;
         }
     }
   }

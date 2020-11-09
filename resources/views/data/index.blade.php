@@ -17,6 +17,11 @@
     :meat-fallowdeer-total='{{ json_encode($meat_fallowdeer_total) }}' 
     :meat-roedeer-total='{{ json_encode($meat_roedeer_total) }}' 
     :meat-boar-total='{{ json_encode($meat_boar_total) }}'
+    :animal-moose='{{ $animal_moose }}'
+    :animal-reddeer='{{ $animal_reddeer }}'
+    :animal-fallowdeer='{{ $animal_fallowdeer }}'
+    :animal-boar='{{ $animal_boar }}'
+    :animal-roedeer='{{ $animal_roedeer }}'
     >
     </data-index>
 
