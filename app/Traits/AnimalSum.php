@@ -12,11 +12,20 @@ trait AnimalSum
      * 
      * @param String $species; ex 'Kronvilt'
      * 
-     * @return Collection Animals
+     * @return Collection Animals with added keys area and season
      */
     public function getAnimalsOfSpecies($species)
     {
-        return Animal::where('species', '=', $species)->get();
+        // Tar fram djuren för ett viss djurslag.
+        $animals = Animal::where('species', '=', $species)->get();
+
+        // Lägger till keys area och season för djuren.
+        foreach($animals as $animal) {
+            $animal['area'] = $animal->killreport()->area()->area_name;
+            $animal['season'] = $animal->killreport()->season;
+        }
+
+        return $animals;
     }
 
     /**

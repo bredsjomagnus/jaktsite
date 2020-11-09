@@ -255,9 +255,50 @@
         <div v-else-if="activeC">
             <div class="mt-2 justify-content-center">
                 <h6>ANTAL DJUR</h6>
-                <mdb-bar-chart
-                    :data="numAnimalBarChartData"
-                    :options="numAnimalBarChartOptions"
+                
+                <select class="browser-default custom-select" v-model="area">
+                    <option value="Småris">Småris</option>
+                    <option value="Glotterbäck">Glotterbäck</option>
+                    <option value="Haddebo">Haddebo</option>
+                    <option value="Västerby">Västerby</option>
+                    <option value="Nästorp">Nästorp</option>
+                    <option value="Pålsboda">Pålsboda</option>
+                </select>
+                
+                
+                <mdb-bar-chart v-if="area == 'Småris'"
+                    :data="numAnimalBarChartDataSmaris"
+                    :options="numAnimalBarChartOptionsSmaris"
+                    :width="600"
+                    :height="300"
+                ></mdb-bar-chart>
+                <mdb-bar-chart v-else-if="area == 'Glotterbäck'"
+                    :data="numAnimalBarChartDataGlotterback"
+                    :options="numAnimalBarChartOptionsGlotterback"
+                    :width="600"
+                    :height="300"
+                ></mdb-bar-chart>
+                <mdb-bar-chart v-else-if="area == 'Haddebo'"
+                    :data="numAnimalBarChartDataHaddebo"
+                    :options="numAnimalBarChartOptionsHaddebo"
+                    :width="600"
+                    :height="300"
+                ></mdb-bar-chart>
+                <mdb-bar-chart v-else-if="area == 'Västerby'"
+                    :data="numAnimalBarChartDataVasterby"
+                    :options="numAnimalBarChartOptionsVasterby"
+                    :width="600"
+                    :height="300"
+                ></mdb-bar-chart>
+                <mdb-bar-chart v-else-if="area == 'Nästorp'"
+                    :data="numAnimalBarChartDataNastorp"
+                    :options="numAnimalBarChartOptionsNastorp"
+                    :width="600"
+                    :height="300"
+                ></mdb-bar-chart>
+                <mdb-bar-chart v-else-if="area == 'Pålsboda'"
+                    :data="numAnimalBarChartDataPalsboda"
+                    :options="numAnimalBarChartOptionsPalsboda"
                     :width="600"
                     :height="300"
                 ></mdb-bar-chart>
@@ -266,30 +307,30 @@
                 <table class="ml-3 table-striped" style="width: 95%;">
                     <thead>
                         <tr>
-                            <th>Djur</th>
+                            <th>Djurslag - {{this.area}}</th>
                             <th>Antal</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td class="info-table" width="75%">Kronvilt</td>
-                            <td class="info-table">{{ this.animalReddeer.length }} st</td>
+                            <td class="info-table">{{ this.animalCount(this.area)[0] }} st</td>
                         </tr>
                         <tr>
                             <td class="info-table">Dovvilt</td>
-                            <td class="info-table">{{ this.animalFallowdeer.length }} st</td>
+                            <td class="info-table">{{ this.animalCount(this.area)[1] }} st</td>
                         </tr>
                         <tr>
                             <td class="info-table">Älg</td>
-                            <td class="info-table">{{ this.animalMoose.length }} st</td>
+                            <td class="info-table">{{ this.animalCount(this.area)[2] }} st</td>
                         </tr>
                         <tr>
                             <td class="info-table">Vildsvin</td>
-                            <td class="info-table">{{ this.animalBoar.length }} st</td>
+                            <td class="info-table">{{ this.animalCount(this.area)[3] }} st</td>
                         </tr>
                         <tr>
                             <td class="info-table">Rådjur</td>
-                            <td class="info-table">{{ this.animalRoedeer.length }} st</td>
+                            <td class="info-table">{{ this.animalCount(this.area)[4] }} st</td>
                         </tr>
                     </tbody>
                 </table>
@@ -310,7 +351,7 @@
                     <table class="mt-2 ml-3 table-striped" style="width: 95%;">
                         <thead>
                             <tr>
-                                <th>Sort</th>
+                                <th>Sorts jakt</th>
                                 <th>Antal</th>
                             </tr>
                         </thead>
@@ -393,8 +434,13 @@
             speciesSelected: null,
             activeD: true,
             activeC: false,
+            area: 'Småris',
 
-            numAnimalBarChartData: {
+            // pga bug hos mdb kan man inte dynamiskt uppdatera charts
+            // gör därför en chart per område.
+
+            // SMÅRIS
+            numAnimalBarChartDataSmaris: {
                 labels: [
                     "Kronvilt",
                     "Dovvilt",
@@ -405,32 +451,26 @@
                 datasets: [
                     {
                         label: "Antal skjutna djur",
-                        data: [
-                            this.animalReddeer.length,
-                            this.animalFallowdeer.length,
-                            this.animalMoose.length,
-                            this.animalBoar.length,
-                            this.animalRoedeer.length,
-                            ],
+                        data: this.animalCount("Småris"),
                         backgroundColor: [
-                            "rgba(255, 99, 132, 0.7)",
-                            "rgba(54, 162, 235, 0.7)",
-                            "rgba(255, 206, 86, 0.7)",
-                            "rgba(75, 192, 192, 0.7)",
-                            "rgba(153, 102, 255, 0.7)"
+                            "#5b5b5b",
+                            "#5b5b5b)",
+                            "#5b5b5b",
+                            "#5b5b5b",
+                            "#5b5b5b"
                         ],
                         borderColor: [
-                            "rgba(255,99,132,1)",
-                            "rgba(54, 162, 235, 1)",
-                            "rgba(255, 206, 86, 1)",
-                            "rgba(75, 192, 192, 1)",
-                            "rgba(153, 102, 255, 1)"
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d)"
                         ],
                         borderWidth: 1
                     }
                 ]
             },
-            numAnimalBarChartOptions: {
+            numAnimalBarChartOptionsSmaris: {
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: {
@@ -454,6 +494,295 @@
                 }
             },
 
+
+            // GLOTTERBÄCK
+            numAnimalBarChartDataGlotterback: {
+                labels: [
+                    "Kronvilt",
+                    "Dovvilt",
+                    "Älg",
+                    "Vildsvin",
+                    "Rådjur"
+                ],
+                datasets: [
+                    {
+                        label: "Antal skjutna djur",
+                        data: this.animalCount("Glotterbäck"),
+                        backgroundColor: [
+                            "#5b5b5b",
+                            "#5b5b5b)",
+                            "#5b5b5b",
+                            "#5b5b5b",
+                            "#5b5b5b"
+                        ],
+                        borderColor: [
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d)"
+                        ],
+                        borderWidth: 1
+                    }
+                ]
+            },
+            numAnimalBarChartOptionsGlotterback: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    xAxes: [
+                    {
+                        barPercentage: 1,
+                        gridLines: {
+                        display: true,
+                        color: "rgba(0, 0, 0, 0.1)"
+                        }
+                    }
+                    ],
+                    yAxes: [
+                    {
+                        gridLines: {
+                        display: true,
+                        color: "rgba(0, 0, 0, 0.1)"
+                        }
+                    }
+                    ]
+                }
+            },
+
+
+            // HADDEBO
+            numAnimalBarChartDataHaddebo: {
+                labels: [
+                    "Kronvilt",
+                    "Dovvilt",
+                    "Älg",
+                    "Vildsvin",
+                    "Rådjur"
+                ],
+                datasets: [
+                    {
+                        label: "Antal skjutna djur",
+                        data: this.animalCount("Haddebo"),
+                        backgroundColor: [
+                            "#5b5b5b",
+                            "#5b5b5b)",
+                            "#5b5b5b",
+                            "#5b5b5b",
+                            "#5b5b5b"
+                        ],
+                        borderColor: [
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d)"
+                        ],
+                        borderWidth: 1
+                    }
+                ]
+            },
+            numAnimalBarChartOptionsHaddebo: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    xAxes: [
+                    {
+                        barPercentage: 1,
+                        gridLines: {
+                        display: true,
+                        color: "rgba(0, 0, 0, 0.1)"
+                        }
+                    }
+                    ],
+                    yAxes: [
+                    {
+                        gridLines: {
+                        display: true,
+                        color: "rgba(0, 0, 0, 0.1)"
+                        }
+                    }
+                    ]
+                }
+            },
+
+
+            // VÄSTERBY
+            numAnimalBarChartDataVasterby: {
+                labels: [
+                    "Kronvilt",
+                    "Dovvilt",
+                    "Älg",
+                    "Vildsvin",
+                    "Rådjur"
+                ],
+                datasets: [
+                    {
+                        label: "Antal skjutna djur",
+                        data: this.animalCount("Västerby"),
+                        backgroundColor: [
+                            "#5b5b5b",
+                            "#5b5b5b)",
+                            "#5b5b5b",
+                            "#5b5b5b",
+                            "#5b5b5b"
+                        ],
+                        borderColor: [
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d)"
+                        ],
+                        borderWidth: 1
+                    }
+                ]
+            },
+            numAnimalBarChartOptionsVasterby: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    xAxes: [
+                    {
+                        barPercentage: 1,
+                        gridLines: {
+                        display: true,
+                        color: "rgba(0, 0, 0, 0.1)"
+                        }
+                    }
+                    ],
+                    yAxes: [
+                    {
+                        gridLines: {
+                        display: true,
+                        color: "rgba(0, 0, 0, 0.1)"
+                        }
+                    }
+                    ]
+                }
+            },
+
+
+
+            // NÄSTORP
+            numAnimalBarChartDataNastorp: {
+                labels: [
+                    "Kronvilt",
+                    "Dovvilt",
+                    "Älg",
+                    "Vildsvin",
+                    "Rådjur"
+                ],
+                datasets: [
+                    {
+                        label: "Antal skjutna djur",
+                        data: this.animalCount("Nästorp"),
+                        backgroundColor: [
+                            "#5b5b5b",
+                            "#5b5b5b)",
+                            "#5b5b5b",
+                            "#5b5b5b",
+                            "#5b5b5b"
+                        ],
+                        borderColor: [
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d)"
+                        ],
+                        borderWidth: 1
+                    }
+                ]
+            },
+            numAnimalBarChartOptionsNastorp: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    xAxes: [
+                    {
+                        barPercentage: 1,
+                        gridLines: {
+                        display: true,
+                        color: "rgba(0, 0, 0, 0.1)"
+                        }
+                    }
+                    ],
+                    yAxes: [
+                    {
+                        gridLines: {
+                        display: true,
+                        color: "rgba(0, 0, 0, 0.1)"
+                        }
+                    }
+                    ]
+                }
+            },
+
+
+
+
+            // PÅLSBODA
+            numAnimalBarChartDataPalsboda: {
+                labels: [
+                    "Kronvilt",
+                    "Dovvilt",
+                    "Älg",
+                    "Vildsvin",
+                    "Rådjur"
+                ],
+                datasets: [
+                    {
+                        label: "Antal skjutna djur",
+                        data: this.animalCount("Pålsboda"),
+                        backgroundColor: [
+                            "#5b5b5b",
+                            "#5b5b5b)",
+                            "#5b5b5b",
+                            "#5b5b5b",
+                            "#5b5b5b"
+                        ],
+                        borderColor: [
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d)"
+                        ],
+                        borderWidth: 1
+                    }
+                ]
+            },
+            numAnimalBarChartOptionsPalsboda: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    xAxes: [
+                    {
+                        barPercentage: 1,
+                        gridLines: {
+                        display: true,
+                        color: "rgba(0, 0, 0, 0.1)"
+                        }
+                    }
+                    ],
+                    yAxes: [
+                    {
+                        gridLines: {
+                        display: true,
+                        color: "rgba(0, 0, 0, 0.1)"
+                        }
+                    }
+                    ]
+                }
+            },
+
+
+
+
+
+
+
             kindOfHuntPieChartData: {
                 labels: [ "Gemensam jakt", "Ensamjakt"],
                 datasets: [
@@ -461,7 +790,6 @@
                     data: [this.kindGemensamJakt.length, this.kindEnsamjakt.length],
                     backgroundColor: [
                         "#c2a875",
-                        // "rgba(97, 70, 100, 0.5)",
                         "#5b5b5b",
                     ],
                     hoverBackgroundColor: [
@@ -475,47 +803,41 @@
                 responsive: true,
                 maintainAspectRatio: false
             },
-
-            animalsShotHunternames: [],
-            animalShotNumAnimals: [],
-
-
-
-          animalsShotHorizontalBarChartData: {
-            labels: this.animalShotHunternames(),
-            datasets: [
+            animalsShotHorizontalBarChartData: {
+                labels: this.animalShotHunternames(),
+                datasets: [
+                    {
+                        label: "Antal skjutna djur per jägare",
+                        data: this.animalShotNumAnimals(),
+                        backgroundColor: this.animalShotBackgroundColors(),
+                        borderColor: this.animalShotBorderColors(),
+                        borderWidth: 1
+                    }
+                ]
+            },
+            animalsShotHorizontalBarChartOptions: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                xAxes: [
                 {
-                    label: "Antal skjutna djur per jägare",
-                    data: this.animalShotNumAnimals(),
-                    backgroundColor: this.animalShotBackgroundColors(),
-                    borderColor: this.animalShotBorderColors(),
-                    borderWidth: 1
+                    barPercentage: 1,
+                    gridLines: {
+                        display: true,
+                        color: "rgba(0, 0, 0, 0.1)"
+                    }
                 }
-            ]
-        },
-        animalsShotHorizontalBarChartOptions: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            xAxes: [
-              {
-                barPercentage: 1,
-                gridLines: {
-                  display: true,
-                  color: "rgba(0, 0, 0, 0.1)"
+                ],
+                yAxes: [
+                {
+                    gridLines: {
+                        display: true,
+                        color: "rgba(0, 0, 0, 0.1)"
+                    }
                 }
-              }
-            ],
-            yAxes: [
-              {
-                gridLines: {
-                  display: true,
-                  color: "rgba(0, 0, 0, 0.1)"
-                }
-              }
-            ]
-          }
-        }
+                ]
+            }
+            }
 
         }
     },
@@ -575,10 +897,43 @@
 
         // console.log("animalsShotHunter: ", animalsShotNumAnimals);
 
+        console.log("this.numAnimalBarChartData.datasets[0].data: ", this.numAnimalBarChartData.datasets[0].data);
+
 
     },
     
     methods: {
+        areaSelected() {
+            this.numAnimalBarChartData.datasets[0].data = this.animalCount(this.area);
+        },
+        animalCount(area) {
+            
+            let reddeer, fallowdeer, moose, boar, roedeer;
+            
+            reddeer = this.animalReddeer.filter( obj => {
+                return obj.area == area;
+            });
+
+            fallowdeer = this.animalFallowdeer.filter( obj => {
+                return obj.area == area;
+            });
+
+            moose = this.animalMoose.filter( obj => {
+                return obj.area == area;
+            });
+
+            boar = this.animalBoar.filter( obj => {
+                return obj.area == area;
+            });
+
+            roedeer = this.animalRoedeer.filter( obj => {
+                return obj.area == area;
+            });
+
+            console.log("reddeer: ", reddeer);
+            
+            return [reddeer.length, fallowdeer.length, moose.length, boar.length, roedeer.length];
+        },
         animalShotHunternames() {
             let res = this.animalsShot.map( obj => {
                 return obj.name;
