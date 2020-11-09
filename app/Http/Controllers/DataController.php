@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Traits\MeatSum;
 use App\Traits\AnimalSum;
+use App\Traits\KillreportSum;
 
 use App\User;
 
@@ -12,6 +13,7 @@ class DataController extends Controller
 {
     use MeatSum;
     use AnimalSum;
+    use KillreportSum;
 
 
     /**
@@ -55,6 +57,8 @@ class DataController extends Controller
             'animal_fallowdeer'             => $this->getAnimalsOfSpecies('Dovvilt'),
             'animal_boar'                   => $this->getAnimalsOfSpecies('Vildsvin'),
             'animal_roedeer'                => $this->getAnimalsOfSpecies('Rådjur'),
+            'kind_ensamjakt'                => $this->getKindOfHunt('Ensamjakt'),
+            'kind_gemensam_jakt'            => $this->getKindOfHunt('Gemensam jakt'),
         ];
 
         return view('data.index', $data);

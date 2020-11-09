@@ -22,6 +22,8 @@
     :animal-fallowdeer='{{ $animal_fallowdeer }}'
     :animal-boar='{{ $animal_boar }}'
     :animal-roedeer='{{ $animal_roedeer }}'
+    :kind-ensamjakt='{{ $kind_ensamjakt }}'
+    :kind-gemensam-jakt='{{ $kind_gemensam_jakt }}'
     >
     </data-index>
 

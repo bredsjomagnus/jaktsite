@@ -253,18 +253,31 @@
 
 
         <div v-else-if="activeC">
-             <mdb-bar-chart
-                :data="numAnimalBarChartData"
-                :options="numAnimalBarChartOptions"
-                :width="600"
-                :height="300"
-            ></mdb-bar-chart>
+            <div class="mt-2">
+                <h6>ANTAL DJUR</h6>
+                <mdb-bar-chart
+                    :data="numAnimalBarChartData"
+                    :options="numAnimalBarChartOptions"
+                    :width="600"
+                    :height="300"
+                ></mdb-bar-chart>
+            </div>
+            <div class="mt-4 justify-content-center">
+                <h6>SORTS JAKT</h6>
+                <mdb-pie-chart
+                    datalabels
+                    :data="kindOfHuntPieChartData"
+                    :options="kindOfHuntPieChartOptions"
+                    :width="600"
+                    :height="300"
+                    />
+            </div>
         </div>
     
     </mdb-container>
 </template>
 <script>
-  import { mdbBtn, mdbBtnGroup, mdbBtnToolbar, mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbContainer, mdbBarChart } from 'mdbvue';
+  import { mdbBtn, mdbBtnGroup, mdbBtnToolbar, mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbContainer, mdbBarChart, mdbPieChart } from 'mdbvue';
   export default {
     name: 'killreport',
     components: {
@@ -277,7 +290,8 @@
       mdbModalBody,
       mdbModalFooter,
       mdbContainer,
-      mdbBarChart
+      mdbBarChart,
+      mdbPieChart
     },
     props: [
             'hunters',
@@ -298,7 +312,9 @@
             'animalReddeer',
             'animalFallowdeer',
             'animalBoar',
-            'animalRoedeer'
+            'animalRoedeer',
+            'kindEnsamjakt',
+            'kindGemensamJakt'
         ],
     data() {
         return {
@@ -365,7 +381,29 @@
                     }
                     ]
                 }
+            },
+
+            kindOfHuntPieChartData: {
+                labels: [ "Gemensam jakt", "Ensamjakt"],
+                datasets: [
+                    {
+                    data: [this.kindGemensamJakt.length, this.kindEnsamjakt.length],
+                    backgroundColor: [
+                        "rgba(100, 100, 10, 0.5)",
+                        "rgba(50, 50, 50, 0.7)",
+                    ],
+                    hoverBackgroundColor: [
+                        "#FF5A5E",
+                        "#1743e2"
+                    ]
+                    }
+                ]
+            },
+            kindOfHuntPieChartOptions: {
+                responsive: true,
+                maintainAspectRatio: false
             }
+
         }
     },
     computed: {
@@ -407,6 +445,9 @@
         console.log('animalRoedeer: ', this.animalRoedeer);
 
         console.log('this.animalMoose.length: ', this.animalMoose.length);
+
+        console.log('this.kindEnsamjakt: ', this.kindEnsamjakt);
+        console.log('this.kindGemensamJakt: ', this.kindGemensamJakt);
     },
     methods: {
         bubble(obj_unsorted) {
