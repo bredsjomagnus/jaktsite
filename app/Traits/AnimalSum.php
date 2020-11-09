@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Animal;
 use App\User;
+use App\Killreport;
 
 trait AnimalSum
 {
@@ -46,13 +47,22 @@ trait AnimalSum
         // bygg upp resultatarrayen
         foreach($users as $user) {
             // dd($user->animals);
+            $killreports = $user->killreports_shooter;
+            
+            foreach($killreports as $killreport) {
+                $killreport['area'] = $killreport->area()->area_name;
+                $animal['season'] = $killreport->season;
+            }
+
+            
+
             $data[$index] = [
                 'id'            => $user->id,
-                'usermane'      => $user->username,
+                'username'      => $user->username,
                 'firstname'     => $user->firstname,
                 'lastname'      => $user->lastname,
                 'name'          => $user->firstname ." ". $user->lastname,
-                'animals'       => $user->killreports_shooter
+                'killreports'   => $killreports
             ];
             $index += 1;
 
