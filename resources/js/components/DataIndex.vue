@@ -261,7 +261,41 @@
                     :width="600"
                     :height="300"
                 ></mdb-bar-chart>
+                <div>
+                    <table class="w-100 ml-3 table-striped">
+                        <thead>
+                            <tr>
+                                <th>Djur</th>
+                                <th>Antal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="info-table" width="60%">Kronvilt</td>
+                                <td class="info-table">{{ this.animalReddeer.length }} st</td>
+                            </tr>
+                            <tr>
+                                <td class="info-table">Dovvilt</td>
+                                <td class="info-table">{{ this.animalFallowdeer.length }} st</td>
+                            </tr>
+                            <tr>
+                                <td class="info-table">Älg</td>
+                                <td class="info-table">{{ this.animalMoose.length }} st</td>
+                            </tr>
+                            <tr>
+                                <td class="info-table">Vildsvin</td>
+                                <td class="info-table">{{ this.animalBoar.length }} st</td>
+                            </tr>
+                            <tr>
+                                <td class="info-table">Rådjur</td>
+                                <td class="info-table">{{ this.animalRoedeer.length }} st</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
             </div>
+            <hr>
             <div class="mt-4 justify-content-center">
                 <h6>SORTS JAKT</h6>
                 <mdb-pie-chart
@@ -271,6 +305,27 @@
                     :width="600"
                     :height="300"
                     />
+                <div>
+                    <table class="w-100 ml-3 table-striped">
+                        <thead>
+                            <tr>
+                                <th>Sort</th>
+                                <th>Antal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="info-table">
+                                <td class="info-table" width="60%">Gemensam jakt</td>
+                                <td class="info-table">{{ this.kindGemensamJakt.length }} st</td>
+                            </tr>
+                            <tr>
+                                <td class="info-table">Ensamjakt</td>
+                                <td class="info-table">{{ this.kindEnsamjakt.length }} st</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
             </div>
         </div>
     
@@ -394,7 +449,7 @@
                     ],
                     hoverBackgroundColor: [
                         "#FF5A5E",
-                        "#1743e2"
+                        "#FF5A5E"
                     ]
                     }
                 ]
@@ -532,5 +587,10 @@
  }
  .table-sumrow {
      border-top: 1px dashed grey; 
+ }
+ .info-table {
+    font-size: 12px;
+    color: rgb(89, 89, 89);
+    font-style: italic;
  }
 </style>
