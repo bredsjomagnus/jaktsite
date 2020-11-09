@@ -59,6 +59,7 @@ class DataController extends Controller
             'animal_roedeer'                => $this->getAnimalsOfSpecies('Rådjur'),
             'kind_ensamjakt'                => $this->getKindOfHunt('Ensamjakt'),
             'kind_gemensam_jakt'            => $this->getKindOfHunt('Gemensam jakt'),
+            'animals_shot'                  => $this->getNumberOfAnimalsShot()
         ];
 
         return view('data.index', $data);

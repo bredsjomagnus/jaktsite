@@ -24,6 +24,7 @@
     :animal-roedeer='{{ $animal_roedeer }}'
     :kind-ensamjakt='{{ $kind_ensamjakt }}'
     :kind-gemensam-jakt='{{ $kind_gemensam_jakt }}'
+    :animals-shot='{{ json_encode($animals_shot) }}'
     >
     </data-index>
 

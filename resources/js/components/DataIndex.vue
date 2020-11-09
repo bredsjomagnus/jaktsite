@@ -253,7 +253,7 @@
 
 
         <div v-else-if="activeC">
-            <div class="mt-2">
+            <div class="mt-2 justify-content-center">
                 <h6>ANTAL DJUR</h6>
                 <mdb-bar-chart
                     :data="numAnimalBarChartData"
@@ -261,40 +261,41 @@
                     :width="600"
                     :height="300"
                 ></mdb-bar-chart>
-                <div>
-                    <table class="w-100 ml-3 table-striped">
-                        <thead>
-                            <tr>
-                                <th>Djur</th>
-                                <th>Antal</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="info-table" width="60%">Kronvilt</td>
-                                <td class="info-table">{{ this.animalReddeer.length }} st</td>
-                            </tr>
-                            <tr>
-                                <td class="info-table">Dovvilt</td>
-                                <td class="info-table">{{ this.animalFallowdeer.length }} st</td>
-                            </tr>
-                            <tr>
-                                <td class="info-table">Älg</td>
-                                <td class="info-table">{{ this.animalMoose.length }} st</td>
-                            </tr>
-                            <tr>
-                                <td class="info-table">Vildsvin</td>
-                                <td class="info-table">{{ this.animalBoar.length }} st</td>
-                            </tr>
-                            <tr>
-                                <td class="info-table">Rådjur</td>
-                                <td class="info-table">{{ this.animalRoedeer.length }} st</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
             </div>
+            <div class="mt-2 justify-content-center">
+                <table class="ml-3 table-striped" style="width: 95%;">
+                    <thead>
+                        <tr>
+                            <th>Djur</th>
+                            <th>Antal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="info-table" width="75%">Kronvilt</td>
+                            <td class="info-table">{{ this.animalReddeer.length }} st</td>
+                        </tr>
+                        <tr>
+                            <td class="info-table">Dovvilt</td>
+                            <td class="info-table">{{ this.animalFallowdeer.length }} st</td>
+                        </tr>
+                        <tr>
+                            <td class="info-table">Älg</td>
+                            <td class="info-table">{{ this.animalMoose.length }} st</td>
+                        </tr>
+                        <tr>
+                            <td class="info-table">Vildsvin</td>
+                            <td class="info-table">{{ this.animalBoar.length }} st</td>
+                        </tr>
+                        <tr>
+                            <td class="info-table">Rådjur</td>
+                            <td class="info-table">{{ this.animalRoedeer.length }} st</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+                
+            
             <hr>
             <div class="mt-4 justify-content-center">
                 <h6>SORTS JAKT</h6>
@@ -302,11 +303,11 @@
                     datalabels
                     :data="kindOfHuntPieChartData"
                     :options="kindOfHuntPieChartOptions"
-                    :width="600"
-                    :height="300"
+                    :width="100"
+                    :height="250"
                     />
                 <div>
-                    <table class="w-100 ml-3 table-striped">
+                    <table class="mt-2 ml-3 table-striped" style="width: 95%;">
                         <thead>
                             <tr>
                                 <th>Sort</th>
@@ -315,7 +316,7 @@
                         </thead>
                         <tbody>
                             <tr class="info-table">
-                                <td class="info-table" width="60%">Gemensam jakt</td>
+                                <td class="info-table" width="75%">Gemensam jakt</td>
                                 <td class="info-table">{{ this.kindGemensamJakt.length }} st</td>
                             </tr>
                             <tr>
@@ -327,12 +328,24 @@
                 </div>
                 
             </div>
+
+            <hr>
+
+            <div class="mt-4 justify-content-center">
+                <h6>SKJUTNA DJUR PER JÄGARE</h6>
+                <mdb-horizontal-bar-chart
+                    :data="animalsShotHorizontalBarChartData"
+                    :options="animalsShotHorizontalBarChartOptions"
+                    :width="600"
+                    :height="300"
+                ></mdb-horizontal-bar-chart>
+            </div>
         </div>
     
     </mdb-container>
 </template>
 <script>
-  import { mdbBtn, mdbBtnGroup, mdbBtnToolbar, mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbContainer, mdbBarChart, mdbPieChart } from 'mdbvue';
+  import { mdbBtn, mdbBtnGroup, mdbBtnToolbar, mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbContainer, mdbBarChart, mdbPieChart, mdbHorizontalBarChart } from 'mdbvue';
   export default {
     name: 'killreport',
     components: {
@@ -346,7 +359,8 @@
       mdbModalFooter,
       mdbContainer,
       mdbBarChart,
-      mdbPieChart
+      mdbPieChart,
+      mdbHorizontalBarChart
     },
     props: [
             'hunters',
@@ -369,7 +383,8 @@
             'animalBoar',
             'animalRoedeer',
             'kindEnsamjakt',
-            'kindGemensamJakt'
+            'kindGemensamJakt',
+            'animalsShot'
         ],
     data() {
         return {
@@ -378,6 +393,7 @@
             speciesSelected: null,
             activeD: true,
             activeC: false,
+
             numAnimalBarChartData: {
                 labels: [
                     "Kronvilt",
@@ -444,12 +460,13 @@
                     {
                     data: [this.kindGemensamJakt.length, this.kindEnsamjakt.length],
                     backgroundColor: [
-                        "rgba(100, 100, 10, 0.5)",
-                        "rgba(50, 50, 50, 0.7)",
+                        "#c2a875",
+                        // "rgba(97, 70, 100, 0.5)",
+                        "#5b5b5b",
                     ],
                     hoverBackgroundColor: [
-                        "#FF5A5E",
-                        "#FF5A5E"
+                        "#d9c39a",
+                        "#717171"
                     ]
                     }
                 ]
@@ -457,14 +474,54 @@
             kindOfHuntPieChartOptions: {
                 responsive: true,
                 maintainAspectRatio: false
-            }
+            },
+
+            animalsShotHunternames: [],
+            animalShotNumAnimals: [],
+
+
+
+          animalsShotHorizontalBarChartData: {
+            labels: this.animalShotHunternames(),
+            datasets: [
+                {
+                    label: "Antal skjutna djur per jägare",
+                    data: this.animalShotNumAnimals(),
+                    backgroundColor: this.animalShotBackgroundColors(),
+                    borderColor: this.animalShotBorderColors(),
+                    borderWidth: 1
+                }
+            ]
+        },
+        animalsShotHorizontalBarChartOptions: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            xAxes: [
+              {
+                barPercentage: 1,
+                gridLines: {
+                  display: true,
+                  color: "rgba(0, 0, 0, 0.1)"
+                }
+              }
+            ],
+            yAxes: [
+              {
+                gridLines: {
+                  display: true,
+                  color: "rgba(0, 0, 0, 0.1)"
+                }
+              }
+            ]
+          }
+        }
 
         }
     },
     computed: {
-        numAnimalArray() {
-            
-        }
+        
+        
     },
     mounted() {
         // console.log('meatMooseAverage:');
@@ -503,8 +560,49 @@
 
         console.log('this.kindEnsamjakt: ', this.kindEnsamjakt);
         console.log('this.kindGemensamJakt: ', this.kindGemensamJakt);
+
+        console.log('this.animalsShot: ', this.animalsShot);
+
+        this.animalsShotHunternames = this.animalsShot.map( obj => {
+                return obj.name;
+        });
+
+        // console.log("animalsShotHunternames: ", animalsShotHunternames);
+
+        this.animalsShotNumAnimals = this.animalsShot.map( obj => {
+                return obj.animals.length;
+        });
+
+        // console.log("animalsShotHunter: ", animalsShotNumAnimals);
+
+
     },
+    
     methods: {
+        animalShotHunternames() {
+            let res = this.animalsShot.map( obj => {
+                return obj.name;
+            });
+
+            return res;
+        },
+        animalShotNumAnimals() {
+            let res = this.animalsShot.map( obj => {
+                return obj.animals.length;
+            });
+
+            return res;
+        },
+        animalShotBackgroundColors() {
+            let res = Array(this.animalsShot.length).fill('#5b5b5b');
+
+            return res;
+        },
+        animalShotBorderColors() {
+            let res = Array(this.animalsShot.length).fill('#2d2d2d');
+
+            return res;
+        },
         bubble(obj_unsorted) {
             let bubbling = true;
             let notswapped = true;
@@ -591,6 +689,10 @@
  .info-table {
     font-size: 12px;
     color: rgb(89, 89, 89);
-    font-style: italic;
  }
+ table th {
+    font-size: 0.8rem;
+    font-weight: 400;
+    background-color: #DCCC9B;
+}
 </style>
