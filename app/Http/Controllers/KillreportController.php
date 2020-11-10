@@ -24,7 +24,21 @@ class KillreportController extends Controller
      */
     public function index()
     {
-        $killreports = Killreport::where('deleted_at', null)->orderBy('killdate', 'desc')->get();
+        $input = request()->all();
+        // dd($input);
+        $season_search = request()->input('season');
+        $species_search = request()->input('species');
+        $killreports = Killreport::where('deleted_at', null)
+                                    ->where('season', 'like', '%' .$season_search. '%')
+                                    ->orderBy('killdate', 'desc')->get();
+
+        if( !empty($species_search))
+        $killreports = $killreports->filter(function ($value, $key) use ($species_search) {
+            return $value->animal()->species == $species_search;
+        });
+
+        
+        
 
         return view('killreports.index', compact('killreports'));
     }
