@@ -474,7 +474,7 @@
                 <mdb-radar-chart
                 :data="radarChartDataSmaris"
                 :options="radarChartOptionsSmaris"
-                :width="370"
+                :width="350"
                 :height="350"
                 ></mdb-radar-chart>
             </div>
@@ -485,7 +485,7 @@
                 <mdb-radar-chart
                 :data="radarChartDataGlotterback"
                 :options="radarChartOptionsGlotterback"
-                :width="370"
+                :width="350"
                 :height="350"
                 ></mdb-radar-chart>
             </div>
@@ -496,7 +496,7 @@
                 <mdb-radar-chart
                 :data="radarChartDataNastorp"
                 :options="radarChartOptionsNastorp"
-                :width="370"
+                :width="350"
                 :height="350"
                 ></mdb-radar-chart>
             </div>
