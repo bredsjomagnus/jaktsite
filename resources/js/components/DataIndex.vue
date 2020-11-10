@@ -12,8 +12,9 @@
              <!-- <mdb-btn-toolbar> -->
             <div class="d-flex flex-row justify-content-around">
                 <mdb-btn-group size="sm">
-                    <mdb-btn color="mdb-color" @click.native="toggleToD" :active="activeD" size="sm">Djur</mdb-btn>
-                    <mdb-btn color="mdb-color" @click.native="toggleToC" :active="activeC" size="sm">Diagram</mdb-btn>
+                    <mdb-btn color="mdb-color" @click.native="toggleToD" :active="activeD" size="sm">Kött</mdb-btn>
+                    <mdb-btn color="mdb-color" @click.native="toggleToC" :active="activeC" size="sm">Område</mdb-btn>
+                    <mdb-btn color="mdb-color" @click.native="toggleToA" :active="activeA" size="sm">Fördelning</mdb-btn>
 
                 </mdb-btn-group>
             </div>
@@ -232,7 +233,9 @@
 
 
         <div v-if="activeD">
-
+            <div class=" mt-3 d-flex justify-content-center">
+                <h6>KÖTTFÖRDELNING PER DJURSLAG</h6>
+            </div>
             <div class="d-flex justify-content-center">
                 <mdb-btn class="species-btn" color="grey" size="lg" @click.native="selectSpecies('Kronvilt')"> KRONVILT </mdb-btn>
             </div>
@@ -254,17 +257,24 @@
 
         <div v-else-if="activeC">
             <div class="mt-2 justify-content-center">
-                <h6>ANTAL DJUR</h6>
-                
+                <label for="">OMRÅDE:</label>
                 <select class="browser-default custom-select" v-model="area">
-                    <option value="Småris">Småris</option>
-                    <option value="Glotterbäck">Glotterbäck</option>
-                    <option value="Haddebo">Haddebo</option>
-                    <option value="Västerby">Västerby</option>
-                    <option value="Nästorp">Nästorp</option>
-                    <option value="Pålsboda">Pålsboda</option>
+                    <option v-for="area in areas"
+                            :key="area.index"
+                            :value="area.name"
+                            >
+                            {{area.name}}
+                    </option>
+                   
+                    <!-- <option value="Småris" >Småris</option>
+                    <option value="Glotterbäck" :disabled="areaDisabled">Glotterbäck</option>
+                    <option value="Haddebo" :disabled="areaDisabled">Haddebo</option>
+                    <option value="Västerby" :disabled="areaDisabled">Västerby</option>
+                    <option value="Nästorp" :disabled="areaDisabled">Nästorp</option>
+                    <option value="Pålsboda" :disabled="areaDisabled">Pålsboda</option> -->
                 </select>
-                
+                <hr>
+                <h6 class="mt-3">ANTAL DJUR - {{this.area}}</h6>
                 
                 <mdb-bar-chart v-if="area == 'Småris'"
                     :data="numAnimalBarChartDataSmaris"
@@ -332,6 +342,11 @@
                             <td class="info-table">Rådjur</td>
                             <td class="info-table">{{ this.animalCount(this.area)[4] }} st</td>
                         </tr>
+                        <tr>
+                            <td class="info-table">Totalt</td>
+                            <td class="info-table">{{ this.animalCount(this.area).reduce( (a, b) => a + b) }} st</td>
+                        </tr>
+
                     </tbody>
                 </table>
             </div>
@@ -339,11 +354,46 @@
             
             <hr>
             <div class="mt-4 justify-content-center">
-                <h6>SORTS JAKT</h6>
-                <mdb-pie-chart
+                <h6>SORTS JAKT - {{ this.area}}</h6>
+                <mdb-pie-chart v-if="area == 'Småris'"
                     datalabels
-                    :data="kindOfHuntPieChartData"
-                    :options="kindOfHuntPieChartOptions"
+                    :data="kindOfHuntPieChartDataSmaris"
+                    :options="kindOfHuntPieChartOptionsSmaris"
+                    :width="100"
+                    :height="250"
+                    />
+                <mdb-pie-chart v-else-if="area == 'Glotterbäck'"
+                    datalabels
+                    :data="kindOfHuntPieChartDataGlotterback"
+                    :options="kindOfHuntPieChartOptionsGlotterback"
+                    :width="100"
+                    :height="250"
+                    />
+                <mdb-pie-chart v-else-if="area == 'Haddebo'"
+                    datalabels
+                    :data="kindOfHuntPieChartDataHaddebo"
+                    :options="kindOfHuntPieChartOptionsHaddebo"
+                    :width="100"
+                    :height="250"
+                    />
+                <mdb-pie-chart v-else-if="area == 'Västerby'"
+                    datalabels
+                    :data="kindOfHuntPieChartDataVasterby"
+                    :options="kindOfHuntPieChartOptionsVasterby"
+                    :width="100"
+                    :height="250"
+                    />
+                <mdb-pie-chart v-else-if="area == 'Nästorp'"
+                    datalabels
+                    :data="kindOfHuntPieChartDataNastorp"
+                    :options="kindOfHuntPieChartOptionsNastorp"
+                    :width="100"
+                    :height="250"
+                    />
+                <mdb-pie-chart v-else-if="area == 'Pålsboda'"
+                    datalabels
+                    :data="kindOfHuntPieChartDataPalsboda"
+                    :options="kindOfHuntPieChartOptionsPalsboda"
                     :width="100"
                     :height="250"
                     />
@@ -351,18 +401,18 @@
                     <table class="mt-2 ml-3 table-striped" style="width: 95%;">
                         <thead>
                             <tr>
-                                <th>Sorts jakt</th>
-                                <th>Antal</th>
+                                <th>Sorts jakt - {{ this.area }}</th>
+                                <th>Antal/Procent</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr class="info-table">
                                 <td class="info-table" width="75%">Gemensam jakt</td>
-                                <td class="info-table">{{ this.kindGemensamJakt.length }} st</td>
+                                <td class="info-table">{{ this.kindOfGemensamByArea(this.area) }} st / {{ Math.round((this.kindOfGemensamByArea(this.area)/(this.kindOfGemensamByArea(this.area)+this.kindOfEnsamByArea(this.area))) * 100) }} %</td>
                             </tr>
                             <tr>
                                 <td class="info-table">Ensamjakt</td>
-                                <td class="info-table">{{ this.kindEnsamjakt.length }} st</td>
+                                <td class="info-table">{{ this.kindOfEnsamByArea(this.area) }} st / {{ Math.round((this.kindOfEnsamByArea(this.area)/(this.kindOfGemensamByArea(this.area)+this.kindOfEnsamByArea(this.area))) * 100) }} %</td>
                             </tr>
                         </tbody>
                     </table>
@@ -413,6 +463,11 @@
             </div>
         </div>
     
+        <div v-if="activeA">
+            <div class=" mt-3 d-flex justify-content-center">
+                <h6>FÖRDELNING</h6>
+            </div>
+        </div>
     </mdb-container>
 </template>
 <script>
@@ -464,7 +519,11 @@
             speciesSelected: null,
             activeD: true,
             activeC: false,
+            activeA: false,
             area: 'Småris',
+            areas: [],
+
+            
 
             // pga bug hos mdb kan man inte dynamiskt uppdatera charts
             // gör därför en chart per område.
@@ -812,12 +871,12 @@
 
 
 
-
-            kindOfHuntPieChartData: {
+            // SORTS JAKT - SMÅRIS
+            kindOfHuntPieChartDataSmaris: {
                 labels: [ "Gemensam jakt", "Ensamjakt"],
                 datasets: [
                     {
-                    data: [this.kindGemensamJakt.length, this.kindEnsamjakt.length],
+                    data: [this.kindOfGemensamByArea('Småris'), this.kindOfEnsamByArea('Småris')],
                     backgroundColor: [
                         "#c2a875",
                         "#5b5b5b",
@@ -829,7 +888,119 @@
                     }
                 ]
             },
-            kindOfHuntPieChartOptions: {
+            kindOfHuntPieChartOptionsSmaris: {
+                responsive: true,
+                maintainAspectRatio: false
+            },
+
+
+            // SORTS JAKT - GLOTTERBÄCK
+            kindOfHuntPieChartDataGlotterback: {
+                labels: [ "Gemensam jakt", "Ensamjakt"],
+                datasets: [
+                    {
+                    data: [this.kindOfGemensamByArea('Glotterbäck'), this.kindOfEnsamByArea('Glotterbäck')],
+                    backgroundColor: [
+                        "#c2a875",
+                        "#5b5b5b",
+                    ],
+                    hoverBackgroundColor: [
+                        "#d9c39a",
+                        "#717171"
+                    ]
+                    }
+                ]
+            },
+            kindOfHuntPieChartOptionsGlotterback: {
+                responsive: true,
+                maintainAspectRatio: false
+            },
+
+            // SORTS JAKT - HADDEBO
+            kindOfHuntPieChartDataHaddebo: {
+                labels: [ "Gemensam jakt", "Ensamjakt"],
+                datasets: [
+                    {
+                    data: [this.kindOfGemensamByArea('Haddebo'), this.kindOfEnsamByArea('Haddebo')],
+                    backgroundColor: [
+                        "#c2a875",
+                        "#5b5b5b",
+                    ],
+                    hoverBackgroundColor: [
+                        "#d9c39a",
+                        "#717171"
+                    ]
+                    }
+                ]
+            },
+            kindOfHuntPieChartOptionsHaddebo: {
+                responsive: true,
+                maintainAspectRatio: false
+            },
+
+
+            // SORTS JAKT - VÄSTERBY
+            kindOfHuntPieChartDataVasterby: {
+                labels: [ "Gemensam jakt", "Ensamjakt"],
+                datasets: [
+                    {
+                    data: [this.kindOfGemensamByArea('Västerby'), this.kindOfEnsamByArea('Västerby')],
+                    backgroundColor: [
+                        "#c2a875",
+                        "#5b5b5b",
+                    ],
+                    hoverBackgroundColor: [
+                        "#d9c39a",
+                        "#717171"
+                    ]
+                    }
+                ]
+            },
+            kindOfHuntPieChartOptionsVasterby: {
+                responsive: true,
+                maintainAspectRatio: false
+            },
+
+            // SORTS JAKT - NÄSTROP
+            kindOfHuntPieChartDataNastorp: {
+                labels: [ "Gemensam jakt", "Ensamjakt"],
+                datasets: [
+                    {
+                    data: [this.kindOfGemensamByArea('Nästorp'), this.kindOfEnsamByArea('Nästorp')],
+                    backgroundColor: [
+                        "#c2a875",
+                        "#5b5b5b",
+                    ],
+                    hoverBackgroundColor: [
+                        "#d9c39a",
+                        "#717171"
+                    ]
+                    }
+                ]
+            },
+            kindOfHuntPieChartOptionsNastorp: {
+                responsive: true,
+                maintainAspectRatio: false
+            },
+
+            // SORTS JAKT - PÅLSBODA
+            kindOfHuntPieChartDataPalsboda: {
+                labels: [ "Gemensam jakt", "Ensamjakt"],
+                datasets: [
+                    {
+                    data: [this.kindOfGemensamByArea('Pålsboda'), this.kindOfEnsamByArea('Pålsboda')],
+                    backgroundColor: [
+                        "#c2a875",
+                        "#5b5b5b",
+                    ],
+                    hoverBackgroundColor: [
+                        "#d9c39a",
+                        "#717171"
+                    ]
+                    }
+                ]
+            },
+            kindOfHuntPieChartOptionsPalsboda: {
                 responsive: true,
                 maintainAspectRatio: false
             },
@@ -837,6 +1008,10 @@
 
 
 
+
+
+
+            // DJUR PER SKYTT - SMÅRIS
             animalsShotHorizontalBarChartDataSmaris: {
                 labels: this.animalShotHunternames(),
                 datasets: [
@@ -1111,37 +1286,25 @@
 
         console.log('this.animalsShot: ', this.animalsShot);
 
-        // this.animalsShotHunternames = this.animalsShot.map( obj => {
-        //         return obj.name;
-        // });
-
-        // console.log("animalsShotHunternames: ", animalsShotHunternames);
-
-        // this.animalsShotNumAnimals = this.animalsShot.map( obj => {
-        //         return obj.animals.length;
-        // });
-
-        // console.log("animalsShotHunter: ", animalsShotNumAnimals);
-
-        // console.log("this.numAnimalBarChartData.datasets[0].data: ", this.numAnimalBarChartData.datasets[0].data);
-        let names = [];
-        let kills = [];
-        this.animalsShot.forEach( obj => {
-            let res;
-            names.push(obj.name);
-            res = obj.killreports.filter( rep => {
-                return rep.area == 'Nästorp';
-            });
-            kills.push(res.length);
-        });
-        console.log("names: ", names);
-        console.log("kills: ", kills);
+        // Bygg upp this.areas beroende på vilka områden som har djur att visa data för.
+        this.setAreas();
 
     },
     
     methods: {
-        areaSelected() {
-            this.numAnimalBarChartData.datasets[0].data = this.animalCount(this.area);
+        setAreas() {
+            // Skapar listan med de områden som har några djur att visa data för som kommer bygga upp 
+            // områdes selecten.
+            let listed_areas = ['Småris', 'Glotterbäck', 'Haddebo', 'Västerby', 'Nästorp', 'Pålsboda']; 
+
+            listed_areas.forEach( (area, i) => {
+                 if((this.animalCount(area).reduce( (a, b) => a + b)) != 0) {
+                    this.areas.push({
+                        'name': area,
+                        'index': i
+                    });
+                }
+            });
         },
         animalCount(area) {
             
@@ -1170,6 +1333,18 @@
             console.log("reddeer: ", reddeer);
             
             return [reddeer.length, fallowdeer.length, moose.length, boar.length, roedeer.length];
+        },
+        kindOfGemensamByArea(area) {
+            let res = this.kindGemensamJakt.filter( obj => {
+                return obj.area == area;
+            });
+            return res.length;
+        },
+        kindOfEnsamByArea(area) {
+            let res = this.kindEnsamjakt.filter( obj => {
+                return obj.area == area;
+            });
+            return res.length;
         },
         animalShotsByArea(area) {
             let kills = [];
@@ -1272,10 +1447,17 @@
         toggleToD() {
             this.activeD = true;
             this.activeC = false;
+            this.activeA = false;
         },
         toggleToC() {
-            this.activeC = true;
             this.activeD = false;
+            this.activeC = true;
+            this.activeA = false;
+        },
+        toggleToA() {
+            this.activeD = false;
+            this.activeC = false;
+            this.activeA = true;
         }
     }
   }

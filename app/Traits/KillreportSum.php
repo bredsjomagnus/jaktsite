@@ -15,6 +15,12 @@ trait KillreportSum
      */
     public function getKindOfHunt($kind)
     {
-        return Killreport::where('kindofhunt', '=', $kind)->get();
+        $killreports = Killreport::where('kindofhunt', '=', $kind)->get();
+
+        foreach($killreports as $killreport) {
+            $killreport['area'] = $killreport->area()->area_name;
+        }
+
+        return $killreports;
     }
 } 
