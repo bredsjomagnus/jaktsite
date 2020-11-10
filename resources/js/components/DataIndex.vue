@@ -615,9 +615,9 @@
                 labels: [
                     'Vuxet handjur', 
                     'Vuxet hondjur', 
-                    'Kalv/ki./ku. handjur', 
-                    'Kalv/ki./ku. hondjur',
-                    'Kalv/ki./ku. obestämd',
+                    'Hanunge', 
+                    'Honunge',
+                    'Obestämd unge'
                 ],
                 datasets: [
                     {
@@ -750,9 +750,9 @@
                     labels: [
                         'Vuxet handjur', 
                         'Vuxet hondjur', 
-                        'Kalv/ki./ku. handjur', 
-                        'Kalv/ki./ku. hondjur',
-                        'Kalv/ki./ku. obestämd'
+                        'Hanunge', 
+                        'Honunge',
+                        'Obestämd unge'
                     ],
                     datasets: [
                         {
@@ -883,9 +883,9 @@
                     labels: [
                         'Vuxet handjur', 
                         'Vuxet hondjur', 
-                        'Kalv/ki./ku. handjur', 
-                        'Kalv/ki./ku. hondjur',
-                        'Kalv/ki./ku. obestämd'
+                        'Hanunge', 
+                        'Honunge',
+                        'Obestämd unge'
                     ],
                     datasets: [
                         {

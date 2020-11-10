@@ -19,7 +19,7 @@ trait AnimalSum
     public function getAnimalsOfSpecies($species)
     {
         // Tar fram djuren för ett viss djurslag.
-        $animals = Animal::where('species', '=', $species)->get();
+        $animals = Animal::where('species', '=', $species)->where('deleted_at', null)->get();
 
         // Lägger till keys area och season för djuren.
         foreach($animals as $animal) {
@@ -80,7 +80,7 @@ trait AnimalSum
     public function getDistribution($specie)
     {
         // Ta fram djuren med djurslag $species ur databasen
-        $animals = Animal::where('species', '=', $specie)->get();
+        $animals = Animal::where('species', '=', $specie)->where('deleted_at', null)->get();
 
         // array som skall byggas upp och returneras
         $res = [];

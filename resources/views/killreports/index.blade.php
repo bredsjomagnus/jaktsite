@@ -13,6 +13,7 @@
   </div>
   <form action="#" method="GET">
     @csrf
+    <label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Säsong:</label>
     <select class="custom-select custom-select-sm" name="season" id="season_search">
       <option value="">-</option>
       <option value="17/18" <?php if(isset($_GET['season'])) { echo $_GET['season']  == "17/18" ? "selected" : ""; } ?>>17/18</option>
@@ -20,6 +21,8 @@
       <option value="19/20" <?php if(isset($_GET['season'])) { echo $_GET['season'] == "19/20" ? "selected" : ""; } ?>>19/20</option>
       <option value="20/21" <?php if(isset($_GET['season'])) { echo $_GET['season'] == "20/21" ? "selected" : ""; } ?>>20/21</option>
     </select>
+    
+    <label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Djurslag:</label>
     <select class="custom-select custom-select-sm" name="species" id="species_select">
       <option value="">-</option>
       <option value="Dovvilt"   <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Dovvilt" ? "selected" : ""; } ?>>Dovvilt</option>
@@ -28,7 +31,9 @@
       <option value="Älg"       <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Älg" ? "selected" : ""; } ?>>Älg</option>
       <option value="Rådjur"    <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Rådjur" ? "selected" : ""; } ?>>Rådjur</option>
     </select>
-    <div class="d-flex justify-content-end">
+    <div class="d-flex justify-content-between">
+      <p></p>
+      <p class="mt-3 ml-5">Sökningen gav <?= count($killreports) ?> träffar</p>
       <input class="btn btn-mdb-color btn-sm" type="submit" value="SÖK">
     </div>
   </form>
