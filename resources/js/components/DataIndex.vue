@@ -465,14 +465,39 @@
     
         <div v-if="activeA">
             <div class=" mt-3 d-flex justify-content-center">
-                <h6>FÖRDELNING</h6>
+                <h4>ÅLDERSFÖRDELNING</h4>
             </div>
-            <div class=" mt-3 d-flex justify-content-center">
+            <div class="w-100 mt-3 d-flex justify-content-center">
+                <h6>SMÅRIS</h6>
+            </div>
+            <div class="w-100 mt-3 d-flex justify-content-center">
                 <mdb-radar-chart
                 :data="radarChartDataSmaris"
                 :options="radarChartOptionsSmaris"
-                :width="400"
-                :height="400"
+                :width="370"
+                :height="350"
+                ></mdb-radar-chart>
+            </div>
+             <div class="w-100 mt-3 d-flex justify-content-center">
+                <h6>GLOTTERBÄCK</h6>
+             </div>
+            <div class="w-100 mt-3 d-flex justify-content-center">
+                <mdb-radar-chart
+                :data="radarChartDataGlotterback"
+                :options="radarChartOptionsGlotterback"
+                :width="370"
+                :height="350"
+                ></mdb-radar-chart>
+            </div>
+             <div class="w-100 mt-3 d-flex justify-content-center">
+                <h6>NÄSTORP</h6>
+             </div>
+            <div class="w-100 mt-3 d-flex justify-content-center">
+                <mdb-radar-chart
+                :data="radarChartDataNastorp"
+                :options="radarChartOptionsNastorp"
+                :width="370"
+                :height="350"
                 ></mdb-radar-chart>
             </div>
         </div>
@@ -554,9 +579,9 @@
                 labels: [
                 'Vuxet handjur', 
                 'Vuxet hondjur', 
-                'Kalv handjur', 
-                'Kalv hondjur',
-                'Kalv obestämd'
+                'Kalv/ki./ku.\nhandjur', 
+                'Kalv/ki./ku.\nhondjur',
+                'Kalv/ki./ku..\nobst.'
             ],
                 datasets: [
                         {
@@ -595,11 +620,123 @@
                             data: []
                         }
                     ]
-                },
-                radarChartOptionsSmaris: {
-                    responsive: true,
-                    maintainAspectRatio: false
-                },
+            },
+            radarChartOptionsSmaris: {
+                responsive: true,
+                maintainAspectRatio: false
+            },
+
+            // FÖRDELNING - GLOTTERBÄCK
+            radarChartDataGlotterback: {
+                labels: [
+                'Vuxet handjur', 
+                'Vuxet hondjur', 
+                'Kalv/ki./ku.\nhandjur', 
+                'Kalv/ki./ku.\nhondjur',
+                'Kalv/ki./ku..\nobst.'
+            ],
+                datasets: [
+                        {
+                            label: "",
+                            backgroundColor: "rgba(50, 50, 50, 0.3)",
+                            borderColor: "rgba(255, 99, 132, 1)",
+                            borderWidth: 0.7,
+                            data: []
+                        },
+                        {
+                            label: "",
+                            backgroundColor: "rgba(80, 30, 100, 0.3)",
+                            borderColor: "rgba(100, 99, 132, 1)",
+                            borderWidth: 0.7,
+                            data: []
+                        },
+                        {
+                            label: "",
+                            backgroundColor: "rgba(80, 200, 100, 0.3)",
+                            borderColor: "rgba(100, 200, 132, 1)",
+                            borderWidth: 0.7,
+                            data: []
+                        },
+                        {
+                            label: "",
+                            backgroundColor: "rgba(250, 100, 100, 0.3)",
+                            borderColor: "rgba(250, 150, 150, 1)",
+                            borderWidth: 0.7,
+                            data: []
+                        },
+                        {
+                            label: "",
+                            backgroundColor: "rgba(250, 200, 200, 0.3)",
+                            borderColor: "rgba(250, 200, 150, 1)",
+                            borderWidth: 0.7,
+                            data: []
+                        }
+                    ]
+            },
+            radarChartOptionsGlotterback: {
+                responsive: true,
+                maintainAspectRatio: false
+            },
+
+
+
+            // FÖRDELNING - NÄSTORP
+            radarChartDataNastorp: {
+                labels: [
+                'Vuxet handjur', 
+                'Vuxet hondjur', 
+                'Kalv/ki./ku.\nhandjur', 
+                'Kalv/ki./ku.\nhondjur',
+                'Kalv/ki./ku..\nobst.'
+            ],
+                datasets: [
+                        {
+                            label: "",
+                            backgroundColor: "rgba(50, 50, 50, 0.3)",
+                            borderColor: "rgba(255, 99, 132, 1)",
+                            borderWidth: 0.7,
+                            data: []
+                        },
+                        {
+                            label: "",
+                            backgroundColor: "rgba(80, 30, 100, 0.3)",
+                            borderColor: "rgba(100, 99, 132, 1)",
+                            borderWidth: 0.7,
+                            data: []
+                        },
+                        {
+                            label: "",
+                            backgroundColor: "rgba(80, 200, 100, 0.3)",
+                            borderColor: "rgba(100, 200, 132, 1)",
+                            borderWidth: 0.7,
+                            data: []
+                        },
+                        {
+                            label: "",
+                            backgroundColor: "rgba(250, 100, 100, 0.3)",
+                            borderColor: "rgba(250, 150, 150, 1)",
+                            borderWidth: 0.7,
+                            data: []
+                        },
+                        {
+                            label: "",
+                            backgroundColor: "rgba(250, 200, 200, 0.3)",
+                            borderColor: "rgba(250, 200, 150, 1)",
+                            borderWidth: 0.7,
+                            data: []
+                        }
+                    ]
+            },
+            radarChartOptionsNastorp: {
+                responsive: true,
+                maintainAspectRatio: false
+            },
+
+
+
+
+
+
 
             // SMÅRIS
             numAnimalBarChartDataSmaris: {
@@ -1385,50 +1522,60 @@
             for (const [key, value] of Object.entries(dist)) {
                 // key = område
                 // value = object {adult_male: 4, calf_female: 2} ...
-                if( key === 'Småris') {
-                    let vuxethandjur = 0, vuxethondjur = 0, kalvhandjur = 0, kalvhondjur = 0, kalvunknown = 0;
+                
 
-                    for (const [classification, quantity] of Object.entries(value)) {
-                        if(classification == 'adult_male') {
-                            vuxethandjur = vuxethandjur + quantity;
-                        } else if( classification == 'adult_female' || classification === 'adult_unknown') {
-                            vuxethondjur = vuxethondjur + quantity
-                        } else if( classification === 'calf_male')  {
-                            kalvhandjur = kalvhandjur + quantity;
-                        } else if( classification === 'calf_female') {
-                            kalvhondjur = kalvhondjur + quantity
-                        } else if( classification === 'calf_unknown') {
-                            kalvunknown = kalvunknown + quantity
-                        }
+                let vuxethandjur = 0, vuxethondjur = 0, kalvhandjur = 0, kalvhondjur = 0, kalvunknown = 0;
+
+                for (const [classification, quantity] of Object.entries(value)) {
+                    if(classification == 'adult_male') {
+                        vuxethandjur = vuxethandjur + quantity;
+                    } else if( classification == 'adult_female' || classification === 'adult_unknown') {
+                        vuxethondjur = vuxethondjur + quantity
+                    } else if( classification === 'calf_male')  {
+                        kalvhandjur = kalvhandjur + quantity;
+                    } else if( classification === 'calf_female') {
+                        kalvhondjur = kalvhondjur + quantity
+                    } else if( classification === 'calf_unknown') {
+                        kalvunknown = kalvunknown + quantity
                     }
-                    let index;
-                    if(species === 'Kronvilt') {
-                        index = 0;
-                    } else if(species === 'Dovvilt') {
-                        index = 1;
-                    } else if(species === 'Vildsvin') {
-                        index = 2;
-                    } else if(species === 'Älg') {
-                         index = 3;
-                    } else if(species === 'Rådjur') {
-                         index = 4;
-                    }
-                    // console.log("vuxethandjur: ", vuxethandjur);
-                    // console.log("vuxethondjur: ", vuxethondjur);
-                    // console.log("kalvhandjur: ", kalvhandjur);
-                    // console.log("kalvhondjur: ", kalvhondjur);
-                    // console.log("kalvunknown: ", kalvunknown);
-
-                    this.radarChartDataSmaris.datasets[index].label = species + " - Småris";
-                    this.radarChartDataSmaris.datasets[index].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
-
-                    // console.log(this.radarChartDataSmaris.datasets[0]);
                 }
                 
-            
+                // console.log("vuxethandjur: ", vuxethandjur);
+                // console.log("vuxethondjur: ", vuxethondjur);
+                // console.log("kalvhandjur: ", kalvhandjur);
+                // console.log("kalvhondjur: ", kalvhondjur);
+                // console.log("kalvunknown: ", kalvunknown);
+                let index;
+                if(species === 'Kronvilt') {
+                    index = 0;
+                } else if(species === 'Dovvilt') {
+                    index = 1;
+                } else if(species === 'Vildsvin') {
+                    index = 2;
+                } else if(species === 'Älg') {
+                    index = 3;
+                } else if(species === 'Rådjur') {
+                    index = 4;
+                }
+
+                if( key === 'Småris') {
+                    this.radarChartDataSmaris.datasets[index].label = species;
+                    this.radarChartDataSmaris.datasets[index].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
+                } else if( key === 'Glotterbäck') {
+                    this.radarChartDataGlotterback.datasets[index].label = species;
+                    this.radarChartDataGlotterback.datasets[index].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
+                } else if( key === 'Nästorp') {
+                    this.radarChartDataNastorp.datasets[index].label = species;
+                    this.radarChartDataNastorp.datasets[index].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
+                }
+
+                    // console.log(this.radarChartDataSmaris.datasets[0]);
             }
+                
             
         },
+            
+    
         setAreas() {
             // Skapar listan med de områden som har några djur att visa data för som kommer bygga upp 
             // områdes selecten.
