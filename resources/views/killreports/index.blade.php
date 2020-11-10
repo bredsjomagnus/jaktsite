@@ -11,6 +11,27 @@
       <button class="btn btn-mdb-color btn-sm" ><a style="color: white;" href="{{ url('/data') }}">Data</a></button>
     </div>
   </div>
+  <form action="#" method="GET">
+    @csrf
+    <select class="custom-select custom-select-sm" name="season" id="season_search">
+      <option value="">-</option>
+      <option value="17/18" <?php if(isset($_GET['season'])) { echo $_GET['season']  == "17/18" ? "selected" : ""; } ?>>17/18</option>
+      <option value="18/19" <?php if(isset($_GET['season'])) { echo $_GET['season'] == "18/19" ? "selected" : ""; } ?>>18/19</option>
+      <option value="19/20" <?php if(isset($_GET['season'])) { echo $_GET['season'] == "19/20" ? "selected" : ""; } ?>>19/20</option>
+      <option value="20/21" <?php if(isset($_GET['season'])) { echo $_GET['season'] == "20/21" ? "selected" : ""; } ?>>20/21</option>
+    </select>
+    <select class="custom-select custom-select-sm" name="species" id="species_select">
+      <option value="">-</option>
+      <option value="Dovvilt"   <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Dovvilt" ? "selected" : ""; } ?>>Dovvilt</option>
+      <option value="Kronvilt"  <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Kronvilt" ? "selected" : ""; } ?>>Kronvilt</option>
+      <option value="Vildsvin"  <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Vildsvin" ? "selected" : ""; } ?>>Vildsvin</option>
+      <option value="Älg"       <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Älg" ? "selected" : ""; } ?>>Älg</option>
+      <option value="Rådjur"    <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Rådjur" ? "selected" : ""; } ?>>Rådjur</option>
+    </select>
+    <div class="d-flex justify-content-end">
+      <input class="btn btn-mdb-color btn-sm" type="submit" value="SÖK">
+    </div>
+  </form>
     <!-- Card deck -->
     <div class="card-deck clearfix">
 
