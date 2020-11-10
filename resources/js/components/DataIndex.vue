@@ -615,9 +615,9 @@
                 labels: [
                     'Vuxet handjur', 
                     'Vuxet hondjur', 
-                    'Kalv/killing handjur', 
-                    'Kalv/killing hondjur',
-                    'Kalv obestämd'
+                    'Kalv/ki./ku. handjur', 
+                    'Kalv/ki./ku. hondjur',
+                    'Kalv/ki./ku. obestämd',
                 ],
                 datasets: [
                     {
@@ -719,7 +719,7 @@
                 },
                 distBarChartOptionsSmaris: {
                     responsive: true,
-                    maintainAspectRatio: false,
+                    maintainAspectRatio: true,
                     scales: {
                         xAxes: [
                         {
@@ -731,10 +731,13 @@
                         }
                         ],
                         yAxes: [
-                        {
+                        { 
+                            ticks: {
+                                beginAtZero: true
+                            },
                             gridLines: {
-                            display: true,
-                            color: "rgba(0, 0, 0, 0.1)"
+                                display: true,
+                                color: "rgba(0, 0, 0, 0.1)"
                             }
                         }
                         ]
@@ -747,9 +750,9 @@
                     labels: [
                         'Vuxet handjur', 
                         'Vuxet hondjur', 
-                        'Kalv/killing handjur', 
-                        'Kalv/killing hondjur',
-                        'Kalv obestämd'
+                        'Kalv/ki./ku. handjur', 
+                        'Kalv/ki./ku. hondjur',
+                        'Kalv/ki./ku. obestämd'
                     ],
                     datasets: [
                         {
@@ -864,6 +867,9 @@
                         ],
                         yAxes: [
                         {
+                            ticks: {
+                                beginAtZero: true
+                            },
                             gridLines: {
                             display: true,
                             color: "rgba(0, 0, 0, 0.1)"
@@ -877,9 +883,9 @@
                     labels: [
                         'Vuxet handjur', 
                         'Vuxet hondjur', 
-                        'Kalv/killing handjur', 
-                        'Kalv/killing hondjur',
-                        'Kalv obestämd'
+                        'Kalv/ki./ku. handjur', 
+                        'Kalv/ki./ku. hondjur',
+                        'Kalv/ki./ku. obestämd'
                     ],
                     datasets: [
                         {
@@ -994,6 +1000,9 @@
                         ],
                         yAxes: [
                         {
+                            ticks: {
+                                beginAtZero: true
+                            },
                             gridLines: {
                             display: true,
                             color: "rgba(0, 0, 0, 0.1)"
