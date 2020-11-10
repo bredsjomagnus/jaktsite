@@ -82,6 +82,7 @@ trait AnimalSum
         // Ta fram djuren med djurslag $species ur databasen
         $animals = Animal::where('species', '=', $specie)->get();
 
+        // array som skall byggas upp och returneras
         $res = [];
 
         // Förbereder resultat arrayen med de områden som finns
