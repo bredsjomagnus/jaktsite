@@ -467,11 +467,19 @@
             <div class=" mt-3 d-flex justify-content-center">
                 <h6>FÖRDELNING</h6>
             </div>
+            <div class=" mt-3 d-flex justify-content-center">
+                <mdb-radar-chart
+                :data="radarChartDataSmaris"
+                :options="radarChartOptionsSmaris"
+                :width="400"
+                :height="400"
+                ></mdb-radar-chart>
+            </div>
         </div>
     </mdb-container>
 </template>
 <script>
-  import { mdbBtn, mdbBtnGroup, mdbBtnToolbar, mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbContainer, mdbBarChart, mdbPieChart, mdbHorizontalBarChart } from 'mdbvue';
+  import { mdbBtn, mdbBtnGroup, mdbBtnToolbar, mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbContainer, mdbBarChart, mdbPieChart, mdbHorizontalBarChart, mdbRadarChart } from 'mdbvue';
   export default {
     name: 'killreport',
     components: {
@@ -486,7 +494,8 @@
       mdbContainer,
       mdbBarChart,
       mdbPieChart,
-      mdbHorizontalBarChart
+      mdbHorizontalBarChart,
+      mdbRadarChart
     },
     props: [
             'hunters',
@@ -510,7 +519,12 @@
             'animalRoedeer',
             'kindEnsamjakt',
             'kindGemensamJakt',
-            'animalsShot'
+            'animalsShot',
+            'reddeerDist',
+            'fallowdeerDist',
+            'mooseDist',
+            'boarDist',
+            'roedeerDist'
         ],
     data() {
         return {
@@ -522,11 +536,70 @@
             activeA: false,
             area: 'Småris',
             areas: [],
+            dist_categories: [
+                'Vuxet handjur', 
+                'Vuxet hondjur', 
+                'Kalv/killing handjur', 
+                'Kalv/killing hondjur',
+                'Kalv obestämd'
+            ],
 
             
 
             // pga bug hos mdb kan man inte dynamiskt uppdatera charts
             // gör därför en chart per område.
+
+            // FÖRDELNING - SMÅRIS
+            radarChartDataSmaris: {
+                labels: [
+                'Vuxet handjur', 
+                'Vuxet hondjur', 
+                'Kalv handjur', 
+                'Kalv hondjur',
+                'Kalv obestämd'
+            ],
+                datasets: [
+                        {
+                            label: "",
+                            backgroundColor: "rgba(50, 50, 50, 0.3)",
+                            borderColor: "rgba(255, 99, 132, 1)",
+                            borderWidth: 0.7,
+                            data: []
+                        },
+                        {
+                            label: "",
+                            backgroundColor: "rgba(80, 30, 100, 0.3)",
+                            borderColor: "rgba(100, 99, 132, 1)",
+                            borderWidth: 0.7,
+                            data: []
+                        },
+                        {
+                            label: "",
+                            backgroundColor: "rgba(80, 200, 100, 0.3)",
+                            borderColor: "rgba(100, 200, 132, 1)",
+                            borderWidth: 0.7,
+                            data: []
+                        },
+                        {
+                            label: "",
+                            backgroundColor: "rgba(250, 100, 100, 0.3)",
+                            borderColor: "rgba(250, 150, 150, 1)",
+                            borderWidth: 0.7,
+                            data: []
+                        },
+                        {
+                            label: "",
+                            backgroundColor: "rgba(250, 200, 200, 0.3)",
+                            borderColor: "rgba(250, 200, 150, 1)",
+                            borderWidth: 0.7,
+                            data: []
+                        }
+                    ]
+                },
+                radarChartOptionsSmaris: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                },
 
             // SMÅRIS
             numAnimalBarChartDataSmaris: {
@@ -1286,12 +1359,76 @@
 
         console.log('this.animalsShot: ', this.animalsShot);
 
+
+        console.log("this.reddeerDist: ", this.reddeerDist);
+        console.log("this.fallowdeerDist: ", this.fallowdeerDist);
+        console.log("this.mooseDist: ", this.mooseDist);
+        console.log("this.boarDist: ", this.boarDist);
+        console.log("this.roedeerDist: ", this.roedeerDist);
+
+
+        this.prepDist(this.reddeerDist, 'Kronvilt');
+        this.prepDist(this.fallowdeerDist, 'Dovvilt');
+        this.prepDist(this.boarDist, 'Vildsvin');
+        this.prepDist(this.mooseDist, 'Älg');
+        this.prepDist(this.roedeerDist, 'Rådjur');
+
         // Bygg upp this.areas beroende på vilka områden som har djur att visa data för.
         this.setAreas();
 
     },
     
     methods: {
+        prepDist(dist, species) {
+
+            // KRONVILT DISTRIBUTION
+            for (const [key, value] of Object.entries(dist)) {
+                // key = område
+                // value = object {adult_male: 4, calf_female: 2} ...
+                if( key === 'Småris') {
+                    let vuxethandjur = 0, vuxethondjur = 0, kalvhandjur = 0, kalvhondjur = 0, kalvunknown = 0;
+
+                    for (const [classification, quantity] of Object.entries(value)) {
+                        if(classification == 'adult_male') {
+                            vuxethandjur = vuxethandjur + quantity;
+                        } else if( classification == 'adult_female' || classification === 'adult_unknown') {
+                            vuxethondjur = vuxethondjur + quantity
+                        } else if( classification === 'calf_male')  {
+                            kalvhandjur = kalvhandjur + quantity;
+                        } else if( classification === 'calf_female') {
+                            kalvhondjur = kalvhondjur + quantity
+                        } else if( classification === 'calf_unknown') {
+                            kalvunknown = kalvunknown + quantity
+                        }
+                    }
+                    let index;
+                    if(species === 'Kronvilt') {
+                        index = 0;
+                    } else if(species === 'Dovvilt') {
+                        index = 1;
+                    } else if(species === 'Vildsvin') {
+                        index = 2;
+                    } else if(species === 'Älg') {
+                         index = 3;
+                    } else if(species === 'Rådjur') {
+                         index = 4;
+                    }
+                    // console.log("vuxethandjur: ", vuxethandjur);
+                    // console.log("vuxethondjur: ", vuxethondjur);
+                    // console.log("kalvhandjur: ", kalvhandjur);
+                    // console.log("kalvhondjur: ", kalvhondjur);
+                    // console.log("kalvunknown: ", kalvunknown);
+
+                    this.radarChartDataSmaris.datasets[index].label = species + " - Småris";
+                    this.radarChartDataSmaris.datasets[index].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
+
+                    // console.log(this.radarChartDataSmaris.datasets[0]);
+                }
+                
+            
+            }
+            
+        },
         setAreas() {
             // Skapar listan med de områden som har några djur att visa data för som kommer bygga upp 
             // områdes selecten.

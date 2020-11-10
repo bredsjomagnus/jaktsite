@@ -38,6 +38,7 @@ class DataController extends Controller
         $user_fallowdeer_average        = $this->sumMeatWrapper('Dovvilt', 'average', $year_back);
         $user_roedeer_average           = $this->sumMeatWrapper('Rådjur', 'average', $year_back);
 
+        
 
         $data = [
             'hunters'                       => User::where('occupation', 'hunter')->where('role', '!=', 'guest')->get(),
@@ -59,7 +60,12 @@ class DataController extends Controller
             'animal_roedeer'                => $this->getAnimalsOfSpecies('Rådjur'),
             'kind_ensamjakt'                => $this->getKindOfHunt('Ensamjakt'),
             'kind_gemensam_jakt'            => $this->getKindOfHunt('Gemensam jakt'),
-            'animals_shot'                  => $this->getNumberOfAnimalsShot()
+            'animals_shot'                  => $this->getNumberOfAnimalsShot(),
+            'reddeer_dist'                  => $this->getDistribution('Kronvilt'),
+            'fallowdeer_dist'               => $this->getDistribution('Dovvilt'),
+            'moose_dist'                    => $this->getDistribution('Älg'),
+            'boar_dist'                     => $this->getDistribution('Vildsvin'),
+            'roedeer_dist'                  => $this->getDistribution('Rådjur')
         ];
 
         return view('data.index', $data);

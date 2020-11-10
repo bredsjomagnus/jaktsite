@@ -5,6 +5,7 @@ namespace App\Traits;
 use App\Animal;
 use App\User;
 use App\Killreport;
+use App\Area;
 
 trait AnimalSum
 {
@@ -65,13 +66,44 @@ trait AnimalSum
                 'killreports'   => $killreports
             ];
             $index += 1;
+        }
+        return $data;
+    }
 
-            
+    /**
+     * Get the distribution per species
+     * 
+     * @param String $specie, ex 'Dovvilt'
+     * 
+     * @return Array ['Småris' => Array ['adult_male' => 2, 'calf_female' => 4], 'Haddebo' => Array[...]]
+     */
+    public function getDistribution($specie)
+    {
+        // Ta fram djuren med djurslag $species ur databasen
+        $animals = Animal::where('species', '=', $specie)->get();
+
+        // Förbereder resultat arrayen med de områden som finns
+        $areas = Area::all();
+        foreach($areas as $area) {
+            $res[$area->area_name] = [];
         }
 
-        
+        // Gå igenom dem och sortera in dem i listan
+        foreach($animals as $animal) {
 
-        return $data;
+            // Området för djuret
+            $animal_area = $animal->killreport()->area()->area_name;  
 
+            // Existerar djuret klassificering för detta område sedan förut så lägg till på den
+            if(array_key_exists($animal->age.'_'.$animal->sex, $res[$animal_area])) { 
+                $res[$animal_area][$animal->age.'_'.$animal->sex] = $res[$animal_area][$animal->age.'_'.$animal->sex] + 1;
+
+            // Annars lägg in första räkningen för området och djurklassificeringen
+            } else {
+                $res[$animal_area][$animal->age.'_'.$animal->sex] = 1;
+            }
+        }
+        // dd($res);
+        return $res;
     }
 }  
