@@ -43,16 +43,26 @@
             <select class="custom-select custom-select-sm" name="users" id="species_select">
               <option value="">Alla</option>
               @foreach($users as $user)
-                <option value="{{ $user->id }}">{{ $user->firstname }} {{$user->lastname}}</option>
+                <option value="{{ $user->id }}" <?php if(isset($_GET['users'])) { echo $_GET['users'] ==  $user->id ? "selected" : ""; } ?>>{{ $user->firstname }} {{$user->lastname}}</option>
               @endforeach
             </select>
           </td>
-        </tr> 
+        </tr>
+        <tr>
+          <td colspan="2" style="text-align:right"><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Område:</label></td>
+          <td>
+             <select class="custom-select custom-select-sm" name="areas" id="species_select">
+              <option value="">Alla</option>
+              @foreach($areas as $area)
+                <option value="{{ $area->id }}" <?php if(isset($_GET['areas'])) { echo $_GET['areas'] ==  $area->id ? "selected" : ""; } ?>>{{ $area->area_name }}</option>
+              @endforeach
+            </select>
+          </td>
+        </tr>
       </table>
 
     <div class="d-flex justify-content-between">
-      <p></p>
-      <p class="mt-3 ml-5 text-muted" style="font-size: 12px;">Sökningen gav <?= count($killreports) ?> träffar</p>
+      <p class="mt-2 text-muted" style="font-size: 12px;">Sökningen gav <?= count($killreports) ?> träffar</p>
       <input class="btn btn-mdb-color btn-sm" type="submit" value="SÖK">
     </div>
   </form>

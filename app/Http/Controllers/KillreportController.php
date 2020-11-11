@@ -23,37 +23,44 @@ class KillreportController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $input = request()->all();
-        // dd($input);
+    {  
         $season_search = htmlspecialchars(request()->input('season'));
         $species_search = htmlspecialchars(request()->input('species'));
         $users_search = htmlspecialchars(request()->input('users'));
+        $areas_search = htmlspecialchars(request()->input('areas'));
 
        
-
+        // Tar fram killreports beroende på säsong
         $killreports = Killreport::where('deleted_at', null)
                                     ->where('season', 'like', '%' .$season_search. '%')
                                     ->orderBy('killdate', 'desc')->get();
 
+        // Filtrerar ut djurslag
         if( !empty($species_search) ) {
             $killreports = $killreports->filter(function ($value, $key) use ($species_search) {
                 return $value->animal()->species == $species_search;
             });
         }
         
-
+        // Filterar ut jägare
         if( !empty($users_search) ) {
              $killreports = $killreports->filter(function ($value, $key) use ($users_search) {
                 return $value->shooter->id == $users_search;
             });
         }
 
+        // Filtrear ut område
+        if( !empty($areas_search) ) {
+            $killreports = $killreports->filter(function ($value, $key) use ($areas_search) {
+                return $value->area()->id == $areas_search;
+            });
+        }
 
 
         $data = [
             'killreports'   => $killreports,
-            'users'         => User::where('occupation', '=', 'hunter')->get()
+            'users'         => User::where('occupation', '=', 'hunter')->get(),
+            'areas'         => Area::all()
         ];
         
         
