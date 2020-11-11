@@ -26,21 +26,39 @@ class KillreportController extends Controller
     {
         $input = request()->all();
         // dd($input);
-        $season_search = request()->input('season');
-        $species_search = request()->input('species');
+        $season_search = htmlspecialchars(request()->input('season'));
+        $species_search = htmlspecialchars(request()->input('species'));
+        $users_search = htmlspecialchars(request()->input('users'));
+
+       
+
         $killreports = Killreport::where('deleted_at', null)
                                     ->where('season', 'like', '%' .$season_search. '%')
                                     ->orderBy('killdate', 'desc')->get();
 
-        if( !empty($species_search))
-        $killreports = $killreports->filter(function ($value, $key) use ($species_search) {
-            return $value->animal()->species == $species_search;
-        });
+        if( !empty($species_search) ) {
+            $killreports = $killreports->filter(function ($value, $key) use ($species_search) {
+                return $value->animal()->species == $species_search;
+            });
+        }
+        
 
+        if( !empty($users_search) ) {
+             $killreports = $killreports->filter(function ($value, $key) use ($users_search) {
+                return $value->shooter->id == $users_search;
+            });
+        }
+
+
+
+        $data = [
+            'killreports'   => $killreports,
+            'users'         => User::where('occupation', '=', 'hunter')->get()
+        ];
         
         
 
-        return view('killreports.index', compact('killreports'));
+        return view('killreports.index', $data);
     }
 
     /**

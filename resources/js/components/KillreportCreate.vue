@@ -997,8 +997,8 @@
         },
         setSpeciesType(value) {
             this.animalfields.speciestype = value;
-            this.animalfields.age = null;
-            this.animalfields.sex = null;
+            this.animalfields.age = 'unknown';
+            this.animalfields.sex = 'unknown';
 
             if (value == 'Tjur' || value == 'Ko' || value == 'Kviga') {
                 this.animalfields.age = 'adult';
