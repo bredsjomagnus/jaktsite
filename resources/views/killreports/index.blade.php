@@ -11,12 +11,12 @@
       <button class="btn btn-mdb-color btn-sm" ><a style="color: white;" href="{{ url('/data') }}">Data</a></button>
     </div>
   </div>
+
   <form action="#" method="GET">
     @csrf
-      <table>
+      <table class="w-100">
         <tr>
           <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Säsong:</label></td>
-          <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Djurslag:</label></td>
           <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Skytt:</label></td>
         </tr>
         <tr>
@@ -29,16 +29,7 @@
               <option value="20/21" <?php if(isset($_GET['season'])) { echo $_GET['season'] == "20/21" ? "selected" : ""; } ?>>20/21</option>
             </select>
           </td>
-          <td>
-            <select class="custom-select custom-select-sm" name="species" id="species_select">
-              <option value="">Alla</option>
-              <option value="Dovvilt"   <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Dovvilt" ? "selected" : ""; } ?>>Dovvilt</option>
-              <option value="Kronvilt"  <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Kronvilt" ? "selected" : ""; } ?>>Kronvilt</option>
-              <option value="Vildsvin"  <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Vildsvin" ? "selected" : ""; } ?>>Vildsvin</option>
-              <option value="Älg"       <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Älg" ? "selected" : ""; } ?>>Älg</option>
-              <option value="Rådjur"    <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Rådjur" ? "selected" : ""; } ?>>Rådjur</option>
-            </select>
-          </td>
+
           <td>
             <select class="custom-select custom-select-sm" name="users" id="species_select">
               <option value="">Alla</option>
@@ -49,7 +40,20 @@
           </td>
         </tr>
         <tr>
-          <td colspan="2" style="text-align:right"><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Område:</label></td>
+          <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Djurslag:</label></td>
+          <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Område:</label></td>
+        </tr>
+        <tr>
+          <td>
+            <select class="custom-select custom-select-sm" name="species" id="species_select">
+              <option value="">Alla</option>
+              <option value="Dovvilt"   <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Dovvilt" ? "selected" : ""; } ?>>Dovvilt</option>
+              <option value="Kronvilt"  <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Kronvilt" ? "selected" : ""; } ?>>Kronvilt</option>
+              <option value="Vildsvin"  <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Vildsvin" ? "selected" : ""; } ?>>Vildsvin</option>
+              <option value="Älg"       <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Älg" ? "selected" : ""; } ?>>Älg</option>
+              <option value="Rådjur"    <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Rådjur" ? "selected" : ""; } ?>>Rådjur</option>
+            </select>
+          </td>
           <td>
              <select class="custom-select custom-select-sm" name="areas" id="species_select">
               <option value="">Alla</option>
@@ -62,7 +66,8 @@
       </table>
 
     <div class="d-flex justify-content-between">
-      <p class="mt-2 text-muted" style="font-size: 12px;">Sökningen gav <?= count($killreports) ?> träffar</p>
+      <p></p>
+      <p class="ml-3 mt-3 text-muted" style="font-size: 12px;">Sökningen gav <?= count($killreports) ?> träffar</p>
       <input class="btn btn-mdb-color btn-sm" type="submit" value="SÖK">
     </div>
   </form>
