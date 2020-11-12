@@ -51,8 +51,10 @@ trait AnimalSum
             $killreports = $user->killreports_shooter;
             
             foreach($killreports as $killreport) {
-                $killreport['area'] = $killreport->area()->area_name;
-                $animal['season'] = $killreport->season;
+                $killreport['area']     = $killreport->area()->area_name;
+                $killreport['species']  = $killreport->animal()->species;
+                // $animal['season'] = $killreport->season;
+                
             }
 
             

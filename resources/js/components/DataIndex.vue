@@ -460,6 +460,33 @@
                     :width="600"
                     :height="300"
                 ></mdb-horizontal-bar-chart>
+                <h6>Skytt [Gemensam jakt/Ensamjakt] - {{this.area}}</h6>
+                 <table class="mt-2 ml-3 table-striped" style="width: 95%;" >
+                    <thead>
+                        <tr>
+                            <th>Jägare</th>
+                            <th>Kronvilt</th>
+                            <th>Dovvilt</th>
+                            <th>Älg</th>
+                            <th>Vildsvin</th>
+                            <th>Rådjur</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            v-for="hunter in animalsShot"
+                            :key="hunter.id"
+                        >
+                            <td>{{ hunter.firstname }} {{ hunter.lastname }}</td>
+                            <td style="text-align:center">{{ animalsByHunter(hunter.id, 'Kronvilt', area, 'Gemensam jakt') }}/{{ animalsByHunter(hunter.id, 'Kronvilt', area, 'Ensamjakt') }}</td>
+                            <td style="text-align:center">{{ animalsByHunter(hunter.id, 'Dovvilt', area, 'Gemensam jakt') }}/{{ animalsByHunter(hunter.id, 'Dovvilt', area, 'Ensamjakt') }}</td>
+                            <td style="text-align:center">{{ animalsByHunter(hunter.id, 'Älg', area, 'Gemensam jakt') }}/{{ animalsByHunter(hunter.id, 'Älg', area, 'Ensamjakt') }}</td>
+                            <td style="text-align:center">{{ animalsByHunter(hunter.id, 'Vildsvin', area, 'Gemensam jakt') }}/{{ animalsByHunter(hunter.id, 'Vildsvin', area, 'Ensamjakt') }}</td>
+                            <td style="text-align:center">{{ animalsByHunter(hunter.id, 'Rådjur', area, 'Gemensam jakt') }}/{{ animalsByHunter(hunter.id, 'Rådjur', area, 'Ensamjakt') }}</td>
+
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     
@@ -1216,18 +1243,24 @@
             numAnimalBarChartOptionsSmaris: {
                 responsive: true,
                 maintainAspectRatio: false,
+                legend: {
+                    display: false,
+                },
                 scales: {
                     xAxes: [
-                    {
-                        barPercentage: 1,
-                        gridLines: {
-                        display: true,
-                        color: "rgba(0, 0, 0, 0.1)"
+                        {
+                            barPercentage: 1,
+                            gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                            }
                         }
-                    }
                     ],
                     yAxes: [
                     {
+                        ticks: {
+                            beginAtZero: true
+                        },
                         gridLines: {
                         display: true,
                         color: "rgba(0, 0, 0, 0.1)"
@@ -1272,23 +1305,29 @@
             numAnimalBarChartOptionsGlotterback: {
                 responsive: true,
                 maintainAspectRatio: false,
+                legend: {
+                    display: false,
+                },
                 scales: {
                     xAxes: [
-                    {
-                        barPercentage: 1,
-                        gridLines: {
-                        display: true,
-                        color: "rgba(0, 0, 0, 0.1)"
+                        {
+                            barPercentage: 1,
+                            gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                            }
                         }
-                    }
                     ],
                     yAxes: [
-                    {
-                        gridLines: {
-                        display: true,
-                        color: "rgba(0, 0, 0, 0.1)"
+                        {
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                            }
                         }
-                    }
                     ]
                 }
             },
@@ -1328,23 +1367,29 @@
             numAnimalBarChartOptionsHaddebo: {
                 responsive: true,
                 maintainAspectRatio: false,
+                legend: {
+                    display: false,
+                },
                 scales: {
                     xAxes: [
-                    {
-                        barPercentage: 1,
-                        gridLines: {
-                        display: true,
-                        color: "rgba(0, 0, 0, 0.1)"
+                        {
+                            barPercentage: 1,
+                            gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                            }
                         }
-                    }
                     ],
                     yAxes: [
-                    {
-                        gridLines: {
-                        display: true,
-                        color: "rgba(0, 0, 0, 0.1)"
+                        {
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                            }
                         }
-                    }
                     ]
                 }
             },
@@ -1384,23 +1429,29 @@
             numAnimalBarChartOptionsVasterby: {
                 responsive: true,
                 maintainAspectRatio: false,
+                legend: {
+                    display: false,
+                },
                 scales: {
                     xAxes: [
-                    {
-                        barPercentage: 1,
-                        gridLines: {
-                        display: true,
-                        color: "rgba(0, 0, 0, 0.1)"
+                        {
+                            barPercentage: 1,
+                            gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                            }
                         }
-                    }
                     ],
                     yAxes: [
-                    {
-                        gridLines: {
-                        display: true,
-                        color: "rgba(0, 0, 0, 0.1)"
+                        {
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                            }
                         }
-                    }
                     ]
                 }
             },
@@ -1441,23 +1492,29 @@
             numAnimalBarChartOptionsNastorp: {
                 responsive: true,
                 maintainAspectRatio: false,
+                legend: {
+                    display: false,
+                },
                 scales: {
                     xAxes: [
-                    {
-                        barPercentage: 1,
-                        gridLines: {
-                        display: true,
-                        color: "rgba(0, 0, 0, 0.1)"
+                        {
+                            barPercentage: 1,
+                            gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                            }
                         }
-                    }
                     ],
                     yAxes: [
-                    {
-                        gridLines: {
-                        display: true,
-                        color: "rgba(0, 0, 0, 0.1)"
+                        {
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                            }
                         }
-                    }
                     ]
                 }
             },
@@ -1499,23 +1556,29 @@
             numAnimalBarChartOptionsPalsboda: {
                 responsive: true,
                 maintainAspectRatio: false,
+                legend: {
+                    display: false,
+                },
                 scales: {
                     xAxes: [
-                    {
-                        barPercentage: 1,
-                        gridLines: {
-                        display: true,
-                        color: "rgba(0, 0, 0, 0.1)"
+                        {
+                            barPercentage: 1,
+                            gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                            }
                         }
-                    }
                     ],
                     yAxes: [
-                    {
-                        gridLines: {
-                        display: true,
-                        color: "rgba(0, 0, 0, 0.1)"
+                        {
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                            }
                         }
-                    }
                     ]
                 }
             },
@@ -1960,6 +2023,27 @@
     },
     
     methods: {
+        animalsByHunter(hunter_id, species, area, kindofhunt) {
+
+            // Get hunter
+            let hunter = this.animalsShot.filter( obj => {
+                return obj.id == hunter_id;
+            });
+
+            // Get that hunters reports
+            let hunter_killreports = hunter[0].killreports;
+
+            // console.log("hunter_killreports: ", hunter_killreports);
+
+            // Filter reports by area, kindofhunt and species
+            hunter_killreports = hunter_killreports.filter( obj => {
+                return (obj.area == area) && (obj.kindofhunt == kindofhunt) && (obj.species == species);
+            });
+
+            return hunter_killreports.length;
+
+
+        },
         prepDist(dist, species) {
 
             // KRONVILT DISTRIBUTION

@@ -48,7 +48,7 @@ class User extends Authenticatable
 
     public function killreports_shooter()
     {
-        return $this->hasMany(Killreport::class, 'shooter_id')->latest('created_at');
+        return $this->hasMany(Killreport::class, 'shooter_id')->where('deleted_at', NULL)->latest('created_at');
     }
 
     public function killreports_authored()
