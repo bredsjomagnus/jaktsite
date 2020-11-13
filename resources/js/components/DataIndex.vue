@@ -485,6 +485,14 @@
                             <td style="text-align:center">{{ animalsByHunter(hunter.id, 'Rådjur', area, 'Gemensam jakt') }}/{{ animalsByHunter(hunter.id, 'Rådjur', area, 'Ensamjakt') }}</td>
 
                         </tr>
+                        <tr>
+                            <td>Gäster</td>
+                            <td style="text-align:center">{{ this.animalsByGuests('Kronvilt', this.area, 'Gemensam jakt') }}/{{ this.animalsByGuests('Kronvilt', this.area, 'Ensamjakt') }}</td>
+                            <td style="text-align:center">{{ this.animalsByGuests('Dovvilt', this.area, 'Gemensam jakt') }}/{{ this.animalsByGuests('Dovvilt', this.area, 'Ensamjakt') }}</td>
+                            <td style="text-align:center">{{ this.animalsByGuests('Älg', this.area, 'Gemensam jakt') }}/{{ this.animalsByGuests('Älg', this.area, 'Ensamjakt') }}</td>
+                            <td style="text-align:center">{{ this.animalsByGuests('Vildsvin', this.area, 'Gemensam jakt') }}/{{ this.animalsByGuests('Vildsvin', this.area, 'Ensamjakt') }}</td>
+                            <td style="text-align:center">{{ this.animalsByGuests('Rådjur', this.area, 'Gemensam jakt') }}/{{ this.animalsByGuests('Rådjur', this.area, 'Ensamjakt') }}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -607,6 +615,7 @@
             'kindEnsamjakt',
             'kindGemensamJakt',
             'animalsShot',
+            'animalsShotByGuests',
             'reddeerDist',
             'fallowdeerDist',
             'mooseDist',
@@ -1744,6 +1753,9 @@
             animalsShotHorizontalBarChartOptionsSmaris: {
                 responsive: true,
                 maintainAspectRatio: false,
+                legend: {
+                    display: false,
+                },
                 scales: {
                     xAxes: [
                     {
@@ -1781,6 +1793,9 @@
             animalsShotHorizontalBarChartOptionsGlotterback: {
                 responsive: true,
                 maintainAspectRatio: false,
+                legend: {
+                    display: false,
+                },
                 scales: {
                     xAxes: [
                     {
@@ -1819,6 +1834,9 @@
             animalsShotHorizontalBarChartOptionsHaddebo: {
                 responsive: true,
                 maintainAspectRatio: false,
+                legend: {
+                    display: false,
+                },
                 scales: {
                     xAxes: [
                     {
@@ -1858,6 +1876,9 @@
             animalsShotHorizontalBarChartOptionsVasterby: {
                 responsive: true,
                 maintainAspectRatio: false,
+                legend: {
+                    display: false,
+                },
                 scales: {
                     xAxes: [
                     {
@@ -1896,6 +1917,9 @@
             animalsShotHorizontalBarChartOptionsNastorp: {
                 responsive: true,
                 maintainAspectRatio: false,
+                legend: {
+                    display: false,
+                },
                 scales: {
                     xAxes: [
                     {
@@ -1933,6 +1957,9 @@
             animalsShotHorizontalBarChartOptionsPalsboda: {
                 responsive: true,
                 maintainAspectRatio: false,
+                legend: {
+                    display: false,
+                },
                 scales: {
                     xAxes: [
                     {
@@ -2002,6 +2029,7 @@
         console.log('this.kindGemensamJakt: ', this.kindGemensamJakt);
 
         console.log('this.animalsShot: ', this.animalsShot);
+        console.log('this.animalsShotByGuests: ', this.animalsShotByGuests);
 
 
         console.log("this.reddeerDist: ", this.reddeerDist);
@@ -2042,6 +2070,25 @@
 
             return hunter_killreports.length;
 
+
+        },
+        animalsByGuests(species, area, kindofhunt) {
+            
+            let g_tot = 0;
+            this.animalsShotByGuests.forEach( obj => {
+                // console.log("animalsByGuests: ", obj);
+                let g_res;
+                g_res = obj.guest_killreports.filter( g_rep => {
+                    return (g_rep.area == area) && (g_rep.kindofhunt == kindofhunt) && (g_rep.species == species);
+                });
+                // g_res = obj.guest_killreports.filter( g_rep => {
+                //     return (g_rep.kindofhunt == kindofhunt);
+                // });
+                g_tot = g_tot + g_res.length;
+            });
+            
+            console.log("animalsByGuests, parameters: " + species + " "+ area + " " + kindofhunt + " return: " + g_tot); 
+            return g_tot;
 
         },
         prepDist(dist, species) {
@@ -2172,12 +2219,33 @@
                 });
                 kills.push(res.length);
             });
+            
+            let guest_kills = 0;
+            this.animalsShotByGuests.forEach( obj => {
+                // let res;
+                // res = obj.guest_killreports.filter( rep => {
+                //     return rep.area == area;
+                // });
+                // console.log("ANIMALSSHOTBYAREA: ", res.length);
+                // guest_kills = guest_kills + rep.length;
+                let g_res;
+                g_res = obj.guest_killreports.filter( g_rep => {
+                    return g_rep.area == area;
+                });
+
+                guest_kills = guest_kills + g_res.length;
+
+            });
+
+            kills.push(guest_kills);
             return kills;
         },
         animalShotHunternames() {
             let res = this.animalsShot.map( obj => {
                 return obj.name;
             });
+
+            res.push('Gäster');
 
             return res;
         },
@@ -2191,11 +2259,13 @@
         },
         animalShotBackgroundColors() {
             let res = Array(this.animalsShot.length).fill('#5b5b5b');
+            res.push('#DCCC9B');
 
             return res;
         },
         animalShotBorderColors() {
             let res = Array(this.animalsShot.length).fill('#2d2d2d');
+            res.push('#867233');
 
             return res;
         },

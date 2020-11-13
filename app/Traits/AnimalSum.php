@@ -42,25 +42,23 @@ trait AnimalSum
 
         $index = 0;
 
+        // JÄGARNA
         // Alla jägare som inte är gäster
         $users = User::where('role', '!=', 'guest')->where('occupation', '=', 'hunter')->get();
 
-        // bygg upp resultatarrayen
+         // bygg upp resultatarrayen för användare som är jägare
         foreach($users as $user) {
-            // dd($user->animals);
             $killreports = $user->killreports_shooter;
             
+            // Lägger till key => values (area och species) för användarnas killreports
             foreach($killreports as $killreport) {
                 $killreport['area']     = $killreport->area()->area_name;
                 $killreport['species']  = $killreport->animal()->species;
-                // $animal['season'] = $killreport->season;
-                
             }
-
-            
 
             $data[$index] = [
                 'id'            => $user->id,
+                'role'          => $user->role,
                 'username'      => $user->username,
                 'firstname'     => $user->firstname,
                 'lastname'      => $user->lastname,
@@ -69,6 +67,52 @@ trait AnimalSum
             ];
             $index += 1;
         }
+
+            
+        return $data;
+    }
+
+
+    /**
+     *  Get how many animals each hunter has shot
+     * 
+     * @return Array $data; [0: [id, username, firstname, username, name, animals_shot], 1: [...]
+     */
+    public function getNumberOfAnimalsShotByGuests()
+    {
+        // resultatsarray
+        $data = [];
+
+        $index = 0;
+
+        // GÄSTERNA
+        // Längst bak i $data läggs gästerna till som en samlad grupp
+        $guests = User::where('role', '=', 'guest')->where('occupation', '=', 'hunter')->get();
+
+        // bygger upp resultatarrayen för gästernas killreports
+        foreach($guests as $guest) {
+            $guest_killreports = $guest->killreports_shooter; // Gästesn registrerade killreports
+            
+            //
+            foreach($guest_killreports as $guest_killreport) {
+                $guest_killreport['area']     = $guest_killreport->area()->area_name;
+                $guest_killreport['species']  = $guest_killreport->animal()->species;
+            }
+            $data[$index] = [
+                'id'                    => $guest->id,
+                'role'                  => $guest->role,
+                'username'              => $guest->username,
+                'firstname'             => $guest->firstname,
+                'lastname'              => $guest->lastname,
+                'name'                  => $guest->firstname ." ". $guest->lastname,
+                'guest_killreports'     => $guest_killreports
+            ];
+            $index += 1;
+        }
+
+        // dd($data);
+
+            
         return $data;
     }
 

@@ -61,6 +61,7 @@ class DataController extends Controller
             'kind_ensamjakt'                => $this->getKindOfHunt('Ensamjakt'),
             'kind_gemensam_jakt'            => $this->getKindOfHunt('Gemensam jakt'),
             'animals_shot'                  => $this->getNumberOfAnimalsShot(),
+            'animals_shot_by_guests'        => $this->getNumberOfAnimalsShotByGuests(),
             'reddeer_dist'                  => $this->getDistribution('Kronvilt'),
             'fallowdeer_dist'               => $this->getDistribution('Dovvilt'),
             'moose_dist'                    => $this->getDistribution('Älg'),

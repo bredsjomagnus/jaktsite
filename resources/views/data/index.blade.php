@@ -25,6 +25,7 @@
     :kind-ensamjakt='{{ $kind_ensamjakt }}'
     :kind-gemensam-jakt='{{ $kind_gemensam_jakt }}'
     :animals-shot='{{ json_encode($animals_shot) }}'
+    :animals-shot-by-guests='{{ json_encode($animals_shot_by_guests) }}'
     :reddeer-dist='{{ json_encode($reddeer_dist) }}'
     :fallowdeer-dist='{{ json_encode($fallowdeer_dist) }}'
     :moose-dist='{{ json_encode($moose_dist) }}'
