@@ -93,30 +93,6 @@ class KillreportTest extends TestCase
      *
      * @return void
      */
-    public function a_user_sees_all_killreports_when_visiting_killreport_index_page()
-    {
-        $this->withoutExceptionHandling();
-        
-        $this->signIn();
-
-        $killreport_one = factory(Killreport::class)->create(['killdate' => '2015-01-01']);
-        $killreport_two = factory(Killreport::class)->create(['killdate' => '2016-01-01']);
-        $killreport_three = factory(Killreport::class)->create(['killdate' => '2017-01-01']);
-        $killreport_four = factory(Killreport::class)->create(['killdate' => '2018-01-01']);
-
-
-        $this->get('/killreports')->assertSee('2015-01-01');
-        $this->get('/killreports')->assertSee('2016-01-01');
-        $this->get('/killreports')->assertSee('2017-01-01');
-        $this->get('/killreports')->assertSee('2018-01-01');
-
-    }
-
-    /**
-     * @test
-     *
-     * @return void
-     */
     public function a_user_can_edit_a_killreport()
     {
         $this->withoutExceptionHandling();
@@ -216,36 +192,36 @@ class KillreportTest extends TestCase
 
     }
 
-    /**
-     * @test
-     * 
-     * @return void
-     */
-    public function only_admins_see_delete_btn_in_killreport_index_view() 
-    {
+    // /**
+    //  * @test
+    //  * 
+    //  * @return void
+    //  */
+    // public function only_admins_see_delete_btn_in_killreport_index_view() 
+    // {
 
-        // admin skall se 'ta bort'-knappen
-        $admin = factory(User::class)->create([
-            'role'  => 'admin'
-        ]);
+    //     // admin skall se 'ta bort'-knappen
+    //     $admin = factory(User::class)->create([
+    //         'role'  => 'admin'
+    //     ]);
 
-        $this->signIn($admin);
+    //     $this->signIn($admin);
 
-        $killreport = factory(Killreport::class)->create();
+    //     $killreport = factory(Killreport::class)->create();
 
-        $this->get('/killreports')->assertSee('btn-danger'); // 'ta bort'-knappen
+    //     $this->get('/killreports')->assertSee('btn-danger'); // 'ta bort'-knappen
 
 
 
-        // user skall inte se 'ta bort'-knappen
-        $user = factory(User::class)->create([
-            'role'  => 'user'
-        ]);
+    //     // user skall inte se 'ta bort'-knappen
+    //     $user = factory(User::class)->create([
+    //         'role'  => 'user'
+    //     ]);
 
-        $this->signIn($user);
+    //     $this->signIn($user);
 
-        $this->get('/killreports')->assertDontSee('btn-danger'); // 'ta bort'-knappen
-    }
+    //     $this->get('/killreports')->assertDontSee('btn-danger'); // 'ta bort'-knappen
+    // }
 
     /**
      * @test

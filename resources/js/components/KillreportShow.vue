@@ -5,7 +5,7 @@
 
             <div class="d-flex flex-row justify-content-around" style="margin-top:-20px">
                 <mdb-card class='w-100' color="unique-color-dark">
-                    <mdb-card-text class="d-flex justify-content-center">Rapportkort</mdb-card-text>
+                    <mdb-card-text class="d-flex justify-content-center"><mdb-icon style="font-size:12px; margin-right: 10px; margin-top: 4px;" v-if="killreport.locked == 'yes'" icon="lock"/><mdb-icon style="font-size:12px; margin-right: 10px; margin-top: 4px;" v-else icon="unlock"/> Rapportkort</mdb-card-text>
                 </mdb-card>
             </div>
 
