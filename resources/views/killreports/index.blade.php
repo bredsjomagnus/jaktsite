@@ -31,7 +31,7 @@
           </td>
 
           <td>
-            <select class="custom-select custom-select-sm" name="users" id="species_select">
+            <select class="custom-select custom-select-sm" name="users" id="user_select">
               <option value="">Alla</option>
               @foreach($users as $user)
                 <option value="{{ $user->id }}" <?php if(isset($_GET['users'])) { echo $_GET['users'] ==  $user->id ? "selected" : ""; } ?>>{{ $user->firstname }} {{$user->lastname}}</option>
@@ -55,7 +55,7 @@
             </select>
           </td>
           <td>
-             <select class="custom-select custom-select-sm" name="areas" id="species_select">
+             <select class="custom-select custom-select-sm" name="areas" id="area_select">
               <option value="">Alla</option>
               @foreach($areas as $area)
                 <option value="{{ $area->id }}" <?php if(isset($_GET['areas'])) { echo $_GET['areas'] ==  $area->id ? "selected" : ""; } ?>>{{ $area->area_name }}</option>
@@ -75,6 +75,14 @@
               <option value="yellow"  <?php if(isset($_GET['status'])) { echo $_GET['status'] == "yellow" ? "selected" : ""; } ?>>Ej klara</option>
             </select>
           </td>
+          <td>
+            <select class="custom-select custom-select-sm" name="meat" id="meat_select">
+              <option value="">Alla</option>
+              @foreach($users as $user)
+                <option value="{{ $user->id }}" <?php if(isset($_GET['meat'])) { echo $_GET['meat'] ==  $user->id ? "selected" : ""; } ?>>{{ $user->firstname }} {{$user->lastname}}</option>
+              @endforeach
+            </select>
+        </td>
         </tr>
       </table>
 

@@ -29,6 +29,7 @@ class KillreportController extends Controller
         $users_search = htmlspecialchars(request()->input('users'));
         $areas_search = htmlspecialchars(request()->input('areas'));
         $status_search = htmlspecialchars(request()->input('status'));
+        $meat_search = htmlspecialchars(request()->input('meat'));
 
        
         // Tar fram killreports beroende på säsong
@@ -73,6 +74,23 @@ class KillreportController extends Controller
                 return $value->report_status == $status_search;
             });
         }
+
+
+        // Filtrear ut köttilldelning
+        if( !empty($meat_search) ) {
+            $killreports = $killreports->filter(function ($value, $key) use ($meat_search) {
+                $found = false;
+                foreach($value->meat as $meat) {
+                    if($meat->user_id == $meat_search) {
+                        $found = true;
+                    }
+                }
+                return $found;
+                
+            });
+        }
+
+        
 
 
 
