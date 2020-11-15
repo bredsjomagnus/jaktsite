@@ -63,6 +63,19 @@
             </select>
           </td>
         </tr>
+        <tr>
+          <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Rapportstatus:</label></td>
+          <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Köttilldelning:</label></td>
+        </tr>
+        <tr>
+        <td>
+            <select class="custom-select custom-select-sm" name="status" id="status_select">
+              <option value="">Alla</option>
+              <option value="green"   <?php if(isset($_GET['status'])) { echo $_GET['status'] == "green" ? "selected" : ""; } ?>>Klara</option>
+              <option value="yellow"  <?php if(isset($_GET['status'])) { echo $_GET['status'] == "yellow" ? "selected" : ""; } ?>>Ej klara</option>
+            </select>
+          </td>
+        </tr>
       </table>
 
     <div class="d-flex justify-content-between">

@@ -28,6 +28,7 @@ class KillreportController extends Controller
         $species_search = htmlspecialchars(request()->input('species'));
         $users_search = htmlspecialchars(request()->input('users'));
         $areas_search = htmlspecialchars(request()->input('areas'));
+        $status_search = htmlspecialchars(request()->input('status'));
 
        
         // Tar fram killreports beroende på säsong
@@ -64,6 +65,17 @@ class KillreportController extends Controller
                 return $value->area()->id == $areas_search;
             });
         }
+
+
+        // Filtrear ut status
+        if( !empty($status_search) ) {
+            $killreports = $killreports->filter(function ($value, $key) use ($status_search) {
+                return $value->report_status == $status_search;
+            });
+        }
+
+
+
 
 
         $data = [
