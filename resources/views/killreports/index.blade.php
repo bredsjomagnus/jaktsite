@@ -78,9 +78,10 @@
           <td>
             <select class="custom-select custom-select-sm" name="meat" id="meat_select">
               <option value="">Alla</option>
-              @foreach($users as $user)
-                <option value="{{ $user->id }}" <?php if(isset($_GET['meat'])) { echo $_GET['meat'] ==  $user->id ? "selected" : ""; } ?>>{{ $user->firstname }} {{$user->lastname}}</option>
+              @foreach($hunters as $hunter)
+                <option value="{{ $hunter->id }}" <?php if(isset($_GET['meat'])) { echo $_GET['meat'] ==  $user->id ? "selected" : ""; } ?>>{{ $hunter->firstname }} {{$hunter->lastname}}</option>
               @endforeach
+              <option value="{{ $anonhunter->id }}" <?php if(isset($_GET['meat'])) { echo $_GET['meat'] ==  $anonhunter->id ? "selected" : ""; } ?>>Gäst</option>
             </select>
         </td>
         </tr>

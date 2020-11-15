@@ -99,6 +99,8 @@ class KillreportController extends Controller
         $data = [
             'killreports'   => $killreports,
             'users'         => User::where('occupation', '=', 'hunter')->get(),
+            'hunters'       => User::where('role', '!=', 'guest')->where('occupation', '=', 'hunter')->get(),
+            'anonhunter'    => User::where('occupation', '=', 'anonhunter')->get()->first(),
             'areas'         => Area::all()
         ];
         
