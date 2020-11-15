@@ -98,8 +98,19 @@
           <!--/Card image-->
 
           <!--Card content-->
-          <div class="card-body" style="border-left: 5px solid {{ $killreport->report_status }}">
+          <!-- <div class="card-body" style="border-top: 5px solid {{ $killreport->report_status }}"> -->
+          <!-- <div class="card-body" <?php if($killreport->report_status == 'yellow') { echo 'style="border-left: 5px solid #ffbb33"'; } else if($killreport->report_status == 'green') { echo 'style="border-left: 5px solid #71a273"'; } ?>> -->
+          <div class="card-body">
 
+            @if($killreport->report_status == 'yellow')
+            <div class="w-100" style="background-color: #ffbb33; padding-top: 5px; padding-left: 5px; margin-top: -2px;">
+              <p style="font-size: 12px;"><span class="fas fa-exclamation-triangle"></span> Rapporten ej klar!</p>
+            </div>
+            @elseif($killreport->report_status == 'green')
+              <div class="w-100" style="background-color: rgb(145 214 148); padding-top: 5px; padding-left: 5px; margin-top: -2px;">
+                <p style="font-size: 12px;"><span class="fas fa-lock"></span> Rapporten klar och låst!</p>
+              </div>
+            @endif
             <!-- Beskrivning -->
             <div style="border-bottom: 1px solid #D8D8D8;">
               <!-- <span class="card-text" style="font-size: 12px;"><strong>BILDTEXT</strong></span><br> -->

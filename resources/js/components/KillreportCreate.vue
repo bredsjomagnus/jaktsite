@@ -1279,10 +1279,46 @@
 
             return meatlist;
         },
+        report_status(){
+            if(this.animalfields.speciestype == 'unknown') {
+                this.killreportfields.report_status = 'yellow';
+            }
+
+            // Status Gul om inte skytt satt
+            if(this.killreportfields.shooter_id == this.anonhunter[0].id) {
+                this.killreportfields.report_status = 'yellow';
+            }
+
+            // Status Gul om det saknas slaktvikt eller uppskattad slaktvikt
+            if( (this.animalfields.carcass_weight == null) && (this.animalfields.aprox_carcass_weight == null) ) {
+                this.killreportfields.report_status = 'yellow';
+            }
+
+            // För Småris gäller att även köttet måste vara tilldelat annars status gul
+            if(this.area_name == 'Småris') {
+                // Status Gul om köttilldelningen är EJ SATT    
+                if(this.toggledformeat.length == 0) {
+                    this.killreportfields.report_status = 'yellow';
+                }
+                
+            }
+
+            if(this.killreportfields.report_status == 'green') {
+
+                console.log("report_status->setting locked to yes");
+                this.killreportfields.locked = 'yes';
+            }
+
+        },
         submitForm() {
             console.log(this.animalfields);
 
+            // console.log("this.getMeatList(killreport_id): ", this.getMeatList(1));
+
             this.share_kilogram = (this.toggledformeat.length > 0) ? this.getShareKilo() : 0;
+
+
+            this.report_status();
             
             // console.log(this.killreportfields.killdate);
             axios.post(this.animalUrl, this.animalfields)

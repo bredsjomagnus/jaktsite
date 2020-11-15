@@ -35,6 +35,15 @@ class KillreportController extends Controller
                                     ->where('season', 'like', '%' .$season_search. '%')
                                     ->orderBy('killdate', 'desc')->get();
 
+        // foreach($killreports as $killreport) {
+        //     $killreport->report_status = 'green';
+        //     $killreport->set_status();
+        //     if($killreport->report_status == 'green') {
+        //         $killreport->locked = 'yes';
+        //     }
+        //     $killreport->save();
+        // }
+
         // Filtrerar ut djurslag
         if( !empty($species_search) ) {
             $killreports = $killreports->filter(function ($value, $key) use ($species_search) {
@@ -215,8 +224,6 @@ class KillreportController extends Controller
     public function update(Request $request, Killreport $killreport)
     {
         $killreport->update(request()->all());
-
-        // $killreports = Killreport::where('deleted_at', null)->orderBy('killdate', 'desc')->get();
 
         return ['redirect' => url('killreports'), 'killreport' => $killreport];
     }

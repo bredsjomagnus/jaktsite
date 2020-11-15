@@ -70,6 +70,38 @@ class Killreport extends Model
         
     }
 
+    /**
+     * Sätter rätt status för rapporten
+     */
+    public function set_status()
+    {
+        // Status Gul om inte djurklassificering är satt
+        if($this->animal()->speciestype == 'unknown') {
+            $this->report_status = 'yellow';
+        }
+
+        // Status Gul om inte skytt satt
+        if($this->shooter->occupation == 'anonhunter') {
+            $this->report_status = 'yellow';
+        }
+
+        
+        // Status Gul om det saknas slaktvikt eller uppskattad slaktvikt
+        if(is_null($this->animal()->carcass_weight) && is_null($this->animal()->aprox_carcass_weight)) {
+            $this->report_status = 'yellow';
+        }
+
+        // För Småris gäller att även köttet måste vara tilldelat annars status gul
+        if($this->area()->area_name == 'Småris') {
+            // Status Gul om köttilldelningen är EJ SATT    
+            if(count($this->meat) == 1) {
+                if(is_null($this->meat[0]->user_id)) {
+                    $this->report_status = 'yellow';
+                }
+            }
+        }
+    }
+
     public static function boot ()
     {
         parent::boot();

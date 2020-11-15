@@ -12,7 +12,8 @@
             <!-- <mdb-btn-toolbar> -->
             <div class="d-flex flex-row justify-content-around">
                 <mdb-btn-group size="sm">
-                    <mdb-btn :color="untouched ? 'mdb-color' : 'purple'" @click.native="saveChanges" :disabled="savable" size="sm"><mdb-icon icon="save"/> - Spara</mdb-btn>
+                    <mdb-btn v-if="authUser.role == 'admin' || killreport.locked == 'no'" :color="untouched ? 'mdb-color' : 'purple'" @click.native="saveChanges" :disabled="savable" size="sm"><mdb-icon icon="save"/> - Spara</mdb-btn>
+                    <mdb-btn v-else color="mdb-color" :disabled="true" size="sm"><mdb-icon icon="lock"/> - Låst</mdb-btn>
                     <mdb-btn color="mdb-color" @click.native="toImagesView" size="sm"><mdb-icon icon="images"/> - Bilder</mdb-btn>
                 </mdb-btn-group>
             </div>
@@ -253,6 +254,10 @@
         <div v-if="activeH">
 
             <img class="par" :src="killreportImage" alt="very cool bg">
+
+            <div style="background-color: #1c2331; padding-left: 5px;">
+                <i style="font-size: 12px; color: white;">Rapport #{{this.killreport.id}}; Status: '{{status}}'; Låst: '{{lockedCheck}}'</i>
+            </div>
 
             <mdb-card>
                 <mdb-card-body :class="shooterSelected.id !== originshooter.id || reporterSelected.id !== originreporter.id || kindofhuntSelected != originkindofhunt ? 'cardborderchanged' : 'cardborder'">
@@ -780,6 +785,8 @@
             originheart_weight: this.animal.heart_weight,
             orginalwaste_weight: this.animal.waste,
             orginalwaste_notes: this.animal.waste_notes,
+            report_status: this.killreport.report_status,
+            locked: this.killreport.locked,
             elkspeciestypes: ['Tjur', 'Obestämt vuxet hondjur', 'Ko', 'Kviga', 'Tjurkalv', 'Kvigkalv', 'Obestämd kalv'],
             roedeerspeciestypes: ['Bock', 'Obestämt vuxet hondjur', 'Get', 'Smaldjur', 'Bockkilling', 'Getkilling', 'Obestämd killing'],
             boarspeciestypes: ['Galt', 'Obestämt vuxet hondjur', 'Sugga', 'Gylta', 'Galtkulting', 'Suggkulting', 'Obestämd kulting'],
@@ -805,6 +812,20 @@
 
     },
     computed: {
+        status() {
+            let res = 'Klar'
+            if(this.killreport.report_status == 'yellow') {
+                res = 'Ej klar';
+            }
+            return res;
+        },
+        lockedCheck() {
+            let res = "Ja";
+            if(this.killreport.locked == 'no') {
+                res = 'Nej';
+            }
+            return res;
+        },
         shooterName() {
             return this.shooterSelected.firstname + " " + this.shooterSelected.lastname;
         },
@@ -820,7 +841,7 @@
         reporterId() {
             return this.reporterSelected.id;
         },
-        reporterId() {
+        areaId() {
             return this.areaSelected.id;
         },
         savable(){
@@ -1342,10 +1363,23 @@
             this.checkChanges();
         },
         toImagesView() {
-            window.location = this.imageUrl;
+            if(!this.untouched) {
+                if( confirm('Det finns osparad data som går förlorad om du lämnar sidan. Vill du fortsätta?')) {
+                    window.location = this.imageUrl;
+                }
+            } else {
+                window.location = this.imageUrl;
+            }
         },
         backToKillreportIndex() {
-            window.location = this.indexUrl;
+            if(!this.untouched) {
+                if( confirm('Det finns osparad data som går förlorad om du lämnar sidan. Vill du fortsätta?')) {
+                    window.location = this.indexUrl;
+                }
+            } else {
+                window.location = this.indexUrl;
+            }
+            
         },
         cardbodycolorTimeandPlace() {
             let cardborderclass = 'cardborder';
@@ -1652,6 +1686,50 @@
 
             return value;
         },
+         set_report_status(){
+            this.report_status = 'green';
+            if(this.speciestypeSelected == 'unknown') {
+                console.log("REPORT_STATUS: SPECIES = UNKNOWN");
+                this.report_status = 'yellow';
+            }
+
+            // Status Gul om inte skytt satt
+            if(this.shooterSelected.id == this.anonhunter[0].id) {
+                console.log("REPORT_STATUS: SHOOTER = ANON");
+                this.report_status = 'yellow';
+            }
+
+            // Status Gul om det saknas slaktvikt eller uppskattad slaktvikt
+            if( (this.carcass_weightSelected == null) && (this.aprox_carcass_weightSelected == null) ) {
+                console.log("REPORT_STATUS: WEIGHT NOT SET");
+                this.report_status = 'yellow';
+            }
+
+
+            let smaris = this.areas.filter( obj => {
+                return obj.area_name == 'Småris'
+            });
+
+            console.log("smaris[0].id: ", smaris[0].id);
+            // För Småris gäller att även köttet måste vara tilldelat annars status gul
+            if(this.areaSelected.id == smaris[0].id) {
+
+                console.log("this.toggledformeat.length: ", this.toggledformeat.length);
+                // Status Gul om köttilldelningen är EJ SATT    
+                if( this.toggledformeat.length == 0 ) {
+                    console.log("REPORT_STATUS: NO MEAT ALLOCATION");
+                    this.report_status = 'yellow';
+                }
+                
+            }
+
+            if(this.report_status == 'green') {
+                this.locked = 'yes';
+            } else {
+                this.locked = 'no';
+            }
+
+        },
         saveChanges() {
             let animalfields, killreportfields, areaidselected;
             areaidselected = this.areaSelected.id;
@@ -1679,6 +1757,8 @@
             };
             // console.log("ANIMALFIELDS:")
             // console.log(animalfields);
+            this.set_report_status();
+
             killreportfields = {
                 'reporter_id': this.reporterSelected.id,
                 'shooter_id': this.shooterSelected.id,
@@ -1689,9 +1769,11 @@
                 'place': this.placeSelected == null ? null : this.placeSelected,
                 'longitud': null,
                 'latitud': null,
-                'report_status': 'red',
-                'locked': 'no'
+                'report_status': this.report_status,
+                'locked': this.locked,
             };
+
+            
             // console.log(killreportfields);
             console.log("KILLREPORTFIELDS:")
             console.log(killreportfields);
@@ -1747,7 +1829,7 @@
 
 
                     // nu är problemet att det alltid är skapat en null rad för varje killreport. Därför måste
-                    // det i dessa fall uppdateras den förrsta raden och de eventuellt följande raderna skapas nya.
+                    // det i dessa fall uppdateras den första raden och de eventuellt följande raderna skapas nya.
                     if( this.toggledformeatfromstart.length === 0 && index === 0) {
                         
                         var meat_update_url = this.meatUrl+'/'+this.meats[0].id+'/update';
@@ -1847,7 +1929,8 @@
             axios.post(this.killreportUrl, killreportfields)
                 .then(response => {
                     // redirectar tillbaka till rapportarkivet
-                    window.location = response.data.redirect;
+                    // window.location = response.data.redirect;
+                    window.location.reload();
                 })
                 .catch(error => {
                     console.log("KILLREPORT UPDATE ERROR:");

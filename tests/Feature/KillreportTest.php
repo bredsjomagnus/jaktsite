@@ -338,4 +338,955 @@ class KillreportTest extends TestCase
         
     }
 
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_report_with_no_animal_specistype_has_yellow_status()
+    {
+        // Djuret
+        $animal = factory(Animal::Class)->create([
+            'speciestype'   => 'unknown'
+        ]);
+
+        // Området annat än Småris
+        $area = factory(Area::Class)->create([
+            'area_name'     => 'Haddebo'
+        ]);
+
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'animal_id'     => $animal->id,
+            'area_id'       => $area->id,
+            'report_status' => 'green'
+        ]);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('yellow', $killreport->report_status);
+        
+    }
+
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_report_with_no_set_shooter_has_yellow_status()
+    {
+        // okänd jägare
+       $anonhunter = factory(User::Class)->create([
+           'occupation'     => 'anonhunter'
+       ]);
+
+       // Området annat än Småris
+        $area = factory(Area::Class)->create([
+            'area_name'     => 'Haddebo'
+        ]);
+
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'shooter_id'        => $anonhunter->id,
+            'area_id'           => $area->id,
+            'report_status'     => 'green'
+        ]);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('yellow', $killreport->report_status);
+        
+    }
+
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_report_with_no_carcass_weight_and_no_aprox_carcass_weight_has_yellow_status()
+    {
+        // Djuret
+        $animal = factory(Animal::Class)->create([
+            'carcass_weight'        => null,
+            'aprox_carcass_weight'  => null
+        ]);
+
+        // Området annat än Småris
+        $haddebo = factory(Area::Class)->create([
+            'area_name'     => 'Haddebo'
+        ]);
+
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'animal_id'     => $animal->id,
+            'area_id'       => $haddebo->id,
+            'report_status' => 'green'
+        ]);
+
+        // dd($killreport);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('yellow', $killreport->report_status);
+        
+    }
+
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_report_with_either_carcass_weight_or_aprox_carcass_weight_has_green_status()
+    {
+        // Djuret med slaktvikt men inte uppskattad slaktvikt
+        $animal_carcass = factory(Animal::Class)->create([
+            'carcass_weight'        => 30,
+            'aprox_carcass_weight'  => null
+        ]);
+
+        // Området annat än Småris
+        $haddebo = factory(Area::Class)->create([
+            'area_name'     => 'Haddebo'
+        ]);
+
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'animal_id'     => $animal_carcass->id,
+            'area_id'       => $haddebo->id,
+            'report_status' => 'green'
+        ]);
+
+        // dd($killreport);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('green', $killreport->report_status);
+
+
+
+        // Djuret med slaktvikt men inte uppskattad slaktvikt
+        $animal_aprox_carcass = factory(Animal::Class)->create([
+            'carcass_weight'        => null,
+            'aprox_carcass_weight'  => 30
+        ]);
+
+        // Området annat än Småris
+        $glotterback = factory(Area::Class)->create([
+            'area_name'     => 'Glotterbäck'
+        ]);
+
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'animal_id'     => $animal_aprox_carcass->id,
+            'area_id'       => $glotterback->id,
+            'report_status' => 'green'
+        ]);
+
+        // dd($killreport);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('green', $killreport->report_status);
+        
+
+
+        // Djuret både slaktvikt och uppskattad slaktvikt
+        $animal_both = factory(Animal::Class)->create([
+            'carcass_weight'        => 30,
+            'aprox_carcass_weight'  => 30
+        ]);
+
+        // Området Småris
+        $smaris = factory(Area::Class)->create([
+            'area_name'     => 'Småris'
+        ]);
+
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'animal_id'     => $animal_both->id,
+            'area_id'       => $smaris->id,
+            'report_status' => 'green'
+        ]);
+
+        // dd($killreport);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('green', $killreport->report_status);
+        
+    }
+
+
+     /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_report_from_smaris_with_no_meet_allocated_has_yellow_status()
+    {
+        //Skytt
+        $user = factory(User::Class)->create([
+            'occupation'    => 'hunter'
+        ]);
+
+
+        // Djuret
+        $animal = factory(Animal::Class)->create([
+            'carcass_weight'        => 32,
+            'aprox_carcass_weight'  => null
+        ]);
+
+        
+
+        // Området Småris
+        $area = factory(Area::Class)->create([
+            'area_name'     => 'Småris'
+        ]);
+
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'animal_id'     => $animal->id,
+            'area_id'       => $area->id,
+            'report_status' => 'green'
+        ]);
+
+        $meat = factory(Meat::Class)->create([
+            'user_id'       => null,
+            'killreport_id' => $killreport->id
+        ]);
+
+        // dd($killreport);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('yellow', $killreport->report_status);
+        
+    }
+
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function smaris_full_status_test()
+    {
+        // Området Småris
+        $area = factory(Area::Class)->create([
+            'area_name'     => 'Småris'
+        ]);
+
+        // 1. INGEN SKYTT, INGEN DJURKLASS, INGEN VIKT, INGEN ALLOKERING
+        // Ingen skytt
+        $user = factory(User::Class)->create([
+            'occupation'    => 'anonhunter'
+        ]);
+
+
+        // Ingen speciestype eller vikt
+        $animal = factory(Animal::Class)->create([
+            'carcass_weight'        => null,
+            'aprox_carcass_weight'  => null,
+            'speciestype'           => 'unknown'
+        ]);
+
+        
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'shooter_id'    => $user->id,
+            'animal_id'     => $animal->id,
+            'area_id'       => $area->id,
+            'report_status' => 'green'
+        ]);
+
+        // köttet inte allokerat
+        $meat = factory(Meat::Class)->create([
+            'user_id'       => null,
+            'killreport_id' => $killreport->id
+        ]);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('yellow', $killreport->report_status);
+
+
+
+        // 2. INGEN SKYTT, INGEN DJURKLASS, VIKTER, INGEN ALLOKERING
+        // Ingen skytt
+        $user = factory(User::Class)->create([
+            'occupation'    => 'anonhunter'
+        ]);
+
+
+        // Ingen speciestype eller vikt
+        $animal = factory(Animal::Class)->create([
+            'carcass_weight'        => 32,
+            'aprox_carcass_weight'  => null,
+            'speciestype'           => 'unknown'
+        ]);
+
+        
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'shooter_id'    => $user->id,
+            'animal_id'     => $animal->id,
+            'area_id'       => $area->id,
+            'report_status' => 'green'
+        ]);
+
+        // köttet inte allokerat
+        $meat = factory(Meat::Class)->create([
+            'user_id'       => null,
+            'killreport_id' => $killreport->id
+        ]);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('yellow', $killreport->report_status);
+
+
+        // 3. INGEN SKYTT, INGEN DJURKLASS, VIKTER, ALLOKERAT KÖTT
+        // Ingen skytt
+        $user = factory(User::Class)->create([
+            'occupation'    => 'anonhunter'
+        ]);
+
+
+        // Ingen speciestype eller vikt
+        $animal = factory(Animal::Class)->create([
+            'carcass_weight'        => 32,
+            'aprox_carcass_weight'  => null,
+            'speciestype'           => 'unknown'
+        ]);
+
+        
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'shooter_id'    => $user->id,
+            'animal_id'     => $animal->id,
+            'area_id'       => $area->id,
+            'report_status' => 'green'
+        ]);
+
+        // köttet inte allokerat
+        $meat = factory(Meat::Class)->create([
+            'user_id'       => 2,
+            'killreport_id' => $killreport->id
+        ]);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('yellow', $killreport->report_status);
+
+
+
+
+        // 4. INGEN SKYTT, SATT DJURKLASS, INGA VIKTER, INGET KÖTT ALLOKERAT
+        // Ingen skytt
+        $user = factory(User::Class)->create([
+            'occupation'    => 'anonhunter'
+        ]);
+
+
+        // Ingen speciestype eller vikt
+        $animal = factory(Animal::Class)->create([
+            'carcass_weight'        => null,
+            'aprox_carcass_weight'  => null,
+            'speciestype'           => 'Hjort'
+        ]);
+
+        
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'shooter_id'    => $user->id,
+            'animal_id'     => $animal->id,
+            'area_id'       => $area->id,
+            'report_status' => 'green'
+        ]);
+
+        // köttet inte allokerat
+        $meat = factory(Meat::Class)->create([
+            'user_id'       => null,
+            'killreport_id' => $killreport->id
+        ]);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('yellow', $killreport->report_status);
+
+
+
+        // 5. INGEN SKYTT, SATT DJURKLASS, SATT VIKT, INGET KÖTT ALLOKERAT
+        // Ingen skytt
+        $user = factory(User::Class)->create([
+            'occupation'    => 'anonhunter'
+        ]);
+
+
+        // Ingen speciestype eller vikt
+        $animal = factory(Animal::Class)->create([
+            'carcass_weight'        => 21,
+            'aprox_carcass_weight'  => 20,
+            'speciestype'           => 'Hjort'
+        ]);
+
+        
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'shooter_id'    => $user->id,
+            'animal_id'     => $animal->id,
+            'area_id'       => $area->id,
+            'report_status' => 'green'
+        ]);
+
+        // köttet inte allokerat
+        $meat = factory(Meat::Class)->create([
+            'user_id'       => null,
+            'killreport_id' => $killreport->id
+        ]);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('yellow', $killreport->report_status);
+
+
+
+
+        // 6. INGEN SKYTT, SATT DJURKLASS, SATT VIKT, KÖTT ALLOKERAT
+        // Ingen skytt
+        $user = factory(User::Class)->create([
+            'occupation'    => 'anonhunter'
+        ]);
+
+
+        // Ingen speciestype eller vikt
+        $animal = factory(Animal::Class)->create([
+            'carcass_weight'        => 21,
+            'aprox_carcass_weight'  => 20,
+            'speciestype'           => 'Hjort'
+        ]);
+
+        
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'shooter_id'    => $user->id,
+            'animal_id'     => $animal->id,
+            'area_id'       => $area->id,
+            'report_status' => 'green'
+        ]);
+
+        // köttet inte allokerat
+        $meat = factory(Meat::Class)->create([
+            'user_id'       => 2,
+            'killreport_id' => $killreport->id
+        ]);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('yellow', $killreport->report_status);
+
+
+
+
+        // 7. SATT SKYTT, INGEN DJURKLASS, INGEN VIKT, KÖTT INTE ALLOKERAT
+        // Ingen skytt
+        $user = factory(User::Class)->create([
+            'occupation'    => 'hunter'
+        ]);
+
+
+        // Ingen speciestype eller vikt
+        $animal = factory(Animal::Class)->create([
+            'carcass_weight'        => null,
+            'aprox_carcass_weight'  => null,
+            'speciestype'           => 'unknown'
+        ]);
+
+        
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'shooter_id'    => $user->id,
+            'animal_id'     => $animal->id,
+            'area_id'       => $area->id,
+            'report_status' => 'green'
+        ]);
+
+        // köttet inte allokerat
+        $meat = factory(Meat::Class)->create([
+            'user_id'       => null,
+            'killreport_id' => $killreport->id
+        ]);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('yellow', $killreport->report_status);
+
+
+
+
+        // 8. SATT SKYTT, INGEN DJURKLASS, SATT VIKT, KÖTT INTE ALLOKERAT
+        // Ingen skytt
+        $user = factory(User::Class)->create([
+            'occupation'    => 'hunter'
+        ]);
+
+
+        // Ingen speciestype eller vikt
+        $animal = factory(Animal::Class)->create([
+            'carcass_weight'        => null,
+            'aprox_carcass_weight'  => 14,
+            'speciestype'           => 'unknown'
+        ]);
+
+        
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'shooter_id'    => $user->id,
+            'animal_id'     => $animal->id,
+            'area_id'       => $area->id,
+            'report_status' => 'green'
+        ]);
+
+        // köttet inte allokerat
+        $meat = factory(Meat::Class)->create([
+            'user_id'       => null,
+            'killreport_id' => $killreport->id
+        ]);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('yellow', $killreport->report_status);
+
+
+
+        // 9. SATT SKYTT, INGEN DJURKLASS, SATT VIKT, KÖTT ALLOKERAT
+        // Ingen skytt
+        $user = factory(User::Class)->create([
+            'occupation'    => 'hunter'
+        ]);
+
+
+        // Ingen speciestype eller vikt
+        $animal = factory(Animal::Class)->create([
+            'carcass_weight'        => null,
+            'aprox_carcass_weight'  => 14,
+            'speciestype'           => 'unknown'
+        ]);
+
+        
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'shooter_id'    => $user->id,
+            'animal_id'     => $animal->id,
+            'area_id'       => $area->id,
+            'report_status' => 'green'
+        ]);
+
+        // köttet inte allokerat
+        $meat = factory(Meat::Class)->create([
+            'user_id'       => 2,
+            'killreport_id' => $killreport->id
+        ]);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('yellow', $killreport->report_status);
+
+
+
+        // 10. SATT SKYTT, SATT DJURKLASS, INGEN VIKT, KÖTT INTE ALLOKERAT
+        // Ingen skytt
+        $user = factory(User::Class)->create([
+            'occupation'    => 'hunter'
+        ]);
+
+
+        // Ingen speciestype eller vikt
+        $animal = factory(Animal::Class)->create([
+            'carcass_weight'        => null,
+            'aprox_carcass_weight'  => null,
+            'speciestype'           => 'Hjort'
+        ]);
+
+        
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'shooter_id'    => $user->id,
+            'animal_id'     => $animal->id,
+            'area_id'       => $area->id,
+            'report_status' => 'green'
+        ]);
+
+        // köttet inte allokerat
+        $meat = factory(Meat::Class)->create([
+            'user_id'       => null,
+            'killreport_id' => $killreport->id
+        ]);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('yellow', $killreport->report_status);
+
+
+
+        // 11. SATT SKYTT, SATT DJURKLASS, SATT VIKT, KÖTT INTE ALLOKERAT
+        // Ingen skytt
+        $user = factory(User::Class)->create([
+            'occupation'    => 'hunter'
+        ]);
+
+
+        // Ingen speciestype eller vikt
+        $animal = factory(Animal::Class)->create([
+            'carcass_weight'        => 32,
+            'aprox_carcass_weight'  => null,
+            'speciestype'           => 'Hjort'
+        ]);
+
+        
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'shooter_id'    => $user->id,
+            'animal_id'     => $animal->id,
+            'area_id'       => $area->id,
+            'report_status' => 'green'
+        ]);
+
+        // köttet inte allokerat
+        $meat = factory(Meat::Class)->create([
+            'user_id'       => null,
+            'killreport_id' => $killreport->id
+        ]);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('yellow', $killreport->report_status);
+
+
+        // 11. SATT SKYTT, SATT DJURKLASS, SATT VIKT, KÖTT ALLOKERAT
+        // Ingen skytt
+        $user = factory(User::Class)->create([
+            'occupation'    => 'hunter'
+        ]);
+
+
+        // Ingen speciestype eller vikt
+        $animal = factory(Animal::Class)->create([
+            'carcass_weight'        => 32,
+            'aprox_carcass_weight'  => null,
+            'speciestype'           => 'Hjort'
+        ]);
+
+        
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'shooter_id'    => $user->id,
+            'animal_id'     => $animal->id,
+            'area_id'       => $area->id,
+            'report_status' => 'green'
+        ]);
+
+        // köttet inte allokerat
+        $meat = factory(Meat::Class)->create([
+            'user_id'       => 2,
+            'killreport_id' => $killreport->id
+        ]);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('green', $killreport->report_status);
+    }
+
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function other_area_than_smaris_full_status_test()
+    {
+        // Området annat än Småris
+        $area = factory(Area::Class)->create([
+            'area_name'     => 'Glotterbäck'
+        ]);
+
+        // 1. INGEN SKYTT, INGEN DJURKLASS, INGEN VIKT
+        $user = factory(User::Class)->create([
+            'occupation'    => 'anonhunter'
+        ]);
+
+
+        // Ingen speciestype eller vikt
+        $animal = factory(Animal::Class)->create([
+            'carcass_weight'        => null,
+            'aprox_carcass_weight'  => null,
+            'speciestype'           => 'unknown'
+        ]);
+
+        
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'shooter_id'    => $user->id,
+            'animal_id'     => $animal->id,
+            'area_id'       => $area->id,
+            'report_status' => 'green'
+        ]);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('yellow', $killreport->report_status);
+
+
+
+        // 2. INGEN SKYTT, INGEN DJURKLASS, SATT VIKTER
+        $user = factory(User::Class)->create([
+            'occupation'    => 'anonhunter'
+        ]);
+
+
+        // Ingen speciestype eller vikt
+        $animal = factory(Animal::Class)->create([
+            'carcass_weight'        => 32,
+            'aprox_carcass_weight'  => null,
+            'speciestype'           => 'unknown'
+        ]);
+
+        
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'shooter_id'    => $user->id,
+            'animal_id'     => $animal->id,
+            'area_id'       => $area->id,
+            'report_status' => 'green'
+        ]);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('yellow', $killreport->report_status);
+
+
+        // 3. INGEN SKYTT, SATT DJURKLASS, INGA VIKTER
+        $user = factory(User::Class)->create([
+            'occupation'    => 'anonhunter'
+        ]);
+
+
+        // Ingen speciestype eller vikt
+        $animal = factory(Animal::Class)->create([
+            'carcass_weight'        => null,
+            'aprox_carcass_weight'  => null,
+            'speciestype'           => 'Hjort'
+        ]);
+
+        
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'shooter_id'    => $user->id,
+            'animal_id'     => $animal->id,
+            'area_id'       => $area->id,
+            'report_status' => 'green'
+        ]);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('yellow', $killreport->report_status);
+
+
+
+
+        // 4. INGEN SKYTT, SATT DJURKLASS, SATT VIKTER
+        $user = factory(User::Class)->create([
+            'occupation'    => 'anonhunter'
+        ]);
+
+
+        // Ingen speciestype eller vikt
+        $animal = factory(Animal::Class)->create([
+            'carcass_weight'        => 24,
+            'aprox_carcass_weight'  => null,
+            'speciestype'           => 'Hjort'
+        ]);
+
+        
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'shooter_id'    => $user->id,
+            'animal_id'     => $animal->id,
+            'area_id'       => $area->id,
+            'report_status' => 'green'
+        ]);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('yellow', $killreport->report_status);
+
+
+
+        // 5. SATT SKYTT, INGEN DJURKLASS, INGEN VIKT
+        $user = factory(User::Class)->create([
+            'occupation'    => 'hunter'
+        ]);
+
+
+        // Ingen speciestype eller vikt
+        $animal = factory(Animal::Class)->create([
+            'carcass_weight'        => null,
+            'aprox_carcass_weight'  => null,
+            'speciestype'           => 'unknown'
+        ]);
+
+        
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'shooter_id'    => $user->id,
+            'animal_id'     => $animal->id,
+            'area_id'       => $area->id,
+            'report_status' => 'green'
+        ]);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('yellow', $killreport->report_status);
+
+
+
+
+        // 6. SATT SKYTT, INGEN DJURKLASS, SATT VIKT
+        $user = factory(User::Class)->create([
+            'occupation'    => 'hunter'
+        ]);
+
+
+        // Ingen speciestype eller vikt
+        $animal = factory(Animal::Class)->create([
+            'carcass_weight'        => 21,
+            'aprox_carcass_weight'  => 20,
+            'speciestype'           => 'unknown'
+        ]);
+
+        
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'shooter_id'    => $user->id,
+            'animal_id'     => $animal->id,
+            'area_id'       => $area->id,
+            'report_status' => 'green'
+        ]);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('yellow', $killreport->report_status);
+
+
+
+
+        // 7. SATT SKYTT, SATT DJURKLASS, INGEN VIKT
+        $user = factory(User::Class)->create([
+            'occupation'    => 'hunter'
+        ]);
+
+
+        // Ingen speciestype eller vikt
+        $animal = factory(Animal::Class)->create([
+            'carcass_weight'        => null,
+            'aprox_carcass_weight'  => null,
+            'speciestype'           => 'Hjort'
+        ]);
+
+        
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'shooter_id'    => $user->id,
+            'animal_id'     => $animal->id,
+            'area_id'       => $area->id,
+            'report_status' => 'green'
+        ]);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('yellow', $killreport->report_status);
+
+
+
+
+        // 8. SATT SKYTT, SATT DJURKLASS, SATT VIKT
+        $user = factory(User::Class)->create([
+            'occupation'    => 'hunter'
+        ]);
+
+
+        // Ingen speciestype eller vikt
+        $animal = factory(Animal::Class)->create([
+            'carcass_weight'        => null,
+            'aprox_carcass_weight'  => 14,
+            'speciestype'           => 'Hjort'
+        ]);
+
+        
+        // Rapport
+        $killreport = factory(Killreport::Class)->create([
+            'shooter_id'    => $user->id,
+            'animal_id'     => $animal->id,
+            'area_id'       => $area->id,
+            'report_status' => 'green'
+        ]);
+        
+        // Sätter färgen för rapporten
+        $killreport->set_status();
+
+        // Antagande
+        $this->assertEquals('green', $killreport->report_status);
+
+    }
+
 }
