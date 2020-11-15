@@ -30,6 +30,7 @@ class KillreportController extends Controller
         $areas_search = htmlspecialchars(request()->input('areas'));
         $status_search = htmlspecialchars(request()->input('status'));
         $meat_search = htmlspecialchars(request()->input('meat'));
+        $kind_search = htmlspecialchars(request()->input('kind'));
 
        
         // Tar fram killreports beroende på säsong
@@ -89,6 +90,15 @@ class KillreportController extends Controller
                 
             });
         }
+
+
+        // Filtrear ut sorts jakt
+        if( !empty($kind_search) ) {
+            $killreports = $killreports->filter(function ($value, $key) use ($kind_search) {
+                return $value->kindofhunt == $kind_search;
+            });
+        }
+        
 
         
 

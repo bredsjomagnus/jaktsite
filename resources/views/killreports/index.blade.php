@@ -68,7 +68,7 @@
           <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Köttilldelning:</label></td>
         </tr>
         <tr>
-        <td>
+          <td>
             <select class="custom-select custom-select-sm" name="status" id="status_select">
               <option value="">Alla</option>
               <option value="green"   <?php if(isset($_GET['status'])) { echo $_GET['status'] == "green" ? "selected" : ""; } ?>>Klara</option>
@@ -83,7 +83,23 @@
               @endforeach
               <option value="{{ $anonhunter->id }}" <?php if(isset($_GET['meat'])) { echo $_GET['meat'] ==  $anonhunter->id ? "selected" : ""; } ?>>Gäst</option>
             </select>
-        </td>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Sorts jakt:</label></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            
+            <select class="custom-select custom-select-sm" name="kind" id="status_select">
+              <option value="">Alla</option>
+              <option value="Gemensam jakt"   <?php if(isset($_GET['kind'])) { echo $_GET['kind'] == "Gemensam jakt" ? "selected" : ""; } ?>>Gemensam jakt</option>
+              <option value="Ensamjakt"  <?php if(isset($_GET['kind'])) { echo $_GET['kind'] == "Ensamjakt" ? "selected" : ""; } ?>>Ensamjakt</option>
+            </select>
+          
+          </td>
         </tr>
       </table>
 
@@ -94,130 +110,116 @@
     </div>
   </form>
     <!-- Card deck -->
-    <div class="card-deck clearfix">
+  <div class="card-deck clearfix">
 
-      @foreach($killreports as $killreport)
-          
-        <!-- Card -->
-        <div class="card mb-4" style="min-width: 300px; max-height:1000px;">
+    @foreach($killreports as $killreport)
+        
+      <!-- Card -->
+      <div class="card mb-4" style="min-width: 300px; max-height:1000px;">
 
-          <!-- översta kanten med killreport->id -->
-          <div class="text-left" style="background-color: #dccc9b;">
-            <p class="pl-2 card-text" style="font-size: 12px;">#{{$killreport->id}}</p>
-          </div>  
+        <!-- översta kanten med killreport->id -->
+        <div class="text-left" style="background-color: #dccc9b;">
+          <p class="pl-2 card-text" style="font-size: 12px;">#{{$killreport->id}}</p>
+        </div>  
 
-          <!--Card image-->
-          <div class="view overlay">
+        <!--Card image-->
+        <div class="view overlay">
 
-              <!-- bilden -->
-              <img class="card-img-top lazy" data-src="{{ $killreport->display_path() }}?<?php $date = new DateTime(); echo $date->getTimestamp(); ?>" alt="">
-              <!-- länk via bilden -->
-              <a href="{{url($killreport->path())}}">
-                  <div class="mask rgba-white-slight"><span></span></div>
-              </a>
-
-          </div>
-          <!--/Card image-->
-
-          <!--Card content-->
-          <!-- <div class="card-body" style="border-top: 5px solid {{ $killreport->report_status }}"> -->
-          <!-- <div class="card-body" <?php if($killreport->report_status == 'yellow') { echo 'style="border-left: 5px solid #ffbb33"'; } else if($killreport->report_status == 'green') { echo 'style="border-left: 5px solid #71a273"'; } ?>> -->
-          <div class="card-body">
-
-            
-              @if($killreport->report_status == 'yellow')
-                <div class="w-100 d-flex flex-row justify-content-between" style="background-color: #ffbb33; padding-top: 3px; padding-left: 5px; padding-right: 5px; height: 25px;">
-                  <p style="font-size: 12px;"><span class="fas fa-exclamation-triangle"></span> Rapporten ej klar!</p>
-                  @if($killreport->locked == 'yes')
-                    <p style="font-size: 12px;"> Låst!</p>
-                  @else
-                    <p style="font-size: 12px;"><span class="fas fa-unlock"></span> Olåst!</p>
-                  @endif
-                </div>
-              @elseif($killreport->report_status == 'green')
-                <div class="w-100 d-flex flex-row justify-content-between" style="background-color: rgb(145 214 148); padding-top: 3px; padding-left: 5px; padding-right: 5px; height: 25px;">
-                  <span style="font-size: 12px;"><span class="fas fa-clipboard-check"></span> Rapporten klar!</span>
-                  @if($killreport->locked == 'yes')
-                    <p style="font-size: 12px;"><span class="fas fa-lock"></span> Låst!</p>
-                   @else
-                    <p style="font-size: 12px;"><span class="fas fa-unlock"></span> Olåst!</p>
-                  @endif
-                </div>
-              @endif
-              <!-- <span class="card-text" style="font-size: 12px;"><strong>BILDTEXT</strong></span><br> -->
-              <i class="card-text" style="font-size: 12px;"><?= $killreport->display_image() == "default_display.jpg" ? "Bildtext saknas" : $killreport->display_image()->description ?></i>
-            </div>
-
-            <!-- rapportdata -->
-            <div class="mt-2 mb-4 w-100" style="border-bottom: 1px solid #D8D8D8;">
-              <span class="card-text" style="font-size: 12px;"><strong>RAPPPORTDATA</strong></span><br>
-              <table class="w-100 card-text table-striped" >
-                <tr>
-                  <td style="font-size: 12px; font-weight: bold;">Datum:</td>
-                  <td style="font-size: 12px;">{{substr($killreport->killdate, 0, 10)}}</td>
-                </tr>
-                <tr>
-                  <td style="font-size: 12px; font-weight: bold;">Djur:</td>
-                  <td style="font-size: 12px;">{{$killreport->animal()['species']}} - {{$killreport->animal()['speciestype']}}<?= $killreport->animal()['antlers'] ? "; " . $killreport->animal()['antlers'] : "" ?></td>
-                </tr>
-                <tr>
-                  <td style="font-size: 12px; font-weight: bold;"><strong>Skytt:</strong></td>
-                  <td style="font-size: 12px;">{{$killreport->shooter['firstname']}} {{$killreport->shooter['lastname']}}, [{{$killreport->kindofhunt}}]</td>
-                </tr>
-                <tr>
-                  <td style="font-size: 12px; font-weight: bold;"><strong>Område:</strong></td>
-                  <td style="font-size: 12px;">{{$killreport->area()['area_name']}}</td>
-                </tr>
-              </table>
-            </div>
-
-            <!-- köttilldelning -->
-            <div class="mt-2 mb-4 w-100" style="border-bottom: 1px solid #D8D8D8;">
-              <span class="card-text" style="font-size: 12px;"><strong>KÖTTILLDELNING</strong></span><br>
-              <table class="card-text" >
-                <tbody>
-                @foreach($killreport->meat as $meat)
-                  @if(!is_null($meat->user_id))
-                    <tr>
-                      <td style="font-size: 12px; font-weight: bold;"><?= $meat->get_users_name() == '- -' ? 'Gäst' : $meat->get_users_name()?>:</td>
-                      <td style="font-size: 12px;">{{$meat->share_kilogram}} kg</td>
-                    </tr>
-                  @endif
-                @endforeach
-                </tbody>
-              </table>
-              <i class="card-text" style="font-size: 12px;">{{$killreport->animal()->waste_notes}}</i>
-            </div>
-            
-            <!-- footer -->
-            <div class="d-flex flex-row justify-content-around card-footer">
-              <button class="btn btn-mdb-color btn-sm"><a href="{{url($killreport->path())}}" style="color: white;">Rapporten</a></button>
-              <button class="btn btn-mdb-color btn-sm"><a href="{{url( '/image/'.$killreport->id.'/edit' )}}" style="color: white;">Bilder</a></button>
-             <!-- @if(Auth::user()->role == 'admin')
-              </div>
-              <div class="w-100 justify-content-right" style="background-color: lightgray;">
-                <form class="w-100 text-center" method="POST" action="{{url( '/killreports/'.$killreport->id.'/delete' )}}">
-                  @csrf
-                  @method('DELETE')
-                  <button onclick="return confirm('Detta tar oåterkalleligt bort rapporten, djuret, köttilldelning och bilder som är associerat med rapporten. Vill du fortsätta?')" class="btn btn-danger btn-sm" type="submit"><span class="fas fa-trash-alt"></span></button>
-                 
-                </form>
-              </div>
-              @else
-              </div>
-
-              @endif-->
-              
-            
-            </div>
-          </div>
-          <!--/Card content-->
+          <!-- bilden -->
+          <img class="card-img-top lazy" data-src="{{ $killreport->display_path() }}?<?php $date = new DateTime(); echo $date->getTimestamp(); ?>" alt="">
+          <!-- länk via bilden -->
+          <a href="{{url($killreport->path())}}">
+              <div class="mask rgba-white-slight"><span></span></div>
+          </a>
 
         </div>
-        <!-- /Card -->    
-      @endforeach
-    </div>
-    <!-- Card deck -->
+        <!--/Card image-->
+
+        <!--Card content-->
+        <div class="card-body">
+
+        
+          @if($killreport->report_status == 'yellow')
+            <div class="w-100 d-flex flex-row justify-content-between" style="background-color: #ffbb33; padding-top: 3px; padding-left: 5px; padding-right: 5px; height: 25px;">
+              <p style="font-size: 12px;"><span class="fas fa-exclamation-triangle"></span> Rapporten ej klar!</p>
+              @if($killreport->locked == 'yes')
+                <p style="font-size: 12px;"> Låst!</p>
+              @else
+                <p style="font-size: 12px;"><span class="fas fa-unlock"></span> Olåst!</p>
+              @endif
+            </div>
+          @elseif($killreport->report_status == 'green')
+            <div class="w-100 d-flex flex-row justify-content-between" style="background-color: rgb(145 214 148); padding-top: 3px; padding-left: 5px; padding-right: 5px; height: 25px;">
+              <p style="font-size: 12px;"><span class="fas fa-clipboard-check"></span> Rapporten klar!</p>
+              @if($killreport->locked == 'yes')
+                <p style="font-size: 12px;"><span class="fas fa-lock"></span> Låst!</p>
+                @else
+                <p style="font-size: 12px;"><span class="fas fa-unlock"></span> Olåst!</p>
+              @endif
+            </div>
+          @endif
+          <!-- <span class="card-text" style="font-size: 12px;"><strong>BILDTEXT</strong></span><br> -->
+          <i class="card-text" style="font-size: 12px;"><?= $killreport->display_image() == "default_display.jpg" ? "Bildtext saknas" : $killreport->display_image()->description ?></i>
+        
+
+          <!-- rapportdata -->
+          <div class="mt-2 mb-4 w-100" style="border-bottom: 1px solid #D8D8D8;">
+            <span class="card-text" style="font-size: 12px;"><strong>RAPPPORTDATA</strong></span><br>
+            <table class="w-100 card-text table-striped" >
+              <tr>
+                <td style="font-size: 12px; font-weight: bold;">Datum:</td>
+                <td style="font-size: 12px;">{{substr($killreport->killdate, 0, 10)}}</td>
+              </tr>
+              <tr>
+                <td style="font-size: 12px; font-weight: bold;">Djur:</td>
+                <td style="font-size: 12px;">{{$killreport->animal()['species']}} - {{$killreport->animal()['speciestype']}}<?= $killreport->animal()['antlers'] ? "; " . $killreport->animal()['antlers'] : "" ?></td>
+              </tr>
+              <tr>
+                <td style="font-size: 12px; font-weight: bold;"><strong>Skytt:</strong></td>
+                <td style="font-size: 12px;">{{$killreport->shooter['firstname']}} {{$killreport->shooter['lastname']}}, [{{$killreport->kindofhunt}}]</td>
+              </tr>
+              <tr>
+                <td style="font-size: 12px; font-weight: bold;"><strong>Område:</strong></td>
+                <td style="font-size: 12px;">{{$killreport->area()['area_name']}}</td>
+              </tr>
+            </table>
+          </div>
+
+          <!-- köttilldelning -->
+          <div class="mt-2 mb-4 w-100" style="border-bottom: 1px solid #D8D8D8;">
+            <span class="card-text" style="font-size: 12px;"><strong>KÖTTILLDELNING</strong></span><br>
+            <table class="card-text" >
+              <tbody>
+              @foreach($killreport->meat as $meat)
+                @if(!is_null($meat->user_id))
+                  <tr>
+                    <td style="font-size: 12px; font-weight: bold;"><?= $meat->get_users_name() == '- -' ? 'Gäst' : $meat->get_users_name()?>:</td>
+                    <td style="font-size: 12px;">{{$meat->share_kilogram}} kg</td>
+                  </tr>
+                @endif
+              @endforeach
+              </tbody>
+            </table>
+            <i class="card-text" style="font-size: 12px;">{{$killreport->animal()->waste_notes}}</i>
+          </div>
+
+        
+        </div>
+        <!--/Card content-->
+
+        <!-- footer -->
+        <div class="d-flex flex-row justify-content-around card-footer">
+          <button class="btn btn-mdb-color btn-sm"><a href="{{url($killreport->path())}}" style="color: white;">Rapporten</a></button>
+          <button class="btn btn-mdb-color btn-sm"><a href="{{url( '/image/'.$killreport->id.'/edit' )}}" style="color: white;">Bilder</a></button>
+
+        </div>
+        <!-- /footer -->
+
+      </div>
+      <!-- /Card -->    
+    @endforeach
+  </div>
+  <!-- Card deck -->
 </div>
 <!-- /Container -->
    

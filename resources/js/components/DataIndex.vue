@@ -350,76 +350,7 @@
                     </tbody>
                 </table>
             </div>
-                
             
-            <hr>
-            <div class="mt-4 justify-content-center">
-                <h6>SORTS JAKT - {{ this.area}}</h6>
-                <mdb-pie-chart v-if="area == 'Småris'"
-                    datalabels
-                    :data="kindOfHuntPieChartDataSmaris"
-                    :options="kindOfHuntPieChartOptionsSmaris"
-                    :width="100"
-                    :height="250"
-                    />
-                <mdb-pie-chart v-else-if="area == 'Glotterbäck'"
-                    datalabels
-                    :data="kindOfHuntPieChartDataGlotterback"
-                    :options="kindOfHuntPieChartOptionsGlotterback"
-                    :width="100"
-                    :height="250"
-                    />
-                <mdb-pie-chart v-else-if="area == 'Haddebo'"
-                    datalabels
-                    :data="kindOfHuntPieChartDataHaddebo"
-                    :options="kindOfHuntPieChartOptionsHaddebo"
-                    :width="100"
-                    :height="250"
-                    />
-                <mdb-pie-chart v-else-if="area == 'Västerby'"
-                    datalabels
-                    :data="kindOfHuntPieChartDataVasterby"
-                    :options="kindOfHuntPieChartOptionsVasterby"
-                    :width="100"
-                    :height="250"
-                    />
-                <mdb-pie-chart v-else-if="area == 'Nästorp'"
-                    datalabels
-                    :data="kindOfHuntPieChartDataNastorp"
-                    :options="kindOfHuntPieChartOptionsNastorp"
-                    :width="100"
-                    :height="250"
-                    />
-                <mdb-pie-chart v-else-if="area == 'Pålsboda'"
-                    datalabels
-                    :data="kindOfHuntPieChartDataPalsboda"
-                    :options="kindOfHuntPieChartOptionsPalsboda"
-                    :width="100"
-                    :height="250"
-                    />
-                <div>
-                    <table class="mt-2 ml-3 table-striped" style="width: 95%;">
-                        <thead>
-                            <tr>
-                                <th>Sorts jakt - {{ this.area }}</th>
-                                <th>Antal/Procent</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="info-table">
-                                <td class="info-table" width="75%">Gemensam jakt</td>
-                                <td class="info-table">{{ this.kindOfGemensamByArea(this.area) }} st / {{ Math.round((this.kindOfGemensamByArea(this.area)/(this.kindOfGemensamByArea(this.area)+this.kindOfEnsamByArea(this.area))) * 100) }} %</td>
-                            </tr>
-                            <tr>
-                                <td class="info-table">Ensamjakt</td>
-                                <td class="info-table">{{ this.kindOfEnsamByArea(this.area) }} st / {{ Math.round((this.kindOfEnsamByArea(this.area)/(this.kindOfGemensamByArea(this.area)+this.kindOfEnsamByArea(this.area))) * 100) }} %</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-            </div>
-
             <hr>
 
             <div class="mt-4 justify-content-center">
@@ -495,6 +426,75 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+
+            <hr>
+
+            <div class="mt-4 justify-content-center">
+                <h6>SORTS JAKT - {{ this.area}}</h6>
+                <mdb-pie-chart v-if="area == 'Småris'"
+                    datalabels
+                    :data="kindOfHuntPieChartDataSmaris"
+                    :options="kindOfHuntPieChartOptionsSmaris"
+                    :width="100"
+                    :height="250"
+                    />
+                <mdb-pie-chart v-else-if="area == 'Glotterbäck'"
+                    datalabels
+                    :data="kindOfHuntPieChartDataGlotterback"
+                    :options="kindOfHuntPieChartOptionsGlotterback"
+                    :width="100"
+                    :height="250"
+                    />
+                <mdb-pie-chart v-else-if="area == 'Haddebo'"
+                    datalabels
+                    :data="kindOfHuntPieChartDataHaddebo"
+                    :options="kindOfHuntPieChartOptionsHaddebo"
+                    :width="100"
+                    :height="250"
+                    />
+                <mdb-pie-chart v-else-if="area == 'Västerby'"
+                    datalabels
+                    :data="kindOfHuntPieChartDataVasterby"
+                    :options="kindOfHuntPieChartOptionsVasterby"
+                    :width="100"
+                    :height="250"
+                    />
+                <mdb-pie-chart v-else-if="area == 'Nästorp'"
+                    datalabels
+                    :data="kindOfHuntPieChartDataNastorp"
+                    :options="kindOfHuntPieChartOptionsNastorp"
+                    :width="100"
+                    :height="250"
+                    />
+                <mdb-pie-chart v-else-if="area == 'Pålsboda'"
+                    datalabels
+                    :data="kindOfHuntPieChartDataPalsboda"
+                    :options="kindOfHuntPieChartOptionsPalsboda"
+                    :width="100"
+                    :height="250"
+                    />
+                <div>
+                    <table class="mt-2 ml-3 table-striped" style="width: 95%;">
+                        <thead>
+                            <tr>
+                                <th>Sorts jakt - {{ this.area }}</th>
+                                <th>Antal/Procent</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="info-table">
+                                <td class="info-table" width="75%">Gemensam jakt</td>
+                                <td class="info-table">{{ this.kindOfGemensamByArea(this.area) }} st / {{ Math.round((this.kindOfGemensamByArea(this.area)/(this.kindOfGemensamByArea(this.area)+this.kindOfEnsamByArea(this.area))) * 100) }} %</td>
+                            </tr>
+                            <tr>
+                                <td class="info-table">Ensamjakt</td>
+                                <td class="info-table">{{ this.kindOfEnsamByArea(this.area) }} st / {{ Math.round((this.kindOfEnsamByArea(this.area)/(this.kindOfGemensamByArea(this.area)+this.kindOfEnsamByArea(this.area))) * 100) }} %</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
             </div>
         </div>
     
@@ -2200,13 +2200,13 @@
         },
         kindOfGemensamByArea(area) {
             let res = this.kindGemensamJakt.filter( obj => {
-                return obj.area == area;
+                return obj.area == area && obj.deleted_at == null;
             });
             return res.length;
         },
         kindOfEnsamByArea(area) {
             let res = this.kindEnsamjakt.filter( obj => {
-                return obj.area == area;
+                return obj.area == area && obj.deleted_at == null;
             });
             return res.length;
         },

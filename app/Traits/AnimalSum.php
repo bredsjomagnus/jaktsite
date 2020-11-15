@@ -52,8 +52,10 @@ trait AnimalSum
             
             // Lägger till key => values (area och species) för användarnas killreports
             foreach($killreports as $killreport) {
-                $killreport['area']     = $killreport->area()->area_name;
-                $killreport['species']  = $killreport->animal()->species;
+                if(is_null($killreport->deteted_at)) {
+                    $killreport['area']     = $killreport->area()->area_name;
+                    $killreport['species']  = $killreport->animal()->species;
+                }
             }
 
             $data[$index] = [
@@ -92,11 +94,15 @@ trait AnimalSum
         // bygger upp resultatarrayen för gästernas killreports
         foreach($guests as $guest) {
             $guest_killreports = $guest->killreports_shooter; // Gästesn registrerade killreports
+
+            
             
             //
             foreach($guest_killreports as $guest_killreport) {
-                $guest_killreport['area']     = $guest_killreport->area()->area_name;
-                $guest_killreport['species']  = $guest_killreport->animal()->species;
+                if(is_null($guest_killreport->deteted_at)) {
+                    $guest_killreport['area']     = $guest_killreport->area()->area_name;
+                    $guest_killreport['species']  = $guest_killreport->animal()->species;
+                }
             }
             $data[$index] = [
                 'id'                    => $guest->id,
