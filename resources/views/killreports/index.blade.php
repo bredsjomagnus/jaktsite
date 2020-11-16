@@ -140,7 +140,7 @@
 
         
           @if($killreport->report_status == 'yellow')
-            <div class="w-100 d-flex flex-row justify-content-between" style="background-color: #ffbb33; padding-top: 3px; padding-left: 5px; padding-right: 5px; height: 25px;">
+            <div class="w-100 d-flex flex-row justify-content-between" style="color: <?= $killreport->area()->area_name == 'Småris' ? 'black' : '#828282' ?>;  background-color: <?= $killreport->area()->area_name == 'Småris' ? '#ffbb33' : 'rgb(239 239 239)' ?>; padding-top: 3px; padding-left: 5px; padding-right: 5px; height: 25px;">
               <p style="font-size: 12px;"><span class="fas fa-exclamation-triangle"></span> Rapporten ej klar!</p>
               @if($killreport->locked == 'yes')
                 <p style="font-size: 12px;"><span class="fas fa-lock"></span> Låst!</p>
