@@ -17,9 +17,17 @@
 
 
             <!-- <mdb-btn-toolbar> -->
-            <div class="d-flex flex-row justify-content-around" :style="authUser.role == 'admin' ? 'margin-right: 55px;': ''">
+            <div class="d-flex flex-row justify-content-around" :style="authUser.role == 'admin' ? 'margin-left: 60px;': ''">
+                <p v-if="authUser.role == 'admin'"></p>
+               
 
-                <div v-if="authUser.role == 'admin'" class="d-flex flex-row justify-content-center" style="margin-top: 10px;">
+                <mdb-btn-group size="sm">
+                    <mdb-btn v-if="authUser.role == 'admin' || killreport.locked == 'no'" :color="untouched ? 'mdb-color' : 'purple'" @click.native="saveChanges" :disabled="savable" size="sm"><mdb-icon icon="save"/> - Spara</mdb-btn>
+                    <mdb-btn v-else color="mdb-color" :disabled="true" size="sm"><mdb-icon icon="lock"/> - Låst</mdb-btn>
+                    <mdb-btn color="mdb-color" @click.native="toImagesView" size="sm"><mdb-icon icon="images"/> - Bilder</mdb-btn>
+                </mdb-btn-group>
+
+                 <div v-if="authUser.role == 'admin'" class="d-flex flex-row justify-content-center" style="margin-top: 10px; padding-right: 5px;">
                     <mdb-icon v-if="killreport.locked == 'yes'" style="font-size:12px; margin-right: 5px; margin-top: 5px; color: #d84141;" icon="lock"/>
                     <mdb-icon v-else style="font-size:12px; margin-right: 5px; margin-top: 5px; color: gray;" icon="lock"/>
                     <!-- Default switch -->
@@ -30,13 +38,6 @@
                     <mdb-icon v-if="killreport.locked == 'no'" style="font-size:12px; margin-right: -5px; margin-top: 5px; color: #235cde;" icon="lock-open"/> 
                     <mdb-icon v-else style="font-size:12px; margin-right: -5px; margin-top: 5px; color: gray;" icon="lock-open"/> 
                 </div>
-
-                <mdb-btn-group size="sm">
-                    <mdb-btn v-if="authUser.role == 'admin' || killreport.locked == 'no'" :color="untouched ? 'mdb-color' : 'purple'" @click.native="saveChanges" :disabled="savable" size="sm"><mdb-icon icon="save"/> - Spara</mdb-btn>
-                    <mdb-btn v-else color="mdb-color" :disabled="true" size="sm"><mdb-icon icon="lock"/> - Låst</mdb-btn>
-                    <mdb-btn color="mdb-color" @click.native="toImagesView" size="sm"><mdb-icon icon="images"/> - Bilder</mdb-btn>
-                </mdb-btn-group>
-                <p v-if="authUser.role == 'admin'"></p>
             </div>
             <!-- </mdb-btn-toolbar> -->
                        <!-- <mdb-icon icon="balance-scale"/> -->
@@ -277,7 +278,7 @@
             <img class="par" :src="killreportImage" alt="very cool bg">
 
             <div style="background-color: #1c2331; padding-left: 5px;">
-                <i style="font-size: 12px; color: white; margin-left: 10px;">Skapad: {{this.killreport.created_at}}, uppdaterad: {{this.killreport.updated_at}} </i>
+                <i style="font-size: 10px; color: white; margin-left: 10px;">Skapad: {{this.killreport.created_at}}, uppdaterad: {{this.killreport.updated_at}} </i>
             </div>
 
             <mdb-card>
