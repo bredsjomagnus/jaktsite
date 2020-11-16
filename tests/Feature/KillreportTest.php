@@ -155,7 +155,7 @@ class KillreportTest extends TestCase
      *
      * @return void
      */
-    public function a_can_update_a_killreport()
+    public function a_user_can_update_an_unlocked_killreport()
     {
         $this->withoutExceptionHandling();
         
@@ -188,8 +188,6 @@ class KillreportTest extends TestCase
 
         $this->post('/animals/'.$animal->id.'/update', $animalupdate);
         $this->assertDatabaseHas('animals', $animalupdate);
-
-
     }
 
     // /**

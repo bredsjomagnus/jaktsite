@@ -20,7 +20,7 @@ abstract class TestCase extends BaseTestCase
         return $user;
     }
 
-    protected function report_kill($shooter = null, $reporter = null, $animal = null, $area = null)
+    protected function report_kill($shooter = null, $reporter = null, $animal = null, $area = null, $locked = 'no')
     {
         $reporter = $reporter ?: factory(User::class)->create();
         $shooter = $shooter ?: factory(User::class)->create();
@@ -31,7 +31,8 @@ abstract class TestCase extends BaseTestCase
             'shooter_id'    => $shooter->id,
             'reporter_id'   => $reporter->id,
             'animal_id'     => $animal->id,
-            'area_id'       => $area->id
+            'area_id'       => $area->id,
+            'locked'        => $locked
         ]);
 
         $data = [
