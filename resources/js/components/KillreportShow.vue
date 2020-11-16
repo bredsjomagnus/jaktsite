@@ -623,24 +623,43 @@
                 </mdb-modal-footer>
             </mdb-modal>
 
-
-
             <mdb-card class="mt-2">
-               <mdb-card-header :class="totalmeat == carcassWeight ? 'bg-blue-color pl-4' : 'errorheader pl-4'">
+               <mdb-card-header class="bg-blue-color pl-4">
                    <div class="d-flex flex-row justify-content-center">
                        Vikt som skall fördelas: {{ carcassWeight }} kg
                     </div>
                    <div class="d-flex flex-row justify-content-center">
                        Total fördelat: {{ totalmeat }} kg
                     </div>
+               </mdb-card-header>
+            </mdb-card>
+
+            <mdb-card class="mt-2">
+                <mdb-card-body :class="cardbodycolorcarcassweight() ? 'cardborderchanged' : 'cardborder'">
+                <mdb-card-title class="d-flex justify-content-center titlecolor p-1">SLAKTVIKT</mdb-card-title>
+                    <div class="p-3 mb-2">
+                        <mdb-input :class="carcass_weightSelected != origincarcass_weight ? 'changedinput' : ''" type="number" step="0.1" label="Vägd slaktvikt" v-model.number="carcass_weightSelected" @change="checkcarcassweightchanges"/>
+                        <p v-if="carcass_weightSelected != origincarcass_weight" class="inputmsg" >Urspr.: {{this.origincarcass_weight}}</p>
+                        <mdb-input :class="aprox_carcass_weightSelected != originaprox_carcass_weight ? 'changedinput' : ''" type="number" step="0.1" label="Uppsk. slaktvikt" v-model.number="aprox_carcass_weightSelected" @change="checkaproxcarcassweightchanges"/>
+                        <p v-if="aprox_carcass_weightSelected != originaprox_carcass_weight" class="inputmsg" >Urspr.: {{this.originaprox_carcass_weight}}</p>
+                    </div>
+                </mdb-card-body>
+            </mdb-card>
+            <mdb-card class="mt-2">
+               <mdb-card-header class="bg-blue-color pl-4">
+                    <div v-if="totalmeat != carcassWeight" class="d-flex flex-row justify-content-center">
+                        <span style="font-size: 12px;">Glöm inte att fördela köttet!</span>
+
+                    </div>
                     <div class="d-flex flex-row justify-content-around meat_button_group">
                         <mdb-btn-group size="sm">
-                            <mdb-btn color="indigo" @click.native="divideEven" size="sm">Fördela - <mdb-icon icon="balance-scale"/></mdb-btn>
+                            <mdb-btn :color="totalmeat == carcassWeight ? 'indigo' : 'purple'" @click.native="divideEven" size="sm">Fördela - <mdb-icon icon="balance-scale"/></mdb-btn>
                             <mdb-btn color="indigo" @click.native="meetModal = true" size="sm">Ändra - <mdb-icon icon="user-plus"/></mdb-btn>
                         </mdb-btn-group>
                     </div>
-                   </mdb-card-header>
+                </mdb-card-header>
                <mdb-card-body :class="totalmeat == carcassWeight ? 'cardborder' : 'meatcardbordererror'">
+                   <mdb-card-title class="d-flex justify-content-center titlecolor p-1">TILLDELNING</mdb-card-title>
                    <div
                         v-if="toggledformeat.length > 0">
                         <div
@@ -708,7 +727,7 @@
       mdbModalFooter,
       mdbIcon,
       mdbCardImage,
-      mdbCardHeader,
+      mdbCardHeader
     },
     props: [
             'authUser',
@@ -825,7 +844,7 @@
                 share_lot: null,
                 updated_at: null
             },
-            waste_notes: this.animal.waste_notes
+            waste_notes: this.animal.waste_notes,
         }
 
     },
@@ -2036,8 +2055,9 @@
     /* background-color: #59698d; */
     /* border-bottom: 5px solid #59698d; */
     background-color: white;
+    /* background-color: #1c2331; */
     color: black;
-    border-top: 2px solid #59698d;
+    /* border-top: 2px solid #59698d; */
     /* border-bottom: 2px solid #59698d; */
 
 }
@@ -2053,7 +2073,8 @@
     background-color: white;
     /* background-color: #f1f1f1; */
     color: black;
-    border-top: 2px solid red;
+    border-left: 10px solid red;
+    /* border-top: 2px solid red; */
     /* border-bottom: 2px solid red; */
 }
 .meatcardbordererror {

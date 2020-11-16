@@ -6,6 +6,7 @@ use App\Killreport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Traits\MeatSum;
+use Illuminate\Support\Facades\Auth;
 
 use App\User;
 use App\Area;
@@ -265,7 +266,10 @@ class KillreportController extends Controller
      */
     public function update(Request $request, Killreport $killreport)
     {
-        $killreport->update(request()->all());
+        // Hängslen och livrem. Ser även till här att enbart admin kan uppdatera låsta rapporter
+        if(Auth::user()->role == 'admin' || $killreport->locked == 'no') {
+            $killreport->update(request()->all());
+        }
 
         return ['redirect' => url('killreports'), 'killreport' => $killreport];
     }
