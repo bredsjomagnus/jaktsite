@@ -5,7 +5,13 @@
 
             <div class="d-flex flex-row justify-content-around" style="margin-top:-20px">
                 <mdb-card class='w-100' color="unique-color-dark">
-                    <mdb-card-text class="d-flex justify-content-center"><mdb-icon style="font-size:12px; margin-right: 10px; margin-top: 4px;" v-if="killreport.locked == 'yes'" icon="lock"/><mdb-icon style="font-size:12px; margin-right: 10px; margin-top: 4px;" v-else icon="unlock"/> Rapportkort</mdb-card-text>
+                    <mdb-card-text class="d-flex justify-content-center">
+                        <span style="margin-top: 2px;">#{{this.killreport.id}} RAPPORT </span>
+                        <span v-if="killreport.report_status == 'green'" style="font-size: 12px; color: rgb(145 214 148); margin-top: 4px; margin-left: 10px;">KLAR</span>
+                        <span v-else style="font-size: 12px; color: #ffbb33; margin-top: 4px; margin-left: 10px;">EJ KLAR</span>
+                        <mdb-icon style="font-size:12px; margin-left: 10px; margin-top: 6px;" v-if="killreport.locked == 'yes'" icon="lock"/>
+                        <mdb-icon style="font-size:12px; margin-left: 10px; margin-top: 6px;" v-else icon="lock-open"/> 
+                    </mdb-card-text>
                 </mdb-card>
             </div>
 
@@ -256,7 +262,7 @@
             <img class="par" :src="killreportImage" alt="very cool bg">
 
             <div style="background-color: #1c2331; padding-left: 5px;">
-                <i style="font-size: 12px; color: white;">Rapport #{{this.killreport.id}}; Status: '{{status}}'; Låst: '{{lockedCheck}}'</i>
+                <i style="font-size: 12px; color: white; margin-left: 10px;">#{{this.killreport.id}} Rapport</i>
             </div>
 
             <mdb-card>
@@ -368,6 +374,18 @@
                             </mdb-col>
                         </mdb-row>
 
+                </mdb-card-body>
+            </mdb-card>
+
+            <mdb-card class="mt-2" v-if="authUser.role == 'admin' && killreport.locked == 'yes'">
+                <mdb-card-body class="d-flex justify-content-center titlecolor p-1">
+                    <mdb-btn color="amber" @click.native="toggleReportLock" size='sm'>Lås upp rapporten</mdb-btn>
+                </mdb-card-body>
+            </mdb-card>
+
+            <mdb-card class="mt-2" v-if="authUser.role == 'admin' && killreport.locked == 'no'">
+                <mdb-card-body class="d-flex justify-content-center titlecolor p-1">
+                    <mdb-btn color="amber" @click.native="toggleReportLock" size='sm'>Lås rapporten</mdb-btn>
                 </mdb-card-body>
             </mdb-card>
 
@@ -1728,6 +1746,23 @@
             } else {
                 this.locked = 'no';
             }
+
+        },
+        toggleReportLock() {
+            let lock_value = this.killreport.locked == 'yes' ? 'no' : 'yes';
+            let lock_request = {
+                'locked': lock_value
+            };
+
+            console.log("lock_value: ", lock_value);
+            axios.post(this.killreportUrl, lock_request)
+                .then(response => {
+                    window.location.reload();
+                })
+                .catch(error => {
+                    console.log("KILLREPORT UPDATE ERROR:");
+                    console.log(error);
+                });
 
         },
         saveChanges() {

@@ -145,7 +145,7 @@
               @if($killreport->locked == 'yes')
                 <p style="font-size: 12px;"> Låst!</p>
               @else
-                <p style="font-size: 12px;"><span class="fas fa-unlock"></span> Olåst!</p>
+                <p style="font-size: 12px;"><span class="fas fa-lock-open"></span> Olåst!</p>
               @endif
             </div>
           @elseif($killreport->report_status == 'green')
@@ -154,7 +154,7 @@
               @if($killreport->locked == 'yes')
                 <p style="font-size: 12px;"><span class="fas fa-lock"></span> Låst!</p>
                 @else
-                <p style="font-size: 12px;"><span class="fas fa-unlock"></span> Olåst!</p>
+                <p style="font-size: 12px;"><span class="fas fa-lock-open"></span> Olåst!</p>
               @endif
             </div>
           @endif
