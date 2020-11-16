@@ -143,7 +143,7 @@
             <div class="w-100 d-flex flex-row justify-content-between" style="background-color: #ffbb33; padding-top: 3px; padding-left: 5px; padding-right: 5px; height: 25px;">
               <p style="font-size: 12px;"><span class="fas fa-exclamation-triangle"></span> Rapporten ej klar!</p>
               @if($killreport->locked == 'yes')
-                <p style="font-size: 12px;"> Låst!</p>
+                <p style="font-size: 12px;"><span class="fas fa-lock"></span> Låst!</p>
               @else
                 <p style="font-size: 12px;"><span class="fas fa-lock-open"></span> Olåst!</p>
               @endif
