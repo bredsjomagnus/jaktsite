@@ -2259,13 +2259,13 @@
         },
         animalShotBackgroundColors() {
             let res = Array(this.animalsShot.length).fill('#5b5b5b');
-            res.push('#DCCC9B');
+            res.push('#c5c5c5');
 
             return res;
         },
         animalShotBorderColors() {
             let res = Array(this.animalsShot.length).fill('#2d2d2d');
-            res.push('#867233');
+            res.push('#6d6d6d');
 
             return res;
         },

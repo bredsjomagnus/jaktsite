@@ -86,11 +86,17 @@
           </td>
         </tr>
         <tr>
-          <td></td>
+          <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Låst:</label></td>
           <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Sorts jakt:</label></td>
         </tr>
         <tr>
-          <td></td>
+          <td>
+            <select class="custom-select custom-select-sm" name="locked" id="status_select">
+              <option value="">Alla</option>
+              <option value="no"   <?php if(isset($_GET['locked'])) { echo $_GET['locked'] == "no" ? "selected" : ""; } ?>>Olåst</option>
+              <option value="yes"  <?php if(isset($_GET['locked'])) { echo $_GET['locked'] == "yes" ? "selected" : ""; } ?>>Låst</option>
+            </select>
+          </td>
           <td>
             
             <select class="custom-select custom-select-sm" name="kind" id="status_select">
