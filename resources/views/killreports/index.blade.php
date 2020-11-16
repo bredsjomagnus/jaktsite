@@ -131,14 +131,25 @@
           <a href="{{url($killreport->path())}}">
               <div class="mask rgba-white-slight"><span></span></div>
           </a>
+          
 
+        </div>
+        <div style="margin-top:-20px; z-index: 1;">
+          <span class="badge" > <span class="fas fa-images"></span> {{count($killreport->images) }}</span>
         </div>
         <!--/Card image-->
 
         <!--Card content-->
         <div class="card-body">
 
-        
+          @if(isset($killreport->display_image()->description))
+          <blockquote class="blockquote">
+            <p class="card-text" style="font-size: 12px;">"<?= $killreport->display_image() == "default_display.jpg" ? "" : $killreport->display_image()->description ?>"</p>
+          </blockquote>
+            
+            <hr>
+          @endif
+
           @if($killreport->report_status == 'yellow')
             <div class="w-100 d-flex flex-row justify-content-between" style="color: <?= $killreport->area()->area_name == 'Småris' ? 'black' : '#828282' ?>;  background-color: <?= $killreport->area()->area_name == 'Småris' ? '#ffbb33' : 'rgb(239 239 239)' ?>; padding-top: 3px; padding-left: 5px; padding-right: 5px; height: 25px;">
               <p style="font-size: 12px;"><span class="fas fa-exclamation-triangle"></span> Rapporten ej klar!</p>
@@ -159,7 +170,7 @@
             </div>
           @endif
           <!-- <span class="card-text" style="font-size: 12px;"><strong>BILDTEXT</strong></span><br> -->
-          <i class="card-text" style="font-size: 12px;"><?= $killreport->display_image() == "default_display.jpg" ? "Bildtext saknas" : $killreport->display_image()->description ?></i>
+          
         
 
           <!-- rapportdata -->
