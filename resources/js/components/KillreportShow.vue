@@ -22,7 +22,7 @@
                
 
                 <mdb-btn-group size="sm" >
-                    <mdb-btn  v-if="authUser.role == 'admin' || killreport.locked == 'no'" :color="untouched ? 'mdb-color' : 'purple'" @click.native="saveChanges" :disabled="savable" size="sm"><mdb-icon icon="save"/> - Spara</mdb-btn>
+                    <mdb-btn  v-if="authUser.role == 'admin' || killreport.locked == 'no'" :color="untouched ? 'mdb-color' : 'indigo'" @click.native="saveChanges" :disabled="savable" size="sm"><mdb-icon icon="save"/> - Spara</mdb-btn>
                     <mdb-btn v-else color="mdb-color" :disabled="true" size="sm"><mdb-icon icon="lock"/> - Låst</mdb-btn>
                     <mdb-btn color="mdb-color" @click.native="toImagesView" size="sm"><mdb-icon icon="images"/> - Bilder</mdb-btn>
                 </mdb-btn-group>
@@ -649,8 +649,8 @@
                    <div class="d-flex flex-row justify-content-center">
                        Vikt som skall fördelas: {{ carcassWeight }} kg
                     </div>
-                   <div class="d-flex flex-row justify-content-center">
-                       Total fördelat: <span :class="totalmeat != carcassWeight ? 'totally_allocated_error': ''"> {{ totalmeat }} kg</span>
+                   <div class="d-flex flex-row justify-content-center" :class="totalmeat != carcassWeight ? 'totally_allocated_error d-flex flex-row justify-content-center': 'd-flex flex-row justify-content-center'">
+                       Total fördelat: {{ totalmeat }} kg
                     </div>
                <!-- </mdb-card-header>
             </mdb-card> -->
@@ -659,10 +659,8 @@
                 <mdb-card-body class="cardborder">
                 <mdb-card-title class="d-flex justify-content-center titlecolor p-1">SLAKTVIKT</mdb-card-title>
                     <div class="p-3 mb-2">
-                        <mdb-input :class="carcass_weightSelected != origincarcass_weight ? 'changedinput' : ''" type="number" step="0.1" label="Vägd slaktvikt" v-model.number="carcass_weightSelected" @change="checkcarcassweightchanges"/>
-                        <!-- <p v-if="carcass_weightSelected != origincarcass_weight" class="inputmsg" >Urspr.: {{this.origincarcass_weight}}</p> -->
-                        <mdb-input :class="aprox_carcass_weightSelected != originaprox_carcass_weight ? 'changedinput' : ''" type="number" step="0.1" label="Uppsk. slaktvikt" v-model.number="aprox_carcass_weightSelected" @change="checkaproxcarcassweightchanges"/>
-                        <!-- <p v-if="aprox_carcass_weightSelected != originaprox_carcass_weight" class="inputmsg" >Urspr.: {{this.originaprox_carcass_weight}}</p> -->
+                        <mdb-input  type="number" step="0.1" label="Vägd slaktvikt" v-model.number="carcass_weightSelected" @change="checkcarcassweightchanges"/>
+                        <mdb-input type="number" step="0.1" label="Uppsk. slaktvikt" v-model.number="aprox_carcass_weightSelected" @change="checkaproxcarcassweightchanges"/>
                     </div>
                 </mdb-card-body>
             </mdb-card>
@@ -2062,20 +2060,23 @@
     font-style: italic;
 }
 .cardborder {
-    border-left: 10px solid #59698d;
+    /* border-left: 10px solid #d0b76d !important; */
+    border-left: 10px solid #e8a167!important;
 }
 .cardbordererror{
-    border-left: 10px solid red;
+    /* border-left: 10px solid red; */
+    border-left: 10px solid #d0706d;
 }
 .cardborderchanged {
     /* border-left: 10px solid #187eb9; */
-    border-left: 10px solid #8e24aa
+    border-left: 10px solid #59698d;
 }
 .changedinput > input {
-    color:#b340b3;
+    /* color:#b340b3; */
+    color:#5e5e5e;
 }
 .changedinput > textarea {
-    color: #b340b3;
+    /* color: #b340b3; */
 }
 .bg-blue-color {
     /* background-color: #1c2331; */
@@ -2105,7 +2106,7 @@
     /* border-bottom: 2px solid red; */
 }
 .meatcardbordererror {
-    border-left: 10px solid #3F51B5;
+    border-left: 10px solid #d0706d;
 }
 .par {
     width: 100%;
