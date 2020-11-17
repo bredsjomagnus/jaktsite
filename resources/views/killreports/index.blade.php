@@ -12,6 +12,28 @@
     </div>
   </div>
 
+
+  <!-- <div class="accordion accordion-wrapper mt-2" id="accordionExample275">
+
+    <div class="d-flex flex-row justify-content-center" id="headingOne" style="background-color: #f7f7f7; border-top: 3px solid #dccc9b;">
+        <p class="mb-0">
+            <a style="color: rgb(113 113 113);" class="accordion-btn" data-toggle="collapse" data-target="#collapseOne"
+            aria-expanded="true" aria-controls="collapseOne">
+               FILTRERA
+            </a>
+        </p>
+    </div>
+    <div style="background-color: #f7f7f7;"  class="d-flex flex-row justify-content-center">
+      <span style="color: rgb(113 113 113);" class="fas fa-angle-down"></span>
+    </div>
+    <div id="collapseOne" class="collapse <?= $_GET['season'] != '' ? 'show' : '' ?>" aria-labelledby="headingOne"data-parent="#accordionExample275"> -->
+        
+    
+
+                       
+
+
+
   <form action="#" method="GET">
     @csrf
       <table class="w-100">
@@ -115,6 +137,15 @@
       <input class="btn btn-mdb-color btn-sm" type="submit" value="SÖK">
     </div>
   </form>
+  <!-- <div style="background-color: #f7f7f7;"  class="d-flex flex-row justify-content-center">
+      <span style="color: rgb(113 113 113);" class="fas fa-angle-up"></span>
+    </div> -->
+    <!-- </div>  -->
+    <!-- /collapseOne -->
+  <!-- </div> -->
+  <!-- /accordion -->
+
+
     <!-- Card deck -->
   <div class="card-deck clearfix">
 

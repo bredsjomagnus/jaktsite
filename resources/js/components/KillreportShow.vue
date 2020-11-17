@@ -21,8 +21,8 @@
                 <p v-if="authUser.role == 'admin'"></p>
                
 
-                <mdb-btn-group size="sm">
-                    <mdb-btn v-if="authUser.role == 'admin' || killreport.locked == 'no'" :color="untouched ? 'mdb-color' : 'purple'" @click.native="saveChanges" :disabled="savable" size="sm"><mdb-icon icon="save"/> - Spara</mdb-btn>
+                <mdb-btn-group size="sm" >
+                    <mdb-btn  v-if="authUser.role == 'admin' || killreport.locked == 'no'" :color="untouched ? 'mdb-color' : 'purple'" @click.native="saveChanges" :disabled="savable" size="sm"><mdb-icon icon="save"/> - Spara</mdb-btn>
                     <mdb-btn v-else color="mdb-color" :disabled="true" size="sm"><mdb-icon icon="lock"/> - Låst</mdb-btn>
                     <mdb-btn color="mdb-color" @click.native="toImagesView" size="sm"><mdb-icon icon="images"/> - Bilder</mdb-btn>
                 </mdb-btn-group>
@@ -46,8 +46,8 @@
                 <mdb-btn color="mdb-color" @click.native="backToKillreportIndex" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
                 <mdb-btn-group size="sm">
                     <mdb-btn color="mdb-color" @click.native="toggleActiveStateH" :active="activeH" size="sm">Jakt</mdb-btn>
-                    <mdb-btn color="mdb-color" @click.native="toggleActiveStateW" :active="activeW" size="sm">Vikter</mdb-btn>
                     <mdb-btn color="mdb-color" @click.native="toggleActiveStateM" :active="activeM" size="sm">Kött </mdb-btn>
+                    <mdb-btn color="mdb-color" @click.native="toggleActiveStateW" :active="activeW" size="sm">Vikter</mdb-btn>
                 </mdb-btn-group>
                 <mdb-btn color="mdb-color" @click.native="undoModal = true" size="sm"><mdb-icon icon="undo"/></mdb-btn>
 
@@ -274,12 +274,17 @@
         <div></div>
 
         <div v-if="activeH">
+            
 
             <img class="par" :src="killreportImage" alt="very cool bg">
 
             <div style="background-color: #1c2331; padding-left: 5px;">
                 <i style="font-size: 10px; color: white; margin-left: 10px;">Skapad: {{this.killreport.created_at}}, uppdaterad: {{this.killreport.updated_at}} </i>
             </div>
+
+            <!-- <div class='w-100 meatallocationheader d-flex flex-row justify-content-center mt-2 mb-1'>
+                <span style="margin-top: 2px;">RAPPORTKORTETS VEM/VAR/NÄR</span>
+            </div> -->
 
             <mdb-card>
                 <mdb-card-body :class="shooterSelected.id !== originshooter.id || reporterSelected.id !== originreporter.id || kindofhuntSelected != originkindofhunt ? 'cardborderchanged' : 'cardborder'">
@@ -417,6 +422,10 @@
        
 
        <div v-else-if="activeW">
+
+           <div class='w-100 meatallocationheader d-flex flex-row justify-content-center mt-2 mb-1'>
+                <span style="margin-top: 2px;">VÄGDA OCH UPPSKATTADE VIKTER</span>
+            </div>
 
            <!-- flyttad på test hit -->
            <mdb-card>
@@ -615,23 +624,6 @@
                             </div>
                         </div>
                     </div>
-
-
-
-
-
-
-
-                    
-                    <!-- <div
-                        v-for="hunter in hunters"
-                        :key="hunter.id"
-                        >
-                            <div
-                             class="d-flex justify-content-center">
-                                <mdb-btn class="mb-0" style="width: 300px" :color="isToggledForMeat(hunter.id) ? 'indigo' : 'grey'" @click.native="togglemeat(hunter)">{{hunter.firstname}} {{hunter.lastname}}</mdb-btn>
-                            </div>
-                        </div> -->
                 </mdb-modal-body>
                 <mdb-modal-footer>
                     <mdb-btn color="blue-grey" size="sm" @click.native="meetModal = false">Ångra</mdb-btn>
@@ -639,43 +631,60 @@
                 </mdb-modal-footer>
             </mdb-modal>
 
-            <mdb-card class="mt-2">
-               <mdb-card-header class="bg-blue-color pl-4">
+            <!-- <mdb-card class="mt-2">
+               <mdb-card-header class="bg-blue-color pl-4"> -->
+            <!-- <div class="d-flex flex-row justify-content-center mt-2 mb-1"> -->
+                <!-- <mdb-card class='w-100 meatallocationheader' >
+                    <mdb-card-text class="d-flex justify-content-center">
+                        <span style="margin-top: 2px;">KÖTTILLDELNING </span>
+                    </mdb-card-text>
+                </mdb-card>
+            </div> -->
+    
+                <div class='w-100 meatallocationheader d-flex flex-row justify-content-center mt-2 mb-1'>
+                    <span style="margin-top: 2px;">KÖTTILLDELNING </span>
+                </div>
+                    
+    
                    <div class="d-flex flex-row justify-content-center">
                        Vikt som skall fördelas: {{ carcassWeight }} kg
                     </div>
                    <div class="d-flex flex-row justify-content-center">
-                       Total fördelat: {{ totalmeat }} kg
+                       Total fördelat: <span :class="totalmeat != carcassWeight ? 'totally_allocated_error': ''"> {{ totalmeat }} kg</span>
                     </div>
-               </mdb-card-header>
-            </mdb-card>
+               <!-- </mdb-card-header>
+            </mdb-card> -->
 
             <mdb-card class="mt-2">
-                <mdb-card-body :class="cardbodycolorcarcassweight() ? 'cardborderchanged' : 'cardborder'">
+                <mdb-card-body class="cardborder">
                 <mdb-card-title class="d-flex justify-content-center titlecolor p-1">SLAKTVIKT</mdb-card-title>
                     <div class="p-3 mb-2">
                         <mdb-input :class="carcass_weightSelected != origincarcass_weight ? 'changedinput' : ''" type="number" step="0.1" label="Vägd slaktvikt" v-model.number="carcass_weightSelected" @change="checkcarcassweightchanges"/>
-                        <p v-if="carcass_weightSelected != origincarcass_weight" class="inputmsg" >Urspr.: {{this.origincarcass_weight}}</p>
+                        <!-- <p v-if="carcass_weightSelected != origincarcass_weight" class="inputmsg" >Urspr.: {{this.origincarcass_weight}}</p> -->
                         <mdb-input :class="aprox_carcass_weightSelected != originaprox_carcass_weight ? 'changedinput' : ''" type="number" step="0.1" label="Uppsk. slaktvikt" v-model.number="aprox_carcass_weightSelected" @change="checkaproxcarcassweightchanges"/>
-                        <p v-if="aprox_carcass_weightSelected != originaprox_carcass_weight" class="inputmsg" >Urspr.: {{this.originaprox_carcass_weight}}</p>
+                        <!-- <p v-if="aprox_carcass_weightSelected != originaprox_carcass_weight" class="inputmsg" >Urspr.: {{this.originaprox_carcass_weight}}</p> -->
                     </div>
                 </mdb-card-body>
             </mdb-card>
-            <mdb-card class="mt-2">
-               <mdb-card-header class="bg-blue-color pl-4">
-                    <div v-if="totalmeat != carcassWeight" class="d-flex flex-row justify-content-center">
-                        <span style="font-size: 12px;">Glöm inte att fördela köttet!</span>
 
-                    </div>
-                    <div class="d-flex flex-row justify-content-around meat_button_group">
-                        <mdb-btn-group size="sm">
-                            <mdb-btn :color="totalmeat == carcassWeight ? 'indigo' : 'purple'" @click.native="divideEven" size="sm">Fördela - <mdb-icon icon="balance-scale"/></mdb-btn>
-                            <mdb-btn color="indigo" @click.native="meetModal = true" size="sm">Ändra - <mdb-icon icon="user-plus"/></mdb-btn>
-                        </mdb-btn-group>
-                    </div>
-                </mdb-card-header>
+            
+
+            <div class="d-flex flex-row justify-content-center w-100 mt-1" style="height: 25px;">
+                <span v-if="totalmeat != carcassWeight" style="font-size: 14px; text-decoration:underline;">GLÖM INTE ATT FÖRDELA KÖTTET!</span>
+            </div>
+
+            <div class="d-flex flex-row justify-content-around meat_button_group">
+                <mdb-btn-group size="sm">
+                    <mdb-btn :color="totalmeat == carcassWeight ? 'mdb-color' : 'indigo'" @click.native="divideEven" size="sm">Fördela kött - <mdb-icon icon="balance-scale"/></mdb-btn>
+                    <mdb-btn color="mdb-color" @click.native="meetModal = true" size="sm">Ändra jägare - <mdb-icon icon="user-plus"/></mdb-btn>
+                </mdb-btn-group>
+            </div>
+            <mdb-card class="mt-2">
+               <!-- <mdb-card-header class="bg-blue-color pl-4">
+                    
+                </mdb-card-header> -->
                <mdb-card-body :class="totalmeat == carcassWeight ? 'cardborder' : 'meatcardbordererror'">
-                   <mdb-card-title class="d-flex justify-content-center titlecolor p-1">TILLDELNING</mdb-card-title>
+                   <mdb-card-title class="d-flex justify-content-center titlecolor p-1">JÄGARE</mdb-card-title>
                    <div
                         v-if="toggledformeat.length > 0">
                         <div
@@ -717,7 +726,7 @@
    </div>
 </template>
 <script>
-  import { mdbBtn, mdbBtnGroup, mdbDropdown, mdbDropdownItem, mdbDropdownMenu, mdbDropdownToggle, mdbCard, mdbCardBody, mdbCardTitle, mdbCardText, mdbRow, mdbCol, mdbBadge, mdbInput, mdbBtnToolbar, mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbIcon, mdbCardImage, mdbCardHeader } from 'mdbvue';
+  import { mdbPopover, mdbBtn, mdbBtnGroup, mdbDropdown, mdbDropdownItem, mdbDropdownMenu, mdbDropdownToggle, mdbCard, mdbCardBody, mdbCardTitle, mdbCardText, mdbRow, mdbCol, mdbBadge, mdbInput, mdbBtnToolbar, mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbIcon, mdbCardImage, mdbCardHeader } from 'mdbvue';
   export default {
     name: 'showkillreport',
     components: {
@@ -743,7 +752,8 @@
       mdbModalFooter,
       mdbIcon,
       mdbCardImage,
-      mdbCardHeader
+      mdbCardHeader,
+      mdbPopover
     },
     props: [
             'authUser',
@@ -1077,11 +1087,12 @@
             }
 
             
-            this.toggledeletearray();
-            this.toggleupdatearray();
-            this.togglecreatearray();
+            // this.toggledeletearray();
+            // this.toggleupdatearray();
+            // this.togglecreatearray();
+            this.checkTotal();
 
-            this.checkChanges();
+            // this.checkChanges();
             // console.log("EFTER; this.update_from_toggledformeatfromstart: ", this.update_from_toggledformeatfromstart);
             // console.log("EFTER KONTROLL; this.delete_from_toggledformeatfromstart: ", this.delete_from_toggledformeatfromstart);
 
@@ -1176,13 +1187,13 @@
             this.checkTotal();
         },
         checkTotal() { // fixa this.meats till this.toggledformeats
-            // this.totalmeat = this.round(Object.values(this.meats).reduce((t, {share_kilogram}) => t + share_kilogram, 0) + this.waist, 1);
-            this.totalmeat = this.round(this.toggledformeat.reduce((t, {share_kilogram}) => t + share_kilogram, 0) + this.waist, 1);
+            
             this.toggleupdatearray();
             this.togglecreatearray();
             this.toggledeletearray();
+            this.totalmeat = this.round(this.toggledformeat.reduce((t, {share_kilogram}) => t + share_kilogram, 0) + this.waist, 1);
+
             this.checkChanges();
-            // console.log("EFTER; this.update_from_toggledformeatfromstart: ", this.update_from_toggledformeatfromstart);
         },
         round(value, decimals) {
             return Math.round((value + Number.EPSILON) * 10**decimals) / 10**decimals;
@@ -2094,7 +2105,7 @@
     /* border-bottom: 2px solid red; */
 }
 .meatcardbordererror {
-    border-left: 10px solid red;
+    border-left: 10px solid #3F51B5;
 }
 .par {
     width: 100%;
@@ -2126,6 +2137,20 @@
   margin-bottom: 50px;
   transform-origin: 0;
   transform: translateZ(1px)scale(0.926);
+}
+
+.divide_btn {
+    border-bottom: 3px solid #ff2300;
+    padding-bottom: 3px !important;
+}
+
+.meatallocationheader {
+    background-color: #323a4e;
+    color: white;
+}
+
+.totally_allocated_error {
+    color: red;
 }
 
 </style>
