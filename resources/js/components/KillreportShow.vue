@@ -410,11 +410,14 @@
                 </mdb-card-body>
             </mdb-card> -->
 
-            <mdb-card class="mt-2" v-if="authUser.role == 'admin'">
-                <mdb-card-body class="d-flex justify-content-center titlecolor p-1">
-                    <mdb-btn color="danger" @click.native="deleteModal = true" size='sm'>Radera rapporten</mdb-btn>
-                </mdb-card-body>
-            </mdb-card>
+            <!-- <mdb-card class="mt-2" v-if="authUser.role == 'admin'">
+                <mdb-card-body class="d-flex justify-content-center titlecolor p-1"> -->
+
+            <div class="d-flex justify-content-center mt-4">
+                <mdb-btn color="danger" @click.native="deleteModal = true" size='sm'>Radera rapporten</mdb-btn>
+            </div>
+                <!-- </mdb-card-body>
+            </mdb-card> -->
                 
 
 
@@ -2060,12 +2063,12 @@
     font-style: italic;
 }
 .cardborder {
-    /* border-left: 10px solid #d0b76d !important; */
-    border-left: 10px solid #e8a167!important;
+    border-left: 10px solid #d0b76d !important;
+    /* border-left: 10px solid #e8a167!important; */
 }
 .cardbordererror{
     /* border-left: 10px solid red; */
-    border-left: 10px solid #d0706d;
+    border-left: 10px solid #d85f5b;
 }
 .cardborderchanged {
     /* border-left: 10px solid #187eb9; */
@@ -2073,7 +2076,7 @@
 }
 .changedinput > input {
     /* color:#b340b3; */
-    color:#5e5e5e;
+    color:#000000;
 }
 .changedinput > textarea {
     /* color: #b340b3; */
@@ -2106,7 +2109,7 @@
     /* border-bottom: 2px solid red; */
 }
 .meatcardbordererror {
-    border-left: 10px solid #d0706d;
+    border-left: 10px solid #d85f5b;
 }
 .par {
     width: 100%;
