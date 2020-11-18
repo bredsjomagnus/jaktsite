@@ -9,47 +9,72 @@
                         <span style="margin-top: 2px;">#{{this.killreport.id}} RAPPORT </span>
                         <span v-if="killreport.report_status == 'green'" style="font-size: 12px; color: rgb(145 214 148); margin-top: 4px; margin-left: 10px;">KLAR</span>
                         <span v-else style="font-size: 12px; color: #ffbb33; margin-top: 4px; margin-left: 10px;">EJ KLAR</span>
-                        <mdb-icon style="font-size:12px; margin-left: 10px; margin-top: 6px;" v-if="killreport.locked == 'yes'" icon="lock"/>
-                        <mdb-icon style="font-size:12px; margin-left: 10px; margin-top: 6px;" v-else icon="lock-open"/> 
+
+                        <div v-if="authUser.role != 'admin'">
+                            <mdb-icon style="font-size:12px; margin-left: 10px; margin-top: 6px;" v-if="killreport.locked == 'yes'" icon="lock"/>
+                            <mdb-icon style="font-size:12px; margin-left: 10px; margin-top: 6px;" v-else icon="lock-open"/> 
+                        </div>
+
+                        <div v-else class="d-flex flex-row justify-content-center" style="margin-top: 1px; margin-left: 20px;">
+                            <mdb-icon v-if="killreport.locked == 'yes'" style="font-size:12px; margin-right: 5px; margin-top: 5px; color: #49d841;" icon="lock"/>
+                            <mdb-icon v-else style="font-size:12px; margin-right: 5px; margin-top: 5px; color: gray;" icon="lock"/>
+                            <!-- Default switch -->
+                            <div class="custom-control custom-switch" style="margin-right: -2px;">
+                                <input @change="toggleReportLock" type="checkbox" style="margin-right: -2px;" class="custom-control-input" id="customSwitches" :checked="killreport.locked == 'no'">
+                                <label class="custom-control-label" for="customSwitches"> </label>
+                            </div>
+                            <mdb-icon v-if="killreport.locked == 'no'" style="font-size:12px; margin-right: -5px; margin-top: 5px; color: #f0ac32;" icon="lock-open"/> 
+                            <mdb-icon v-else style="font-size:12px; margin-right: -5px; margin-top: 5px; color: gray;" icon="lock-open"/> 
+                         </div>
+
                     </mdb-card-text>
                 </mdb-card>
             </div>
 
 
             <!-- <mdb-btn-toolbar> -->
-            <div class="d-flex flex-row justify-content-around" :style="authUser.role == 'admin' ? 'margin-left: 60px;': ''">
-                <p v-if="authUser.role == 'admin'"></p>
+            <div class="d-flex flex-row justify-content-around" :style="authUser.role == 'admin' ? 'margin-right: 5px;' : 'margin-left: 15px;'">
+                <!-- <p v-if="authUser.role == 'admin'"></p> -->
+              
                
 
                 <mdb-btn-group size="sm" >
-                    <mdb-btn  v-if="authUser.role == 'admin' || killreport.locked == 'no'" :color="untouched ? 'mdb-color' : 'indigo'" @click.native="saveChanges" :disabled="savable" size="sm"><mdb-icon icon="save"/> - Spara</mdb-btn>
-                    <mdb-btn v-else color="mdb-color" :disabled="true" size="sm"><mdb-icon icon="lock"/> - Låst</mdb-btn>
-                    <mdb-btn color="mdb-color" @click.native="toImagesView" size="sm"><mdb-icon icon="images"/> - Bilder</mdb-btn>
+                    <mdb-btn color="mdb-color" @click.native="backToKillreportIndex" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn> 
+                    <mdb-btn  v-if="authUser.role == 'admin' || killreport.locked == 'no'" :color="untouched ? 'mdb-color' : 'indigo'" @click.native="saveChanges" :disabled="savable" size="sm"><mdb-icon icon="save"/></mdb-btn>
+                    <mdb-btn v-else color="mdb-color" :disabled="true" size="sm"><mdb-icon icon="lock"/></mdb-btn>
+                    <mdb-btn color="mdb-color" @click.native="toImagesView" size="sm"><mdb-icon icon="images"/></mdb-btn>
+                    <mdb-btn color="mdb-color" @click.native="undoModal = true" size="sm"><mdb-icon icon="undo"/></mdb-btn>
                 </mdb-btn-group>
 
-                 <div v-if="authUser.role == 'admin'" class="d-flex flex-row justify-content-center" style="margin-top: 10px; padding-right: 5px;">
+                 <!-- <div v-if="authUser.role == 'admin'" class="d-flex flex-row justify-content-center" style="margin-top: 10px; padding-right: 5px;">
                     <mdb-icon v-if="killreport.locked == 'yes'" style="font-size:12px; margin-right: 5px; margin-top: 5px; color: #d84141;" icon="lock"/>
                     <mdb-icon v-else style="font-size:12px; margin-right: 5px; margin-top: 5px; color: gray;" icon="lock"/>
-                    <!-- Default switch -->
+                    
                     <div class="custom-control custom-switch" style="margin-right: -2px;">
                         <input @change="toggleReportLock" type="checkbox" style="margin-right: -2px;" class="custom-control-input" id="customSwitches" :checked="killreport.locked == 'no'">
                         <label class="custom-control-label" for="customSwitches"> </label>
                     </div>
                     <mdb-icon v-if="killreport.locked == 'no'" style="font-size:12px; margin-right: -5px; margin-top: 5px; color: #235cde;" icon="lock-open"/> 
                     <mdb-icon v-else style="font-size:12px; margin-right: -5px; margin-top: 5px; color: gray;" icon="lock-open"/> 
-                </div>
+                </div> -->
+
+                <!-- <div v-else style="width: 75px;">
+                    <p></p>
+                </div> -->
+                
+
             </div>
             <!-- </mdb-btn-toolbar> -->
                        <!-- <mdb-icon icon="balance-scale"/> -->
             <!-- <mdb-btn-toolbar> -->
             <div class="d-flex flex-row justify-content-around">
-                <mdb-btn color="mdb-color" @click.native="backToKillreportIndex" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
+                <!-- <mdb-btn color="mdb-color" @click.native="backToKillreportIndex" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn> -->
                 <mdb-btn-group size="sm">
                     <mdb-btn color="mdb-color" @click.native="toggleActiveStateH" :active="activeH" size="sm">Jakt</mdb-btn>
                     <mdb-btn color="mdb-color" @click.native="toggleActiveStateM" :active="activeM" size="sm">Kött</mdb-btn>
                     <mdb-btn color="mdb-color" @click.native="toggleActiveStateW" :active="activeW" size="sm">Vikter</mdb-btn>
                 </mdb-btn-group>
-                <mdb-btn color="mdb-color" @click.native="undoModal = true" size="sm"><mdb-icon icon="undo"/></mdb-btn>
+                <!-- <mdb-btn color="mdb-color" @click.native="undoModal = true" size="sm"><mdb-icon icon="undo"/></mdb-btn> -->
 
             </div>
             <!-- </mdb-btn-toolbar> -->
@@ -279,7 +304,11 @@
             <img class="par" :src="killreportImage" alt="very cool bg">
 
             <div style="background-color: #1c2331; padding-left: 5px;">
-                <i style="font-size: 10px; color: white; margin-left: 10px;">Skapad: {{this.killreport.created_at}}, uppdaterad: {{this.killreport.updated_at}} </i>
+            
+                <i style="font-size: 10px; color: white;">Skp.: {{this.killreport.created_at}}, Uppd.: {{this.killreport.updated_at}}</i>
+                
+                <!-- <i style="font-size: 10px; color: white; margin-left: 10px;">Skapad: {{this.killreport.created_at}}</i><br>
+                <i style="font-size: 10px; color: white; margin-left: 10px;">uppdaterad: {{this.killreport.updated_at}} </i> -->
             </div>
 
             <!-- <div class='w-100 meatallocationheader d-flex flex-row justify-content-center mt-2 mb-1'>

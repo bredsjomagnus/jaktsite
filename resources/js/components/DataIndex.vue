@@ -4,7 +4,7 @@
         <!-- </mdb-btn-toolbar> -->
         <div class="d-flex flex-row justify-content-around" style="background-color: rgb(236 236 236); margin-top: -20px;">
             <mdb-btn-group size="sm">
-                <mdb-btn color="mdb-color" @click.native="backToUserProfile" size="sm">Min sida</mdb-btn>
+                <mdb-btn color="mdb-color" @click.native="backToUserProfile" size="sm"><mdb-icon icon="user"/></mdb-btn>
                 <mdb-btn color="mdb-color" @click.native="backToKillreport_create" size="sm">Rapportera</mdb-btn>
                 <mdb-btn color="mdb-color" @click.native="backToKillreport_index" size="sm">Arkivet</mdb-btn>
             </mdb-btn-group>
@@ -574,7 +574,7 @@
     </mdb-container>
 </template>
 <script>
-  import { mdbBtn, mdbBtnGroup, mdbBtnToolbar, mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbContainer, mdbBarChart, mdbPieChart, mdbHorizontalBarChart, mdbRadarChart } from 'mdbvue';
+  import { mdbIcon, mdbBtn, mdbBtnGroup, mdbBtnToolbar, mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbContainer, mdbBarChart, mdbPieChart, mdbHorizontalBarChart, mdbRadarChart } from 'mdbvue';
   export default {
     name: 'killreport',
     components: {
@@ -590,7 +590,8 @@
       mdbBarChart,
       mdbPieChart,
       mdbHorizontalBarChart,
-      mdbRadarChart
+      mdbRadarChart,
+      mdbIcon
     },
     props: [
             'hunters',
