@@ -82,5 +82,10 @@
   </div> -->
   <!-- Collapsible content -->
 
+  <div class="navbar-nav" style="text-align: right; height: 25px">
+    <a href="{{ url('user/'.Auth::user()->id) }}" style="color: #dec08f;">{{ Auth::user()->username }}</a>
+    
+  </div>
+
 </nav>
 <!--/.Navbar-->
