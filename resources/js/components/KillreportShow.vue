@@ -46,7 +46,7 @@
                 <mdb-btn color="mdb-color" @click.native="backToKillreportIndex" size="sm"><mdb-icon icon="chevron-left"/></mdb-btn>
                 <mdb-btn-group size="sm">
                     <mdb-btn color="mdb-color" @click.native="toggleActiveStateH" :active="activeH" size="sm">Jakt</mdb-btn>
-                    <mdb-btn color="mdb-color" @click.native="toggleActiveStateM" :active="activeM" size="sm">Kött </mdb-btn>
+                    <mdb-btn color="mdb-color" @click.native="toggleActiveStateM" :active="activeM" size="sm">Kött</mdb-btn>
                     <mdb-btn color="mdb-color" @click.native="toggleActiveStateW" :active="activeW" size="sm">Vikter</mdb-btn>
                 </mdb-btn-group>
                 <mdb-btn color="mdb-color" @click.native="undoModal = true" size="sm"><mdb-icon icon="undo"/></mdb-btn>
@@ -297,7 +297,7 @@
                                 <p class="inputmsg" v-if="authUser.role == 'admin' && reporterSelected.id !== originreporter.id">Urspr. rapportör: {{this.originreporterName}}</p>
                             </mdb-col>
                             <mdb-col col="2">
-                                    <mdb-btn v-if="authUser.role == 'admin'" class="mt-4 pb-2 pt-2 pl-3 pr-3" color="mdb-color" @click.native="reporterModal = true" size="sm"><mdb-icon icon="edit"/></mdb-btn>
+                                    <mdb-btn v-if="authUser.role == 'admin'" class="mt-4 pb-2 pt-2 pl-3 pr-3" color="grey" @click.native="reporterModal = true" size="sm"><mdb-icon icon="edit"/></mdb-btn>
                             </mdb-col>
                         </mdb-row>
 
@@ -308,7 +308,7 @@
                                 <p v-if="shooterSelected.id !== originshooter.id" class="inputmsg">Urspr. skytt: {{this.originshooterName}}</p>
                             </mdb-col>
                             <mdb-col col="2">
-                                    <mdb-btn class="mt-4 pb-2 pt-2 pl-3 pr-3" color="mdb-color" @click.native="shooterModal = true" size="sm"><mdb-icon icon="edit"/></mdb-btn>
+                                    <mdb-btn class="mt-4 pb-2 pt-2 pl-3 pr-3" color="grey" @click.native="shooterModal = true" size="sm"><mdb-icon icon="edit"/></mdb-btn>
                             </mdb-col>
                         </mdb-row>
 
@@ -319,7 +319,7 @@
                                 <p v-if="kindofhuntSelected != originkindofhunt" class="inputmsg">Urspr. sort: {{this.originkindofhunt}}</p>
                             </mdb-col>
                             <mdb-col col="2">
-                                    <mdb-btn class="mt-4 pb-2 pt-2 pl-3 pr-3" color="mdb-color" @click.native="kindofhuntModal = true" size="sm"><mdb-icon icon="edit"/></mdb-btn>
+                                    <mdb-btn class="mt-4 pb-2 pt-2 pl-3 pr-3" color="grey" @click.native="kindofhuntModal = true" size="sm"><mdb-icon icon="edit"/></mdb-btn>
                             </mdb-col>
                         </mdb-row>
 
@@ -342,7 +342,7 @@
                             <p v-if="areaSelected.id !== originarea.id" class="inputmsg">Urspr. område: {{this.originareaName}}</p>
                         </mdb-col>
                             <mdb-col col="2">
-                                    <mdb-btn class="mt-4 pb-2 pt-2 pl-3 pr-3" color="mdb-color" @click.native="areaModal = true" size="sm"><mdb-icon icon="edit"/></mdb-btn>
+                                    <mdb-btn class="mt-4 pb-2 pt-2 pl-3 pr-3" color="grey" @click.native="areaModal = true" size="sm"><mdb-icon icon="edit"/></mdb-btn>
                             </mdb-col>
                         </mdb-row>
 
@@ -362,7 +362,7 @@
                                 <p v-if="speciesSelected != originSpecies" class="inputmsg">Urspr. djur: {{this.originSpecies}}</p>
                             </mdb-col>
                             <mdb-col col="2">
-                                <mdb-btn class="mt-4 pb-2 pt-2 pl-3 pr-3" color="mdb-color" @click.native="speciesModal = true" size="sm"><mdb-icon icon="edit"/></mdb-btn>
+                                <mdb-btn class="mt-4 pb-2 pt-2 pl-3 pr-3" color="grey" @click.native="speciesModal = true" size="sm"><mdb-icon icon="edit"/></mdb-btn>
                             </mdb-col>
                         </mdb-row>
 
@@ -373,7 +373,7 @@
                                 <p v-if="speciestypeinputcolor() == 'changedinput'" class="inputmsg">Urspr. djurkvalif.: {{this.originSpeciestype}}</p>
                             </mdb-col>
                             <mdb-col col="2">
-                                <mdb-btn class="mt-4 pb-2 pt-2 pl-3 pr-3" color="mdb-color" @click.native="speciestypeModal = true" size="sm"><mdb-icon icon="edit"/></mdb-btn>
+                                <mdb-btn class="mt-4 pb-2 pt-2 pl-3 pr-3" color="grey" @click.native="speciestypeModal = true" size="sm"><mdb-icon icon="edit"/></mdb-btn>
                             </mdb-col>
                         </mdb-row>
 
@@ -431,56 +431,62 @@
             </div>
 
            <!-- flyttad på test hit -->
-           <mdb-card>
-                <mdb-card-body :class="cardbodycolorcarcassweight() ? 'cardborderchanged' : 'cardborder'">
-                    <div class="p-3 mb-2">
-                        <mdb-input :class="carcass_weightSelected != origincarcass_weight ? 'changedinput' : ''" type="number" step="0.1" label="Vägd slaktvikt" v-model.number="carcass_weightSelected" @change="checkcarcassweightchanges"/>
-                        <p v-if="carcass_weightSelected != origincarcass_weight" class="inputmsg" >Urspr.: {{this.origincarcass_weight}}</p>
-                        <mdb-input :class="aprox_carcass_weightSelected != originaprox_carcass_weight ? 'changedinput' : ''" type="number" step="0.1" label="Uppsk. slaktvikt" v-model.number="aprox_carcass_weightSelected" @change="checkaproxcarcassweightchanges"/>
-                        <p v-if="aprox_carcass_weightSelected != originaprox_carcass_weight" class="inputmsg" >Urspr.: {{this.originaprox_carcass_weight}}</p>
-                    </div>
-                </mdb-card-body>
-            </mdb-card>
-
            <mdb-card class="mt-2">
-                <mdb-card-body :class="cardbodycolorliveweight() ? 'cardborderchanged' : 'cardborder'">
-                    <div class="p-3 mb-2">
-                        <mdb-input :class="live_weightSelected != originlive_weight ? 'changedinput' : ''" type="number" step="0.1" label="Vägd levandevikt" v-model.number="live_weightSelected" @change="checkliveweightchanges"/>
-                        <p v-if="live_weightSelected != originlive_weight" class="inputmsg" >Urspr.: {{this.originlive_weight}}</p>
-                        <mdb-input :class="aprox_live_weightSelected != originaprox_live_weight ? 'changedinput' : ''" type="number" step="0.1" label="Uppsk. levandevikt" v-model.number="aprox_live_weightSelected" @change="checkaproxliveweightchanges"/>
-                        <p v-if="aprox_live_weightSelected != originaprox_live_weight" class="inputmsg" >Urspr.: {{this.originaprox_live_weight}}</p>
-                    </div>
-                </mdb-card-body>
-            </mdb-card>
-            <mdb-card class="mt-2">
-            <mdb-card-body :class="cardbodycolorpassadweight() ? 'cardborderchanged' : 'cardborder'">
-                    <div class="p-3 mb-2">
-                        <mdb-input :class="passad_weightSelected != originpassad_weight ? 'changedinput' : ''" type="number" step="0.1" label="Vägd passad vikt" v-model.number="passad_weightSelected" @change="checkpassadweightchanges"/>
-                        <p v-if="passad_weightSelected != originpassad_weight" class="inputmsg" >Urspr.: {{this.originpassad_weight}}</p>
-                        <mdb-input :class="aprox_passad_weightSelected != originaprox_passad_weight ? 'changedinput' : ''" type="number" step="0.1" label="Uppsk. passad vikt" v-model.number="aprox_passad_weightSelected" @change="checkaproxpassadweightchanges"/>
-                        <p v-if="aprox_passad_weightSelected != originaprox_passad_weight" class="inputmsg" >Urspr.: {{this.originaprox_passad_weight}}</p>
-                    </div>
-                </mdb-card-body>
-            </mdb-card>
+                <!-- <mdb-card-body :class="cardbodycolorcarcassweight() ? 'cardborderchanged' : 'cardborder'"> -->
+                    <div class="d-flex flex-column">
+                        <div class="p-3 mb-2 weight-inputs" :class="cardbodycolorcarcassweight() ? 'cardborderchanged' : 'cardborder'">
+                            <mdb-input :class="carcass_weightSelected != origincarcass_weight ? 'changedinput' : ''" type="number" step="0.1" label="Vägd slaktvikt" v-model.number="carcass_weightSelected" @change="checkcarcassweightchanges"/>
+                            <!-- <p v-if="carcass_weightSelected != origincarcass_weight" class="inputmsg" >Urspr.: {{this.origincarcass_weight}}</p> -->
+                            <mdb-input :class="aprox_carcass_weightSelected != originaprox_carcass_weight ? 'changedinput' : ''" type="number" step="0.1" label="Uppsk. slaktvikt" v-model.number="aprox_carcass_weightSelected" @change="checkaproxcarcassweightchanges"/>
+                            <!-- <p v-if="aprox_carcass_weightSelected != originaprox_carcass_weight" class="inputmsg" >Urspr.: {{this.originaprox_carcass_weight}}</p> -->
+                        </div>
+                <!-- </mdb-card-body>
+            </mdb-card> -->
+
+           <!-- <mdb-card class="mt-2">
+                <mdb-card-body :class="cardbodycolorliveweight() ? 'cardborderchanged' : 'cardborder'"> -->
+                    <!-- <div class="p-3 mb-2"> -->
+                        <div class="p-3 mb-2 weight-inputs" :class="cardbodycolorliveweight() ? 'cardborderchanged' : 'cardborder'"> 
+                            <mdb-input :class="live_weightSelected != originlive_weight ? 'changedinput' : ''" type="number" step="0.1" label="Vägd levandevikt" v-model.number="live_weightSelected" @change="checkliveweightchanges"/>
+                            <!-- <p v-if="live_weightSelected != originlive_weight" class="inputmsg" >Urspr.: {{this.originlive_weight}}</p> -->
+                            <mdb-input :class="aprox_live_weightSelected != originaprox_live_weight ? 'changedinput' : ''" type="number" step="0.1" label="Uppsk. levandevikt" v-model.number="aprox_live_weightSelected" @change="checkaproxliveweightchanges"/>
+                            <!-- <p v-if="aprox_live_weightSelected != originaprox_live_weight" class="inputmsg" >Urspr.: {{this.originaprox_live_weight}}</p> -->
+                        </div>
+                <!-- </mdb-card-body> -->
+            <!-- </mdb-card> -->
+            <!-- <mdb-card class="mt-2"> -->
+            <!-- <mdb-card-body :class="cardbodycolorpassadweight() ? 'cardborderchanged' : 'cardborder'"> -->
+                    <!-- <div class="p-3 mb-2"> -->
+                        <div class="p-3 mb-2 weight-inputs" :class="cardbodycolorpassadweight() ? 'cardborderchanged' : 'cardborder'">
+                            <mdb-input :class="passad_weightSelected != originpassad_weight ? 'changedinput' : ''" type="number" step="0.1" label="Vägd passad vikt" v-model.number="passad_weightSelected" @change="checkpassadweightchanges"/>
+                            <!-- <p v-if="passad_weightSelected != originpassad_weight" class="inputmsg" >Urspr.: {{this.originpassad_weight}}</p> -->
+                            <mdb-input :class="aprox_passad_weightSelected != originaprox_passad_weight ? 'changedinput' : ''" type="number" step="0.1" label="Uppsk. passad vikt" v-model.number="aprox_passad_weightSelected" @change="checkaproxpassadweightchanges"/>
+                            <!-- <p v-if="aprox_passad_weightSelected != originaprox_passad_weight" class="inputmsg" >Urspr.: {{this.originaprox_passad_weight}}</p> -->
+                        </div>
+                <!-- </mdb-card-body> -->
+            <!-- </mdb-card> -->
 
             <!-- orginal slaktvikt platsen -->
 
-            <mdb-card class="mt-2">
+            <!-- <mdb-card class="mt-2">
                 <mdb-card-body :class="cardbodycolorcutweight() ? 'cardborderchanged' : 'cardborder'">
-                    <div class="p-3 mb-2">
+                    <div class="p-3 mb-2"> -->
+                    <div class="p-3 mb-2 weight-inputs" :class="cardbodycolorcutweight() ? 'cardborderchanged' : 'cardborder'">
                         <mdb-input :class="cut_weightSelected != origincut_weight ? 'changedinput' : ''" type="number" step="0.1" label="Vägda styckdetaljer" v-model.number="cut_weightSelected" @change="checkcutweightchanges"/>
-                        <p v-if="cut_weightSelected != origincut_weight" class="inputmsg" >Urspr.: {{this.origincut_weight}}</p>
+                        <!-- <p v-if="cut_weightSelected != origincut_weight" class="inputmsg" >Urspr.: {{this.origincut_weight}}</p> -->
                     </div>
-                </mdb-card-body>
-           </mdb-card>
+                <!-- </mdb-card-body>
+           </mdb-card> -->
 
-           <mdb-card class="mt-2">
+           <!-- <mdb-card class="mt-2">
                 <mdb-card-body :class="cardbodycolorheartweight() ? 'cardborderchanged' : 'cardborder'">
-                    <div class="p-3 mb-2">
-                        <mdb-input :class="heart_weightSelected != originheart_weight ? 'changedinput' : ''" type="number" step="0.001" label="Vägd hjärtvikt (kg)" v-model.number="heart_weightSelected" @change="checkheartweightchanges"/>
-                        <p v-if="heart_weightSelected != originheart_weight" class="inputmsg" >Urspr.: {{this.originheart_weight}}</p>
-                    </div>
-                </mdb-card-body>
+                    <div class="p-3 mb-2"> -->
+                        <div class="p-3 weight-inputs" :class="cardbodycolorheartweight() ? 'cardborderchanged' : 'cardborder'">
+                            <mdb-input :class="heart_weightSelected != originheart_weight ? 'changedinput' : ''" type="number" step="0.001" label="Vägd hjärtvikt (kg)" v-model.number="heart_weightSelected" @change="checkheartweightchanges"/>
+                            <!-- <p v-if="heart_weightSelected != originheart_weight" class="inputmsg" >Urspr.: {{this.originheart_weight}}</p> -->
+                        </div>
+                    </div> <!-- d-flex column -->
+                <!-- </mdb-card-body> -->
           </mdb-card>
        </div>
 
@@ -1006,6 +1012,9 @@
         setToggledAtStart() {
             // Ser till att fylla listan med de som fått köttilldelning
             // när vyn först laddas
+
+            this.toggledformeatfromstart = [];
+            this.toggledformeat = [];
 
             console.log('this.meats[0].user_id: ', this.meats[0].user_id);
             if(this.meats[0].user_id != null) {
@@ -2155,6 +2164,9 @@
 
 .totally_allocated_error {
     color: red;
+}
+.weight-inputs {
+    border-bottom: 1px solid #d0d0d0;
 }
 
 </style>
