@@ -420,7 +420,7 @@
                                 <p v-if="antlersSelected != originAntlers" class="inputmsg" >Urspr. horn.: {{this.originAntlers}}</p>
                             </mdb-col>
                             <mdb-col col="2">
-                                <mdb-btn class="mt-4 pb-2 pt-2 pl-3 pr-3" color="mdb-color" @click.native="antlersModal = true" size="sm"><mdb-icon icon="edit"/></mdb-btn>
+                                <mdb-btn class="mt-4 pb-2 pt-2 pl-3 pr-3" color="grey" @click.native="antlersModal = true" size="sm"><mdb-icon icon="edit"/></mdb-btn>
                             </mdb-col>
                         </mdb-row>
 
@@ -696,22 +696,20 @@
             <mdb-card class="mt-2">
                 <mdb-card-body class="cardborder">
                 <mdb-card-title class="d-flex justify-content-center titlecolor p-1">SLAKTVIKT</mdb-card-title>
-                    <div class="p-3 mb-2">
+                <div class="d-flex flex-row justify-content-center w-100 mt-1" style="height: 12px;">
+                        <span v-if="totalmeat != carcassWeight" style="font-size: 12px; color: red;">GLÖM INTE ATT FÖRDELA KÖTTET!</span>
+                    </div>
+                    <div class="p-3">
                         <mdb-input  type="number" step="0.1" label="Vägd slaktvikt" v-model.number="carcass_weightSelected" @change="checkcarcassweightchanges"/>
                         <mdb-input type="number" step="0.1" label="Uppsk. slaktvikt" v-model.number="aprox_carcass_weightSelected" @change="checkaproxcarcassweightchanges"/>
                     </div>
+                    
                 </mdb-card-body>
             </mdb-card>
 
-            
-
-            <div class="d-flex flex-row justify-content-center w-100 mt-1" style="height: 25px;">
-                <span v-if="totalmeat != carcassWeight" style="font-size: 14px; text-decoration:underline;">GLÖM INTE ATT FÖRDELA KÖTTET!</span>
-            </div>
-
-            <div class="d-flex flex-row justify-content-around meat_button_group">
+            <div class="d-flex flex-row justify-content-around meat_button_group mt-2">
                 <mdb-btn-group size="sm">
-                    <mdb-btn :color="totalmeat == carcassWeight ? 'mdb-color' : 'indigo'" @click.native="divideEven" size="sm">Fördela kött - <mdb-icon icon="balance-scale"/></mdb-btn>
+                    <mdb-btn color="mdb-color" @click.native="divideEven" :disabled="totalmeat == carcassWeight" size="sm">Fördela - <mdb-icon icon="balance-scale"/></mdb-btn>
                     <mdb-btn color="mdb-color" @click.native="meetModal = true" size="sm">Ändra jägare - <mdb-icon icon="user-plus"/></mdb-btn>
                 </mdb-btn-group>
             </div>
