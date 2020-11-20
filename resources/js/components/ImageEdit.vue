@@ -73,7 +73,6 @@
                         <hr>
 
                         <div class="accordion accordion-wrapper " id="accordionExample275">
-
                                 <div class="d-flex flex-row justify-content-center" id="headingOne" style="background-color: #f7f7f7; border-top: 3px solid #dccc9b;">
                                     <p class="mb-0">
                                         <a style="color: rgb(113 113 113);" class="accordion-btn" data-toggle="collapse" data-target="#collapseOne"

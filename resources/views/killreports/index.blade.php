@@ -11,117 +11,202 @@
       <button class="btn btn-mdb-color btn-sm" ><a style="color: white;" href="{{ url('/data') }}">Data</a></button>
     </div>
   </div>
-        
-    
 
-                       
+  <div class="d-flex justify-content-center mt-2">
+    <h6>RAPPORTARKIVET</h6>
+  </div>
+  
 
-
-
-  <form action="#" method="GET">
-    @csrf
-      <table class="w-100">
-        <tr>
-          <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Säsong:</label></td>
-          <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Skytt:</label></td>
-        </tr>
-        <tr>
-          <td>
-            <select class="custom-select custom-select-sm" name="season" id="season_search">
-              <option value="">Alla</option>
-              <option value="17/18" <?php if(isset($_GET['season'])) { echo $_GET['season']  == "17/18" ? "selected" : ""; } ?>>17/18</option>
-              <option value="18/19" <?php if(isset($_GET['season'])) { echo $_GET['season'] == "18/19" ? "selected" : ""; } ?>>18/19</option>
-              <option value="19/20" <?php if(isset($_GET['season'])) { echo $_GET['season'] == "19/20" ? "selected" : ""; } ?>>19/20</option>
-              <option value="20/21" <?php if(isset($_GET['season'])) { echo $_GET['season'] == "20/21" ? "selected" : ""; } ?>>20/21</option>
-            </select>
-          </td>
-
-          <td>
-            <select class="custom-select custom-select-sm" name="users" id="user_select">
-              <option value="">Alla</option>
-              @foreach($users as $user)
-                <option value="{{ $user->id }}" <?php if(isset($_GET['users'])) { echo $_GET['users'] ==  $user->id ? "selected" : ""; } ?>>{{ $user->firstname }} {{$user->lastname}}</option>
-              @endforeach
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Djurslag:</label></td>
-          <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Område:</label></td>
-        </tr>
-        <tr>
-          <td>
-            <select class="custom-select custom-select-sm" name="species" id="species_select">
-              <option value="">Alla</option>
-              <option value="Dovvilt"   <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Dovvilt" ? "selected" : ""; } ?>>Dovvilt</option>
-              <option value="Kronvilt"  <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Kronvilt" ? "selected" : ""; } ?>>Kronvilt</option>
-              <option value="Vildsvin"  <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Vildsvin" ? "selected" : ""; } ?>>Vildsvin</option>
-              <option value="Älg"       <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Älg" ? "selected" : ""; } ?>>Älg</option>
-              <option value="Rådjur"    <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Rådjur" ? "selected" : ""; } ?>>Rådjur</option>
-            </select>
-          </td>
-          <td>
-             <select class="custom-select custom-select-sm" name="areas" id="area_select">
-              <option value="">Alla</option>
-              @foreach($areas as $area)
-                <option value="{{ $area->id }}" <?php if(isset($_GET['areas'])) { echo $_GET['areas'] ==  $area->id ? "selected" : ""; } ?>>{{ $area->area_name }}</option>
-              @endforeach
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Rapportstatus:</label></td>
-          <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Köttilldelning:</label></td>
-        </tr>
-        <tr>
-          <td>
-            <select class="custom-select custom-select-sm" name="status" id="status_select">
-              <option value="">Alla</option>
-              <option value="green"   <?php if(isset($_GET['status'])) { echo $_GET['status'] == "green" ? "selected" : ""; } ?>>Klara</option>
-              <option value="yellow"  <?php if(isset($_GET['status'])) { echo $_GET['status'] == "yellow" ? "selected" : ""; } ?>>Ej klara</option>
-            </select>
-          </td>
-          <td>
-            <select class="custom-select custom-select-sm" name="meat" id="meat_select">
-              <option value="">Alla</option>
-              @foreach($hunters as $hunter)
-                <option value="{{ $hunter->id }}" <?php if(isset($_GET['meat'])) { echo $_GET['meat'] ==  $hunter->id ? "selected" : ""; } ?>>{{ $hunter->firstname }} {{$hunter->lastname}}</option>
-              @endforeach
-              <option value="{{ $anonhunter->id }}" <?php if(isset($_GET['meat'])) { echo $_GET['meat'] ==  $anonhunter->id ? "selected" : ""; } ?>>Gäst</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Låst:</label></td>
-          <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Sorts jakt:</label></td>
-        </tr>
-        <tr>
-          <td>
-            <select class="custom-select custom-select-sm" name="locked" id="status_select">
-              <option value="">Alla</option>
-              <option value="no"   <?php if(isset($_GET['locked'])) { echo $_GET['locked'] == "no" ? "selected" : ""; } ?>>Olåst</option>
-              <option value="yes"  <?php if(isset($_GET['locked'])) { echo $_GET['locked'] == "yes" ? "selected" : ""; } ?>>Låst</option>
-            </select>
-          </td>
-          <td>
-            
-            <select class="custom-select custom-select-sm" name="kind" id="status_select">
-              <option value="">Alla</option>
-              <option value="Gemensam jakt"   <?php if(isset($_GET['kind'])) { echo $_GET['kind'] == "Gemensam jakt" ? "selected" : ""; } ?>>Gemensam jakt</option>
-              <option value="Ensamjakt"  <?php if(isset($_GET['kind'])) { echo $_GET['kind'] == "Ensamjakt" ? "selected" : ""; } ?>>Ensamjakt</option>
-            </select>
-          
-          </td>
-        </tr>
-      </table>
-
-    <div class="d-flex justify-content-between">
-      <p></p>
-      <p class="ml-3 mt-3 text-muted" style="font-size: 12px;">Sökningen gav <?= count($killreports) ?> träffar</p>
-      <input class="btn btn-mdb-color btn-sm" type="submit" value="SÖK">
+  <div class="accordion mb-2" id="filter">
+    <div class="d-flex flex-row justify-content-center" id="filterheader" style="background-color: #f7f7f7; border-top: 3px solid #dccc9b;" data-toggle="collapse" data-target="#formfilter">
+      <!-- <p class="mb-0"> -->
+          <a style="color: rgb(113 113 113); font-size: 12px;" class="accordion-btn">
+            <span class="fas fa-sliders-h"></span> KLICKA FÖR ATT VISA/DÖLJA FILTER
+          </a>
+      <!-- </p> -->
     </div>
-  </form>
+    <div id="formfilter" class="collapse" data-parent="#filter">
+  
 
+    <form action="#" method="GET">
+      @csrf
+        <table class="w-100">
+          <tr>
+            <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Säsong:</label></td>
+            <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Skytt:</label></td>
+          </tr>
+          <tr>
+            <td>
+              <select class="custom-select custom-select-sm" name="season" id="season_search">
+                <option value="">Alla</option>
+                <option value="17/18" <?php if(isset($_GET['season'])) { echo $_GET['season']  == "17/18" ? "selected" : ""; } ?>>17/18</option>
+                <option value="18/19" <?php if(isset($_GET['season'])) { echo $_GET['season'] == "18/19" ? "selected" : ""; } ?>>18/19</option>
+                <option value="19/20" <?php if(isset($_GET['season'])) { echo $_GET['season'] == "19/20" ? "selected" : ""; } ?>>19/20</option>
+                <option value="20/21" <?php if(isset($_GET['season'])) { echo $_GET['season'] == "20/21" ? "selected" : ""; } ?>>20/21</option>
+              </select>
+            </td>
+
+            <td>
+              <select class="custom-select custom-select-sm" name="users" id="user_select">
+                <option value="">Alla</option>
+                @foreach($users as $user)
+                  <option value="{{ $user->id }}" <?php if(isset($_GET['users'])) { echo $_GET['users'] ==  $user->id ? "selected" : ""; } ?>>{{ $user->firstname }} {{$user->lastname}}</option>
+                @endforeach
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Djurslag:</label></td>
+            <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Område:</label></td>
+          </tr>
+          <tr>
+            <td>
+              <select class="custom-select custom-select-sm" name="species" id="species_select">
+                <option value="">Alla</option>
+                <option value="Dovvilt"   <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Dovvilt" ? "selected" : ""; } ?>>Dovvilt</option>
+                <option value="Kronvilt"  <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Kronvilt" ? "selected" : ""; } ?>>Kronvilt</option>
+                <option value="Vildsvin"  <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Vildsvin" ? "selected" : ""; } ?>>Vildsvin</option>
+                <option value="Älg"       <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Älg" ? "selected" : ""; } ?>>Älg</option>
+                <option value="Rådjur"    <?php if(isset($_GET['species'])) { echo $_GET['species'] == "Rådjur" ? "selected" : ""; } ?>>Rådjur</option>
+              </select>
+            </td>
+            <td>
+              <select class="custom-select custom-select-sm" name="areas" id="area_select">
+                <option value="">Alla</option>
+                @foreach($areas as $area)
+                  <option value="{{ $area->id }}" <?php if(isset($_GET['areas'])) { echo $_GET['areas'] ==  $area->id ? "selected" : ""; } ?>>{{ $area->area_name }}</option>
+                @endforeach
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Rapportstatus:</label></td>
+            <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Köttilldelning:</label></td>
+          </tr>
+          <tr>
+            <td>
+              <select class="custom-select custom-select-sm" name="status" id="status_select">
+                <option value="">Alla</option>
+                <option value="green"   <?php if(isset($_GET['status'])) { echo $_GET['status'] == "green" ? "selected" : ""; } ?>>Klara</option>
+                <option value="yellow"  <?php if(isset($_GET['status'])) { echo $_GET['status'] == "yellow" ? "selected" : ""; } ?>>Ej klara</option>
+              </select>
+            </td>
+            <td>
+              <select class="custom-select custom-select-sm" name="meat" id="meat_select">
+                <option value="">Alla</option>
+                @foreach($hunters as $hunter)
+                  <option value="{{ $hunter->id }}" <?php if(isset($_GET['meat'])) { echo $_GET['meat'] ==  $hunter->id ? "selected" : ""; } ?>>{{ $hunter->firstname }} {{$hunter->lastname}}</option>
+                @endforeach
+                <option value="{{ $anonhunter->id }}" <?php if(isset($_GET['meat'])) { echo $_GET['meat'] ==  $anonhunter->id ? "selected" : ""; } ?>>Gäst</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Låst:</label></td>
+            <td><label class="mt-2 mdb-main-label text-muted" style="font-size: 12px;">Sorts jakt:</label></td>
+          </tr>
+          <tr>
+            <td>
+              <select class="custom-select custom-select-sm" name="locked" id="status_select">
+                <option value="">Alla</option>
+                <option value="no"   <?php if(isset($_GET['locked'])) { echo $_GET['locked'] == "no" ? "selected" : ""; } ?>>Nej</option>
+                <option value="yes"  <?php if(isset($_GET['locked'])) { echo $_GET['locked'] == "yes" ? "selected" : ""; } ?>>Ja</option>
+              </select>
+            </td>
+            <td>
+              
+              <select class="custom-select custom-select-sm" name="kind" id="status_select">
+                <option value="">Alla</option>
+                <option value="Gemensam jakt"   <?php if(isset($_GET['kind'])) { echo $_GET['kind'] == "Gemensam jakt" ? "selected" : ""; } ?>>Gemensam jakt</option>
+                <option value="Ensamjakt"  <?php if(isset($_GET['kind'])) { echo $_GET['kind'] == "Ensamjakt" ? "selected" : ""; } ?>>Ensamjakt</option>
+              </select>
+            
+            </td>
+          </tr>
+        </table>
+
+      <div class="d-flex justify-content-between">
+        <p></p>
+        <p class="ml-3 mt-3 text-muted" style="font-size: 12px;">Sökningen gav <?= count($killreports) ?> träffar</p>
+        <input class="btn btn-mdb-color btn-sm" type="submit" value="SÖK">
+      </div>
+    </form>
+
+
+  </div>
+  <!-- /formfilter -->
+<div class="mt-2" style="padding: 0; font-size: 12px;">
+      <!-- <p class="mb-0"> -->
+          <div style="color: rgb(113 113 113);">
+            @if($filtering)
+              <span style="font-weight:bold"><b>Sökning med filter:</b></span><br>
+
+              @if(isset($_GET['season']))
+                @if($_GET['season'] != '')
+                  <span class="ml-1">Säsong: {{ $_GET['season'] }}</span> <br>
+                @endif
+              @endif
+
+              @if(isset($_GET['users']))
+                @if($_GET['users'] != '')
+                  <span class="ml-1">Skytt: {{$shooter}}</span> <br>
+                @endif
+              @endif
+
+              @if(isset($_GET['species']))
+                @if($_GET['species'] != '')
+                  <span class="ml-1">Djurslag: {{ $_GET['species'] }}</span> <br>
+                @endif
+              @endif
+
+              @if(isset($_GET['areas']))
+                @if($_GET['areas'] != '')
+                  <span class="ml-1">Område: {{ $searched_area_name }}</span> <br>
+                @endif
+              @endif
+
+              @if(isset($_GET['status']))
+                @if($_GET['status'] != '')
+                  @if( $_GET['status'] == 'green')
+                    <span class="ml-1">Rapportstatus: Klar</span> <br>
+                  @else
+                    <span class="ml-1">Rapportstatus: Ej klar</span> <br>
+                  @endif
+                @endif
+              @endif
+
+              @if(isset($_GET['meat']))
+                @if($_GET['meat'] != '')
+                  <span class="ml-1">Köttilldelning: {{ $meat_to }}</span> <br>
+                @endif
+              @endif
+
+              @if(isset($_GET['locked']))
+                @if($_GET['locked'] != '')
+                  @if( $_GET['locked'] == 'yes')
+                    <span class="ml-1">Låst: Ja</span> <br>
+                  @else
+                    <span class="ml-1">Låst: Nej</span> <br>
+                  @endif
+                @endif
+              @endif
+
+              @if(isset($_GET['kind']))
+                @if($_GET['kind'] != '')
+                  <span class="ml-1">Sorts jakt: {{ $_GET['kind'] }}</span> <br>
+                @endif
+              @endif
+            @else
+              <span style="font-weight:bold"><b>Sökning utan filter:</b></span><br>
+            @endif
+            <div style="border-top: 1px dashed #d8d8d8;">
+              Antal träffar: <?= count($killreports) ?> st
+            </div>
+          </div>
+      <!-- </p> -->
+</div>
+</div>
+<!-- /filter -->
 
 
     <!-- Card deck -->

@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark special-color-dark">
 
   <!-- Navbar brand -->
-  <a class="navbar-brand" style="color: #dec08f;" href="#"><img class="rounded-circle" height="30px" src="{{ asset('images/logo/smårislogo.png') }}" alt="logo"> Småris</a>
+  <a class="navbar-brand" style="color: #dec08f;" href="{{ url('killreports') }}"><img class="rounded-circle" height="30px" src="{{ asset('images/logo/smårislogo.png') }}" alt="logo"> Småris</a>
 
   <!-- Collapse button -->
   <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
@@ -82,8 +82,16 @@
   </div> -->
   <!-- Collapsible content -->
 
-  <div class="navbar-nav" style="text-align: right; height: 25px">
+  <div class="navbar-nav ml-auto" style="text-align: right; height: 25px;">
+  <div class="d-flex justify-content-between">
     <a href="{{ url('user/'.Auth::user()->id) }}" style="color: #dec08f;">{{ Auth::user()->username }}</a>
+    <a style="color: #dccc9b;" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+      <span class="fas fa-sign-out-alt" style="margin-top: 5px; margin-left:10px; font-size: 14px;"></span>
+    </a>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+    </form>
+  </div>
     
   </div>
 

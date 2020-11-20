@@ -49,25 +49,40 @@ class KillreportController extends Controller
         //     $killreport->save();
         // }
 
+        $filtering = false;
+
         // Filtrerar ut djurslag
         if( !empty($species_search) ) {
             $killreports = $killreports->filter(function ($value, $key) use ($species_search) {
                 return $value->animal()->species == $species_search;
             });
+            $filtering = true;
         }
         
         // Filterar ut jägare
+        $shooter = '';
         if( !empty($users_search) ) {
              $killreports = $killreports->filter(function ($value, $key) use ($users_search) {
                 return $value->shooter->id == $users_search;
             });
+
+            $filtering = true;
+
+            $user_shooter = User::find($users_search);
+            $shooter = $user_shooter->firstname ." ". $user_shooter->lastname;
         }
 
         // Filtrear ut område
+        $searched_area_name = '';
         if( !empty($areas_search) ) {
             $killreports = $killreports->filter(function ($value, $key) use ($areas_search) {
                 return $value->area()->id == $areas_search;
             });
+
+            $filtering = true;
+
+            $searched_area = Area::find($areas_search);
+            $searched_area_name = $searched_area->area_name;
         }
 
 
@@ -76,10 +91,13 @@ class KillreportController extends Controller
             $killreports = $killreports->filter(function ($value, $key) use ($status_search) {
                 return $value->report_status == $status_search;
             });
+
+            $filtering = true;
         }
 
 
         // Filtrear ut köttilldelning
+        $meat_to = '';
         if( !empty($meat_search) ) {
             $killreports = $killreports->filter(function ($value, $key) use ($meat_search) {
                 $found = false;
@@ -91,7 +109,14 @@ class KillreportController extends Controller
                 return $found;
                 
             });
+
+            $filtering = true;
+
+            $user_meat = User::find($meat_search);
+            $meat_to = $user_meat->firstname ." ". $user_meat->lastname;
         }
+
+        
 
 
         // Filtrear ut sorts jakt
@@ -99,6 +124,8 @@ class KillreportController extends Controller
             $killreports = $killreports->filter(function ($value, $key) use ($kind_search) {
                 return $value->kindofhunt == $kind_search;
             });
+
+            $filtering = true;
         }
 
         // Filtrear ut sorts jakt
@@ -106,6 +133,8 @@ class KillreportController extends Controller
             $killreports = $killreports->filter(function ($value, $key) use ($locked_search) {
                 return $value->locked == $locked_search;
             });
+
+            $filtering = true;
         }
         
 
@@ -116,11 +145,15 @@ class KillreportController extends Controller
 
 
         $data = [
-            'killreports'   => $killreports,
-            'users'         => User::where('occupation', '=', 'hunter')->get(),
-            'hunters'       => User::where('role', '!=', 'guest')->where('occupation', '=', 'hunter')->get(),
-            'anonhunter'    => User::where('occupation', '=', 'anonhunter')->get()->first(),
-            'areas'         => Area::all()
+            'killreports'           => $killreports,
+            'users'                 => User::where('occupation', '=', 'hunter')->get(),
+            'hunters'               => User::where('role', '!=', 'guest')->where('occupation', '=', 'hunter')->get(),
+            'anonhunter'            => User::where('occupation', '=', 'anonhunter')->get()->first(),
+            'areas'                 => Area::all(),
+            'shooter'               => $shooter,
+            'meat_to'               => $meat_to,
+            'searched_area_name'    => $searched_area_name,
+            'filtering'             => $filtering
         ];
         
         
