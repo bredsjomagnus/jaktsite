@@ -51,6 +51,10 @@ class KillreportController extends Controller
 
         $filtering = false;
 
+        if( !empty($season_search) ) {
+            $filtering = true;
+        }
+
         // Filtrerar ut djurslag
         if( !empty($species_search) ) {
             $killreports = $killreports->filter(function ($value, $key) use ($species_search) {

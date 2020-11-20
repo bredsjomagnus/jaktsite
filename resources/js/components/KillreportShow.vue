@@ -3,30 +3,38 @@
 
         <div>
 
-            <div class="d-flex flex-row justify-content-around" style="margin-top:-20px">
+            <div class="" style="margin-top:-20px">
                 <mdb-card class='w-100' color="unique-color-dark">
-                    <mdb-card-text class="d-flex justify-content-center">
-                        <span style="margin-top: 2px;">#{{this.killreport.id}} RAPPORT </span>
-                        <span v-if="killreport.report_status == 'green'" style="font-size: 12px; color: rgb(145 214 148); margin-top: 4px; margin-left: 10px;">KLAR</span>
-                        <span v-else style="font-size: 12px; color: #ffbb33; margin-top: 4px; margin-left: 10px;">EJ KLAR</span>
 
-                        <div v-if="authUser.role != 'admin'">
-                            <mdb-icon style="font-size:12px; margin-left: 10px; margin-top: 6px;" v-if="killreport.locked == 'yes'" icon="lock"/>
-                            <mdb-icon style="font-size:12px; margin-left: 10px; margin-top: 6px;" v-else icon="lock-open"/> 
-                        </div>
+                    <mdb-card-text>
+                        <div class="d-flex justify-content-between">
+                            <span style="width: 65px;"></span>
 
-                        <div v-else class="d-flex flex-row justify-content-center" style="margin-top: 1px; margin-left: 20px;">
-                            <mdb-icon v-if="killreport.locked == 'yes'" style="font-size:12px; margin-right: 5px; margin-top: 5px; color: #49d841;" icon="lock"/>
-                            <mdb-icon v-else style="font-size:12px; margin-right: 5px; margin-top: 5px; color: gray;" icon="lock"/>
-                            <!-- Default switch -->
-                            <div class="custom-control custom-switch" style="margin-right: -2px;">
-                                <input @change="toggleReportLock" type="checkbox" style="margin-right: -2px;" class="custom-control-input" id="customSwitches" :checked="killreport.locked == 'no'">
-                                <label class="custom-control-label" for="customSwitches"> </label>
+                            <div>
+                                <span style="margin-top: 2px;">#{{this.killreport.id}} RAPPORT </span>
+
+                                <span v-if="killreport.report_status == 'green'" style="font-size: 12px; color: rgb(145 214 148); margin-top: 4px;">KLAR</span>
+                                <span v-else style="font-size: 12px; color: #ffbb33; margin-top: 4px;">EJ KLAR</span>
                             </div>
-                            <mdb-icon v-if="killreport.locked == 'no'" style="font-size:12px; margin-right: -5px; margin-top: 5px; color: #f0ac32;" icon="lock-open"/> 
-                            <mdb-icon v-else style="font-size:12px; margin-right: -5px; margin-top: 5px; color: gray;" icon="lock-open"/> 
-                         </div>
 
+                            <div v-if="authUser.role != 'admin'" class="pr-3">
+                                <mdb-icon style="font-size:12px; margin-left: 10px; margin-top: 6px;" v-if="killreport.locked == 'yes'" icon="lock"/>
+                                <mdb-icon style="font-size:12px; margin-left: 10px; margin-top: 6px;" v-else icon="lock-open"/> 
+                            </div>
+
+                            <div v-else class="d-flex flex-row justify-content-center" style="margin-top: 1px; margin-right: 10px;">
+                                <mdb-icon v-if="killreport.locked == 'yes'" style="font-size:12px; margin-right: 5px; margin-top: 5px; color: #49d841;" icon="lock"/>
+                                <mdb-icon v-else style="font-size:12px; margin-right: 5px; margin-top: 5px; color: gray;" icon="lock"/>
+                                <!-- Default switch -->
+                                <div class="custom-control custom-switch" style="margin-right: -5px;">
+                                    <input @change="toggleReportLock" type="checkbox" style="margin-right: -2px;" class="custom-control-input" id="customSwitches" :checked="killreport.locked == 'no'">
+                                    <label class="custom-control-label" for="customSwitches"> </label>
+                                </div>
+                                <mdb-icon v-if="killreport.locked == 'no'" style="font-size:12px; margin-right: -5px; margin-top: 5px; color: #f0ac32;" icon="lock-open"/> 
+                                <mdb-icon v-else style="font-size:12px; margin-right: -5px; margin-top: 5px; color: gray;" icon="lock-open"/> 
+                            </div>
+
+                        </div>
                     </mdb-card-text>
                 </mdb-card>
             </div>
