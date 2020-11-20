@@ -135,7 +135,7 @@
 
   </div>
   <!-- /formfilter -->
-<div class="mt-2" style="padding: 0; font-size: 12px;">
+<div class="mt-2" style="padding: 0; font-size: 14px;">
       <!-- <p class="mb-0"> -->
           <div style="color: rgb(113 113 113);">
             @if($filtering)
