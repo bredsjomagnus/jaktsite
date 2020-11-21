@@ -269,8 +269,6 @@ class UserTest extends TestCase
         $this->patch('user/'.$user_1->id.'/update', $attributes);
 
         $this->assertDatabaseHas('users', ['password'   => $old_password]);
-    }
-
-    
+    }    
 
 }

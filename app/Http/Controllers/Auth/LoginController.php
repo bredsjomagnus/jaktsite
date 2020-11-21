@@ -28,6 +28,8 @@ class LoginController extends Controller
      */
     // protected $redirectTo = '/home';
 
+
+
     /**
      * Create a new controller instance.
      *
@@ -47,4 +49,30 @@ class LoginController extends Controller
     {
         return 'username';
     }
+
+    /**
+     * Get the needed authorization credentials from the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function credentials(\Illuminate\Http\Request $request)
+    {
+        //return $request->only($this->username(), 'password');
+        return ['username' => $request->{$this->username()}, 'password' => $request->password, 'active' => 'yes'];
+    }
+
+    // public function authenticate(Request $request)
+    // {
+    //     $credentials = $request->only('username', 'password', 'active');
+
+    //     dd($credentials);
+
+    //     if (Auth::attempt(['username' => $credentials['usename'], 'password' => $credentials['password']]) && $credentials['active'] == 'yes') {
+    //         // Authentication passed...
+    //         return redirect()->intended('dashboard');
+    //     }
+    // }
+
+ 
 }

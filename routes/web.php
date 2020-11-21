@@ -58,6 +58,7 @@ Route::delete('/file/{id}/delete', 'FileController@destroy')->middleware('access
 Route::get('/admin', 'AdminController@index')->middleware('access:admin,none');
 
 Route::get('/password', 'UserController@resetlink');
+Route::post('login', 'Auth\LoginController@login');
 // Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');

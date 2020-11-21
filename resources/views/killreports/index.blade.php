@@ -293,6 +293,10 @@
                 <td style="font-size: 12px; font-weight: bold;"><strong>Område:</strong></td>
                 <td style="font-size: 12px;">{{$killreport->area()['area_name']}}</td>
               </tr>
+              <tr>
+                <td style="font-size: 12px; font-weight: bold;"><strong>Plats:</strong></td>
+                <td style="font-size: 12px;">{{$killreport->place}}</td>
+              </tr>
             </table>
           </div>
 
