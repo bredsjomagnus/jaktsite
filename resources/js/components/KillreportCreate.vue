@@ -361,7 +361,7 @@
                     :color="isToggledForMeat(anonhunter[0].id) ? 'indigo' : 'grey'" 
                     @click.native="togglemeat(anonhunter[0].id)"
                     size="sm">
-                    Gäst 
+                    Utanför jaktlaget 
                     </mdb-btn>
                 </div>
                 <div v-if="this.animalfields.species == 'Älg'">

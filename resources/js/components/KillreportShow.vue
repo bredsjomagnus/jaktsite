@@ -8,7 +8,7 @@
 
                     <mdb-card-text>
                         <div class="d-flex justify-content-between">
-                            <span style="width: 65px;"></span>
+                            <span style="min-width: 50px;"></span>
 
                             <div>
                                 <span style="margin-top: 2px;">#{{this.killreport.id}} RAPPORT </span>
@@ -543,7 +543,7 @@
                     </div>
 
                     <div class="d-flex justify-content-center">
-                        <mdb-btn class="mb-0" size='sm' style="width: 200px" :color="isToggledForMeat(this.anonhunter[0].id) ? 'indigo' : 'grey'" @click.native="togglemeat(anonhunter[0])">Gäst</mdb-btn>
+                        <mdb-btn class="mb-0" size='sm' style="width: 200px" :color="isToggledForMeat(this.anonhunter[0].id) ? 'indigo' : 'grey'" @click.native="togglemeat(anonhunter[0])">Utanför jaktlaget</mdb-btn>
                     </div>
 
                     <div v-if="this.speciesSelected == 'Älg'">
