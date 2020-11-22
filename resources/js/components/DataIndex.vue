@@ -265,13 +265,6 @@
                             >
                             {{area.name}}
                     </option>
-                   
-                    <!-- <option value="Småris" >Småris</option>
-                    <option value="Glotterbäck" :disabled="areaDisabled">Glotterbäck</option>
-                    <option value="Haddebo" :disabled="areaDisabled">Haddebo</option>
-                    <option value="Västerby" :disabled="areaDisabled">Västerby</option>
-                    <option value="Nästorp" :disabled="areaDisabled">Nästorp</option>
-                    <option value="Pålsboda" :disabled="areaDisabled">Pålsboda</option> -->
                 </select>
                 <hr>
                 <h6 class="mt-3">ANTAL DJUR - {{this.area}}</h6>
@@ -502,6 +495,19 @@
             <div class=" mt-3 d-flex justify-content-center">
                 <h4>ÅLDERSFÖRDELNING</h4>
             </div>
+                <div class="mt-2 justify-content-center">
+                    <label for="">OMRÅDE:</label>
+                    <select class="browser-default custom-select" v-model="area">
+                        <option v-for="area in areas"
+                                :key="area.index"
+                                :value="area.name"
+                                >
+                                {{area.name}}
+                        </option>
+                    </select>
+                    <hr>
+                </div>
+            
             <!-- <div class="w-100 mt-3 d-flex justify-content-center">
                 <h6>SMÅRIS</h6>
             </div>
@@ -535,40 +541,204 @@
                 :height="350"
                 ></mdb-radar-chart>
             </div> -->
-             <div class="w-100 mt-3 d-flex justify-content-center">
-                <h6>SMÅRIS</h6>
-             </div>
-            <div class="w-100 mt-3 d-flex justify-content-center">
-                <mdb-bar-chart
-                :data="distBarChartDataSmaris"
-                :options="distBarChartOptionsSmaris"
-                :width="350"
-                :height="300"
-                ></mdb-bar-chart>
+            <div v-if="this.area == 'Småris'">
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <mdb-radar-chart
+                    :data="radarChartDataSmaris"
+                    :options="radarChartOptionsSmaris"
+                    :width="350"
+                    :height="350"
+                    ></mdb-radar-chart>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <h6>Kronvilt - {{ this.area }}</h6>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <mdb-bar-chart
+                    :data="distBarChartDataKronviltSmaris"
+                    :options="distBarChartOptionsKronviltSmaris"
+                    :width="350"
+                    :height="300"
+                    ></mdb-bar-chart>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <h6>Dovvilt - {{ this.area }}</h6>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <mdb-bar-chart
+                    :data="distBarChartDataDovviltSmaris"
+                    :options="distBarChartOptionsDovviltSmaris"
+                    :width="350"
+                    :height="300"
+                    ></mdb-bar-chart>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <h6>Älg - {{ this.area }}</h6>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <mdb-bar-chart
+                    :data="distBarChartDataAlgSmaris"
+                    :options="distBarChartOptionsAlgSmaris"
+                    :width="350"
+                    :height="300"
+                    ></mdb-bar-chart>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <h6>Vildsvin - {{ this.area }}</h6>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <mdb-bar-chart
+                    :data="distBarChartDataVildsvinSmaris"
+                    :options="distBarChartOptionsVildsvinSmaris"
+                    :width="350"
+                    :height="300"
+                    ></mdb-bar-chart>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <h6>Rådjur - {{ this.area }}</h6>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <mdb-bar-chart
+                    :data="distBarChartDataRadjurSmaris"
+                    :options="distBarChartOptionsRadjurSmaris"
+                    :width="350"
+                    :height="300"
+                    ></mdb-bar-chart>
+                </div>
             </div>
-            <hr>
-             <div class="w-100 mt-3 d-flex justify-content-center">
-                <h6>GLOTTERBÄCK</h6>
-             </div>
-            <div class="w-100 mt-3 d-flex justify-content-center">
-                <mdb-bar-chart
-                :data="distBarChartDataGlotterback"
-                :options="distBarChartOptionsGlotterback"
-                :width="350"
-                :height="300"
-                ></mdb-bar-chart>
+
+
+            <div v-else-if="this.area == 'Glotterbäck'">
+                 <div class="w-100 mt-3 d-flex justify-content-center">
+                    <mdb-radar-chart
+                    :data="radarChartDataGlotterback"
+                    :options="radarChartOptionsGlotterback"
+                    :width="350"
+                    :height="350"
+                    ></mdb-radar-chart>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <h6>Kronvilt - {{ this.area }}</h6>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <mdb-bar-chart
+                    :data="distBarChartDataKronviltGlotterback"
+                    :options="distBarChartOptionsKronviltGlotterback"
+                    :width="350"
+                    :height="300"
+                    ></mdb-bar-chart>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <h6>Dovvilt - {{ this.area }}</h6>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <mdb-bar-chart
+                    :data="distBarChartDataDovviltGlotterback"
+                    :options="distBarChartOptionsDovviltGlotterback"
+                    :width="350"
+                    :height="300"
+                    ></mdb-bar-chart>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <h6>Älg - {{ this.area }}</h6>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <mdb-bar-chart
+                    :data="distBarChartDataAlgGlotterback"
+                    :options="distBarChartOptionsAlgGlotterback"
+                    :width="350"
+                    :height="300"
+                    ></mdb-bar-chart>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <h6>Vildsvin - {{ this.area }}</h6>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <mdb-bar-chart
+                    :data="distBarChartDataVildsvinGlotterback"
+                    :options="distBarChartOptionsVildsvinGlotterback"
+                    :width="350"
+                    :height="300"
+                    ></mdb-bar-chart>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <h6>Rådjur - {{ this.area }}</h6>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <mdb-bar-chart
+                    :data="distBarChartDataRadjurGlotterback"
+                    :options="distBarChartOptionsRadjurGlotterback"
+                    :width="350"
+                    :height="300"
+                    ></mdb-bar-chart>
+                </div>
             </div>
-            <hr>
-             <div class="w-100 mt-3 d-flex justify-content-center">
-                <h6>NÄSTORP</h6>
-             </div>
-            <div class="w-100 mt-3 d-flex justify-content-center">
-                <mdb-bar-chart
-                :data="distBarChartDataNastorp"
-                :options="distBarChartOptionsNastorp"
-                :width="350"
-                :height="300"
-                ></mdb-bar-chart>
+
+
+            <div v-else-if="this.area == 'Nästorp'">
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <mdb-radar-chart
+                    :data="radarChartDataNastorp"
+                    :options="radarChartOptionsNastorp"
+                    :width="350"
+                    :height="350"
+                    ></mdb-radar-chart>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <h6>Kronvilt - {{ this.area }}</h6>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <mdb-bar-chart
+                    :data="distBarChartDataKronviltNastorp"
+                    :options="distBarChartOptionsKronviltNastorp"
+                    :width="350"
+                    :height="300"
+                    ></mdb-bar-chart>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <h6>Dovvilt - {{ this.area }}</h6>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <mdb-bar-chart
+                    :data="distBarChartDataDovviltNastorp"
+                    :options="distBarChartOptionsDovviltNastorp"
+                    :width="350"
+                    :height="300"
+                    ></mdb-bar-chart>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <h6>Älg - {{ this.area }}</h6>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <mdb-bar-chart
+                    :data="distBarChartDataAlgNastorp"
+                    :options="distBarChartOptionsAlgNastorp"
+                    :width="350"
+                    :height="300"
+                    ></mdb-bar-chart>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <h6>Vildsvin - {{ this.area }}</h6>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <mdb-bar-chart
+                    :data="distBarChartDataVildsvinNastorp"
+                    :options="distBarChartOptionsVildsvinNastorp"
+                    :width="350"
+                    :height="300"
+                    ></mdb-bar-chart>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <h6>Rådjur - {{ this.area }}</h6>
+                </div>
+                <div class="w-100 mt-3 d-flex justify-content-center">
+                    <mdb-bar-chart
+                    :data="distBarChartDataRadjurNastorp"
+                    :options="distBarChartOptionsRadjurNastorp"
+                    :width="350"
+                    :height="300"
+                    ></mdb-bar-chart>
+                </div>
             </div>
         </div>
     </mdb-container>
@@ -647,14 +817,14 @@
             // gör därför en chart per område.
 
 
-            // DISTBAR - SMÅRIS
-            distBarChartDataSmaris: {
+            // DISTBAR - KRONVILT SMÅRIS
+            distBarChartDataKronviltSmaris: {
                 labels: [
                     'Vuxet handjur', 
                     'Vuxet hondjur', 
-                    'Hanunge', 
-                    'Honunge',
-                    'Obestämd unge'
+                    'Hjortkalv', 
+                    'Hindkalv',
+                    'Obestämd kalv'
                 ],
                 datasets: [
                     {
@@ -676,87 +846,14 @@
                         ],
                         borderWidth: 1
                     },
-                    {
-                        label: "Dovvilt",
-                        data: [],
-                        backgroundColor: [
-                            "#435b98",
-                            "#435b98)",
-                            "#435b98",
-                            "#435b98",
-                            "#435b98"
-                        ],
-                        borderColor: [
-                            "#2d2d2d",
-                            "#2d2d2d",
-                            "#2d2d2d",
-                            "#2d2d2d",
-                            "#2d2d2d)"
-                        ],
-                        borderWidth: 1
-                    },
-                    {
-                        label: "Vildsvin",
-                        data: [],
-                        backgroundColor: [
-                            "#43985b",
-                            "#43985b)",
-                            "#43985b",
-                            "#43985b",
-                            "#43985b"
-                        ],
-                        borderColor: [
-                            "#2d2d2d",
-                            "#2d2d2d",
-                            "#2d2d2d",
-                            "#2d2d2d",
-                            "#2d2d2d)"
-                        ],
-                        borderWidth: 1
-                    },
-                    {
-                        label: "Älg",
-                        data: [],
-                        backgroundColor: [
-                            "#987843",
-                            "#987843)",
-                            "#987843",
-                            "#987843",
-                            "#987843"
-                        ],
-                        borderColor: [
-                            "#2d2d2d",
-                            "#2d2d2d",
-                            "#2d2d2d",
-                            "#2d2d2d",
-                            "#2d2d2d)"
-                        ],
-                        borderWidth: 1
-                    },
-                    {
-                        label: "Rådjur",
-                        data: [],
-                        backgroundColor: [
-                            "#98438d",
-                            "#98438d)",
-                            "#98438d",
-                            "#98438d",
-                            "#98438d"
-                        ],
-                        borderColor: [
-                            "#2d2d2d",
-                            "#2d2d2d",
-                            "#2d2d2d",
-                            "#2d2d2d",
-                            "#2d2d2d)"
-                        ],
-                        borderWidth: 1
-                    },
                 ]
                 },
-                distBarChartOptionsSmaris: {
+                distBarChartOptionsKronviltSmaris: {
                     responsive: true,
                     maintainAspectRatio: true,
+                    legend: {
+                        display: false,
+                    },
                     scales: {
                         xAxes: [
                         {
@@ -782,35 +879,16 @@
                 },
 
 
-                // DISTBAR - GLOTTERBÄCK
-                distBarChartDataGlotterback: {
-                    labels: [
-                        'Vuxet handjur', 
-                        'Vuxet hondjur', 
-                        'Hanunge', 
-                        'Honunge',
-                        'Obestämd unge'
-                    ],
-                    datasets: [
-                        {
-                            label: "Kronvilt",
-                            data: [],
-                            backgroundColor: [
-                                "#5b5b5b",
-                                "#5b5b5b)",
-                                "#5b5b5b",
-                                "#5b5b5b",
-                                "#5b5b5b"
-                            ],
-                            borderColor: [
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d)"
-                            ],
-                            borderWidth: 1
-                        },
+            // DISTBAR - DOVVILT SMÅRIS
+            distBarChartDataDovviltSmaris: {
+                labels: [
+                    'Vuxet handjur', 
+                    'Vuxet hondjur', 
+                    'Hjortkalv', 
+                    'Hindkalv',
+                    'Obestämd kalv'
+                ],
+                datasets: [
                         {
                             label: "Dovvilt",
                             data: [],
@@ -830,68 +908,15 @@
                             ],
                             borderWidth: 1
                         },
-                        {
-                            label: "Vildsvin",
-                            data: [],
-                            backgroundColor: [
-                                "#43985b",
-                                "#43985b)",
-                                "#43985b",
-                                "#43985b",
-                                "#43985b"
-                            ],
-                            borderColor: [
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d)"
-                            ],
-                            borderWidth: 1
-                        },
-                        {
-                            label: "Älg",
-                            data: [],
-                            backgroundColor: [
-                                "#987843",
-                                "#987843)",
-                                "#987843",
-                                "#987843",
-                                "#987843"
-                            ],
-                            borderColor: [
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d)"
-                            ],
-                            borderWidth: 1
-                        },
-                        {
-                            label: "Rådjur",
-                            data: [],
-                            backgroundColor: [
-                                "#98438d",
-                                "#98438d)",
-                                "#98438d",
-                                "#98438d",
-                                "#98438d"
-                            ],
-                            borderColor: [
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d)"
-                            ],
-                            borderWidth: 1
-                        },
+                        
                     ]
                 },
-                distBarChartOptionsGlotterback: {
+                distBarChartOptionsDovviltSmaris: {
                     responsive: true,
-                    maintainAspectRatio: false,
+                    maintainAspectRatio: true,
+                    legend: {
+                        display: false,
+                    },
                     scales: {
                         xAxes: [
                         {
@@ -903,152 +928,828 @@
                         }
                         ],
                         yAxes: [
-                        {
+                        { 
                             ticks: {
                                 beginAtZero: true
                             },
                             gridLines: {
-                            display: true,
-                            color: "rgba(0, 0, 0, 0.1)"
-                            }
-                        }
-                        ]
-                    }
-                },
-                // DISTBAR - NÄSTORP
-                distBarChartDataNastorp: {
-                    labels: [
-                        'Vuxet handjur', 
-                        'Vuxet hondjur', 
-                        'Hanunge', 
-                        'Honunge',
-                        'Obestämd unge'
-                    ],
-                    datasets: [
-                        {
-                            label: "Kronvilt",
-                            data: [],
-                            backgroundColor: [
-                                "#5b5b5b",
-                                "#5b5b5b)",
-                                "#5b5b5b",
-                                "#5b5b5b",
-                                "#5b5b5b"
-                            ],
-                            borderColor: [
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d)"
-                            ],
-                            borderWidth: 1
-                        },
-                        {
-                            label: "Dovvilt",
-                            data: [],
-                            backgroundColor: [
-                                "#435b98",
-                                "#435b98)",
-                                "#435b98",
-                                "#435b98",
-                                "#435b98"
-                            ],
-                            borderColor: [
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d)"
-                            ],
-                            borderWidth: 1
-                        },
-                        {
-                            label: "Vildsvin",
-                            data: [],
-                            backgroundColor: [
-                                "#43985b",
-                                "#43985b)",
-                                "#43985b",
-                                "#43985b",
-                                "#43985b"
-                            ],
-                            borderColor: [
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d)"
-                            ],
-                            borderWidth: 1
-                        },
-                        {
-                            label: "Älg",
-                            data: [],
-                            backgroundColor: [
-                                "#987843",
-                                "#987843)",
-                                "#987843",
-                                "#987843",
-                                "#987843"
-                            ],
-                            borderColor: [
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d)"
-                            ],
-                            borderWidth: 1
-                        },
-                        {
-                            label: "Rådjur",
-                            data: [],
-                            backgroundColor: [
-                                "#98438d",
-                                "#98438d)",
-                                "#98438d",
-                                "#98438d",
-                                "#98438d"
-                            ],
-                            borderColor: [
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d",
-                                "#2d2d2d)"
-                            ],
-                            borderWidth: 1
-                        },
-                    ]
-                },
-                distBarChartOptionsNastorp: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        xAxes: [
-                        {
-                            barPercentage: 1,
-                            gridLines: {
-                            display: true,
-                            color: "rgba(0, 0, 0, 0.1)"
-                            }
-                        }
-                        ],
-                        yAxes: [
-                        {
-                            ticks: {
-                                beginAtZero: true
-                            },
-                            gridLines: {
-                            display: true,
-                            color: "rgba(0, 0, 0, 0.1)"
+                                display: true,
+                                color: "rgba(0, 0, 0, 0.1)"
                             }
                         }
                         ]
                     }
                 },
 
+            // DISTBAR - ÄLG SMÅRIS
+            distBarChartDataAlgSmaris: {
+                labels: [
+                    'Vuxet handjur', 
+                    'Vuxet hondjur', 
+                    'Tjurkalv', 
+                    'Kvigkalv',
+                    'Obestämd kalv'
+                ],
+                datasets: [
+                   
+                    {
+                        label: "Älg",
+                        data: [],
+                        backgroundColor: [
+                            "#987843",
+                            "#987843)",
+                            "#987843",
+                            "#987843",
+                            "#987843"
+                        ],
+                        borderColor: [
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d)"
+                        ],
+                        borderWidth: 1
+                    },
+                
+                ]
+                },
+                distBarChartOptionsAlgSmaris: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    legend: {
+                        display: false,
+                    },
+                    scales: {
+                        xAxes: [
+                        {
+                            barPercentage: 1,
+                            gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ],
+                        yAxes: [
+                        { 
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            gridLines: {
+                                display: true,
+                                color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ]
+                    }
+                },
+
+            // DISTBAR - VILDSVIN SMÅRIS
+            distBarChartDataVildsvinSmaris: {
+                labels: [
+                    'Vuxet handjur', 
+                    'Vuxet hondjur', 
+                    'Galtkulting', 
+                    'Suggkulting',
+                    'Obestämd kulting'
+                ],
+                datasets: [
+                    {
+                        label: "Vildsvin",
+                        data: [],
+                        backgroundColor: [
+                            "#43985b",
+                            "#43985b)",
+                            "#43985b",
+                            "#43985b",
+                            "#43985b"
+                        ],
+                        borderColor: [
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d)"
+                        ],
+                        borderWidth: 1
+                    },
+                   
+                ]
+                },
+                distBarChartOptionsVildsvinSmaris: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    legend: {
+                        display: false,
+                    },
+                    scales: {
+                        xAxes: [
+                        {
+                            barPercentage: 1,
+                            gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ],
+                        yAxes: [
+                        { 
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            gridLines: {
+                                display: true,
+                                color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ]
+                    }
+                },
+
+            // DISTBAR - RÅDJUR SMÅRIS
+            distBarChartDataRadjurSmaris: {
+                labels: [
+                    'Vuxet handjur', 
+                    'Vuxet hondjur', 
+                    'Bockkilling', 
+                    'Getkilling',
+                    'Obestämd killing'
+                ],
+                datasets: [
+                  
+                    {
+                        label: "Rådjur",
+                        data: [],
+                        backgroundColor: [
+                            "#98438d",
+                            "#98438d)",
+                            "#98438d",
+                            "#98438d",
+                            "#98438d"
+                        ],
+                        borderColor: [
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d)"
+                        ],
+                        borderWidth: 1
+                    },
+                ]
+                },
+                distBarChartOptionsRadjurSmaris: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    legend: {
+                        display: false,
+                    },
+                    scales: {
+                        xAxes: [
+                        {
+                            barPercentage: 1,
+                            gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ],
+                        yAxes: [
+                        { 
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            gridLines: {
+                                display: true,
+                                color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ]
+                    }
+                },
+
+            // DISTBAR - KRONVILT GLOTTERBÄCK
+            distBarChartDataKronviltGlotterback: {
+                labels: [
+                    'Vuxet handjur', 
+                    'Vuxet hondjur', 
+                    'Hjortkalv', 
+                    'Hindkalv',
+                    'Obestämd kalv'
+                ],
+                datasets: [
+                    {
+                        label: "Kronvilt",
+                        data: [],
+                        backgroundColor: [
+                            "#5b5b5b",
+                            "#5b5b5b)",
+                            "#5b5b5b",
+                            "#5b5b5b",
+                            "#5b5b5b"
+                        ],
+                        borderColor: [
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d)"
+                        ],
+                        borderWidth: 1
+                    },
+                ]
+                },
+                distBarChartOptionsKronviltGlotterback: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    legend: {
+                        display: false,
+                    },
+                    scales: {
+                        xAxes: [
+                        {
+                            barPercentage: 1,
+                            gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ],
+                        yAxes: [
+                        { 
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            gridLines: {
+                                display: true,
+                                color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ]
+                    }
+                },
+
+
+            // DISTBAR - DOVVILT GLOTTERBÄCK
+            distBarChartDataDovviltGlotterback: {
+                labels: [
+                    'Vuxet handjur', 
+                    'Vuxet hondjur', 
+                    'Hjortkalv', 
+                    'Hindkalv',
+                    'Obestämd kalv'
+                ],
+                datasets: [
+                        {
+                            label: "Dovvilt",
+                            data: [],
+                            backgroundColor: [
+                                "#435b98",
+                                "#435b98)",
+                                "#435b98",
+                                "#435b98",
+                                "#435b98"
+                            ],
+                            borderColor: [
+                                "#2d2d2d",
+                                "#2d2d2d",
+                                "#2d2d2d",
+                                "#2d2d2d",
+                                "#2d2d2d)"
+                            ],
+                            borderWidth: 1
+                        },
+                        
+                    ]
+                },
+                distBarChartOptionsDovviltGlotterback: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    legend: {
+                        display: false,
+                    },
+                    scales: {
+                        xAxes: [
+                        {
+                            barPercentage: 1,
+                            gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ],
+                        yAxes: [
+                        { 
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            gridLines: {
+                                display: true,
+                                color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ]
+                    }
+                },
+
+            // DISTBAR - ÄLG GLOTTERBÄCK
+            distBarChartDataAlgGlotterback: {
+                labels: [
+                    'Vuxet handjur', 
+                    'Vuxet hondjur', 
+                    'Tjurkalv', 
+                    'Kvigkalv',
+                    'Obestämd kalv'
+                ],
+                datasets: [
+                   
+                    {
+                        label: "Älg",
+                        data: [],
+                        backgroundColor: [
+                            "#987843",
+                            "#987843)",
+                            "#987843",
+                            "#987843",
+                            "#987843"
+                        ],
+                        borderColor: [
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d)"
+                        ],
+                        borderWidth: 1
+                    },
+                
+                ]
+                },
+                distBarChartOptionsAlgGlotterback: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    legend: {
+                        display: false,
+                    },
+                    scales: {
+                        xAxes: [
+                        {
+                            barPercentage: 1,
+                            gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ],
+                        yAxes: [
+                        { 
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            gridLines: {
+                                display: true,
+                                color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ]
+                    }
+                },
+
+            // DISTBAR - VILDSVIN GLOTTERBÄCK
+            distBarChartDataVildsvinGlotterback: {
+                labels: [
+                    'Vuxet handjur', 
+                    'Vuxet hondjur', 
+                    'Galtkulting', 
+                    'Suggkulting',
+                    'Obestämd kulting'
+                ],
+                datasets: [
+                    {
+                        label: "Vildsvin",
+                        data: [],
+                        backgroundColor: [
+                            "#43985b",
+                            "#43985b)",
+                            "#43985b",
+                            "#43985b",
+                            "#43985b"
+                        ],
+                        borderColor: [
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d)"
+                        ],
+                        borderWidth: 1
+                    },
+                   
+                ]
+                },
+                distBarChartOptionsVildsvinGlotterback: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    legend: {
+                        display: false,
+                    },
+                    scales: {
+                        xAxes: [
+                        {
+                            barPercentage: 1,
+                            gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ],
+                        yAxes: [
+                        { 
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            gridLines: {
+                                display: true,
+                                color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ]
+                    }
+                },
+
+            // DISTBAR - RÅDJUR GLOTTERBÄCK
+            distBarChartDataRadjurGlotterback: {
+                labels: [
+                    'Vuxet handjur', 
+                    'Vuxet hondjur', 
+                    'Bockkilling', 
+                    'Getkilling',
+                    'Obestämd killing'
+                ],
+                datasets: [
+                  
+                    {
+                        label: "Rådjur",
+                        data: [],
+                        backgroundColor: [
+                            "#98438d",
+                            "#98438d)",
+                            "#98438d",
+                            "#98438d",
+                            "#98438d"
+                        ],
+                        borderColor: [
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d)"
+                        ],
+                        borderWidth: 1
+                    },
+                ]
+                },
+                distBarChartOptionsRadjurGlotterback: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    legend: {
+                        display: false,
+                    },
+                    scales: {
+                        xAxes: [
+                        {
+                            barPercentage: 1,
+                            gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ],
+                        yAxes: [
+                        { 
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            gridLines: {
+                                display: true,
+                                color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ]
+                    }
+                },
+            // DISTBAR - KRONVILT NÄSTORP
+            distBarChartDataKronviltNastorp: {
+                labels: [
+                    'Vuxet handjur', 
+                    'Vuxet hondjur', 
+                    'Hjortkalv', 
+                    'Hindkalv',
+                    'Obestämd kalv'
+                ],
+                datasets: [
+                    {
+                        label: "Kronvilt",
+                        data: [],
+                        backgroundColor: [
+                            "#5b5b5b",
+                            "#5b5b5b)",
+                            "#5b5b5b",
+                            "#5b5b5b",
+                            "#5b5b5b"
+                        ],
+                        borderColor: [
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d)"
+                        ],
+                        borderWidth: 1
+                    },
+                ]
+                },
+                distBarChartOptionsKronviltNastorp: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    legend: {
+                        display: false,
+                    },
+                    scales: {
+                        xAxes: [
+                        {
+                            barPercentage: 1,
+                            gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ],
+                        yAxes: [
+                        { 
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            gridLines: {
+                                display: true,
+                                color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ]
+                    }
+                },
+
+
+            // DISTBAR - DOVVILT NÄSTORP
+            distBarChartDataDovviltNastorp: {
+                labels: [
+                    'Vuxet handjur', 
+                    'Vuxet hondjur', 
+                    'Hjortkalv', 
+                    'Hindkalv',
+                    'Obestämd kalv'
+                ],
+                datasets: [
+                        {
+                            label: "Dovvilt",
+                            data: [],
+                            backgroundColor: [
+                                "#435b98",
+                                "#435b98)",
+                                "#435b98",
+                                "#435b98",
+                                "#435b98"
+                            ],
+                            borderColor: [
+                                "#2d2d2d",
+                                "#2d2d2d",
+                                "#2d2d2d",
+                                "#2d2d2d",
+                                "#2d2d2d)"
+                            ],
+                            borderWidth: 1
+                        },
+                        
+                    ]
+                },
+                distBarChartOptionsDovviltNastorp: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    legend: {
+                        display: false,
+                    },
+                    scales: {
+                        xAxes: [
+                        {
+                            barPercentage: 1,
+                            gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ],
+                        yAxes: [
+                        { 
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            gridLines: {
+                                display: true,
+                                color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ]
+                    }
+                },
+
+            // DISTBAR - ÄLG NÄSTORP
+            distBarChartDataAlgNastorp: {
+                labels: [
+                    'Vuxet handjur', 
+                    'Vuxet hondjur', 
+                    'Tjurkalv', 
+                    'Kvigkalv',
+                    'Obestämd kalv'
+                ],
+                datasets: [
+                   
+                    {
+                        label: "Älg",
+                        data: [],
+                        backgroundColor: [
+                            "#987843",
+                            "#987843)",
+                            "#987843",
+                            "#987843",
+                            "#987843"
+                        ],
+                        borderColor: [
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d)"
+                        ],
+                        borderWidth: 1
+                    },
+                
+                ]
+                },
+                distBarChartOptionsAlgNastorp: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    legend: {
+                        display: false,
+                    },
+                    scales: {
+                        xAxes: [
+                        {
+                            barPercentage: 1,
+                            gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ],
+                        yAxes: [
+                        { 
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            gridLines: {
+                                display: true,
+                                color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ]
+                    }
+                },
+
+            // DISTBAR - VILDSVIN NÄSTORP
+            distBarChartDataVildsvinNastorp: {
+                labels: [
+                    'Vuxet handjur', 
+                    'Vuxet hondjur', 
+                    'Galtkulting', 
+                    'Suggkulting',
+                    'Obestämd kulting'
+                ],
+                datasets: [
+                    {
+                        label: "Vildsvin",
+                        data: [],
+                        backgroundColor: [
+                            "#43985b",
+                            "#43985b)",
+                            "#43985b",
+                            "#43985b",
+                            "#43985b"
+                        ],
+                        borderColor: [
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d)"
+                        ],
+                        borderWidth: 1
+                    },
+                   
+                ]
+                },
+                distBarChartOptionsVildsvinNastorp: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    legend: {
+                        display: false,
+                    },
+                    scales: {
+                        xAxes: [
+                        {
+                            barPercentage: 1,
+                            gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ],
+                        yAxes: [
+                        { 
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            gridLines: {
+                                display: true,
+                                color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ]
+                    }
+                },
+
+            // DISTBAR - RÅDJUR NÄSTORP
+            distBarChartDataRadjurNastorp: {
+                labels: [
+                    'Vuxet handjur', 
+                    'Vuxet hondjur', 
+                    'Bockkilling', 
+                    'Getkilling',
+                    'Obestämd killing'
+                ],
+                datasets: [
+                  
+                    {
+                        label: "Rådjur",
+                        data: [],
+                        backgroundColor: [
+                            "#98438d",
+                            "#98438d)",
+                            "#98438d",
+                            "#98438d",
+                            "#98438d"
+                        ],
+                        borderColor: [
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d",
+                            "#2d2d2d)"
+                        ],
+                        borderWidth: 1
+                    },
+                ]
+                },
+                distBarChartOptionsRadjurNastorp: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    legend: {
+                        display: false,
+                    },
+                    scales: {
+                        xAxes: [
+                        {
+                            barPercentage: 1,
+                            gridLines: {
+                            display: true,
+                            color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ],
+                        yAxes: [
+                        { 
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            gridLines: {
+                                display: true,
+                                color: "rgba(0, 0, 0, 0.1)"
+                            }
+                        }
+                        ]
+                    }
+                },
+
+                
 
 
 
@@ -1060,9 +1761,9 @@
                 labels: [
                 'Vuxet handjur', 
                 'Vuxet hondjur', 
-                'Kalv/ki./ku.\nhandjur', 
-                'Kalv/ki./ku.\nhondjur',
-                'Kalv/ki./ku..\nobst.'
+                'Hanunge', 
+                'Honunge',
+                'Obestämd unge'
             ],
                 datasets: [
                         {
@@ -1104,7 +1805,12 @@
             },
             radarChartOptionsSmaris: {
                 responsive: true,
-                maintainAspectRatio: false
+                maintainAspectRatio: false,
+                scale: {
+                    ticks: {
+                        beginAtZero:true,
+                    }
+                }
             },
 
             // FÖRDELNING - GLOTTERBÄCK
@@ -1112,9 +1818,9 @@
                 labels: [
                 'Vuxet handjur', 
                 'Vuxet hondjur', 
-                'Kalv/ki./ku.\nhandjur', 
-                'Kalv/ki./ku.\nhondjur',
-                'Kalv/ki./ku..\nobst.'
+                'Hanunge', 
+                'Honunge',
+                'Obestämd unge'
             ],
                 datasets: [
                         {
@@ -1156,7 +1862,12 @@
             },
             radarChartOptionsGlotterback: {
                 responsive: true,
-                maintainAspectRatio: false
+                maintainAspectRatio: false,
+                scale: {
+                    ticks: {
+                        beginAtZero:true,
+                    }
+                }
             },
 
 
@@ -1166,9 +1877,9 @@
                 labels: [
                 'Vuxet handjur', 
                 'Vuxet hondjur', 
-                'Kalv/ki./ku.\nhandjur', 
-                'Kalv/ki./ku.\nhondjur',
-                'Kalv/ki./ku..\nobst.'
+                'Hanunge', 
+                'Honunge',
+                'Obestämd unge'
             ],
                 datasets: [
                         {
@@ -1210,7 +1921,12 @@
             },
             radarChartOptionsNastorp: {
                 responsive: true,
-                maintainAspectRatio: false
+                maintainAspectRatio: false,
+                scale: {
+                    ticks: {
+                        beginAtZero:true,
+                    }
+                }
             },
 
 
@@ -2116,11 +2832,6 @@
                     }
                 }
                 
-                // console.log("vuxethandjur: ", vuxethandjur);
-                // console.log("vuxethondjur: ", vuxethondjur);
-                // console.log("kalvhandjur: ", kalvhandjur);
-                // console.log("kalvhondjur: ", kalvhondjur);
-                // console.log("kalvunknown: ", kalvunknown);
                 let index;
                 if(species === 'Kronvilt') {
                     index = 0;
@@ -2138,16 +2849,46 @@
                     this.radarChartDataSmaris.datasets[index].label = species;
                     this.radarChartDataSmaris.datasets[index].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
  
-                    this.distBarChartDataSmaris.datasets[index].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
+                    if(species === 'Kronvilt') {
+                        this.distBarChartDataKronviltSmaris.datasets[0].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
+                    } else if(species === 'Dovvilt') {
+                        this.distBarChartDataDovviltSmaris.datasets[0].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
+                    } else if(species === 'Älg') {
+                        this.distBarChartDataAlgSmaris.datasets[0].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
+                    } else if(species === 'Vildsvin') {
+                        this.distBarChartDataVildsvinSmaris.datasets[0].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
+                    } else if(species === 'Rådjur') {
+                        this.distBarChartDataRadjurSmaris.datasets[0].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
+                    }
                     
                 } else if( key === 'Glotterbäck') {
                     this.radarChartDataGlotterback.datasets[index].label = species;
                     this.radarChartDataGlotterback.datasets[index].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
-                    this.distBarChartDataGlotterback.datasets[index].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
+                    if(species === 'Kronvilt') {
+                        this.distBarChartDataKronviltGlotterback.datasets[0].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
+                    } else if(species === 'Dovvilt') {
+                        this.distBarChartDataDovviltGlotterback.datasets[0].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
+                    } else if(species === 'Älg') {
+                        this.distBarChartDataAlgGlotterback.datasets[0].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
+                    } else if(species === 'Vildsvin') {
+                        this.distBarChartDataVildsvinGlotterback.datasets[0].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
+                    } else if(species === 'Rådjur') {
+                        this.distBarChartDataRadjurGlotterback.datasets[0].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
+                    }
                 } else if( key === 'Nästorp') {
                     this.radarChartDataNastorp.datasets[index].label = species;
                     this.radarChartDataNastorp.datasets[index].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
-                    this.distBarChartDataNastorp.datasets[index].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
+                    if(species === 'Kronvilt') {
+                        this.distBarChartDataKronviltNastorp.datasets[0].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
+                    } else if(species === 'Dovvilt') {
+                        this.distBarChartDataDovviltNastorp.datasets[0].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
+                    } else if(species === 'Älg') {
+                        this.distBarChartDataAlgNastorp.datasets[0].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
+                    } else if(species === 'Vildsvin') {
+                        this.distBarChartDataVildsvinNastorp.datasets[0].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
+                    } else if(species === 'Rådjur') {
+                        this.distBarChartDataRadjurNastorp.datasets[0].data = [vuxethandjur, vuxethondjur, kalvhandjur, kalvhondjur, kalvunknown];
+                    }
                 }
 
                     // console.log(this.radarChartDataSmaris.datasets[0]);
