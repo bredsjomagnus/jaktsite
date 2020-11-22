@@ -450,7 +450,7 @@
             <!-- <mdb-card class="mt-2" v-if="authUser.role == 'admin'">
                 <mdb-card-body class="d-flex justify-content-center titlecolor p-1"> -->
 
-            <div class="d-flex justify-content-center mt-4">
+            <div v-if="authUser.role == 'admin'" class="d-flex justify-content-center mt-4">
                 <mdb-btn color="danger" @click.native="deleteModal = true" size='sm'>Radera rapporten</mdb-btn>
             </div>
                 <!-- </mdb-card-body>

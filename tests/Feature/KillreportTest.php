@@ -251,7 +251,7 @@ class KillreportTest extends TestCase
 
         $this->signIn($user);
 
-         $killreport = factory(Killreport::class)->create();
+        $killreport = factory(Killreport::class)->create();
 
         $this->assertDatabaseHas('killreports', ['id'   => $killreport->id]);
 
