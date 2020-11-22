@@ -16,8 +16,20 @@ class Access
      */
     public function handle($request, Closure $next, $key='user', $object='none')
     {
-        // if guest
+        // if outsider
         if(auth()->user() === null) {
+            return redirect('login');
+        }
+
+        // En role = 'guest' skall loggas ut och hänvisas tillbaka till loginsidan.
+        if(auth()->user()->role == 'guest') {
+            Auth::logout();
+            return redirect('login');
+        }
+
+        // En inloggad användare som sätts som 'active' = 'no' kommer att loggas ut
+        if(auth()->user()->active == 'no') {
+            Auth::logout();
             return redirect('login');
         }
 
