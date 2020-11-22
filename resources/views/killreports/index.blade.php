@@ -97,7 +97,7 @@
                 @foreach($hunters as $hunter)
                   <option value="{{ $hunter->id }}" <?php if(isset($_GET['meat'])) { echo $_GET['meat'] ==  $hunter->id ? "selected" : ""; } ?>>{{ $hunter->firstname }} {{$hunter->lastname}}</option>
                 @endforeach
-                <option value="{{ $anonhunter->id }}" <?php if(isset($_GET['meat'])) { echo $_GET['meat'] ==  $anonhunter->id ? "selected" : ""; } ?>>Gäst</option>
+                <option value="{{ $anonhunter->id }}" <?php if(isset($_GET['meat'])) { echo $_GET['meat'] ==  $anonhunter->id ? "selected" : ""; } ?>>Utanför jaktlaget</option>
               </select>
             </td>
           </tr>
@@ -177,7 +177,12 @@
 
               @if(isset($_GET['meat']))
                 @if($_GET['meat'] != '')
-                  <span class="ml-1">Köttilldelning: {{ $meat_to }}</span> <br>
+                  @if($meat_to == '- -')
+                    <span class="ml-1">Köttilldelning: Utanför jaktlaget</span> <br>
+                  @else
+                    <span class="ml-1">Köttilldelning: {{ $meat_to }}</span> <br>
+                  @endif
+                  
                 @endif
               @endif
 
@@ -310,7 +315,7 @@
               @foreach($killreport->meat as $meat)
                 @if(!is_null($meat->user_id))
                   <tr>
-                    <td style="font-size: 12px; font-weight: bold;"><?= $meat->get_users_name() == '- -' ? 'Gäst' : $meat->get_users_name()?>:</td>
+                    <td style="font-size: 12px; font-weight: bold;"><?= $meat->get_users_name() == '- -' ? 'Utanför jaktlaget' : $meat->get_users_name()?>:</td>
                     <td style="font-size: 12px;">{{$meat->share_kilogram}} kg</td>
                   </tr>
                 @endif
