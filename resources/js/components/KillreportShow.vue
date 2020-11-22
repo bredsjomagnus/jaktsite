@@ -868,6 +868,7 @@
             wrongkilldate: false,
             wrongspeciestype: false,
             originkilldate: this.killreport.killdate.substring(0,10),
+            originalseason: this.killreport.season,
             originarea: this.area,
             originareaName: this.area.area_name,
             originplace: this.killreport.place,
@@ -1008,6 +1009,10 @@
         console.log(this.imageUrl);
 
         console.log("killreportImage: ", this.killreportImage);
+
+
+
+        console.log("this.originalseason: ", this.originalseason);
         
 
         let sortedMooseAverage = this.bubble(this.meatMooseAverage);
@@ -1035,6 +1040,9 @@
         console.log("dovtotaldennasäsongen: ", this.meatFallowdeerThisSeason);
         console.log("råtotaldennasäsongen: ", this.meatRoedeerThisSeason);
         console.log("svintotaldennasäsongen: ", this.meatBoarThisSeason);
+
+
+
 
         console.log("Waste notes: ", this.waste_notes);
 
@@ -1410,6 +1418,23 @@
                 this.placechanged = false;
             }
             this.checkChanges();
+        },
+        setSeason(date) {
+            let firstyear, lastyear, season;
+            let year = parseInt(date.substring(2, 4));
+            let month = parseInt(date.substring(5, 7));
+            console.log("year: " + year);
+            console.log("month: " + month);
+            season = "";
+            if (month < 7) {
+                firstyear = (year - 1).toString();
+                lastyear = year.toString();
+            } else {
+                firstyear = year.toString();
+                lastyear = (year + 1).toString();
+            }
+            season = firstyear+"/"+lastyear;
+            return season;
         },
         checkSpeciestype() {
             if(this.speciesSelected == 'Älg') {
@@ -1890,7 +1915,7 @@
                 'shooter_id': this.shooterSelected.id,
                 'kindofhunt': this.kindofhuntSelected,
                 'killdate': this.killdateSelected,
-                'season': '20/21',
+                'season': this.setSeason(this.killdateSelected),
                 'area_id': this.areaSelected.id,
                 'place': this.placeSelected == null ? null : this.placeSelected,
                 'longitud': null,
