@@ -1312,6 +1312,8 @@
 
         },
         submitForm() {
+            let animalstored = false;
+            let meatstored = false;
             console.log(this.animalfields);
 
             // console.log("this.getMeatList(killreport_id): ", this.getMeatList(1));
@@ -1339,11 +1341,15 @@
                                 console.log(response.data.killreport.id);
                                 let killreport_id = response.data.killreport.id;
                                 let meatlist = this.getMeatList(killreport_id);
-                                // console.log('meatlist');
-                                // console.log(meatlist);
+                                console.log('meatlist');
+                                console.log(meatlist);
                                 axios.post(this.meatUrl, meatlist)
                                     .then(response => {
                                         console.log("MEAT STORED");
+                                        meatstored = true;
+                                        if(animalstored && meatstored) {
+                                            window.location = this.killreportIndexUrl;
+                                        }
                                     })
                                     .catch(error => {
                                         console.log("MEAT ERROR:");
@@ -1356,7 +1362,11 @@
                                 console.log(error);
                             });
                         
-                        window.location = this.killreportIndexUrl;
+                        
+                        animalstored = true;
+                        if(animalstored && meatstored) {
+                            window.location = this.killreportIndexUrl;
+                        }
                         
                     })
                     .catch(error => {

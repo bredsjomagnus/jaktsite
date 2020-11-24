@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Traits\MeatSum;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 use App\User;
 use App\Area;
@@ -231,7 +232,20 @@ class KillreportController extends Controller
         $killreport = new Killreport();
         $killreport = $killreport->create(request()->all());
 
+        // if(count($killreport->meat) == 0) {
+        //         $newmeat = new Meat();
+        //         $newmeat->create(['killreport_id' => $killreport->id]);
+        // }
+
         // $killreports = Killreport::where('deleted_at', null)->orderBy('killdate', 'desc')->get();
+        // $emails = ['magnusandersson076@gmail.com', 'glotterback@gmail.com'];
+        
+        Mail::send('email.killreport.created', ['user' => Auth::user(), 'killreport' => $killreport], function ($message) {
+            $emails = ['magnusandersson076@gmail.com', 'glotterback@gmail.com'];
+            $message->from('smarisjaktlag@gmail.com', 'Småris');
+            $message->subject('[AUTO] Ny rapport skapad');
+            $message->to($emails);
+        });
         
         // return view('killreports.index', compact('killreports'));
         return response()->json(['killreport' => $killreport]);
@@ -310,11 +324,121 @@ class KillreportController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Killreport $killreport)
-    {
+    {   
+        // dd(request()->all());
+        Log::info("REQUEST");
+        Log::info(request()->all());
+        Log::info("KILLREPORT");
+        Log::info($killreport['kindofhunt']);
         // Hängslen och livrem. Ser även till här att enbart admin kan uppdatera låsta rapporter
         if(Auth::user()->role == 'admin' || $killreport->locked == 'no') {
+            $old = [];
+            $new = [];
+            foreach(request()->all() as $key => $value) {
+                $old_value = "";
+                $new_value = "";
+                Log::info("key: ". $key);
+                if($killreport[$key] != $value) {
+                    $translate = "";
+                    if($key == 'reporter_id') {
+                        # Översättning
+                        $translate = "Rapportör";
+
+                        # Användarena
+                        $old_user = User::find($killreport[$key]);
+                        $new_user = User::find($value);
+                        
+                        # Gamla och nya värdet
+                        $old_value = $old_user->firstname ." ". $old_user->lastname;
+                        $new_value = $new_user->firstname ." ". $new_user->lastname;
+                    } else if($key == 'shooter_id') {
+                        # Översättning
+                        $translate = "Skytt";
+
+                        # Användarena
+                        $old_user = User::find($killreport[$key]);
+                        $new_user = User::find($value);
+                        
+                        # Gamla och nya värdet
+                        $old_value = $old_user->firstname ." ". $old_user->lastname;
+                        $new_value = $new_user->firstname ." ". $new_user->lastname;
+                    } else if($key == 'kindofhunt') {
+                        # Översättning
+                        $translate = "Sorts jakt";
+
+                        # Gamla och nya värdet
+                        $old_value = $killreport[$key];
+                        $new_value = $value;
+                    } else if($key == 'killdate') {
+                        $translate = "Datum";
+
+                        # Gamla och nya värdet
+                        $old_value = $killreport[$key];
+                        $new_value = $value;
+                    } else if($key == 'season') {
+                        $translate = "Säsong";
+
+                        # Gamla och nya värdet
+                        $old_value = $killreport[$key];
+                        $new_value = $value;
+                    } else if($key == 'area_id') {
+                        # Översättning
+                        $translate = "Område";
+
+                        # Användarena
+                        $old_area = Area::find($killreport[$key]);
+                        $new_area = Area::find($value);
+                        
+                        # Gamla och nya värdet
+                        $old_value = $old_area->area_name;
+                        $new_value = $new_area->area_name;
+                    } else if($key == 'place') {
+                        # Översättning
+                        $translate = "Plats";
+
+                        # Gamla och nya värdet
+                        $old_value = $killreport[$key];
+                        $new_value = $value;
+                    } else if($key == 'report_status') {
+                        # Översättning
+                        $translate = "Rapportstatus";
+
+                        # Gamla och nya värdet
+                        $old_value = $killreport[$key];
+                        $new_value = $value;
+                    } else if($key == 'locked') {
+                        # Översättning
+                        $translate = "Låst";
+
+                        # Gamla och nya värdet
+                        $old_value = $killreport[$key];
+                        $new_value = $value;
+                    }
+
+                    # De nya och gamla värdena med översätting som nyckel.
+                    if($translate != "") {
+                        $old[$translate] = $old_value;
+                        $new[$translate] = $new_value;
+                    }
+
+                    Log::info("old");
+                    Log::info($old);
+                    
+                }
+            }
+
+
             $killreport->update(request()->all());
+
+            Mail::send('email.killreport.edited', ['user' => Auth::user(), 'killreport' => $killreport, 'old' => $old, 'new' => $new], function ($message) {
+                $emails = ['magnusandersson076@gmail.com', 'glotterback@gmail.com'];
+                $message->from('smarisjaktlag@gmail.com', 'Småris');
+                $message->subject('[AUTO] Rapport redigerad');
+                $message->to($emails);
+            });
         }
+
+         
 
         return ['redirect' => url('killreports'), 'killreport' => $killreport];
     }
