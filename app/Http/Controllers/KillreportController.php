@@ -326,10 +326,10 @@ class KillreportController extends Controller
     public function update(Request $request, Killreport $killreport)
     {   
         // dd(request()->all());
-        Log::info("REQUEST");
-        Log::info(request()->all());
-        Log::info("KILLREPORT");
-        Log::info($killreport['kindofhunt']);
+        // Log::info("REQUEST");
+        // Log::info(request()->all());
+        // Log::info("KILLREPORT");
+        // Log::info($killreport['kindofhunt']);
         // Hängslen och livrem. Ser även till här att enbart admin kan uppdatera låsta rapporter
         if(Auth::user()->role == 'admin' || $killreport->locked == 'no') {
             $old = [];
@@ -337,7 +337,7 @@ class KillreportController extends Controller
             foreach(request()->all() as $key => $value) {
                 $old_value = "";
                 $new_value = "";
-                Log::info("key: ". $key);
+                // Log::info("key: ". $key);
                 if($killreport[$key] != $value) {
                     $translate = "";
                     if($key == 'reporter_id') {

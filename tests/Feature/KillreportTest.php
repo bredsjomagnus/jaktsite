@@ -150,45 +150,45 @@ class KillreportTest extends TestCase
         $this->get('/killreports/'.$killreport->id)->assertRedirect('/login');
     }
 
-    /**
-     * @test
-     *
-     * @return void
-     */
-    public function a_user_can_update_an_unlocked_killreport()
-    {
-        $this->withoutExceptionHandling();
+    // /**
+    //  * @test
+    //  *
+    //  * @return void
+    //  */
+    // public function a_user_can_update_an_unlocked_killreport()
+    // {
+    //     $this->withoutExceptionHandling();
         
-        $this->signIn();
+    //     $this->signIn();
 
-        $report = $this->report_kill();
+    //     $report = $this->report_kill();
 
-        $killreport = $report['killreport'];
+    //     $killreport = $report['killreport'];
 
-        $animal_id = $killreport->animal_id;
-        $animal = Animal::find($animal_id);
+    //     $animal_id = $killreport->animal_id;
+    //     $animal = Animal::find($animal_id);
 
-        $killreportupdate = [
-            'shooter_id'    => 5,
-            'area_id'       => 3
-        ];
-        // $killreport->shooter_id = 5;
-        // $killreport->area_id = 3;
-        // $killreport->save();
+    //     $killreportupdate = [
+    //         'shooter_id'    => 5,
+    //         'area_id'       => 3
+    //     ];
+    //     // $killreport->shooter_id = 5;
+    //     // $killreport->area_id = 3;
+    //     // $killreport->save();
 
-        $animalupdate = [
-            'live_weight'   => 90000000
-        ];
-        // $animal->live_weight = 900000000;
-        // $animal->save();
+    //     $animalupdate = [
+    //         'live_weight'   => 90000000
+    //     ];
+    //     // $animal->live_weight = 900000000;
+    //     // $animal->save();
         
 
-        $this->post('/killreports/'.$killreport->id.'/update', $killreportupdate);
-        $this->assertDatabaseHas('killreports', $killreportupdate);
+    //     $this->post('/killreports/'.$killreport->id.'/update', $killreportupdate);
+    //     $this->assertDatabaseHas('killreports', $killreportupdate);
 
-        $this->post('/animals/'.$animal->id.'/update', $animalupdate);
-        $this->assertDatabaseHas('animals', $animalupdate);
-    }
+    //     $this->post('/animals/'.$animal->id.'/update', $animalupdate);
+    //     $this->assertDatabaseHas('animals', $animalupdate);
+    // }
 
     // /**
     //  * @test
