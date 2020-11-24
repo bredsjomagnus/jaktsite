@@ -292,7 +292,7 @@
               </tr>
               <tr>
                 <td style="font-size: 12px; font-weight: bold;"><strong>Skytt:</strong></td>
-                <td style="font-size: 12px;">{{$killreport->shooter['firstname']}} {{$killreport->shooter['lastname']}}, [{{$killreport->kindofhunt}}]</td>
+                <td style="font-size: 12px;">{{$killreport->shooter['firstname'] != "-" ? $killreport->shooter['firstname'] ." ". $killreport->shooter['lastname'] : "Skytt ej satt"}}, [{{$killreport->kindofhunt}}]</td>
               </tr>
               <tr>
                 <td style="font-size: 12px; font-weight: bold;"><strong>Område:</strong></td>

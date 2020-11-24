@@ -660,8 +660,8 @@
                 species: null,
                 speciestype: null,
                 engspecies: null,
-                age: null,
-                sex: null,
+                age: 'unknown',
+                sex: 'unknown',
                 antlers: null,
                 points: null,
                 live_weight: null,
@@ -1049,8 +1049,9 @@
             }
         },
         setUnknownSpeciesType() {
-            this.animalfields.speciestype = 'unknown'
+            this.animalfields.speciestype = 'unknown';
             this.animalfields.sex = 'unknown';
+            this.animalfields.age = 'unknown';
             if (this.points()) {
                 this.step = 'points';
                 this.steptitle = "TAGGAR";
@@ -1250,8 +1251,8 @@
             this.animalfields.species = null;
             this.animalfields.speciestype = null;
             this.animalfields.engspecies = null;
-            this.animalfields.age = null;
-            this.animalfields.sex = null;
+            this.animalfields.age = 'unknown';
+            this.animalfields.sex = 'unknown';
             this.animalfields.antlers = null;
             this.animalfields.points = null;
 
