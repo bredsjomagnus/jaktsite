@@ -288,7 +288,7 @@
               </tr>
               <tr>
                 <td style="font-size: 12px; font-weight: bold;">Djur:</td>
-                <td style="font-size: 12px;">{{$killreport->animal()['species']}} - {{$killreport->animal()['speciestype']}}<?= $killreport->animal()['antlers'] ? "; " . $killreport->animal()['antlers'] : "" ?></td>
+                <td style="font-size: 12px;">{{$killreport->animal()['species']}} - {{ $killreport->animal()['speciestype'] == "unknown" ? "Klassificering ej satt" : $killreport->animal()['speciestype'] }}<?= $killreport->animal()['antlers'] ? "; " . $killreport->animal()['antlers'] : "" ?></td>
               </tr>
               <tr>
                 <td style="font-size: 12px; font-weight: bold;"><strong>Skytt:</strong></td>
