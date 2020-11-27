@@ -109,6 +109,9 @@
             <div v-if="loading" class="spinner-border text-primary spinner-pos" role="status">
                     <span class="sr-only"></span>
             </div>
+            <div v-if="loading" class="mt-5">
+                <mdb-progress :height="20"  :value="progress" color="blue" />
+            </div>
             <div v-else>
                 
                 <form>
@@ -155,7 +158,7 @@
   </mdb-container>
 </template>
 <script>
-	import { mdbContainer, mdbBtn, mdbBtnGroup,mdbBtnToolbar, mdbIcon, mdbCard, mdbView, mdbCardBody, mdbCardTitle, mdbCardImage, mdbMask, mdbCardFooter, mdbInput, mdbRow } from 'mdbvue';
+	import { mdbProgress, mdbContainer, mdbBtn, mdbBtnGroup,mdbBtnToolbar, mdbIcon, mdbCard, mdbView, mdbCardBody, mdbCardTitle, mdbCardImage, mdbMask, mdbCardFooter, mdbInput, mdbRow } from 'mdbvue';
 	export default {
 		name: 'ImageEdit',
 		components: {
@@ -172,7 +175,8 @@
             mdbMask,
             mdbCardFooter,
             mdbInput,
-            mdbRow
+            mdbRow,
+            mdbProgress
         },
         props: [
             "killreport",
@@ -207,7 +211,8 @@
                 file_input_name: '',
                 dev_user_id: 2,
                 enable_update_description: true,
-                loading: false
+                loading: false,
+                progress: 0
                 
 
             }
@@ -408,6 +413,7 @@
                event.preventDefault();
 
                this.loading = true;
+               this.progress = 0;
 
                //återställer ett eventuellt felmeddelnade
                this.message = '';
@@ -429,6 +435,7 @@
                         // Kollar så att filen är en bild med tillåtet format; png, jpg, jpeg
                         if( (filetype[0] === 'image' && (filetype[1].toLowerCase() === 'png' || filetype[1].toLowerCase() === 'jpg' || filetype[1].toLowerCase() === 'jpeg')) ) {
                             console.log("Tillåten fil");
+                            this.progress = 10;
 
                             // this.upload_image.name = this.file.name.split('.')[0];
                             this.file_input_name = this.file.name;
@@ -453,6 +460,7 @@
                                         console.log("image med id "+ response.data.image_id +" tillagd i databasen")
 
                                         let image_id = response.data.image_id;
+                                        this.progress = 80;
 
                                         // header config för formdata
                                         const config = {
@@ -478,12 +486,14 @@
                                         axios.post(this.fileStoreUrl, formdata, config)
                                             .then(response => {
                                                 console.log("FileController response.data.message: ", response.data.message);
-
+                                                this.progress = 90;
                                                 // om inte filen kunde sparas på disk måste den nyligen databassparade image tas bort.
                                                 if( response.data.message == 'failure') {
                                                     // let filesize = Math.round((this.file.size/1000000*10))/10;
                                                     // this.message = this.file.name +" kunde inte laddas upp till servern? Filesize: "+filesize +" Mb";
                                                     // this.error = true
+
+                                                    
 
                                                     // endpoint för att ta bort bilderna
                                                     let imageDeleteUrl = this.imageBaseUrl+'/'+image_id+'/delete';
@@ -499,6 +509,7 @@
                                                             this.loading = false;
                                                         })
                                                 } else {
+                                                    this.progress = 100;
                                                     this.message = this.file.name +" uppladdad!";
                                                     this.toggleActiveStateG();
                                                     window.location.reload();

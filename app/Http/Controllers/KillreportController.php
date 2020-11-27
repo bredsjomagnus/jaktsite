@@ -241,7 +241,8 @@ class KillreportController extends Controller
         // $emails = ['magnusandersson076@gmail.com', 'glotterback@gmail.com'];
         
         Mail::send('email.killreport.created', ['user' => Auth::user(), 'killreport' => $killreport], function ($message) {
-            $emails = ['magnusandersson076@gmail.com', 'glotterback@gmail.com'];
+            // $emails = ['magnusandersson076@gmail.com', 'glotterback@gmail.com'];
+            $emails = ['magnusandersson076@gmail.com'];
             $message->from('smarisjaktlag@gmail.com', 'Småris');
             $message->subject('[AUTO] Ny rapport skapad');
             $message->to($emails);
@@ -431,7 +432,8 @@ class KillreportController extends Controller
             $killreport->update(request()->all());
 
             Mail::send('email.killreport.edited', ['user' => Auth::user(), 'killreport' => $killreport, 'old' => $old, 'new' => $new], function ($message) {
-                $emails = ['magnusandersson076@gmail.com', 'glotterback@gmail.com'];
+                // $emails = ['magnusandersson076@gmail.com', 'glotterback@gmail.com'];
+                $emails = ['magnusandersson076@gmail.com'];
                 $message->from('smarisjaktlag@gmail.com', 'Småris');
                 $message->subject('[AUTO] Rapport redigerad');
                 $message->to($emails);
