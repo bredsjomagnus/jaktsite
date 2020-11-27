@@ -12,6 +12,7 @@
 */
 
 Route::get('/', function () {
+    // return phpinfo();
     return view('welcome');
 });
 
@@ -51,9 +52,9 @@ Route::patch('/image/{image}/update', 'ImageController@update')->middleware('acc
 Route::post('/image/{killreport}/store', 'ImageController@store')->middleware('access:both,none');
 Route::delete('/image/{image}/delete', 'ImageController@destroy')->middleware('access:both,none');
 
-Route::post('/file/store', 'FileController@store')->middleware('access:both,none');
-Route::patch('/file/{id}/rotate', 'FileController@update_rotate')->middleware('access:both,none');
-Route::delete('/file/{id}/delete', 'FileController@destroy')->middleware('access:both,none');
+Route::post('/killreportfile/store', 'KillreportFileController@store')->middleware('access:both,none');
+Route::patch('/killreportfile/{id}/rotate', 'KillreportFileController@update_rotate')->middleware('access:both,none');
+Route::delete('/killreportfile/{id}/delete', 'KillreportFileController@destroy')->middleware('access:both,none');
 
 Route::get('/admin', 'AdminController@index')->middleware('access:admin,none');
 

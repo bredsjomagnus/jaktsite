@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 
-class FileController extends Controller
+class KillreportFileController extends Controller
 {
     /**
      * Display a listing of the resource.
