@@ -35,7 +35,7 @@
 		<mdb-btn-toolbar class="w-100">
 			<mdb-btn-group size="sm" class="w-100">
 				<mdb-btn size="sm" color="elegant" tag='a' :href="url.avatar"><mdb-icon icon="camera"/> - Avatar</mdb-btn>
-				<mdb-btn size="sm" color="elegant" tag='a' href="#"><mdb-icon icon="images"/> - Bilder</mdb-btn>
+				<mdb-btn :disabled="true" size="sm" color="elegant" tag='a' href="#"><mdb-icon icon="images"/> - Bilder</mdb-btn>
 			</mdb-btn-group>
 		</mdb-btn-toolbar>
 	</div>
