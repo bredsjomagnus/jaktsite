@@ -63,7 +63,12 @@ class UserController extends Controller
         // if($user->id !== auth()->user()->id && !auth()->user()->is_admin()){
         //     return redirect('home');
         // }
-        return view('users.show', compact('user'));
+        
+        $data = [
+            'avatar'    => isset(auth()->user()->avatar) ? auth()->user()->avatar : false
+        ];
+
+        return view('users.show', $data);
     }
 
     /**

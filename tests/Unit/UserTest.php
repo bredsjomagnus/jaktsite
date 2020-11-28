@@ -11,6 +11,7 @@ use App\User;
 use App\Animal;
 use App\Killreport;
 use App\Image;
+use App\Avatar;
 
 class UserTest extends TestCase
 {
@@ -143,6 +144,25 @@ class UserTest extends TestCase
         $this->assertEquals('Magnus Andersson', $user->get_name());
     }
 
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_user_can_have_an_avatar()
+    {
+        $this->withoutExceptionHandling();
+        $user = $this->signIn();
+
+        $avatar = factory(Avatar::class)->create([
+            'user_id'       => $user->id,
+            'name'          => 'avatar_name'
+        ]);
+
+        // $this->assertTrue($user->avatar->contains($avatar));
+        $this->assertEquals(1, $user->avatar->count());
+        $this->assertEquals('avatar_name', $user->avatar->name);
     
+    }
 
 }

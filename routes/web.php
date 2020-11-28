@@ -47,10 +47,19 @@ Route::delete('/meat/{meat}/delete', 'MeatController@destroy')->middleware('acce
 
 Route::get('/data', 'DataController@index')->middleware('access:both,none');
 
-Route::get('/image/{killreport}/edit', 'ImageController@edit')->middleware('access:both,none');
-Route::patch('/image/{image}/update', 'ImageController@update')->middleware('access:both,none');
-Route::post('/image/{killreport}/store', 'ImageController@store')->middleware('access:both,none');
-Route::delete('/image/{image}/delete', 'ImageController@destroy')->middleware('access:both,none');
+Route::get('/image/{killreport}/edit', 'KillreportImageController@edit')->middleware('access:both,none');
+Route::patch('/image/{image}/update', 'KillreportImageController@update')->middleware('access:both,none');
+Route::post('/image/{killreport}/store', 'KillreportImageController@store')->middleware('access:both,none');
+Route::delete('/image/{image}/delete', 'KillreportImageController@destroy')->middleware('access:both,none');
+
+Route::get('avatar/{user}/edit', 'AvatarImageController@edit')->middleware('access:user, user');
+Route::post('avatar/store', 'AvatarImageController@store')->middleware('access:user, user');
+Route::delete('avatar/{avatar}/delete', 'AvatarImageController@destroy')->middleware('access:user, user');
+
+Route::post('avatarfile/store', 'AvatarFileController@store')->middleware('access:both, user');
+Route::delete('avatarfile/{avatar}/delete', 'AvatarFileController@destroy')->middleware('access:both, user');
+Route::patch('avatarfile/{avatar}/rotate', 'AvatarFileController@update_rotate')->middleware('access:both, user');
+
 
 Route::post('/killreportfile/store', 'KillreportFileController@store')->middleware('access:both,none');
 Route::patch('/killreportfile/{id}/rotate', 'KillreportFileController@update_rotate')->middleware('access:both,none');

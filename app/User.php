@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 use App\Killreport;
+use App\Avatar;
 
 class User extends Authenticatable
 {
@@ -69,6 +70,11 @@ class User extends Authenticatable
     public function images()
     {
         return $this->hasMany(Image::class);
+    }
+
+    public function avatar()
+    {
+        return $this->hasOne(Avatar::class);
     }
 
     public function get_name()
