@@ -2,7 +2,6 @@
 <div>
 
 	<div class="d-flex flex-row justify-content-around" style="margin-top: -20px; margin-bottom: 5px; background-color: rgb(236 236 236);">
-		
 		<mdb-btn-toolbar>
 			<mdb-btn-group size="sm">
 				<mdb-btn size="sm" color="mdb-color" tag='a' :href="url.rapportarkivet">Arkivet</mdb-btn>
@@ -17,13 +16,28 @@
     <!-- <mdb-card-image src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20%286%29.jpg" alt="Card image cap"></mdb-card-image> -->
 	<div class="d-flex justify-content-center" style="padding-bottom:16px; padding-top:10px; background-color: rgb(122, 160, 189);">
 		 <!-- <img :src="gravatarSrc" class="img-fluid z-depth-1 rounded-circle" :alt="authUser.username">		 -->
+	  <div v-if="avatar" class="image_container">
+		  <mdb-card-image class="img-fluid z-depth-2 rounded-circle" :alt="authUser.username" :src="avatarimageurl(avatar)"></mdb-card-image>
 
-      <a href="https://en.gravatar.com/"><mdb-card-image class="img-fluid z-depth-2 rounded-circle" :alt="authUser.username" :src="gravatarSrc"></mdb-card-image></a>
+	  </div>
+	  <div v-else>
+     	<a href="https://en.gravatar.com/"><mdb-card-image class="img-fluid z-depth-2 rounded-circle" :alt="authUser.username" :src="gravatarSrc"></mdb-card-image></a>
+
+	  </div>
     </div>
     <div class="d-flex justify-content-center" style="display:block; background-color: rgb(20, 40, 55); height: 40px;">
 		<div class="align-middle pt-2">
       		<p style="color:white">{{fields.firstname}} {{fields.lastname}}</p>
 		</div>
+		
+	</div>
+	<div class="d-flex flex-row justify-content-around" style="margin-top: -5px; background-color: #e9ecef;">
+		<mdb-btn-toolbar class="w-100">
+			<mdb-btn-group size="sm" class="w-100">
+				<mdb-btn size="sm" color="elegant" tag='a' :href="url.avatar"><mdb-icon icon="camera"/> - Avatar</mdb-btn>
+				<mdb-btn size="sm" color="elegant" tag='a' href="#"><mdb-icon icon="images"/> - Bilder</mdb-btn>
+			</mdb-btn-group>
+		</mdb-btn-toolbar>
 	</div>
 
 	
@@ -107,12 +121,15 @@
 		},
 		props: [
 			'authUser',
+			'avatar',
 			'gravatarSrc',
 			'killreporturl',
 			'killreportindexurl',
 			'adminurl',
 			'logouturl',
-			'welcomeurl'
+			'welcomeurl',
+			'avatarurl',
+			'storageBaseUrl'
 			],
 		data() {
 			return {
@@ -137,7 +154,8 @@
 					rapportarkivet: this.killreportindexurl,
 					adminurl: this.adminurl,
 					logouturl: this.logouturl,
-					welcomeurl: this.welcomeurl
+					welcomeurl: this.welcomeurl,
+					avatar: this.avatarurl
 				},
 				new_password_message: '',
 				account_edit_password1: null,
@@ -149,8 +167,17 @@
 			console.log(this.gravatarSrc);
 			console.log(this.url.update);
 			console.log(this.url.killreport);
+			console.log("avatar: ", this.avatar);
+			console.log("storageBaseUrl: ", this.storageBaseUrl);
 		},
 		methods: {
+			avatarimageurl(avatar) {
+                // lägger till datestamp för att inte uppdateringarna skall hänga sig i cache. Då ser webbläsaren bilden som ny varje gång.
+                const datestamp = Date.now();
+                let url = this.storageBaseUrl+"/i"+avatar.id+"_u"+avatar.user_id+"_"+avatar.name;
+                console.log("avatarurl: ", url+"?"+datestamp);
+                return url+"?"+datestamp;
+            },
 			submitForm(event) {
 				axios.patch(this.url.update, this.fields)
 					.then(response => {
@@ -201,5 +228,8 @@
 .error_message {
     color: red;
     font-size: 12px;
+}
+.image_container{
+  width: 75px;
 }
 </style>

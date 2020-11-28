@@ -41,7 +41,8 @@ Vue.component('killreport-index', require('./components/KillreportIndex.vue').de
 Vue.component('killreport-show', require('./components/KillreportShow.vue').default);
 Vue.component('admin-navbar', require('./components/AdminNavbar.vue').default);
 Vue.component('welcome', require('./components/Welcome.vue').default);
-Vue.component('image-edit', require('./components/ImageEdit.vue').default);
+Vue.component('killreport-image-edit', require('./components/KillreportImageEdit.vue').default);
+Vue.component('avatar-image-edit', require('./components/AvatarImageEdit.vue').default);
 Vue.component('admin-index', require('./components/AdminIndex.vue').default);
 Vue.component('data-index', require('./components/DataIndex.vue').default);
 

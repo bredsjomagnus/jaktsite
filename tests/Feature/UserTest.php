@@ -269,6 +269,27 @@ class UserTest extends TestCase
         $this->patch('user/'.$user_1->id.'/update', $attributes);
 
         $this->assertDatabaseHas('users', ['password'   => $old_password]);
-    }    
+    }
 
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_user_can_store_an_avatar_to_database()
+    {
+        $this->withoutExceptionHandling();
+
+        $user = $this->signIn();
+
+        $avatar = [
+            'user_id'   => $user->id,
+            'name'      => 'avatar_name',
+            'path'      => 'images/avatars'
+        ];
+
+        $this->post('avatar/store', $avatar);
+
+        $this->assertDatabaseHas('avatars', $avatar);
+    }
 }
