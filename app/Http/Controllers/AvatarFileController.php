@@ -69,7 +69,7 @@ class AvatarFileController extends Controller
         $filename_array = explode('_', $filename);
 
         // tar ut andra delen med image id, ex 'i23' och där tas allt med utom första i:et
-        $avatar_id = intval(substr($filename_array[1], 1));
+        $avatar_id = intval(substr($filename_array[0], 1));
 
         Log::info('filename: '.$filename);
         Log::info($filename_array);
@@ -127,7 +127,7 @@ class AvatarFileController extends Controller
                 // uppdatera databasen med human filesize på avataren
                 $newfilesize = Storage::disk('local')->size('public/images/avatars/'.$filename);
                 $newsize_readable = $this->human_filesize($newfilesize, 2);
-                DB::select('UPDATE images SET filesize = ?, filesize_readable = ? WHERE id = ?', [$newfilesize, $newsize_readable, $avatar_id]);
+                DB::select('UPDATE avatars SET filesize = ?, filesize_readable = ? WHERE id = ?', [$newfilesize, $newsize_readable, $avatar_id]);
             }
         }
 

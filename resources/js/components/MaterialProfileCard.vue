@@ -230,6 +230,6 @@
     font-size: 12px;
 }
 .image_container{
-  width: 75px;
+  width: 100px;
 }
 </style>

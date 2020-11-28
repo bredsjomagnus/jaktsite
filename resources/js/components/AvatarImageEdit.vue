@@ -12,8 +12,9 @@
             <div class="d-flex flex-row justify-content-around">
                 
                 <mdb-btn-group size="sm">
-                    <mdb-btn :disabled="avatar" color="mdb-color" @click.native="toggleActiveStateU" :active="activeU" size="sm"> <mdb-icon icon="cloud-upload-alt"/> - Ladda upp</mdb-btn>
-                    <mdb-btn color="mdb-color" @click.native="toggleActiveStateG" :active="activeG" size="sm"> <mdb-icon icon="images"/> - Avatar</mdb-btn>
+                    <mdb-btn color="mdb-color" @click.native="backToUserShow" size="sm"><mdb-icon icon="user"/></mdb-btn>
+                    <mdb-btn :disabled="avatar" color="mdb-color" @click.native="toggleActiveStateU" :active="activeU" size="sm"> <mdb-icon icon="cloud-upload-alt"/></mdb-btn>
+                    <mdb-btn color="mdb-color" @click.native="toggleActiveStateG" :active="activeG" size="sm"> <mdb-icon icon="user-circle"/></mdb-btn>
                 </mdb-btn-group>
                 
 
@@ -37,23 +38,21 @@
                     <mdb-card-body class="pb-0">
                          <mdb-card-footer>
                             <mdb-row>
-                                <div class="w-100 d-flex flex-row justify-content-center">
-                                    <div v-if="authUser.role == 'admin' || authUser.id == avatar.user_id" class="mt-4 mb-2 w-100 text-center" style="background-color: rgb(247 247 247);">
-                                        <mdb-btn class="w-20" color="mdb-color" @click.native="deleteAvatar(avatar)" size="sm"><mdb-icon icon="trash-alt"/> - Ta bort bild </mdb-btn>
+                                <div class="w-100 d-flex flex-row justify-content-around">
+                                    <div v-if="authUser.role == 'admin' || authUser.id == avatar.user_id">
+                                        <mdb-btn class="w-20" color="mdb-color" @click.native="deleteAvatar(avatar)" size="sm"><mdb-icon icon="trash-alt"/></mdb-btn>
                                     </div>
-                                    <mdb-btn color="mdb-color" @click.native="rotateAvatar(avatar)" size="sm"><mdb-icon icon="redo-alt"/> - Rotera</mdb-btn>
+                                    <mdb-btn color="mdb-color" @click.native="rotateAvatar(avatar)" size="sm"><mdb-icon icon="redo-alt"/></mdb-btn>
                                 </div>
                             </mdb-row>
                             
                         </mdb-card-footer>
-                        <div class="w-100 pt-3 m-0 align-left info_field_bg">
-                            <ul class="pl-3" style="list-style-type:none;">
-                                <li class="text-muted" style="font-size: 12px;"><strong>Bild:</strong> {{avatar.name}}, {{avatar.filesize_readable}}</li>
-                            </ul>
-                        </div>
                                  
                     </mdb-card-body>
                 </mdb-card>
+            </div>
+            <div v-else>
+                <p class="mt-2" style="font-size: 12px;">Ingen avatar uppladdad än. Har man kopplat sitt konto till Gravatar så kommer den avataren att anävändas som backup.</p>
             </div>
          </div>
     </div>
@@ -124,6 +123,7 @@
             "avatarBaseUrl",
             "fileBaseUrl",
             "storageBaseUrl",
+            "userShowUrl"
         ],
         data() {
             return {
@@ -154,6 +154,7 @@
             console.log("fileBaseUrl: ", this.fileBaseUrl);
             console.log("storageBaseUrl: ", this.storageBaseUrl);
             console.log("avatar: ", this.avatar);
+            console.log("userShowUrl: ", this.userShowUrl);
 
             if(!this.avatar) {
                 this.activeG = false;
@@ -273,6 +274,9 @@
                         }
                     }
                 }
+            },
+            backToUserShow() {
+                window.location = this.userShowUrl;
             },
 			addAvatar() {
                 // lägger till formatet innan jag laddar upp bilden till databasen
