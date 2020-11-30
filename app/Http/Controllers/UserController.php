@@ -72,6 +72,23 @@ class UserController extends Controller
     }
 
     /**
+     * Show users killreports associated with him/her
+     * 
+     * @param \App\User $user
+     * @return \Illuminate\Http\Response
+     */
+    public function killreports(User $user)
+    {
+        $data = [
+            'killreports'   => $user->associated_killreports()
+        ];
+
+        return view('users.killreports', $data);
+
+
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\User  $user

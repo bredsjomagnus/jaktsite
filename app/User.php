@@ -90,4 +90,36 @@ class User extends Authenticatable
     {
         return $this->firstname." ".$this->lastname;
     }
+
+    /**
+     * Get all killreports where user was allocated meat
+     * 
+     * @return Collection Killreports
+     */
+    public function meat()
+    {
+        $killreports = Killreport::all();
+        return $killreports->filter(function ($value) {
+                $found = false;
+                foreach($value->meat as $meat) {
+                    if($meat->user_id == $this->id) {
+                        $found = true;
+                    }
+                }
+                return $found;
+                
+            });
+    }
+
+    /**
+     * Get a users associated killreports
+     * 
+     * @return Collection killreports
+     */
+    public function associated_killreports()
+    {
+        $killreports = $this->killreports_shooter->merge($this->meat());
+
+        return $killreports->unique();
+    }
 }

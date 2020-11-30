@@ -34,8 +34,9 @@
 	<div class="d-flex flex-row justify-content-around" style="margin-top: -5px; background-color: #e9ecef;">
 		<mdb-btn-toolbar class="w-100">
 			<mdb-btn-group size="sm" class="w-100">
-				<mdb-btn size="sm" color="elegant" tag='a' :href="url.avatar"><mdb-icon icon="camera"/> - Avatar</mdb-btn>
-				<mdb-btn :disabled="true" size="sm" color="elegant" tag='a' href="#"><mdb-icon icon="images"/> - Bilder</mdb-btn>
+				<mdb-btn size="sm" color="elegant" tag='a' :href="url.avatar"><mdb-icon icon="camera"/></mdb-btn>
+				<mdb-btn :disabled="true" size="sm" color="elegant" tag='a' href="#"><mdb-icon icon="images"/></mdb-btn>
+				<mdb-btn size="sm" color="elegant" tag='a' :href="url.userreports"><mdb-icon icon="file-alt"/></mdb-btn>
 			</mdb-btn-group>
 		</mdb-btn-toolbar>
 	</div>
@@ -128,6 +129,7 @@
 			'adminurl',
 			'logouturl',
 			'welcomeurl',
+			'userreportsurl',
 			'avatarurl',
 			'storageBaseUrl'
 			],
@@ -155,7 +157,8 @@
 					adminurl: this.adminurl,
 					logouturl: this.logouturl,
 					welcomeurl: this.welcomeurl,
-					avatar: this.avatarurl
+					avatar: this.avatarurl,
+					userreports: this.userreportsurl
 				},
 				new_password_message: '',
 				account_edit_password1: null,

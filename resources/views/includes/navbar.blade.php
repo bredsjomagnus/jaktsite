@@ -85,9 +85,9 @@
   <div class="navbar-nav ml-auto" style="text-align: right; height: 25px;">
   <div class="d-flex justify-content-between">
     @if(Auth::user()->avatar_path())
-      <img class="img-fluid z-depth-2 rounded-circle" src="{{Auth::user()->avatar_path()}}" style="width:25px; height: 25px; margin-right: 10px; border: 1px solid #e4af5a" alt="">
+      <a href="{{ url('avatar/'.Auth::user()->id.'/edit') }}"><img class="img-fluid z-depth-2 rounded-circle" src="{{Auth::user()->avatar_path()}}" style="width:25px; height: 25px; margin-right: 10px; border: 1px solid #e4af5a" alt=""></a>
     @else
-      <img class="img-fluid z-depth-2 rounded-circle" src="{{Gravatar::src(Auth::user()->email)}}" style="width:25px; height: 25px; margin-right: 10px; border: 1px solid #e4af5a" alt="">
+      <a href="{{ url('avatar/'.Auth::user()->id.'/edit') }}"><img class="img-fluid z-depth-2 rounded-circle" src="{{Gravatar::src(Auth::user()->email)}}" style="width:25px; height: 25px; margin-right: 10px; border: 1px solid #e4af5a" alt=""></a>
     @endif
     <a href="{{ url('user/'.Auth::user()->id) }}" style="color: #dec08f;">{{ Auth::user()->username }}</a>
     <a style="color: #dccc9b;" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

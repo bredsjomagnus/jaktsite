@@ -11,6 +11,7 @@ use App\User;
 use App\Animal;
 use App\Killreport;
 use App\Image;
+use App\Meat;
 use App\Avatar;
 
 class UserTest extends TestCase
@@ -193,6 +194,89 @@ class UserTest extends TestCase
         $user = $this->signIn();
 
         $this->assertEquals(false, $user->avatar_path());
+    }
+
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_user_can_get_all_killreports_where_he_got_meat()
+    {
+        $user = $this->signIn();
+
+        // different killreports
+        $killreport_1 = factory(Killreport::class)->create();
+        $killreport_2 = factory(Killreport::class)->create();
+        $killreport_3 = factory(Killreport::class)->create();
+        $killreport_4 = factory(Killreport::class)->create();
+        $killreport_5 = factory(Killreport::class)->create();
+
+        // meats associated with the killreports
+        $meat_1 = factory(Meat::class)->create([
+            'killreport_id'     => $killreport_1->id,
+            'user_id'           => $user->id,
+        ]);
+        $meat_2 = factory(Meat::class)->create([
+            'killreport_id'     => $killreport_2->id,
+            'user_id'           => $user->id,
+        ]);
+        $meat_3 = factory(Meat::class)->create([
+            'killreport_id'     => $killreport_3->id,
+            'user_id'           => $user->id,
+        ]);
+        $meat_4 = factory(Meat::class)->create([
+            'killreport_id'     => $killreport_4->id,
+            'user_id'           => ($user->id + 1),
+        ]);
+        $meat_5 = factory(Meat::class)->create([
+            'killreport_id'     => $killreport_5->id,
+            'user_id'           => $user->id,
+        ]);
+
+        $this->assertCount(4, $user->meat());
+    }
+
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_user_can_get_a_collection_of_all_killreports_where_shooter_or_got_meat_allocated()
+    {
+        $user = $this->signIn();
+
+        // different killreports
+        $killreport_1 = factory(Killreport::class)->create(['shooter_id' => $user->id]);
+        $killreport_2 = factory(Killreport::class)->create(['shooter_id' => ($user->id + 1)]);
+        $killreport_3 = factory(Killreport::class)->create(['shooter_id' => $user->id]);
+        $killreport_4 = factory(Killreport::class)->create(['shooter_id' => ($user->id + 1)]);
+        $killreport_5 = factory(Killreport::class)->create(['shooter_id' => $user->id]);
+
+        // meats associated with the killreports
+        $meat_1 = factory(Meat::class)->create([
+            'killreport_id'     => $killreport_1->id,
+            'user_id'           => $user->id,
+        ]);
+        $meat_2 = factory(Meat::class)->create([
+            'killreport_id'     => $killreport_2->id,
+            'user_id'           => $user->id,
+        ]);
+        $meat_3 = factory(Meat::class)->create([
+            'killreport_id'     => $killreport_3->id,
+            'user_id'           => ($user->id + 1),
+        ]);
+        $meat_4 = factory(Meat::class)->create([
+            'killreport_id'     => $killreport_4->id,
+            'user_id'           => ($user->id + 1),
+        ]);
+        $meat_5 = factory(Meat::class)->create([
+            'killreport_id'     => $killreport_5->id,
+            'user_id'           => $user->id
+        ]);
+
+        $this->assertCount(4, $user->associated_killreports());
+
     }
 
 }

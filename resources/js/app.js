@@ -37,7 +37,7 @@ Vue.component('material-login-form', require('./components/MaterialLoginForm.vue
 Vue.component('material-register-form', require('./components/MaterialRegisterForm.vue').default);
 Vue.component('material-navbar', require('./components/MaterialNavbar.vue').default);
 Vue.component('killreport-create', require('./components/KillreportCreate.vue').default);
-Vue.component('killreport-index', require('./components/KillreportIndex.vue').default);
+Vue.component('user-killreports', require('./components/UserKillreports.vue').default);
 Vue.component('killreport-show', require('./components/KillreportShow.vue').default);
 Vue.component('admin-navbar', require('./components/AdminNavbar.vue').default);
 Vue.component('welcome', require('./components/Welcome.vue').default);

@@ -8,6 +8,7 @@
   :adminurl='{!! json_encode(url("admin")) !!}' 
   :logouturl='{!! json_encode(url("logout")) !!}' 
   :welcomeurl='{!! json_encode(url("")) !!}' 
+  :userreportsurl='{!! json_encode(url(Auth::user()->path()."/killreports")) !!}' 
   :avatarurl='{!! json_encode(url("avatar/".Auth::user()->id."/edit")) !!}' 
   :auth-user="{{ Auth::user() }}" 
   :avatar="{{ json_encode($avatar) }}"

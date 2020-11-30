@@ -291,5 +291,18 @@ class UserTest extends TestCase
         $this->post('avatar/store', $avatar);
 
         $this->assertDatabaseHas('avatars', $avatar);
+ 
+    }
+
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_user_can_get_to_view_with_killreports_associated_with_him()
+    {
+        $user = $this->signIn();
+
+        $this->get($user->path().'/killreports', [])->assertOk();
     }
 }
