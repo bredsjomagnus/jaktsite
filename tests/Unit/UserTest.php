@@ -165,4 +165,34 @@ class UserTest extends TestCase
     
     }
 
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_user_can_get_its_avatar_path()
+    {
+        $user = $this->signIn();
+
+        $avatar = factory(Avatar::class)->create([
+            'user_id'   => $user->id,
+            'name'      => 'avatar.png',
+            'path'      => 'images/avatars'
+        ]);
+
+        $this->assertEquals(asset("storage/".$avatar->path).'/i1_u'.$user->id.'_'.$avatar->name, $user->avatar_path());
+    }
+
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    public function a_user_without_set_avatar_gets_false_in_call_to_path()
+    {
+        $user = $this->signIn();
+
+        $this->assertEquals(false, $user->avatar_path());
+    }
+
 }

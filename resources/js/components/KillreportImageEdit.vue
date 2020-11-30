@@ -73,9 +73,9 @@
                         <hr>
 
                         <div class="accordion accordion-wrapper " id="accordionExample275">
-                                <div class="d-flex flex-row justify-content-center" id="headingOne" style="background-color: #f7f7f7; border-top: 3px solid #dccc9b;">
+                                <div class="d-flex flex-row justify-content-center" id="headingOne" style="background-color: #3490dc;">
                                     <p class="mb-0">
-                                        <a style="color: rgb(113 113 113);" class="accordion-btn" data-toggle="collapse" data-target="#collapseOne"
+                                        <a style="color: white" class="accordion-btn" data-toggle="collapse" data-target="#collapseOne"
                                         aria-expanded="true" aria-controls="collapseOne2">
                                             Klicka här för att visa/dölja bildtext
                                         </a>
@@ -95,7 +95,7 @@
                        
                         
                        
-                            <div v-if="authUser.role == 'admin' || authUser.id == image.user_id" class="mt-4 mb-2 w-100 text-center" style="background-color: rgb(247 247 247);">
+                            <div v-if="authUser.role == 'admin' || authUser.id == image.user_id" class="mt-4 mb-2 w-100 text-center" style="background-color: rgb(247 247 247); border-bottom: 3px solid #dccc9b;">
                                 <mdb-btn class="w-20" color="mdb-color" @click.native="deleteImage(image)" size="sm"><mdb-icon icon="trash-alt"/> - Ta bort bild </mdb-btn>
                             </div>
                        

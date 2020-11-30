@@ -18,9 +18,9 @@
   
 
   <div class="accordion mb-2" id="filter">
-    <div class="d-flex flex-row justify-content-center" id="filterheader" style="background-color: #f7f7f7; border-top: 3px solid #dccc9b; padding: 5px;" data-toggle="collapse" data-target="#formfilter">
+    <div class="d-flex flex-row justify-content-center" id="filterheader" style="background-color: #3490dc; padding: 5px;" data-toggle="collapse" data-target="#formfilter">
       <!-- <p class="mb-0"> -->
-          <a style="color: rgb(113 113 113); font-size: 12px;" class="accordion-btn">
+          <a style="color: white; font-size: 12px;" class="accordion-btn">
             <span class="fas fa-sliders-h"></span> KLICKA FÖR ATT VISA/DÖLJA FILTER
           </a>
       <!-- </p> -->

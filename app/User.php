@@ -77,6 +77,15 @@ class User extends Authenticatable
         return $this->hasOne(Avatar::class);
     }
 
+    public function avatar_path()
+    {
+        if(isset($this->avatar))
+            return asset("storage/".$this->avatar->path).'/i'.$this->avatar->id.'_u'.$this->id.'_'.$this->avatar->name;
+        else{
+            return false;
+        }
+    }
+
     public function get_name()
     {
         return $this->firstname." ".$this->lastname;

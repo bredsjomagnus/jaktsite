@@ -26,6 +26,7 @@ class KillreportController extends Controller
      */
     public function index()
     {  
+        // get requests
         $season_search = htmlspecialchars(request()->input('season'));
         $species_search = htmlspecialchars(request()->input('species'));
         $users_search = htmlspecialchars(request()->input('users'));
@@ -39,17 +40,9 @@ class KillreportController extends Controller
         // Tar fram killreports beroende på säsong
         $killreports = Killreport::where('deleted_at', null)
                                     ->where('season', 'like', '%' .$season_search. '%')
-                                    ->orderBy('killdate', 'desc')->get();
-
-        // foreach($killreports as $killreport) {
-        //     $killreport->report_status = 'green';
-        //     $killreport->set_status();
-        //     if($killreport->report_status == 'green') {
-        //         $killreport->locked = 'yes';
-        //     }
-        //     $killreport->save();
-        // }
-
+                                    ->orderBy('killdate', 'desc')->get()->sortByDesc('id');
+    
+        // filtreras sökningen?
         $filtering = false;
 
         if( !empty($season_search) ) {
@@ -142,13 +135,6 @@ class KillreportController extends Controller
             $filtering = true;
         }
         
-
-        
-
-
-
-
-
         $data = [
             'killreports'           => $killreports,
             'users'                 => User::where('occupation', '=', 'hunter')->get(),

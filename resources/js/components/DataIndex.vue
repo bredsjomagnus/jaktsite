@@ -1759,12 +1759,12 @@
             // FÖRDELNING - SMÅRIS
             radarChartDataSmaris: {
                 labels: [
-                'Vuxet handjur', 
-                'Vuxet hondjur', 
-                'Hanunge', 
-                'Honunge',
-                'Obestämd unge'
-            ],
+                    'Vuxet handjur', 
+                    'Vuxet hondjur', 
+                    'Hanunge', 
+                    'Honunge',
+                    'Obestämd unge'
+                ],
                 datasets: [
                         {
                             label: "",
@@ -1816,12 +1816,12 @@
             // FÖRDELNING - GLOTTERBÄCK
             radarChartDataGlotterback: {
                 labels: [
-                'Vuxet handjur', 
-                'Vuxet hondjur', 
-                'Hanunge', 
-                'Honunge',
-                'Obestämd unge'
-            ],
+                    'Vuxet handjur', 
+                    'Vuxet hondjur', 
+                    'Hanunge', 
+                    'Honunge',
+                    'Obestämd unge'
+                ],
                 datasets: [
                         {
                             label: "",
