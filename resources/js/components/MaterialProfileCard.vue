@@ -14,14 +14,14 @@
 	
   <mdb-card>
     <!-- <mdb-card-image src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20%286%29.jpg" alt="Card image cap"></mdb-card-image> -->
-	<div class="d-flex justify-content-center" style="padding-bottom:16px; padding-top:10px; background-color: rgb(122, 160, 189);">
+	<div class="d-flex justify-content-center" style="padding-top:10px; background: linear-gradient(#e6e6e6, #ececec 50%, #142837 50%, #142837 50%);">
 		 <!-- <img :src="gravatarSrc" class="img-fluid z-depth-1 rounded-circle" :alt="authUser.username">		 -->
 	  <div v-if="avatar" class="image_container">
-		  <mdb-card-image class="img-fluid z-depth-2 rounded-circle" :alt="authUser.username" :src="avatarimageurl(avatar)"></mdb-card-image>
+		  <mdb-card-image class="img-fluid rounded-circle" style="border: 3px solid #142837;" :alt="authUser.username" :src="avatarimageurl(avatar)"></mdb-card-image>
 
 	  </div>
 	  <div v-else>
-     	<a href="https://en.gravatar.com/"><mdb-card-image class="img-fluid z-depth-2 rounded-circle" :alt="authUser.username" :src="gravatarSrc"></mdb-card-image></a>
+     	<a href="https://en.gravatar.com/"><mdb-card-image class="img-fluid rounded-circle" style="border: 3px solid #142837;" :alt="authUser.username" :src="gravatarSrc"></mdb-card-image></a>
 
 	  </div>
     </div>

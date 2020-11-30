@@ -13,7 +13,7 @@
   </div>
 
   <div class="d-flex justify-content-center mt-2">
-    <h4>RAPPORTER</h4>
+    <h4>"DINA" RAPPORTER</h4>
   </div>
   <div>
     <p style="font-size: 14px;">De rapporter där du står som skytt eller där du fått köttilldelat.</p>

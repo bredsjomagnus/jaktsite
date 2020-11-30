@@ -2,7 +2,7 @@
   <mdb-container>
        <div class="d-flex flex-row justify-content-around" style="margin-top:-20px">
             <mdb-card class='w-100' color="unique-color-dark">
-                <mdb-card-text class="d-flex justify-content-center">Din avatar</mdb-card-text>
+                <mdb-card-text class="d-flex justify-content-center">Ändra profilbild</mdb-card-text>
             </mdb-card>
         </div>
 
