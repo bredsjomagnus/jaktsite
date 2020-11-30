@@ -384,7 +384,8 @@
                                                     this.progress = 100;
                                                     this.message = this.file.name +" uppladdad!";
                                                     this.toggleActiveStateG();
-                                                    window.location.reload();
+                                                    // window.location.reload();
+                                                    window.location = this.userShowUrl;
                                                 }
 
                                                 

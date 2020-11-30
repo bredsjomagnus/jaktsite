@@ -17,11 +17,11 @@
 	<div class="d-flex justify-content-center" style="padding-top:10px; background: linear-gradient(#e6e6e6, #ececec 50%, #142837 50%, #142837 50%);">
 		 <!-- <img :src="gravatarSrc" class="img-fluid z-depth-1 rounded-circle" :alt="authUser.username">		 -->
 	  <div v-if="avatar" class="image_container">
-		  <mdb-card-image class="img-fluid rounded-circle" style="border: 5px solid rgb(230 168 67);" :alt="authUser.username" :src="avatarimageurl(avatar)"></mdb-card-image>
+		  <mdb-card-image class="img-fluid rounded-circle" style="border: 3px solid rgb(20 40 55);" :alt="authUser.username" :src="avatarimageurl(avatar)"></mdb-card-image>
 
 	  </div>
 	  <div v-else>
-     	<a href="https://en.gravatar.com/"><mdb-card-image class="img-fluid rounded-circle" style="border: 5px solid rgb(230 168 67);" :alt="authUser.username" :src="gravatarSrc"></mdb-card-image></a>
+     	<a href="https://en.gravatar.com/"><mdb-card-image class="img-fluid rounded-circle" style="border: 3px solid rgb(20 40 55);" :alt="authUser.username" :src="gravatarSrc"></mdb-card-image></a>
 
 	  </div>
     </div>
