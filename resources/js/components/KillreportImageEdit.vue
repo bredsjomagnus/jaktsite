@@ -2,7 +2,7 @@
   <mdb-container>
        <div class="d-flex flex-row justify-content-around" style="margin-top:-20px">
             <mdb-card class='w-100' color="unique-color-dark">
-                <mdb-card-text class="d-flex justify-content-center">#{{this.killreport.id}} Rapport bilder</mdb-card-text>
+                <mdb-card-text class="d-flex justify-content-center">#{{this.killreport.id}} Rapports bilder</mdb-card-text>
             </mdb-card>
         </div>
 
