@@ -21,7 +21,7 @@
 
 	  </div>
 	  <div v-else>
-     	<a href="https://en.gravatar.com/"><mdb-card-image class="img-fluid rounded-circle" style="border: 3px solid #142837;" :alt="authUser.username" :src="gravatarSrc"></mdb-card-image></a>
+     	<a href="https://en.gravatar.com/"><mdb-card-image class="img-fluid rounded-circle" style="border: 3px solid rgb(230 168 67); :alt="authUser.username" :src="gravatarSrc"></mdb-card-image></a>
 
 	  </div>
     </div>
