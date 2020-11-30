@@ -40,7 +40,8 @@ class KillreportController extends Controller
         // Tar fram killreports beroende på säsong
         $killreports = Killreport::where('deleted_at', null)
                                     ->where('season', 'like', '%' .$season_search. '%')
-                                    ->orderBy('killdate', 'desc')->get()->sortByDesc('id');
+                                    ->orderBy('killdate', 'desc')
+                                    ->orderBy('id', 'desc')->get();
     
         // filtreras sökningen?
         $filtering = false;
