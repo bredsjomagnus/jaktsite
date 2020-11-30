@@ -80,7 +80,7 @@ class UserController extends Controller
     public function killreports(User $user)
     {
         $data = [
-            'killreports'   => $user->associated_killreports()
+            'killreports'   => $user->associated_killreports()->sortByDesc('killdate')
         ];
 
         return view('users.killreports', $data);
