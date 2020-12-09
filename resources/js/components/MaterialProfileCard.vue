@@ -11,6 +11,8 @@
 			</mdb-btn-group>
 		</mdb-btn-toolbar>
 	</div>
+
+	
 	
   <mdb-card>
     <!-- <mdb-card-image src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20%286%29.jpg" alt="Card image cap"></mdb-card-image> -->
@@ -40,6 +42,8 @@
 			</mdb-btn-group>
 		</mdb-btn-toolbar>
 	</div>
+
+	
 
 	<div v-if="authUser.occupation == 'hunter'">
 
@@ -92,9 +96,17 @@
 	<hr>
 	</div>
 
-	
-	
+	<div class="d-flex flex-row justify-content-center mt-2" style="font-size: 12px;">
+		<h6>RESURSER</h6>
+	</div>
+	<div style="font-size: 12px;">
+		<ul>
+			<li><a class="pb-2" target="_blank" href="https://photos.google.com/u/3/">GOOGLE FOTO ALBUM <mdb-icon icon="external-link-alt" class="ml-1"/></a></li>
+		</ul>
+		
+	</div>
 
+	<hr>
 
     <mdb-card-body class="infopart">
       <!-- <mdb-card-title>Profildata</mdb-card-title> -->
