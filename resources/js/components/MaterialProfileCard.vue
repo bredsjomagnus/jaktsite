@@ -101,7 +101,8 @@
 	</div>
 	<div style="font-size: 12px;">
 		<ul>
-			<li><a class="pb-2" target="_blank" href="https://photos.google.com/u/3/">GOOGLE FOTO ALBUM <mdb-icon icon="external-link-alt" class="ml-1"/></a></li>
+			<li><a class="pb-2" target="_blank" href="https://photos.google.com/u/1/share/AF1QipMq-tBl10ISOORKYdwt3hJdlkPkyUjLlCcJD8k9ExAwiJ5CnTU7E9oy64Vft1oCOw?key=QkNMdEtOcU96SW1WdnJZMVppVmRmcFlmb0QxT2tn">GOOGLE FOTO ALBUM <mdb-icon icon="external-link-alt" class="ml-1"/></a></li>
+			<!-- <li><a class="pb-2" target="_blank" href="https://mail.google.com/mail/u/3/">SMÅRIS GMAIL <mdb-icon icon="external-link-alt" class="ml-1"/></a></li> -->
 		</ul>
 		
 	</div>
