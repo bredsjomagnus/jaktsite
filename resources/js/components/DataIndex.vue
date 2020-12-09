@@ -3101,11 +3101,11 @@
  .table-sumrow {
      border-top: 1px dashed grey; 
  }
- .info-table {
+.info-table {
     font-size: 12px;
     color: rgb(89, 89, 89);
- }
- table th {
+}
+table th {
     font-size: 0.8rem;
     font-weight: 400;
     background-color: #DCCC9B;

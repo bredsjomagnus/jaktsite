@@ -41,13 +41,66 @@
 		</mdb-btn-toolbar>
 	</div>
 
+	<div v-if="authUser.occupation == 'hunter'">
+
+		<div class="d-flex flex-row justify-content-center mt-2" style="font-size: 12px;">
+			<h6>DINA RAPPORTER OCH DJUR</h6>
+		</div>
+		<div class="d-flex flex-row justify-content-center mt-2" style="font-size: 12px;">
+
+			<i>Associerad med {{killreports.length}} rapporter i rapportarkivet.</i>
+		</div>
+		<div class="d-flex flex-row justify-content-center mt-2">
+
+			<table class="table-striped meattable" style="width: 90%">
+				<thead>
+					<tr>
+						<th>DJURSLAG</th>
+						<th style="text-align: left;">SNITT</th>
+						<th style="text-align: left;">TOTALT</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Kronvilt</td>
+						<td style="text-align: left;">{{meatReddeerAverage.kg}} kg</td>
+						<td style="text-align: left;">{{meatReddeerTotal.kg}} kg</td>
+					</tr>
+					<tr>
+						<td>Dovvilt</td>
+						<td style="text-align: left;">{{meatFallowdeerAverage.kg}} kg</td>
+						<td style="text-align: left;">{{meatFallowdeerTotal.kg}} kg</td>
+					</tr>
+					<tr>
+						<td>Älg</td>
+						<td style="text-align: left;">{{meatMooseAverage.kg}} kg</td>
+						<td style="text-align: left;">{{meatMooseTotal.kg}} kg</td>
+					</tr>
+					<tr>
+						<td>Vildsvin</td>
+						<td style="text-align: left;">{{meatBoarAverage.kg}} kg</td>
+						<td style="text-align: left;">{{meatBoarTotal.kg}} kg</td>
+					</tr>
+					<tr>
+						<td>Rådjur</td>
+						<td style="text-align: left;">{{meatRoedeerAverage.kg}} kg</td>
+						<td style="text-align: left;">{{meatRoedeerTotal.kg}} kg</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	<hr>
+	</div>
+
 	
 	
 
-		
 
     <mdb-card-body class="infopart">
       <!-- <mdb-card-title>Profildata</mdb-card-title> -->
+	  	<div class="d-flex flex-row justify-content-center mt-2" style="font-size: 12px;">
+			<h6>DIN PROFILDATA</h6>
+		</div>
 	  	<form @submit.prevent="submitForm">
 			<mdb-input label="Användarnamn" v-model="fields.username" disabled />
 			<mdb-input label="Email" v-model="fields.email" disabled />
@@ -126,12 +179,23 @@
 			'gravatarSrc',
 			'killreporturl',
 			'killreportindexurl',
+			'killreports',
 			'adminurl',
 			'logouturl',
 			'welcomeurl',
 			'userreportsurl',
 			'avatarurl',
-			'storageBaseUrl'
+			'storageBaseUrl',
+			'meatMooseAverage',
+            'meatReddeerAverage',
+            'meatFallowdeerAverage',
+            'meatRoedeerAverage',
+            'meatBoarAverage',
+            'meatMooseTotal',
+            'meatReddeerTotal',
+            'meatFallowdeerTotal',
+            'meatRoedeerTotal',
+            'meatBoarTotal',
 			],
 		data() {
 			return {
@@ -172,6 +236,13 @@
 			console.log(this.url.killreport);
 			console.log("avatar: ", this.avatar);
 			console.log("storageBaseUrl: ", this.storageBaseUrl);
+			console.log("killreports: ", this.killreports);
+			console.log("MEAT:");
+			// console.log("meatMooseAverage: ", this.meatMooseAverage[0].kg);
+			// console.log("meatReddeerAverage: ", this.meatReddeerAverage);
+			// console.log("meatFallowdeerAverage: ", this.meatFallowdeerAverage);
+			// console.log("meatRoedeerAverage: ", this.meatRoedeerAverage);
+			// console.log("meatBoarAverage: ", this.meatBoarAverage);
 		},
 		methods: {
 			avatarimageurl(avatar) {
@@ -234,5 +305,13 @@
 }
 .image_container{
   width: 100px;
+}
+.meatable {
+	width: 95% !important;
+}
+table th {
+	font-size: 0.8rem;
+	font-weight: 400;
+	background-color: #DCCC9B;
 }
 </style>
