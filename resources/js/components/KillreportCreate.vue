@@ -11,8 +11,8 @@
             <div class="d-flex flex-row justify-content-around">
                 <mdb-btn color="mdb-color" @click.native="backToUserModal = true" size="sm"><mdb-icon icon="user"/></mdb-btn>
                 <mdb-btn-group size="sm">
-                    <mdb-btn color="mdb-color" @click.native="toggleActiveStateQ" :active="activeQ" size="sm">Data</mdb-btn>
-                    <mdb-btn color="mdb-color" @click.native="toggleActiveStateR" :active="activeR" size="sm">Rapport</mdb-btn>
+                    <mdb-btn class="btn_right_border" color="mdb-color" @click.native="toggleActiveStateQ" :active="activeQ" size="sm">Data</mdb-btn>
+                    <mdb-btn class="btn_left_border" color="mdb-color" @click.native="toggleActiveStateR" :active="activeR" size="sm">Rapport</mdb-btn>
                 </mdb-btn-group>
                 <mdb-btn color="danger" @click.native="confirmModal = true" size="sm"><mdb-icon icon="eraser"/></mdb-btn>
             </div>
@@ -1412,5 +1412,11 @@
     border-left: 8px solid #5d73a2; 
     border-top: 1px solid lightgray;
 }
+/* .btn_right_border {
+	border-right: 1px solid #ffc107;
+}
+.btn_left_border {
+	border-left: 1px solid #ffc107;
+} */
     
 </style>

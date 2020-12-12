@@ -66,6 +66,8 @@ Route::post('/killreportfile/store', 'KillreportFileController@store')->middlewa
 Route::patch('/killreportfile/{id}/rotate', 'KillreportFileController@update_rotate')->middleware('access:both,none');
 Route::delete('/killreportfile/{id}/delete', 'KillreportFileController@destroy')->middleware('access:both,none');
 
+Route::post('/mail/meat', 'MailController@meat_changed')->middleware('access:both, none');
+
 Route::get('/admin', 'AdminController@index')->middleware('access:admin,none');
 
 Route::get('/password', 'UserController@resetlink');

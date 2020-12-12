@@ -14,6 +14,7 @@
     :killreport="{{ $killreport }}"
     :killreport-image="{{ json_encode($killreport->display_path()) }}"
     :meats="{{ $killreport->meat }}"
+    :mail-base-url='{!! json_encode(url("mail")) !!}'
     :index-url='{!! json_encode(url("killreports/")) !!}'
     :image-url='{!! json_encode(url("image/".$killreport->id."/edit")) !!}'
     :animal-url='{!! json_encode(url("animals/".$killreport->animal()->id."/update")) !!}' 

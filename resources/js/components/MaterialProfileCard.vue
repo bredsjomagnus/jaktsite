@@ -19,11 +19,11 @@
 	<div class="d-flex justify-content-center" style="padding-top:10px; background: linear-gradient(#e6e6e6, #ececec 50%, #142837 50%, #142837 50%);">
 		 <!-- <img :src="gravatarSrc" class="img-fluid z-depth-1 rounded-circle" :alt="authUser.username">		 -->
 	  <div v-if="avatar" class="image_container">
-		  <mdb-card-image class="img-fluid rounded-circle" style="border: 3px solid rgb(20 40 55); background-color: #142837;" :alt="authUser.username" :src="avatarimageurl(avatar)"></mdb-card-image>
+		  <a :href="url.avatar"><mdb-card-image class="img-fluid rounded-circle" style="border: 3px solid rgb(20 40 55); background-color: #142837;" :alt="authUser.username" :src="avatarimageurl(avatar)"></mdb-card-image></a>
 
 	  </div>
 	  <div v-else>
-     	<a href="https://en.gravatar.com/"><mdb-card-image class="img-fluid rounded-circle" style="border: 3px solid rgb(20 40 55); background-color: #142837;" :alt="authUser.username" :src="gravatarSrc"></mdb-card-image></a>
+     	<a :href="url.avatar"><mdb-card-image class="img-fluid rounded-circle" style="border: 3px solid rgb(20 40 55); background-color: #142837;" :alt="authUser.username" :src="gravatarSrc"></mdb-card-image></a>
 
 	  </div>
     </div>
@@ -47,7 +47,7 @@
 
 	<div v-if="authUser.occupation == 'hunter'">
 
-		<div class="d-flex flex-row justify-content-center mt-2" style="font-size: 12px;">
+		<div class="d-flex flex-row justify-content-center mt-2">
 			<h6>DINA RAPPORTER OCH DJUR</h6>
 		</div>
 		<div class="d-flex flex-row justify-content-center mt-2" style="font-size: 12px;">
@@ -59,34 +59,34 @@
 			<table class="table-striped meattable" style="width: 90%">
 				<thead>
 					<tr>
-						<th>DJURSLAG</th>
+						<th class="pl-2">DJURSLAG</th>
 						<th style="text-align: left;">SNITT</th>
 						<th style="text-align: left;">TOTALT</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td>Kronvilt</td>
+						<td class="pl-2">Kronvilt</td>
 						<td style="text-align: left;">{{meatReddeerAverage.kg}} kg</td>
 						<td style="text-align: left;">{{meatReddeerTotal.kg}} kg</td>
 					</tr>
 					<tr>
-						<td>Dovvilt</td>
+						<td class="pl-2">Dovvilt</td>
 						<td style="text-align: left;">{{meatFallowdeerAverage.kg}} kg</td>
 						<td style="text-align: left;">{{meatFallowdeerTotal.kg}} kg</td>
 					</tr>
 					<tr>
-						<td>Älg</td>
+						<td class="pl-2">Älg</td>
 						<td style="text-align: left;">{{meatMooseAverage.kg}} kg</td>
 						<td style="text-align: left;">{{meatMooseTotal.kg}} kg</td>
 					</tr>
 					<tr>
-						<td>Vildsvin</td>
+						<td class="pl-2">Vildsvin</td>
 						<td style="text-align: left;">{{meatBoarAverage.kg}} kg</td>
 						<td style="text-align: left;">{{meatBoarTotal.kg}} kg</td>
 					</tr>
 					<tr>
-						<td>Rådjur</td>
+						<td class="pl-2">Rådjur</td>
 						<td style="text-align: left;">{{meatRoedeerAverage.kg}} kg</td>
 						<td style="text-align: left;">{{meatRoedeerTotal.kg}} kg</td>
 					</tr>
@@ -96,7 +96,7 @@
 	<hr>
 	</div>
 
-	<div class="d-flex flex-row justify-content-center mt-2" style="font-size: 12px;">
+	<div class="d-flex flex-row justify-content-center mt-2">
 		<h6>RESURSER</h6>
 	</div>
 	<div style="font-size: 12px;">
@@ -111,7 +111,7 @@
 
     <mdb-card-body class="infopart">
       <!-- <mdb-card-title>Profildata</mdb-card-title> -->
-	  	<div class="d-flex flex-row justify-content-center mt-2" style="font-size: 12px;">
+	  	<div class="d-flex flex-row justify-content-center mt-2">
 			<h6>DIN PROFILDATA</h6>
 		</div>
 	  	<form @submit.prevent="submitForm">
@@ -327,4 +327,5 @@ table th {
 	font-weight: 400;
 	background-color: #DCCC9B;
 }
+
 </style>

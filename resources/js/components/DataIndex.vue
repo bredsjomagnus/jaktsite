@@ -12,9 +12,9 @@
              <!-- <mdb-btn-toolbar> -->
             <div class="d-flex flex-row justify-content-around">
                 <mdb-btn-group size="sm">
-                    <mdb-btn color="mdb-color" @click.native="toggleToD" :active="activeD" size="sm">Kött</mdb-btn>
-                    <mdb-btn color="mdb-color" @click.native="toggleToC" :active="activeC" size="sm">Område</mdb-btn>
-                    <mdb-btn color="mdb-color" @click.native="toggleToA" :active="activeA" size="sm">Fördelning</mdb-btn>
+                    <mdb-btn class="btn_right_border" color="mdb-color" @click.native="toggleToD" :active="activeD" size="sm">Kött</mdb-btn>
+                    <mdb-btn class="btn_right_border btn_left_border"  color="mdb-color" @click.native="toggleToC" :active="activeC" size="sm">Område</mdb-btn>
+                    <mdb-btn class="btn_left_border" color="mdb-color" @click.native="toggleToA" :active="activeA" size="sm">Fördelning</mdb-btn>
 
                 </mdb-btn-group>
             </div>
@@ -3110,4 +3110,10 @@ table th {
     font-weight: 400;
     background-color: #DCCC9B;
 }
+/* .btn_right_border {
+	border-right: 1px solid #ffc107;
+}
+.btn_left_border {
+	border-left: 1px solid #ffc107;
+} */
 </style>

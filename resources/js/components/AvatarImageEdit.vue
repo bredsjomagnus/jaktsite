@@ -52,7 +52,7 @@
                 </mdb-card>
             </div>
             <div v-else>
-                <p class="mt-2" style="font-size: 12px;">Ingen avatar uppladdad än. Har man kopplat sitt konto till Gravatar så kommer den avataren att anävändas som backup.</p>
+                <p class="mt-2" style="font-size: 12px;">Har man kopplat sitt konto till Gravatar så kommer den avataren att användas som backup.</p>
             </div>
          </div>
     </div>

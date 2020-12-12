@@ -825,7 +825,8 @@
             'meatRoedeerThisSeason',
             'meatBoarThisSeason',
             'season',
-            'killreportImage'
+            'killreportImage',
+            'mailBaseUrl'
         ],
     data() {
         return {
@@ -1007,6 +1008,7 @@
         console.log(this.meatUrl);
         console.log("imageUrl:")
         console.log(this.imageUrl);
+        console.log("mailBaseUrl: ", this.mailBaseUrl);
 
         console.log("killreportImage: ", this.killreportImage);
 
@@ -1882,6 +1884,9 @@
 
         },
         saveChanges() {
+            // Håller koll på om köttet ändrats så att man kan skicka mail när det är så
+            let meat_changed = false;
+
             let animalfields, killreportfields, areaidselected;
             areaidselected = this.areaSelected.id;
             // console.log(areaidselected);
@@ -1932,17 +1937,7 @@
             // console.log('http://localhost/pwww/jaktsite/public/animals/83/update');
             axios.post(this.animalUrl, animalfields)
                 .then(response => {
-                    // console.log("ANIMALURL:");
-                    // console.log(this.animalUrl);
-                    // console.log();
-                    // console.log("ANIMALFIELDS");
-                    // console.log(animalfields);
-                    // console.log();
-                    // console.log("ANIMAL UPDATE SUCCESS:");
-                    // console.log(response);
-                    // console.log("this.killreportUrl");
-                    // console.log(this.killreportUrl);
-                    // console.log("response ", response);
+        
 
                 })
                 .catch(error => {
@@ -1967,6 +1962,9 @@
                             console.log(error);
                         });
                 });
+
+                // Håller koll på om köttet ändrats så att man kan skicka mail när det är så
+                meat_changed = true;
             }
 
             // Om det finns någon jägare som skall läggas till görs det här
@@ -1993,8 +1991,6 @@
                                 console.log(error);
                             });
                     } else {
-                        console.log("skall spara med axios")
-                        // console.log(meat);
 
                         // ta eventuellt med notes när det läggs till i vyn.
                         var meat_to_store = {
@@ -2003,8 +1999,6 @@
                             share_lot: meat['share_lot'],
                             user_id: meat['user_id']
                         }
-                        // console.log('meat_to_store');
-                        // console.log(meat_to_store);
                         
                         axios.post(meat_store_url, [meat_to_store])
                             .then(response => {
@@ -2021,11 +2015,14 @@
                     
                     
                 });
+
+                // Håller koll på om köttet ändrats så att man kan skicka mail när det är så
+                meat_changed = true;
             }
 
             // När man skall ta bort. Tar man bort allt så skall ändå en nullrad finnas kvar. Så ta bort alla utom sista och uppdatera sista till null.
             if( this.delete_from_toggledformeatfromstart.length > 0 ) {
-                // kollar ifall det skall lämnas helt tomt. Det kan man göra genom att kolla om antalet från början är lika många som det skall tas bort. Samtidgit
+                // kollar ifall det skall lämnas helt tomt. Det kan man göra genom att kolla om antalet från början är lika många som det skall tas bort. Samtidigt
                 // som det inte skapas några nya.
                 var delete_all = ((this.toggledformeatfromstart.length == this.delete_from_toggledformeatfromstart.length) && (this.create_from_toggledformeatfromstart.length == 0));
                 console.log("this.delete_from_toggledformeatfromstart.length: ", this.delete_from_toggledformeatfromstart.length);
@@ -2074,13 +2071,14 @@
                         });
                 }
 
+                // Håller koll på om köttet ändrats så att man kan skicka mail när det är så
+                meat_changed = true;
+
             }
 
 
             axios.post(this.killreportUrl, killreportfields)
                 .then(response => {
-                    // redirectar tillbaka till rapportarkivet
-                    // window.location = response.data.redirect;
                     window.location.reload();
                 })
                 .catch(error => {
@@ -2095,6 +2093,20 @@
             this.toggledformeat.forEach(obj => {
                 console.log(obj.user_id);
             });
+
+
+            if(meat_changed) {
+
+                console.log("mailurl: ", this.mailBaseUrl+"/meat");
+                axios.post(this.mailBaseUrl+"/meat")
+                    .then(response => {
+
+                    })
+                    .catch(error => {
+                        console.log("MEAT MAIL ERROR: ", error);
+                    })
+
+            }
         },
         deleteReport() {
             axios.post(this.killreportDeleteUrl, this.killreport)

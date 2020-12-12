@@ -185,4 +185,38 @@ trait MeatSum
         
     }
 
+    /**
+     * Bubbelsorterar köttarrayerna efter den som har fått minst kött av ett visst
+     * djurslag upp till den som fått mest kött.
+     * 
+     * @param Array associativ array [0: ['id' => 1, 'username' => 'johan', 'firstname' => 'johan', 'lastname' => 'Eriksson', 'kg' => 34], ...]
+     * 
+     * @return Array associativ array som är sorterad
+     */
+     public function bubble($unsorted)
+    {
+
+        // sorterar en köttarray
+        $bubbling = true;
+        $notswapped = true;
+        $obj = $unsorted;
+        $n = count($unsorted) - 1;
+        while ($bubbling) {
+            $notswapped = true;
+            for ($k=0; $k < $n; $k++) {
+                if ($obj[$k]['kg'] > $obj[$k+1]["kg"]) {
+                    $temp = $obj[$k];
+                    $obj[$k] = $obj[$k+1];
+                    $obj[$k+1] = $temp;
+                    $notswapped = false;
+                }
+            }
+            if ($notswapped) {
+                $bubbling = false;
+            }
+        }
+        return $obj;
+
+    }
+
 }
