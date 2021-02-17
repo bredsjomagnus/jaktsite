@@ -169,4 +169,90 @@ class MeatTest extends TestCase
 
     }
 
+    // ANVÄND FÖR ATT TESTA UTRÄKNINGEN AV KÖTTABELLERNA
+    /**
+     * @test
+     * 
+     * @return void
+     */
+    // public function calculating_the_users_meat_mean()
+    // {
+
+    //     $species = 'Dovvilt';
+    //     $species_eng = 'fallowdeer';
+
+    //     $user_attributes = [
+    //         'username'      => 'adminmagnus',
+    //         'firstname'     => 'Magnus',
+    //         'lastname'      => 'Andersson',
+    //         'created_at'    => '2011-01-01',
+    //         'member_since'  => '2011-01-01'
+    //     ];
+
+    //     $user = factory(User::class)->create($user_attributes);
+
+
+    //     # LÄGGER IN FÖRSTA DOVHJORTEN
+    //     $animal_1 = factory(Animal::class)->create([
+    //         'species'       => $species,
+    //         'engspecies'    => $species_eng
+    //     ]);
+
+    //     $killreport_1 = factory(Killreport::class)->create([
+    //         'animal_id'     => $animal_1->id
+    //     ]);
+        
+    //     $meat_1 = factory(Meat::class)->create([
+    //         'user_id'           => $user->id,
+    //         'killreport_id'     => $killreport_1->id,
+    //         'share_kilogram'    => 1000,
+    //         'created_at'        => '2001-01-01'
+    //     ]);
+
+
+    //     # LÄGGER IN ANDRA DOVHJORTEN
+    //     $animal_2 = factory(Animal::class)->create([
+    //         'species'       => $species,
+    //         'engspecies'    => $species_eng
+    //     ]);
+
+    //     $killreport_2 = factory(Killreport::class)->create([
+    //         'animal_id'     => $animal_2->id
+    //     ]);
+
+    //     $meat_2 = factory(Meat::class)->create([
+    //         'user_id'           => $user->id,
+    //         'killreport_id'     => $killreport_2->id,
+    //         'share_kilogram'    => 1000,
+    //         'created_at'        => '2015-01-01'
+    //     ]);
+
+
+    //     # LÄGGER IN TREDJE DOVHJORTEN
+    //     $animal_3 = factory(Animal::class)->create([
+    //         'species'       => $species,
+    //         'engspecies'    => $species_eng
+    //     ]);
+
+    //     $killreport_3 = factory(Killreport::class)->create([
+    //         'animal_id'     => $animal_3->id
+    //     ]);
+
+    //     $meat_3 = factory(Meat::class)->create([
+    //         'user_id'           => $user->id,
+    //         'killreport_id'     => $killreport_3->id,
+    //         'share_kilogram'    => 10,
+    //         'created_at'        => '2021-01-02'
+    //     ]);
+
+    //     // dd($meat_3);
+
+    //     $year_back = 2;
+    //     $user_fallowdeer_average = $this->sumMeatWrapper('Dovvilt', 'average', $year_back);
+
+        // dd($user_fallowdeer_average[0]['kg']);
+
+        // $this->assertEquals(, $user_fallowdeer_average[0]['kg']->kg);
+    // }
+
 }

@@ -81,6 +81,26 @@ trait MeatSum
     }
 
     /**
+     * Tar fram hur många tolftedelar av säsongen man är kommen och lägger det till
+     * antalet år i nämnaren när man beräknar medelvärdet.
+     * 
+     * @param String $month_string; vilken månad det är just idag.
+     * @return Float antal tolftedelar av säsongen vi är på. 0/12 för juli, 4/12 för november osv.
+     */
+    public function getMonthFraction($month_string)
+    {
+        $res = 0;
+        $month_int = intval($month_string);
+        if ($month_int < 7) {
+            $res = $month_int + 5;
+        } else {
+            $res = $month_int - 7;
+        }
+
+        return round($res/12,3);
+    }
+
+    /**
      * Creates Object with user data combined with total summed up shared kilogram
      * for certain species.
      * 
@@ -120,6 +140,11 @@ trait MeatSum
                         $this_season = $this->getSeason(date('Y-m-d'));
                         $diff = intval(intval(substr($this_season, 0, 2)) - intval(substr($start_season, 0, 2)) + 1);
                         $n = ($diff > $year_back) ? $year_back : $diff;
+
+                        // Lägger till tolfdelar efter vilken månad det är; 1/12 för juli, 2/12 för augusti osv.
+                        $m_frac = $this->getMonthFraction(date('m'));
+                        $n = $n + $m_frac;
+
                         // dd("start_season: ".$start_season.", this_season: ".$this_season.", diff: ".$diff.", year_back: ".$year_back.", n: ".$n);
                         $avg = round($res_kg/$n, 1);
                         $res_kg = $avg;
