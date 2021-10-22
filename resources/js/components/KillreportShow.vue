@@ -2079,11 +2079,16 @@
 
             axios.post(this.killreportUrl, killreportfields)
                 .then(response => {
+                    console.log("WINDOWLOCADEDRELOAD")
                     window.location.reload();
                 })
                 .catch(error => {
+                    
                     console.log("KILLREPORT UPDATE ERROR:");
                     console.log(error);
+                    // window.location.reload();
+                    // console.log(this.killreportUrl);
+                    // console.log(killreportfields)
                 });
 
             
@@ -2095,18 +2100,18 @@
             });
 
 
-            if(meat_changed) {
+            // if(meat_changed) {
 
-                console.log("mailurl: ", this.mailBaseUrl+"/meat");
-                axios.post(this.mailBaseUrl+"/meat")
-                    .then(response => {
+            //     console.log("mailurl: ", this.mailBaseUrl+"/meat");
+            //     axios.post(this.mailBaseUrl+"/meat")
+            //         .then(response => {
 
-                    })
-                    .catch(error => {
-                        console.log("MEAT MAIL ERROR: ", error);
-                    })
+            //         })
+            //         .catch(error => {
+            //             console.log("MEAT MAIL ERROR: ", error);
+            //         })
 
-            }
+            // }
         },
         deleteReport() {
             axios.post(this.killreportDeleteUrl, this.killreport)

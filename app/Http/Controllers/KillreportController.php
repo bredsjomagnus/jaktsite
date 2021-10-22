@@ -314,8 +314,8 @@ class KillreportController extends Controller
     public function update(Request $request, Killreport $killreport)
     {   
         // dd(request()->all());
-        // Log::info("REQUEST");
-        // Log::info(request()->all());
+        Log::info("REQUEST BAAAJS");
+        Log::info(request()->all());
         // Log::info("KILLREPORT");
         // Log::info($killreport['kindofhunt']);
         // Hängslen och livrem. Ser även till här att enbart admin kan uppdatera låsta rapporter
