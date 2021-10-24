@@ -226,14 +226,20 @@ class KillreportController extends Controller
 
         // $killreports = Killreport::where('deleted_at', null)->orderBy('killdate', 'desc')->get();
         // $emails = ['magnusandersson076@gmail.com', 'glotterback@gmail.com'];
-        
-        Mail::send('email.killreport.created', ['user' => Auth::user(), 'killreport' => $killreport], function ($message) {
-            // $emails = ['magnusandersson076@gmail.com', 'glotterback@gmail.com'];
-            $emails = ['magnusandersson076@gmail.com'];
-            $message->from('smarisjaktlag@gmail.com', 'Småris');
-            $message->subject('[AUTO] Ny rapport skapad');
-            $message->to($emails);
-        });
+
+
+
+        // tog bort denna delen då det strular med mailservern
+        // Mail::send('email.killreport.created', ['user' => Auth::user(), 'killreport' => $killreport], function ($message) {
+        //     // $emails = ['magnusandersson076@gmail.com', 'glotterback@gmail.com'];
+        //     $emails = ['magnusandersson076@gmail.com'];
+        //     $message->from('smarisjaktlag@gmail.com', 'Småris');
+        //     $message->subject('[AUTO] Ny rapport skapad');
+        //     $message->to($emails);
+        // });
+
+
+
         
         // return view('killreports.index', compact('killreports'));
         return response()->json(['killreport' => $killreport]);
