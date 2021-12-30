@@ -43,6 +43,7 @@
                 <option value="18/19" <?php if(isset($_GET['season'])) { echo $_GET['season'] == "18/19" ? "selected" : ""; } ?>>18/19</option>
                 <option value="19/20" <?php if(isset($_GET['season'])) { echo $_GET['season'] == "19/20" ? "selected" : ""; } ?>>19/20</option>
                 <option value="20/21" <?php if(isset($_GET['season'])) { echo $_GET['season'] == "20/21" ? "selected" : ""; } ?>>20/21</option>
+                <option value="21/22" <?php if(isset($_GET['season'])) { echo $_GET['season'] == "21/22" ? "selected" : ""; } ?>>21/22</option>
               </select>
             </td>
 
