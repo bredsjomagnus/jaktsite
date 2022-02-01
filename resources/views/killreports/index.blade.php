@@ -224,8 +224,9 @@
       <div class="card mb-4" style="min-width: 300px; max-height:1000px;">
 
         <!-- översta kanten med killreport->id -->
-        <div class="text-left" style="background-color: #dccc9b;">
-          <p class="pl-2 card-text" style="font-size: 12px;">#{{$killreport->id}}</p>
+        <!-- <div class="text-left" style="background-color: #dccc9b;"> -->
+          <div class="text-left" style="background-color: rgb(85 93 145);">
+          <p class="pl-2 card-text" style="font-size: 12px; color: white;">#{{$killreport->id}}</p>
         </div>  
 
         <!--Card image-->
