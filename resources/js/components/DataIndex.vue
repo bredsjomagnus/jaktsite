@@ -122,7 +122,7 @@
                                 v-for="hunter in meatFallowdeerAverage"
                                 :key="hunter.id"
                                 >   
-                                    <td width="80%">{{hunter.firstname}} {{hunter.lastname}}</td>
+                                    <td width="80%">{{hunter.firstname}} {{hunter.lastname}} <span style="font-size: 8px;"> {{hunterYears(hunter.id)}}</span></td>
                                     <td>{{hunter.kg}} kg</td>
                                 </tr>
                                 <tr class="table-sumrow" style="background-color: #dccc9b;">
@@ -2713,7 +2713,8 @@
         // console.log('meatReddeerAverage:');
         // console.log(this.meatReddeerAverage);
         // console.log('meatFallowdeerAverage:');
-        // console.log(this.meatFallowdeerAverage);
+        console.log('this.meatFallowdeerAverage', this.meatFallowdeerAverage);
+        console.log('this.hunters', this.hunters);
         // console.log('meatRoedeerAverage:');
         // console.log(this.meatRoedeerAverage);
         // console.log('meatBoarAverage:');
@@ -2788,6 +2789,19 @@
             return hunter_killreports.length;
 
 
+        },
+        hunterYears(hunterid) {
+            let res = "";
+            this.hunters.forEach((hunter) => {
+                
+                if (hunter.id == parseInt(hunterid)) {
+                    // console.log("hunter.id",hunter.id)
+                    // console.log("hunterid", hunterid);
+                    console.log(hunter.member_since.substring(0,10));
+                    res = hunter.member_since.substring(0,10);
+                }
+            });
+            return res;
         },
         animalsByGuests(species, area, kindofhunt) {
             
