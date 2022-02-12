@@ -719,6 +719,7 @@
                 <mdb-btn-group size="sm">
                     <mdb-btn color="mdb-color" @click.native="divideEven" :disabled="totalmeat == carcassWeight" size="sm">Fördela - <mdb-icon icon="balance-scale"/></mdb-btn>
                     <mdb-btn color="mdb-color" @click.native="meetModal = true" size="sm">Ändra jägare - <mdb-icon icon="user-plus"/></mdb-btn>
+                    <mdb-btn color="mdb-color" @click.native="meetAll()" size="sm">Alla - <mdb-icon icon="user-plus"/></mdb-btn>
                 </mdb-btn-group>
             </div>
             <mdb-card class="mt-2">
@@ -1280,6 +1281,16 @@
                 }
             }
             return res
+        },
+        meetAll() {
+            // console.log(this.hunters);
+            let active_hunters = this.hunters.filter(obj => {
+                return obj.occupation == "hunter" && (obj.role == "admin" || obj.role == "user");
+            });
+            active_hunters.forEach((hunter) => {
+                this.togglemeat(hunter);
+            });
+            
         },
         isToggledForMeat(id) {
             let result = false;
