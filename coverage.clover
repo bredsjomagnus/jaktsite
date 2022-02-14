@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1644668046">
-  <project timestamp="1644668046">
+<coverage generated="1644672189">
+  <project timestamp="1644672189">
     <package name="App">
       <file name="/home/magnus/Programmering/pwww/jaktsite/app/Animal.php">
         <class name="App\Animal" namespace="App">
@@ -1104,8 +1104,8 @@
         <line num="199" type="stmt" count="12"/>
         <line num="200" type="stmt" count="12"/>
         <line num="201" type="stmt" count="12"/>
-        <line num="202" type="stmt" count="9"/>
-        <line num="203" type="stmt" count="9"/>
+        <line num="202" type="stmt" count="7"/>
+        <line num="203" type="stmt" count="7"/>
         <line num="205" type="stmt" count="12"/>
         <line num="206" type="stmt" count="12"/>
         <line num="209" type="stmt" count="12"/>

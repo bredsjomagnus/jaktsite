@@ -719,7 +719,9 @@
                 <mdb-btn-group size="sm">
                     <mdb-btn color="mdb-color" @click.native="divideEven" :disabled="totalmeat == carcassWeight" size="sm">Fördela - <mdb-icon icon="balance-scale"/></mdb-btn>
                     <mdb-btn color="mdb-color" @click.native="meetModal = true" size="sm">Ändra jägare - <mdb-icon icon="user-plus"/></mdb-btn>
-                    <mdb-btn color="mdb-color" @click.native="meetAll()" size="sm">Alla - <mdb-icon icon="user-plus"/></mdb-btn>
+
+                    <!-- Lägg till för att få fram knapp som kan toggla alla jägare på samma gång -->
+                    <!-- <mdb-btn color="mdb-color" @click.native="meetAll()" size="sm">Alla - <mdb-icon icon="user-plus"/></mdb-btn> --> 
                 </mdb-btn-group>
             </div>
             <mdb-card class="mt-2">
